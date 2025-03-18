@@ -1,28 +1,29 @@
 {
-  "expo": {
-    "name": "QuestLog",
-    "slug": "QuestLog",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "expo": {
+        "name": "QuestLogger",
+        "slug": "QuestLogger",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/quest-logger.webp",
+        "userInterfaceStyle": "dark",
+        "newArchEnabled": true,
+        "splash": {
+            "image": "./assets/quest-logger.webp",
+            "resizeMode": "contain",
+            "backgroundColor": "#011627"
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "package": "com.victor.questlogger",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/quest-logger.webp",
+                "backgroundColor": "#292731"
+            }
+        },
+        "web": {
+            "favicon": "./assets/quest-logger.webp"
+        }
     }
-  }
 }
