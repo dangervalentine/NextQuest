@@ -1,3 +1,4 @@
+import { GameStatus } from "../data/types";
 import { GameListItem } from "./GameListItem";
 
 export interface QuestGameListItem extends GameListItem {

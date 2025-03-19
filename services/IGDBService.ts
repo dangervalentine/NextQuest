@@ -1,16 +1,19 @@
 import { TWITCH_CLIENT_ID } from "@env";
 import TwitchAuthService from "./TwitchAuthService";
+import { mapToGameDetails } from "../helpers/dataMappers";
+import { GameDetails } from "../interfaces/GameDetails";
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4/games";
 
-    public static async fetchGameDetails(name: string): Promise<any> {
+    public static async fetchGameDetails(
+        id: number
+    ): Promise<GameDetails | null> {
         try {
             const token = await TwitchAuthService.getValidToken();
             if (!token) {
                 throw new Error("No access token found.");
             }
 
-            console.log(name);
             const query = `
 fields id, name, summary, genres.id, genres.name, platforms.id, platforms.name, 
        release_dates.id, release_dates.human, release_dates.platform, release_dates.date,
@@ -21,7 +24,7 @@ fields id, name, summary, genres.id, genres.name, platforms.id, platforms.name,
        screenshots.id, screenshots.url, 
        videos.id, videos.video_id, 
        rating, aggregated_rating, storyline;
-where name ~ *"${name}"* & category = (0, 8, 9, 11);
+where id = ${id};
 sort release_dates.date asc;
       `;
 
@@ -44,7 +47,22 @@ sort release_dates.date asc;
             }
 
             const data = await response.json();
-            return data;
+
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                console.error("Invalid or empty data received from API.");
+                return null;
+            }
+
+            const gameData = data[0];
+            if (!gameData.id || !gameData.name) {
+                console.error(
+                    "Missing required fields in game data:",
+                    gameData
+                );
+                return null;
+            }
+
+            return mapToGameDetails(gameData);
         } catch (error) {
             console.error("Error fetching game details:", error);
             return null;

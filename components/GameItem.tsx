@@ -40,9 +40,11 @@ const GameItem: React.FC<GameItemProps> = ({ questGameListItem, reorder }) => {
                 onPress={() =>
                     navigation.navigate("QuestGameDetailPage", {
                         name: questGameListItem.name,
+                        id: questGameListItem.id,
                     })
                 }
                 style={styles.pressableNavigation}
+                android_ripple={{ color: colorSwatch.primary.dark }}
             >
                 {questGameListItem.cover && questGameListItem.cover.url ? (
                     <Image
@@ -112,7 +114,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: colorSwatch.primary.dark,
         overflow: "hidden",
-        paddingVertical: 10,
         flex: 1,
     },
     priority: {
@@ -134,6 +135,8 @@ const styles = StyleSheet.create({
     },
     pressableNavigation: {
         flexDirection: "row",
+        flex: 1,
+        paddingVertical: 10,
     },
     rating: {
         fontSize: 10,

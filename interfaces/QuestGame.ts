@@ -1,3 +1,4 @@
+import { GameStatus } from "../data/types";
 import { GameDetails } from "./GameDetails";
 
 export interface QuestGame extends GameDetails {

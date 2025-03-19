@@ -6,7 +6,7 @@ export const questGames: QuestGameListItem[] = [
         gameStatus: "in_progress",
         cover: {
             id: 91101,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co1yal.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co1yal.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [
@@ -19,11 +19,11 @@ export const questGames: QuestGameListItem[] = [
         release_dates: [{ id: 23342, date: 934761600 }],
     },
     {
-        id: 2,
+        id: 11737,
         gameStatus: "in_progress",
         cover: {
             id: 2,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co65ac.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co65ac.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 2, name: "Adventure" }],
@@ -33,11 +33,11 @@ export const questGames: QuestGameListItem[] = [
         release_dates: [{ id: 1, date: 1559020800 }],
     },
     {
-        id: 3,
+        id: 1133,
         gameStatus: "in_progress",
         cover: {
             id: 3,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co5otg.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co5otg.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 3, name: "Platformer" }],
@@ -47,11 +47,11 @@ export const questGames: QuestGameListItem[] = [
         release_dates: [{ id: 1, date: 1032470400 }],
     },
     {
-        id: 5,
+        id: 6,
         gameStatus: "preperation",
         cover: {
             id: 5,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co71yr.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co71yr.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 4, name: "RPG" }],
@@ -62,11 +62,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 1,
     },
     {
-        id: 12,
+        id: 1134,
         gameStatus: "preperation",
         cover: {
             id: 12,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co687k.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co687k.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 3, name: "Platformer" }],
@@ -77,7 +77,7 @@ export const questGames: QuestGameListItem[] = [
         priority: 2,
     },
     {
-        id: 18,
+        id: 1802,
         gameStatus: "preperation",
         cover: {
             id: 18,
@@ -92,11 +92,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 3,
     },
     {
-        id: 15,
+        id: 23913,
         gameStatus: "preperation",
         cover: {
             id: 15,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co1x9h.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co1x9h.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 4, name: "RPG" }],
@@ -107,11 +107,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 4,
     },
     {
-        id: 16,
+        id: 205649,
         gameStatus: "preperation",
         cover: {
             id: 16,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co2xc0.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co2xc0.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 4, name: "RPG" }],
@@ -122,11 +122,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 5,
     },
     {
-        id: 4,
+        id: 14593,
         gameStatus: "preperation",
         cover: {
             id: 4,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co93cr.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co93cr.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 2, name: "Action-Adventure" }],
@@ -137,11 +137,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 6,
     },
     {
-        id: 7,
+        id: 217623,
         gameStatus: "preperation",
         cover: {
             id: 7,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co8356.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co8356.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 5, name: "RPG" }],
@@ -152,11 +152,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 7,
     },
     {
-        id: 14,
+        id: 1107,
         gameStatus: "preperation",
         cover: {
             id: 14,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co1vci.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co1vci.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 3, name: "Platformer" }],
@@ -167,11 +167,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 8,
     },
     {
-        id: 13,
+        id: 1517,
         gameStatus: "preperation",
         cover: {
             id: 13,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co1zhr.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co1zhr.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 4, name: "RPG" }],
@@ -182,11 +182,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 9,
     },
     {
-        id: 8,
+        id: 76882,
         gameStatus: "preperation",
         cover: {
             id: 8,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co2a23.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co2a23.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 1, name: "Action-Adventure" }],
@@ -197,11 +197,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 10,
     },
     {
-        id: 9,
+        id: 325594,
         gameStatus: "preperation",
         cover: {
             id: 9,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co95gf.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co95gf.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 2, name: "Adventure" }],
@@ -212,11 +212,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 11,
     },
     {
-        id: 17,
+        id: 1103,
         gameStatus: "preperation",
         cover: {
             id: 17,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co5osy.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co5osy.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 3, name: "Platformer" }],
@@ -227,11 +227,11 @@ export const questGames: QuestGameListItem[] = [
         priority: 12,
     },
     {
-        id: 10,
+        id: 1035,
         gameStatus: "preperation",
         cover: {
             id: 10,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co3nsk.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co3nsk.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 3, name: "Platformer" }],
@@ -242,26 +242,26 @@ export const questGames: QuestGameListItem[] = [
         priority: 13,
     },
     {
-        id: 6,
+        id: 277143,
         gameStatus: "preperation",
         cover: {
             id: 6,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co5ziw.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co5ziw.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 1, name: "Action-Adventure" }],
         name: "The Last of Us Part II",
-        platform: "PlayStation 4",
+        platform: "PC",
         rating: 93.0,
         release_dates: [{ id: 1, date: 1592534400 }],
         priority: 14,
     },
     {
-        id: 11,
+        id: 6635,
         gameStatus: "preperation",
         cover: {
             id: 11,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co3bsk.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co3bsk.jpg",
         },
         dateAdded: "3/17/2025",
         genres: [{ id: 4, name: "RPG" }],
@@ -272,7 +272,7 @@ export const questGames: QuestGameListItem[] = [
         priority: 15,
     },
     {
-        id: 19,
+        id: 119133,
         name: "Elden Ring",
         gameStatus: "completed",
         rating: 95.33229139600007,
@@ -290,7 +290,7 @@ export const questGames: QuestGameListItem[] = [
         ],
         cover: {
             id: 212094,
-            url: "//images.igdb.com/igdb/image/upload/t_thumb/co4jni.jpg",
+            url: "//images.igdb.com/igdb/image/upload/t_original/co4jni.jpg",
         },
         dateAdded: "2025-03-17",
         personalRating: 9,
