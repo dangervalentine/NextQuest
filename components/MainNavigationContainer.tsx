@@ -10,7 +10,7 @@ import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 
-const Pages: React.FC = () => {
+const MainNavigationContainer: React.FC = () => {
     const tabScreens: {
         name: string;
         iconName: string;
@@ -43,48 +43,45 @@ const Pages: React.FC = () => {
         );
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator screenOptions={screenOptions}>
-                {tabScreens.map((screen) => (
-                    <Tab.Screen
-                        key={screen.name}
-                        name={screen.name}
-                        options={{
-                            tabBarLabel: screen.name,
-                            tabBarIcon: ({ color, size }) => (
-                                <Icon
-                                    name={screen.iconName}
-                                    size={size}
-                                    color={color}
-                                />
-                            ),
-                            headerTitle: () => (
-                                <HeaderWithIcon
-                                    iconName={screen.iconName}
-                                    title={screen.title}
-                                />
-                            ),
-                        }}
-                    >
-                        {() => (
-                            <GameSection
-                                questGameListItems={getFilteredGames(
-                                    screen.gameStatus
-                                )}
+        <Tab.Navigator screenOptions={screenOptions}>
+            {tabScreens.map((screen) => (
+                <Tab.Screen
+                    key={screen.name}
+                    name={screen.name}
+                    options={{
+                        tabBarLabel: screen.name,
+                        tabBarIcon: ({ color, size }) => (
+                            <Icon
+                                name={screen.iconName}
+                                size={size}
+                                color={color}
                             />
-                        )}
-                    </Tab.Screen>
-                ))}
-            </Tab.Navigator>
-        </NavigationContainer>
+                        ),
+                        headerTitle: () => (
+                            <HeaderWithIcon
+                                iconName={screen.iconName}
+                                title={screen.title}
+                            />
+                        ),
+                    }}
+                >
+                    {() => (
+                        <GameSection
+                            questGameListItems={getFilteredGames(
+                                screen.gameStatus
+                            )}
+                        />
+                    )}
+                </Tab.Screen>
+            ))}
+        </Tab.Navigator>
     );
 };
 
 const tabBarStyle = {
     backgroundColor: colorSwatch.background.dark,
-    height: 70,
+    borderColor: colorSwatch.neutral.darkGray,
     borderTopWidth: 1,
-    borderColor: colorSwatch.neutral.black,
 };
 
 const headerStyle = {
@@ -95,7 +92,7 @@ const headerStyle = {
         width: 5,
         height: 8,
     },
-    shadowColor: colorSwatch.primary.dark,
+    shadowColor: colorSwatch.neutral.darkGray,
     shadowOpacity: 1,
     shadowRadius: 3.84,
     elevation: 20,
@@ -118,4 +115,4 @@ const screenOptions: BottomTabNavigationOptions = {
     headerStyle,
 };
 
-export default Pages;
+export default MainNavigationContainer;

@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import colorSwatch from "../Colors";
 import { QuestGameListItem } from "../interfaces/QuestGameListItem";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "../helpers/navigationTypes";
 
 interface GameItemProps {
     questGameListItem: QuestGameListItem;
@@ -10,6 +12,7 @@ interface GameItemProps {
 }
 
 const GameItem: React.FC<GameItemProps> = ({ questGameListItem, reorder }) => {
+    const navigation = useNavigation<ScreenNavigationProp>();
     const earliestReleaseDate = questGameListItem.release_dates
         ?.map((date) => date.date)
         .sort((a, b) => a - b)[0];
@@ -33,59 +36,72 @@ const GameItem: React.FC<GameItemProps> = ({ questGameListItem, reorder }) => {
                 </Pressable>
             )}
 
-            {questGameListItem.cover && questGameListItem.cover.url ? (
-                <Image
-                    source={{
-                        uri: `https:${questGameListItem.cover.url}`,
-                    }}
-                    style={styles.cover}
-                />
-            ) : (
-                <View style={styles.cover} />
-            )}
+            <Pressable
+                onPress={() =>
+                    navigation.navigate("QuestGameDetailPage", {
+                        name: questGameListItem.name,
+                    })
+                }
+                style={styles.pressableNavigation}
+            >
+                {questGameListItem.cover && questGameListItem.cover.url ? (
+                    <Image
+                        source={{
+                            uri: `https:${questGameListItem.cover.url}`,
+                        }}
+                        style={styles.cover}
+                    />
+                ) : (
+                    <View style={styles.cover} />
+                )}
 
-            <View style={styles.detailsContainer}>
                 <View>
-                    <Text style={styles.title}>{questGameListItem.name}</Text>
-                    {questGameListItem.gameStatus === "completed" &&
-                        questGameListItem.rating !== undefined && (
-                            <Text style={styles.rating}>
-                                {" "}
-                                {"⭐".repeat(
-                                    questGameListItem.personalRating ?? 0
-                                )}
-                                {"☆".repeat(
-                                    10 - (questGameListItem.personalRating ?? 0)
-                                )}{" "}
-                                ({questGameListItem.personalRating ?? 0}/10)
-                            </Text>
+                    <View>
+                        <Text style={styles.title}>
+                            {questGameListItem.name}
+                        </Text>
+                        {questGameListItem.gameStatus === "completed" &&
+                            questGameListItem.rating !== undefined && (
+                                <Text style={styles.rating}>
+                                    {" "}
+                                    {"⭐".repeat(
+                                        questGameListItem.personalRating ?? 0
+                                    )}
+                                    {"☆".repeat(
+                                        10 -
+                                            (questGameListItem.personalRating ??
+                                                0)
+                                    )}{" "}
+                                    ({questGameListItem.personalRating ?? 0}/10)
+                                </Text>
+                            )}
+                    </View>
+                    <View style={styles.detailsContainer}>
+                        <Text style={styles.textSecondary}>
+                            Date Added: {questGameListItem.dateAdded}
+                        </Text>
+                        <Text style={styles.textSecondary}>
+                            Genres:{" "}
+                            {questGameListItem.genres
+                                ?.map((genre) => genre.name)
+                                .join(", ")}
+                        </Text>
+                        <Text style={styles.textSecondary}>
+                            Release Date: {formattedReleaseDate}
+                        </Text>
+                        <Text style={styles.textSecondary}>
+                            Platform: {questGameListItem.platform}
+                        </Text>
+                        {questGameListItem.notes && (
+                            <View style={styles.quoteContainer}>
+                                <Text style={styles.quote}>
+                                    {questGameListItem.notes}
+                                </Text>
+                            </View>
                         )}
+                    </View>
                 </View>
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.textSecondary}>
-                        Date Added: {questGameListItem.dateAdded}
-                    </Text>
-                    <Text style={styles.textSecondary}>
-                        Genres:{" "}
-                        {questGameListItem.genres
-                            ?.map((genre) => genre.name)
-                            .join(", ")}
-                    </Text>
-                    <Text style={styles.textSecondary}>
-                        Release Date: {formattedReleaseDate}
-                    </Text>
-                    <Text style={styles.textSecondary}>
-                        Platform: {questGameListItem.platform}
-                    </Text>
-                    {questGameListItem.notes && (
-                        <View style={styles.quoteContainer}>
-                            <Text style={styles.quote}>
-                                {questGameListItem.notes}
-                            </Text>
-                        </View>
-                    )}
-                </View>
-            </View>
+            </Pressable>
         </View>
     );
 };
@@ -96,6 +112,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: colorSwatch.primary.dark,
         overflow: "hidden",
+        paddingVertical: 10,
         flex: 1,
     },
     priority: {
@@ -114,6 +131,9 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         color: colorSwatch.accent.green,
         alignSelf: "flex-start",
+    },
+    pressableNavigation: {
+        flexDirection: "row",
     },
     rating: {
         fontSize: 10,
