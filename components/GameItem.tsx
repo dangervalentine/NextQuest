@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import colorSwatch from "../Colors";
+import colorSwatch from "../helpers/colors";
 import { QuestGameListItem } from "../interfaces/QuestGameListItem";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";

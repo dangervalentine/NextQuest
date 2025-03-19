@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import React from "react";
-import colorSwatch from "./Colors";
+import colorSwatch from "./helpers/colors";
 import { StatusBar } from "expo-status-bar";
 import MainNavigationContainer from "./components/MainNavigationContainer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,7 +11,7 @@ import { RootStackParamList } from "./helpers/navigationTypes";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export default function App() {
+const App = () => {
     return (
         <SafeAreaProvider style={styles.rootScreen}>
             <StatusBar style="light" />
@@ -36,7 +36,7 @@ export default function App() {
             </NavigationContainer>
         </SafeAreaProvider>
     );
-}
+};
 
 const styles = StyleSheet.create({
     rootScreen: {
@@ -63,3 +63,5 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
 });
+
+export default App;

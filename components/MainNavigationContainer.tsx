@@ -1,9 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import GameSection from "./GameSection";
 import { questGames } from "../data/seedData";
-import colorSwatch from "../Colors";
+import colorSwatch from "../helpers/colors";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import HeaderWithIcon from "./HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";

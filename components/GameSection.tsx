@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import GameItem from "./GameItem";
 import { QuestGameListItem } from "../interfaces/QuestGameListItem";
-import colorSwatch from "../Colors";
+import colorSwatch from "../helpers/colors";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 
 interface GameSectionProps {

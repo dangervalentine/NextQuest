@@ -1,35 +1,18 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../helpers/navigationTypes";
-import colorSwatch from "../Colors"; // Import color swatch
+import { useRoute } from "@react-navigation/native";
+import { DetailsScreenRouteProp } from "../helpers/navigationTypes";
+import colorSwatch from "../helpers/colors";
 import { questGames } from "../data/seedData";
+// import { SUPER_SECRET } from "@env";
 
-// Define the type for a quest game (based on your properties)
-type QuestGame = {
-    name: string;
-    gameStatus: string; // or an enum like GameStatus if you have one
-    personalRating?: number;
-    completionDate?: string;
-    notes?: string;
-    dateAdded: string;
-    platform: string;
-    priority?: number;
-};
-
-type QuestGameDetailPageProps = {
-    route: RouteProp<RootStackParamList, "QuestGameDetailPage">;
-};
-
-const QuestGameDetailPage = ({ route }: QuestGameDetailPageProps) => {
-    // Get the name parameter from route.params
+const QuestGameDetailPage: React.FC = () => {
+    const route = useRoute<DetailsScreenRouteProp>();
     const { name } = route.params;
 
-    // Find the quest game that matches the name parameter
     const questGame = questGames.find((game) => game.name === name);
 
     if (!questGame) {
-        // If no matching game is found, render a message
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>Game not found</Text>
@@ -37,10 +20,9 @@ const QuestGameDetailPage = ({ route }: QuestGameDetailPageProps) => {
         );
     }
 
-    // Render the quest game details
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{questGame.name}</Text>
+            {/* <Text style={styles.title}>{SUPER_SECRET}</Text> */}
 
             <Text style={styles.label}>Status: </Text>
             <Text style={styles.detail}>{questGame.gameStatus}</Text>

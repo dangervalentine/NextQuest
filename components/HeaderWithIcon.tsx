@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colorSwatch from "../Colors";
+import colorSwatch from "../helpers/colors";
 
 interface HeaderWithIconProps {
     iconName: string;
