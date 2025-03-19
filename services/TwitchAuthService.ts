@@ -14,6 +14,7 @@ interface TwitchAuthResponse {
 class TwitchAuthService {
     private static API_URL = "https://id.twitch.tv/oauth2/token";
     private static ACCESS_TOKEN_KEY = "TWITCH_ACCESS_TOKEN";
+    private static EXPIRATION_TIME_KEY = "TWITCH_ACCESS_TOKEN_EXPIRATION";
 
     public static async fetchToken(): Promise<string | null> {
         const bodyData = new URLSearchParams({
@@ -40,10 +41,17 @@ class TwitchAuthService {
             const data: TwitchAuthResponse = await response.json();
             console.log("Twitch Token Response:", data);
 
+            const expirationTime = Date.now() + data.expires_in * 1000;
+
             await AsyncStorage.setItem(
                 this.ACCESS_TOKEN_KEY,
                 data.access_token
             );
+            await AsyncStorage.setItem(
+                this.EXPIRATION_TIME_KEY,
+                expirationTime.toString()
+            );
+
             return data.access_token;
         } catch (error) {
             console.error("Error fetching Twitch token:", error);
@@ -51,12 +59,19 @@ class TwitchAuthService {
         }
     }
 
-    public static async getToken(): Promise<string | null> {
+    public static async getValidToken(): Promise<string | null> {
         try {
             const token = await AsyncStorage.getItem(this.ACCESS_TOKEN_KEY);
+            const expirationTimeStr = await AsyncStorage.getItem(
+                this.EXPIRATION_TIME_KEY
+            );
 
-            if (token) {
-                return token;
+            if (token && expirationTimeStr) {
+                const expirationTime = parseInt(expirationTimeStr, 10);
+
+                if (Date.now() < expirationTime) {
+                    return token;
+                }
             }
 
             const newToken = await this.fetchToken();
@@ -70,6 +85,7 @@ class TwitchAuthService {
     public static async clearStoredToken(): Promise<void> {
         try {
             await AsyncStorage.removeItem(this.ACCESS_TOKEN_KEY);
+            await AsyncStorage.removeItem(this.EXPIRATION_TIME_KEY);
         } catch (error) {
             console.error("Error clearing Twitch token:", error);
         }
