@@ -6,6 +6,7 @@ import colorSwatch from "../helpers/colors";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import HeaderWithIcon from "./HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
+import { GameStatus } from "../data/types";
 
 const Tab = createBottomTabNavigator();
 

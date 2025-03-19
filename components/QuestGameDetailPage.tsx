@@ -1,154 +1,224 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    ScrollView,
+    Linking,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DetailsScreenRouteProp } from "../helpers/navigationTypes";
 import colorSwatch from "../helpers/colors";
 import IGDBService from "../services/IGDBService";
 import { GameDetails } from "../interfaces/GameDetails";
+import { QuestGame } from "../interfaces/QuestGame";
+import { getStatus } from "../helpers/dataMappers";
 
-const QuestGameDetailPage: React.FC = () => {
+const GameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
     const { id, name } = route.params;
-    const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
+    const [game, setGameDetails] = useState<QuestGame | null>(null);
 
     useEffect(() => {
         const loadGameDetails = async () => {
             const game: GameDetails | null = await IGDBService.fetchGameDetails(
                 id
             );
-
             setGameDetails(game);
         };
         loadGameDetails();
     }, [id]);
 
-    if (!gameDetails) {
+    if (!game) {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>{name}</Text>
-                <Text style={styles.detail}>Loading...</Text>
+                <Text style={styles.info}>Loading...</Text>
             </View>
         );
     }
 
-    if (gameDetails) {
-        return (
-            <ScrollView style={styles.container}>
-                <Text style={styles.title}>{gameDetails.name}</Text>
+    return (
+        <ScrollView style={styles.container}>
+            <Image
+                source={{ uri: `https:${game.cover_url}` }}
+                style={styles.cover}
+            />
 
-                <Text style={styles.label}>Summary: </Text>
-                <Text style={styles.detail}>{gameDetails.summary}</Text>
-
-                <Text style={styles.label}>Genres: </Text>
-                <Text style={styles.detail}>
-                    {gameDetails.genres.join(", ")}
+            <View style={styles.rowContainer}>
+                <Text style={styles.categoryTitle}>Genres:</Text>
+                <Text style={styles.categoryDetails}>
+                    {game.genres.join(", ")}
                 </Text>
-
-                <Text style={styles.label}>Platforms: </Text>
-                <Text style={styles.detail}>
-                    {gameDetails.platforms.join(", ")}
+            </View>
+            <View style={styles.rowContainer}>
+                <Text style={styles.categoryTitle}>Release Date:</Text>
+                <Text style={styles.categoryDetails}>{game.release_date}</Text>
+            </View>
+            <View style={styles.rowContainer}>
+                <Text style={styles.categoryTitle}>Age Rating:</Text>
+                <Text style={styles.categoryDetails}>{game.age_rating}</Text>
+            </View>
+            <View style={styles.rowContainer}>
+                <Text style={styles.categoryTitle}>Platforms:</Text>
+                <Text style={styles.categoryDetails}>
+                    {game.platforms.join(", ")}
                 </Text>
+            </View>
 
-                <Text style={styles.label}>Release Date: </Text>
-                <Text style={styles.detail}>
-                    {gameDetails.release_date || "N/A"}
-                </Text>
-
-                <Text style={styles.label}>Rating: </Text>
-                <Text style={styles.detail}>
-                    {Math.floor(gameDetails.rating) || "N/A"}
-                </Text>
-
-                <Text style={styles.label}>Aggregated Rating: </Text>
-                <Text style={styles.detail}>
-                    {gameDetails.aggregated_rating || "N/A"}
-                </Text>
-
-                <Text style={styles.label}>Storyline: </Text>
-                <Text style={styles.detail}>
-                    {gameDetails.storyline || "N/A"}
-                </Text>
-
-                {gameDetails.cover_url && (
-                    <>
-                        <Text style={styles.label}>Cover: </Text>
-                        <Image
-                            source={{ uri: `https:${gameDetails.cover_url}` }}
-                            style={styles.coverImage}
-                        />
-                    </>
-                )}
-
-                <Text style={styles.label}>Age Ratings: </Text>
-                <Text style={styles.detail}>
-                    {gameDetails.age_rating || "N/A"}
-                </Text>
-
-                <Text style={styles.label}>Involved Companies: </Text>
-                {gameDetails.involved_companies?.map((company: any) => (
-                    <Text
-                        key={company.name + Math.random()}
-                        style={styles.detail}
-                    >
-                        {company.name} (
-                        {company.developer ? "Developer" : "Publisher"})
+            {game.gameStatus && (
+                <View style={styles.rowContainer}>
+                    <Text style={styles.categoryTitle}>Status:</Text>
+                    <Text style={styles.categoryDetails}>
+                        {getStatus(game.gameStatus)}
                     </Text>
-                ))}
+                </View>
+            )}
 
-                <Text style={styles.label}>Screenshots: </Text>
-                {gameDetails.screenshots?.map((screenshot: any) => (
-                    <Image
-                        key={screenshot}
-                        source={{ uri: `https:${screenshot}` }}
-                        style={styles.screenshotImage}
-                    />
-                ))}
-
-                {/* <Text style={styles.label}>Videos: </Text>
-                {gameDetails.videos?.map((video: any) => (
-                    <Text key={video} style={styles.detail}>
-                        Video ID: {video}
+            {game.personalRating && (
+                <View style={styles.rowContainer}>
+                    <Text style={styles.categoryTitle}>Personal Rating:</Text>
+                    <Text style={styles.categoryDetails}>
+                        {game.personalRating ?? "N/A"}
                     </Text>
-                ))} */}
-            </ScrollView>
-        );
-    }
+                </View>
+            )}
+
+            {game.gameStatus === "completed" && (
+                <View style={styles.rowContainer}>
+                    <Text style={styles.categoryTitle}>Completion Date:</Text>
+                    <Text style={styles.categoryDetails}>
+                        {game.completionDate ?? "N/A"}
+                    </Text>
+                </View>
+            )}
+
+            {game.dateAdded && (
+                <View style={styles.rowContainer}>
+                    <Text style={styles.categoryTitle}>Date Added:</Text>
+                    <Text style={styles.categoryDetails}>{game.dateAdded}</Text>
+                </View>
+            )}
+
+            {game.gameStatus === "completed" && game.rating !== undefined && (
+                <View style={styles.personalNotes}>
+                    <Text style={styles.title}>Personal Notes:</Text>
+                    <Text style={styles.rating}>
+                        {" "}
+                        {"⭐".repeat(game.personalRating ?? 0)}
+                        {"☆".repeat(10 - (game.personalRating ?? 0))} (
+                        {game.personalRating ?? 0}/10)
+                    </Text>
+                    <Text style={styles.quote}>
+                        {game.notes ?? "No notes available"}
+                    </Text>
+                </View>
+            )}
+
+            <Text style={styles.sectionTitle}>Summary</Text>
+            <Text style={styles.text}>{game.summary}</Text>
+            <Text style={styles.sectionTitle}>Storyline</Text>
+            <Text style={styles.text}>{game.storyline}</Text>
+            <Text style={styles.sectionTitle}>Companies</Text>
+            {game.involved_companies.map((company, index) => (
+                <Text key={index} style={styles.info}>
+                    {company.role}: {company.name}
+                </Text>
+            ))}
+
+            {/* <Text style={styles.sectionTitle}>Screenshots</Text>
+            {game.screenshots.map((screenshot, index) => (
+                <Image
+                    key={index}
+                    source={{ uri: `https:${screenshot}` }}
+                    style={styles.screenshot}
+                />
+            ))} */}
+            <Text style={styles.sectionTitle}>Videos</Text>
+            {game.videos.map((video, index) => (
+                <Text
+                    key={index}
+                    style={styles.video}
+                    onPress={async () => {
+                        const supported = await Linking.canOpenURL(video.url);
+                        if (supported) {
+                            Linking.openURL(video.url);
+                        } else {
+                            console.error(`Cannot open URL: ${video.url}`);
+                        }
+                    }}
+                >
+                    {video.url}
+                </Text>
+            ))}
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 16,
+        padding: 20,
         backgroundColor: colorSwatch.background.dark,
+        flex: 1,
+    },
+    cover: {
+        width: "100%",
+        aspectRatio: 1 / 1.5,
+        resizeMode: "cover",
+        borderRadius: 5,
+        marginBottom: 20,
     },
     title: {
         fontSize: 24,
         fontWeight: "bold",
-        color: colorSwatch.text.primary,
-        marginBottom: 8,
+        marginBottom: 10,
+        color: colorSwatch.accent.green,
     },
-    label: {
-        fontSize: 16,
+    categoryTitle: { color: colorSwatch.accent.green, marginRight: 5 },
+    categoryDetails: {
+        color: colorSwatch.text.primary,
+        flexWrap: "wrap",
+        flex: 1,
+    },
+    rowContainer: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        marginBottom: 10,
+    },
+    info: { fontSize: 16, marginBottom: 5, color: colorSwatch.text.primary },
+    sectionTitle: {
+        fontSize: 20,
         fontWeight: "bold",
-        color: colorSwatch.text.secondary,
-        marginTop: 10,
+        marginTop: 15,
+        marginBottom: 5,
+        color: colorSwatch.primary.main,
     },
-    detail: {
-        fontSize: 16,
-        color: colorSwatch.text.primary,
+    text: { fontSize: 16, marginBottom: 10, color: colorSwatch.text.primary },
+    quote: {
+        fontStyle: "italic",
+        color: colorSwatch.secondary.main,
         marginBottom: 10,
     },
-    coverImage: {
-        width: 200,
-        height: 300,
-        marginTop: 10,
-        marginBottom: 10,
-    },
-    screenshotImage: {
+    screenshot: {
         width: "100%",
         height: 200,
+        resizeMode: "cover",
         marginBottom: 10,
+    },
+    video: { fontSize: 16, color: colorSwatch.text.primary, marginBottom: 10 },
+    rating: {
+        fontSize: 10,
+        marginBottom: 5,
+        color: colorSwatch.accent.purple,
+    },
+    personalNotes: {
+        marginVertical: 10,
+        borderColor: colorSwatch.primary.dark,
+        borderWidth: 1,
+        padding: 8,
+        borderRadius: 5,
     },
 });
 
-export default QuestGameDetailPage;
+export default GameDetailPage;

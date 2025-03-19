@@ -1,31 +1,32 @@
+import { GameStatus } from "./../data/types";
 import { ESRB_RATINGS } from "../data/types";
 import { GameDetails } from "../interfaces/GameDetails";
 
-export const mapToGameDetails = (data: any): GameDetails => {
-    function getAgeRatingForESRB(
-        ageRatings?: { category: number; rating: number }[]
-    ): string {
-        if (!Array.isArray(ageRatings)) {
-            console.warn("ageRatings is not an array:", ageRatings);
-            return "Unknown";
-        }
-
-        const ratingEntry = ageRatings.find((rating) => rating.category === 1);
-
-        if (!ratingEntry) {
-            console.warn("No ESRB rating found in:", ageRatings);
-            return "Unknown";
-        }
-
-        const esrbRating = ESRB_RATINGS[ratingEntry.rating];
-
-        if (!esrbRating) {
-            console.warn("Unknown ESRB rating code:", ratingEntry.rating);
-        }
-
-        return esrbRating ?? "Unknown";
+function getAgeRatingForESRB(
+    ageRatings?: { category: number; rating: number }[]
+): string {
+    if (!Array.isArray(ageRatings)) {
+        console.warn("ageRatings is not an array:", ageRatings);
+        return "Unknown";
     }
 
+    const ratingEntry = ageRatings.find((rating) => rating.category === 1);
+
+    if (!ratingEntry) {
+        console.warn("No ESRB rating found in:", ageRatings);
+        return "Unknown";
+    }
+
+    const esrbRating = ESRB_RATINGS[ratingEntry.rating];
+
+    if (!esrbRating) {
+        console.warn("Unknown ESRB rating code:", ratingEntry.rating);
+    }
+
+    return esrbRating ?? "Unknown";
+}
+
+export const mapToGameDetails = (data: any): GameDetails => {
     const gameDetails: GameDetails = {
         id: data.id,
         name: data.name,
@@ -38,7 +39,11 @@ export const mapToGameDetails = (data: any): GameDetails => {
         summary: data.summary || "",
         screenshots:
             data.screenshots?.map((screenshot: any) => screenshot.url) || [],
-        videos: data.videos?.map((video: any) => video.url) || [],
+        videos:
+            data.videos?.map((video: any) => ({
+                name: video.name,
+                url: `https://www.youtube.com/watch?v=${video.video_id}`,
+            })) || [],
         involved_companies:
             data.involved_companies?.map((company: any) => ({
                 name: company.company?.name || "",
@@ -59,7 +64,16 @@ export const mapToGameDetails = (data: any): GameDetails => {
         );
     }
 
-    console.log(gameDetails.genres);
-
     return gameDetails;
 };
+
+export function getStatus(gameStatus: GameStatus): string {
+    switch (gameStatus) {
+        case "completed":
+            return "Completed";
+        case "in_progress":
+            return "In Progress";
+        case "preperation":
+            return "Not Started";
+    }
+}

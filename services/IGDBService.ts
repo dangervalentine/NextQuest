@@ -1,13 +1,15 @@
+import { QuestGame } from "./../interfaces/QuestGame";
 import { TWITCH_CLIENT_ID } from "@env";
 import TwitchAuthService from "./TwitchAuthService";
 import { mapToGameDetails } from "../helpers/dataMappers";
 import { GameDetails } from "../interfaces/GameDetails";
+import { questGames } from "../data/seedData";
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4/games";
 
     public static async fetchGameDetails(
         id: number
-    ): Promise<GameDetails | null> {
+    ): Promise<QuestGame | null> {
         try {
             const token = await TwitchAuthService.getValidToken();
             if (!token) {
@@ -62,7 +64,20 @@ sort release_dates.date asc;
                 return null;
             }
 
-            return mapToGameDetails(gameData);
+            const gameDetails: GameDetails = mapToGameDetails(gameData);
+            const savedData = questGames.find((x) => x.id === gameDetails.id);
+
+            const questGame: QuestGame = {
+                ...gameDetails,
+                priority: savedData?.priority,
+                platform: savedData?.platform,
+                dateAdded: savedData?.dateAdded,
+                gameStatus: savedData?.gameStatus,
+                personalRating: savedData?.personalRating,
+                notes: savedData?.notes,
+            };
+
+            return questGame;
         } catch (error) {
             console.error("Error fetching game details:", error);
             return null;
