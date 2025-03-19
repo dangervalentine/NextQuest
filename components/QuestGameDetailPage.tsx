@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DetailsScreenRouteProp } from "../helpers/navigationTypes";
 import colorSwatch from "../helpers/colors";
 import { questGames } from "../data/seedData";
-// import { SUPER_SECRET } from "@env";
+import TwitchAuthService from "../services/TwitchAuthService";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
+    const [token, setToken] = useState<string | null>(null);
     const { name } = route.params;
 
     const questGame = questGames.find((game) => game.name === name);
@@ -20,9 +21,18 @@ const QuestGameDetailPage: React.FC = () => {
         );
     }
 
+    useEffect(() => {
+        const loadToken = async () => {
+            const accessToken = await TwitchAuthService.getToken();
+            setToken(accessToken);
+        };
+
+        loadToken();
+    }, []);
+
     return (
         <View style={styles.container}>
-            {/* <Text style={styles.title}>{SUPER_SECRET}</Text> */}
+            <Text style={styles.title}>{questGame.name}</Text>
 
             <Text style={styles.label}>Status: </Text>
             <Text style={styles.detail}>{questGame.gameStatus}</Text>
@@ -64,6 +74,10 @@ const QuestGameDetailPage: React.FC = () => {
                     <Text style={styles.detail}>{questGame.priority}</Text>
                 </>
             )}
+            <>
+                <Text style={styles.label}>Access Token: </Text>
+                <Text style={styles.detail}>{token}</Text>
+            </>
         </View>
     );
 };
