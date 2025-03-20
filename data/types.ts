@@ -1,3 +1,5 @@
+import colorSwatch from "../helpers/colors";
+
 export type GameStatus = "preperation" | "in_progress" | "completed";
 
 type AdditionalPages = "search";
@@ -14,3 +16,12 @@ export const ESRB_RATINGS: Record<number, string> = {
     11: "M",
     12: "AO",
 };
+
+export const COLOR_ARRAY = [
+    colorSwatch.secondary.main, // Vibrant Coral
+    colorSwatch.accent.cyan, // Bright Cyan
+    colorSwatch.accent.green, // Soft Green
+    colorSwatch.accent.purple, // Pastel Purple
+    colorSwatch.accent.pink, // Soft Red-Pink
+    colorSwatch.accent.yellow, // Warm Yellow
+];

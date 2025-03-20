@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import colorSwatch from "../helpers/colors";
 import { QuestGameListItem } from "../interfaces/QuestGameListItem";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "../helpers/navigationTypes";
+import { Image } from "expo-image";
 
 interface GameItemProps {
     questGameListItem: QuestGameListItem;
@@ -48,10 +49,11 @@ const GameItem: React.FC<GameItemProps> = ({ questGameListItem, reorder }) => {
             >
                 {questGameListItem.cover && questGameListItem.cover.url ? (
                     <Image
-                        source={{
-                            uri: `https:${questGameListItem.cover.url}`,
-                        }}
+                        source={`https:${questGameListItem.cover.url}`}
                         style={styles.cover}
+                        contentFit="cover"
+                        placeholder={require("../assets/placeholder.webp")}
+                        onError={() => console.error("Failed to load image")}
                     />
                 ) : (
                     <View style={styles.cover} />
@@ -147,6 +149,7 @@ const styles = StyleSheet.create({
         minWidth: 75,
         minHeight: 100,
         marginRight: 10,
+        resizeMode: "cover",
         backgroundColor: colorSwatch.neutral.gray,
     },
     textSecondary: {

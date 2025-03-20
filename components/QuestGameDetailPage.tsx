@@ -13,7 +13,8 @@ import colorSwatch from "../helpers/colors";
 import IGDBService from "../services/IGDBService";
 import { GameDetails } from "../interfaces/GameDetails";
 import { QuestGame } from "../interfaces/QuestGame";
-import { getStatus } from "../helpers/dataMappers";
+import { getGameStatus } from "../helpers/dataMappers";
+import ImageCarousel from "./ImageCarousel";
 
 const GameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
@@ -71,7 +72,7 @@ const GameDetailPage: React.FC = () => {
                 <View style={styles.rowContainer}>
                     <Text style={styles.categoryTitle}>Status:</Text>
                     <Text style={styles.categoryDetails}>
-                        {getStatus(game.gameStatus)}
+                        {getGameStatus(game.gameStatus)}
                     </Text>
                 </View>
             )}
@@ -116,49 +117,49 @@ const GameDetailPage: React.FC = () => {
                 </View>
             )}
 
-            <Text style={styles.sectionTitle}>Summary</Text>
-            <Text style={styles.text}>{game.summary}</Text>
-            <Text style={styles.sectionTitle}>Storyline</Text>
-            <Text style={styles.text}>{game.storyline}</Text>
-            <Text style={styles.sectionTitle}>Companies</Text>
+            <Text style={styles.sectionTitle}>Companies:</Text>
             {game.involved_companies.map((company, index) => (
                 <Text key={index} style={styles.info}>
                     {company.role}: {company.name}
                 </Text>
             ))}
 
-            {/* <Text style={styles.sectionTitle}>Screenshots</Text>
-            {game.screenshots.map((screenshot, index) => (
-                <Image
-                    key={index}
-                    source={{ uri: `https:${screenshot}` }}
-                    style={styles.screenshot}
-                />
-            ))} */}
-            <Text style={styles.sectionTitle}>Videos</Text>
+            <Text style={styles.sectionTitle}>Storyline:</Text>
+            <Text style={styles.text}>{game.storyline}</Text>
+
+            <Text style={styles.sectionTitle}>Screenshots:</Text>
+            <View style={{ marginBottom: 10 }}>
+                <ImageCarousel images={game.screenshots} />
+            </View>
+            {/* <Text style={styles.sectionTitle}>Videos:</Text>
             {game.videos.map((video, index) => (
                 <Text
-                    key={index}
-                    style={styles.video}
-                    onPress={async () => {
-                        const supported = await Linking.canOpenURL(video.url);
-                        if (supported) {
-                            Linking.openURL(video.url);
+                key={index}
+                style={styles.video}
+                onPress={async () => {
+                    const supported = await Linking.canOpenURL(video.url);
+                    if (supported) {
+                        Linking.openURL(video.url);
                         } else {
                             console.error(`Cannot open URL: ${video.url}`);
-                        }
+                    }
                     }}
-                >
-                    {video.url}
-                </Text>
-            ))}
+                    >
+                    {`Video ${index + 1}`}
+                    </Text>
+                    ))} */}
+            <Text style={styles.sectionTitle}>Summary:</Text>
+            <Text style={styles.text}>{game.summary}</Text>
+
+            <View style={styles.bottomClearance}></View>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    paddingContainer: {},
     container: {
-        padding: 20,
+        padding: 10,
         backgroundColor: colorSwatch.background.dark,
         flex: 1,
     },
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
         width: "100%",
         aspectRatio: 1 / 1.5,
         resizeMode: "cover",
-        borderRadius: 5,
+        borderRadius: 10,
         marginBottom: 20,
     },
     title: {
@@ -206,7 +207,11 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
         marginBottom: 10,
     },
-    video: { fontSize: 16, color: colorSwatch.text.primary, marginBottom: 10 },
+    video: {
+        fontSize: 16,
+        color: colorSwatch.text.primary,
+        flexDirection: "row",
+    },
     rating: {
         fontSize: 10,
         marginBottom: 5,
@@ -218,6 +223,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 8,
         borderRadius: 5,
+    },
+    bottomClearance: {
+        height: 60,
+        width: "80%",
+        borderBottomColor: colorSwatch.primary.dark,
+        borderBottomWidth: 1,
+        alignSelf: "center",
+        marginBottom: 20,
     },
 });
 

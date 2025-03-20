@@ -67,7 +67,7 @@ export const mapToGameDetails = (data: any): GameDetails => {
     return gameDetails;
 };
 
-export function getStatus(gameStatus: GameStatus): string {
+export function getGameStatus(gameStatus: GameStatus): string {
     switch (gameStatus) {
         case "completed":
             return "Completed";
