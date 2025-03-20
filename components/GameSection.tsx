@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { ImageBackground, StyleSheet, View } from "react-native";
 import GameItem from "./GameItem";
 import { QuestGameListItem } from "../interfaces/QuestGameListItem";
 import colorSwatch from "../helpers/colors";
@@ -43,14 +43,19 @@ const GameSection: React.FC<GameSectionProps> = ({ questGameListItems }) => {
     );
 
     return (
-        <View style={styles.pageContainer}>
+        <ImageBackground
+            source={require("../assets/quest-logger.webp")}
+            style={styles.pageContainer}
+            resizeMode="contain"
+        >
+            <View style={styles.overlay} />
             <DragList
                 data={data}
                 onReordered={onReordered}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
-        </View>
+        </ImageBackground>
     );
 };
 
@@ -58,6 +63,11 @@ const styles = StyleSheet.create({
     pageContainer: {
         flex: 1,
         backgroundColor: colorSwatch.background.dark,
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject, // Makes the overlay fill the entire ImageBackground
+        backgroundColor: colorSwatch.background.dark,
+        opacity: 0.99,
     },
     activeItem: {
         opacity: 0.3,

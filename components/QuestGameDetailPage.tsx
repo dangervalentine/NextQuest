@@ -1,12 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    ScrollView,
-    Linking,
-} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DetailsScreenRouteProp } from "../helpers/navigationTypes";
 import colorSwatch from "../helpers/colors";
@@ -15,11 +8,13 @@ import { GameDetails } from "../interfaces/GameDetails";
 import { QuestGame } from "../interfaces/QuestGame";
 import { getGameStatus } from "../helpers/dataMappers";
 import ImageCarousel from "./ImageCarousel";
+import { Image } from "expo-image";
 
 const GameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
     const { id, name } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         const loadGameDetails = async () => {
@@ -27,6 +22,12 @@ const GameDetailPage: React.FC = () => {
                 id
             );
             setGameDetails(game);
+
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
         };
         loadGameDetails();
     }, [id]);
@@ -34,104 +35,115 @@ const GameDetailPage: React.FC = () => {
     if (!game) {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>{name}</Text>
                 <Text style={styles.info}>Loading...</Text>
             </View>
         );
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <Image
-                source={{ uri: `https:${game.cover_url}` }}
-                style={styles.cover}
-            />
+        <View style={styles.container}>
+            <Animated.ScrollView style={[{ opacity: fadeAnim }]}>
+                <Image
+                    source={{ uri: `https:${game.cover_url}` }}
+                    style={styles.cover}
+                />
 
-            <View style={styles.rowContainer}>
-                <Text style={styles.categoryTitle}>Genres:</Text>
-                <Text style={styles.categoryDetails}>
-                    {game.genres.join(", ")}
-                </Text>
-            </View>
-            <View style={styles.rowContainer}>
-                <Text style={styles.categoryTitle}>Release Date:</Text>
-                <Text style={styles.categoryDetails}>{game.release_date}</Text>
-            </View>
-            <View style={styles.rowContainer}>
-                <Text style={styles.categoryTitle}>Age Rating:</Text>
-                <Text style={styles.categoryDetails}>{game.age_rating}</Text>
-            </View>
-            <View style={styles.rowContainer}>
-                <Text style={styles.categoryTitle}>Platforms:</Text>
-                <Text style={styles.categoryDetails}>
-                    {game.platforms.join(", ")}
-                </Text>
-            </View>
-
-            {game.gameStatus && (
                 <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Status:</Text>
+                    <Text style={styles.categoryTitle}>Genres:</Text>
                     <Text style={styles.categoryDetails}>
-                        {getGameStatus(game.gameStatus)}
+                        {game.genres.join(", ")}
                     </Text>
                 </View>
-            )}
-
-            {game.personalRating && (
                 <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Personal Rating:</Text>
+                    <Text style={styles.categoryTitle}>Release Date:</Text>
                     <Text style={styles.categoryDetails}>
-                        {game.personalRating ?? "N/A"}
+                        {game.release_date}
                     </Text>
                 </View>
-            )}
-
-            {game.gameStatus === "completed" && (
                 <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Completion Date:</Text>
+                    <Text style={styles.categoryTitle}>Age Rating:</Text>
                     <Text style={styles.categoryDetails}>
-                        {game.completionDate ?? "N/A"}
+                        {game.age_rating}
                     </Text>
                 </View>
-            )}
-
-            {game.dateAdded && (
                 <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Date Added:</Text>
-                    <Text style={styles.categoryDetails}>{game.dateAdded}</Text>
-                </View>
-            )}
-
-            {game.gameStatus === "completed" && game.rating !== undefined && (
-                <View style={styles.personalNotes}>
-                    <Text style={styles.title}>Personal Notes:</Text>
-                    <Text style={styles.rating}>
-                        {" "}
-                        {"⭐".repeat(game.personalRating ?? 0)}
-                        {"☆".repeat(10 - (game.personalRating ?? 0))} (
-                        {game.personalRating ?? 0}/10)
-                    </Text>
-                    <Text style={styles.quote}>
-                        {game.notes ?? "No notes available"}
+                    <Text style={styles.categoryTitle}>Platforms:</Text>
+                    <Text style={styles.categoryDetails}>
+                        {game.platforms.join(", ")}
                     </Text>
                 </View>
-            )}
 
-            <Text style={styles.sectionTitle}>Companies:</Text>
-            {game.involved_companies.map((company, index) => (
-                <Text key={index} style={styles.info}>
-                    {company.role}: {company.name}
-                </Text>
-            ))}
+                {game.gameStatus && (
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.categoryTitle}>Status:</Text>
+                        <Text style={styles.categoryDetails}>
+                            {getGameStatus(game.gameStatus)}
+                        </Text>
+                    </View>
+                )}
 
-            <Text style={styles.sectionTitle}>Storyline:</Text>
-            <Text style={styles.text}>{game.storyline}</Text>
+                {game.personalRating && (
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.categoryTitle}>
+                            Personal Rating:
+                        </Text>
+                        <Text style={styles.categoryDetails}>
+                            {game.personalRating ?? "N/A"}
+                        </Text>
+                    </View>
+                )}
 
-            <Text style={styles.sectionTitle}>Screenshots:</Text>
-            <View style={{ marginBottom: 10 }}>
-                <ImageCarousel images={game.screenshots} />
-            </View>
-            {/* <Text style={styles.sectionTitle}>Videos:</Text>
+                {game.gameStatus === "completed" && (
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.categoryTitle}>
+                            Completion Date:
+                        </Text>
+                        <Text style={styles.categoryDetails}>
+                            {game.completionDate ?? "N/A"}
+                        </Text>
+                    </View>
+                )}
+
+                {game.dateAdded && (
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.categoryTitle}>Date Added:</Text>
+                        <Text style={styles.categoryDetails}>
+                            {game.dateAdded}
+                        </Text>
+                    </View>
+                )}
+
+                {game.gameStatus === "completed" &&
+                    game.rating !== undefined && (
+                        <View style={styles.personalNotes}>
+                            <Text style={styles.title}>Personal Notes:</Text>
+                            <Text style={styles.rating}>
+                                {" "}
+                                {"⭐".repeat(game.personalRating ?? 0)}
+                                {"☆".repeat(10 - (game.personalRating ?? 0))} (
+                                {game.personalRating ?? 0}/10)
+                            </Text>
+                            <Text style={styles.quote}>
+                                {game.notes ?? "No notes available"}
+                            </Text>
+                        </View>
+                    )}
+
+                <Text style={styles.sectionTitle}>Companies:</Text>
+                {game.involved_companies.map((company, index) => (
+                    <Text key={index} style={styles.info}>
+                        {company.role}: {company.name}
+                    </Text>
+                ))}
+
+                <Text style={styles.sectionTitle}>Storyline:</Text>
+                <Text style={styles.text}>{game.storyline}</Text>
+
+                <Text style={styles.sectionTitle}>Screenshots:</Text>
+                <View style={{ marginBottom: 10 }}>
+                    <ImageCarousel images={game.screenshots} />
+                </View>
+                {/* <Text style={styles.sectionTitle}>Videos:</Text>
             {game.videos.map((video, index) => (
                 <Text
                 key={index}
@@ -148,16 +160,16 @@ const GameDetailPage: React.FC = () => {
                     {`Video ${index + 1}`}
                     </Text>
                     ))} */}
-            <Text style={styles.sectionTitle}>Summary:</Text>
-            <Text style={styles.text}>{game.summary}</Text>
+                <Text style={styles.sectionTitle}>Summary:</Text>
+                <Text style={styles.text}>{game.summary}</Text>
 
-            <View style={styles.bottomClearance}></View>
-        </ScrollView>
+                <View style={styles.bottomClearance}></View>
+            </Animated.ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    paddingContainer: {},
     container: {
         padding: 10,
         backgroundColor: colorSwatch.background.dark,
