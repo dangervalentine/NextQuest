@@ -1,25 +1,25 @@
 import React, { useState, useCallback } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import GameItem from "./GameItem";
-import { QuestGameListItem } from "../interfaces/QuestGameListItem";
-import colorSwatch from "../helpers/colors";
+import { QuestGame } from "../interfaces/QuestGame";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
+import colorSwatch from "../utils/colors";
 
 interface GameSectionProps {
-    questGameListItems: QuestGameListItem[];
+    QuestGames: QuestGame[];
 }
 
-const GameSection: React.FC<GameSectionProps> = ({ questGameListItems }) => {
-    const [data, setData] = useState(questGameListItems);
+const GameSection: React.FC<GameSectionProps> = ({ QuestGames }) => {
+    const [data, setData] = useState(QuestGames);
 
     const renderItem = useCallback(
         ({
             item,
             onDragStart,
             isActive,
-        }: DragListRenderItemInfo<QuestGameListItem>) => (
+        }: DragListRenderItemInfo<QuestGame>) => (
             <View style={isActive ? styles.activeItem : null}>
-                <GameItem questGameListItem={item} reorder={onDragStart} />
+                <GameItem questGame={item} reorder={onDragStart} />
             </View>
         ),
         []

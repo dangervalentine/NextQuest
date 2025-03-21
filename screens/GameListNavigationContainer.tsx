@@ -1,17 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import GameSection from "./GameSection";
-import colorSwatch from "../helpers/colors";
+import GameSection from "../components/GameSection";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
-import HeaderWithIcon from "./HeaderWithIcon";
+import HeaderWithIcon from "../components/HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { GameStatus } from "../data/types";
-import { QuestGameListItem } from "../interfaces/QuestGameListItem";
+import { QuestGame } from "../interfaces/QuestGame";
+import colorSwatch from "../utils/colors";
 const gamesData = require("../data/seedData.json");
 
 const Tab = createBottomTabNavigator();
 
-const questGames: QuestGameListItem[] = gamesData;
+const questGames: QuestGame[] = gamesData;
 
 const MainNavigationContainer: React.FC = () => {
     const tabScreens: {
@@ -41,9 +41,7 @@ const MainNavigationContainer: React.FC = () => {
     ];
 
     const getFilteredGames = (gameStatus: GameStatus) =>
-        questGames.filter(
-            (questGameListItem) => questGameListItem.gameStatus === gameStatus
-        );
+        questGames.filter((QuestGame) => QuestGame.gameStatus === gameStatus);
 
     return (
         <Tab.Navigator screenOptions={screenOptions}>
@@ -70,9 +68,7 @@ const MainNavigationContainer: React.FC = () => {
                 >
                     {() => (
                         <GameSection
-                            questGameListItems={getFilteredGames(
-                                screen.gameStatus
-                            )}
+                            QuestGames={getFilteredGames(screen.gameStatus)}
                         />
                     )}
                 </Tab.Screen>

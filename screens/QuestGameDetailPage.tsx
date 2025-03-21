@@ -1,14 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { DetailsScreenRouteProp } from "../helpers/navigationTypes";
-import colorSwatch from "../helpers/colors";
+import { DetailsScreenRouteProp } from "../utils/navigationTypes";
+import colorSwatch from "../utils/colors";
 import IGDBService from "../services/IGDBService";
-import { GameDetails } from "../interfaces/GameDetails";
 import { QuestGame } from "../interfaces/QuestGame";
-import { getGameStatus } from "../helpers/dataMappers";
-import ImageCarousel from "./ImageCarousel";
+import { getGameStatus, formatReleaseDates } from "../utils/dataMappers";
+import ImageCarousel from "../components/ImageCarousel";
 import { Image } from "expo-image";
+import { GameDetails } from "../interfaces/GameDetails";
+
+function getPlatformNameForReleaseDate(
+    game: GameDetails,
+    releaseDate: GameDetails["release_dates"][0]
+): string {
+    const platform = game.platforms.find((p) => p.id === releaseDate.platform);
+    return platform?.name ?? "Unknown Platform";
+}
 
 const GameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
@@ -44,32 +52,44 @@ const GameDetailPage: React.FC = () => {
         <View style={styles.container}>
             <Animated.ScrollView style={[{ opacity: fadeAnim }]}>
                 <Image
-                    source={{ uri: `https:${game.cover_url}` }}
-                    style={styles.cover}
+                    source={{ uri: `https:${game.cover}` }}
+                    style={styles.coverImage}
+                    contentFit="cover"
+                    transition={200}
                 />
 
                 <View style={styles.rowContainer}>
                     <Text style={styles.categoryTitle}>Genres:</Text>
                     <Text style={styles.categoryDetails}>
-                        {game.genres.join(", ")}
+                        {game.genres.map((genre) => genre.name).join(", ")}
                     </Text>
                 </View>
                 <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Release Date:</Text>
+                    <Text style={styles.categoryTitle}>Platforms:</Text>
                     <Text style={styles.categoryDetails}>
-                        {game.release_date}
+                        {game.platforms
+                            ?.map((p) => {
+                                const releaseDate = game.release_dates.find(
+                                    (rd) => rd.platform === p.id
+                                );
+                                return {
+                                    name: p.name,
+                                    date: releaseDate?.date || Infinity,
+                                    human: releaseDate?.human || "",
+                                };
+                            })
+                            .sort((a, b) => a.date - b.date)
+                            .map(
+                                (p) =>
+                                    `${p.name}${p.human ? ` (${p.human})` : ""}`
+                            )
+                            .join(",\n ") ?? "N/A"}
                     </Text>
                 </View>
                 <View style={styles.rowContainer}>
                     <Text style={styles.categoryTitle}>Age Rating:</Text>
                     <Text style={styles.categoryDetails}>
                         {game.age_rating}
-                    </Text>
-                </View>
-                <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Platforms:</Text>
-                    <Text style={styles.categoryDetails}>
-                        {game.platforms.join(", ")}
                     </Text>
                 </View>
 
@@ -130,7 +150,7 @@ const GameDetailPage: React.FC = () => {
                     )}
 
                 <Text style={styles.sectionTitle}>Companies:</Text>
-                {game.involved_companies.map((company, index) => (
+                {game.involved_companies?.map((company, index) => (
                     <Text key={index} style={styles.info}>
                         {company.role}: {company.name}
                     </Text>
@@ -141,7 +161,7 @@ const GameDetailPage: React.FC = () => {
 
                 <Text style={styles.sectionTitle}>Screenshots:</Text>
                 <View style={{ marginBottom: 10 }}>
-                    <ImageCarousel images={game.screenshots} />
+                    <ImageCarousel images={game.screenshots ?? []} />
                 </View>
                 {/* <Text style={styles.sectionTitle}>Videos:</Text>
             {game.videos.map((video, index) => (
@@ -175,7 +195,7 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.dark,
         flex: 1,
     },
-    cover: {
+    coverImage: {
         width: "100%",
         aspectRatio: 1 / 1.5,
         resizeMode: "cover",

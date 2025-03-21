@@ -1,125 +1,152 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import colorSwatch from "../helpers/colors";
-import { QuestGameListItem } from "../interfaces/QuestGameListItem";
+import { QuestGame } from "../interfaces/QuestGame";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
-import { ScreenNavigationProp } from "../helpers/navigationTypes";
 import { Image } from "expo-image";
+import colorSwatch from "../utils/colors";
+import { ScreenNavigationProp } from "../utils/navigationTypes";
+import { formatReleaseDate } from "../utils/dateFormatters";
+import platforms from "../data/platforms.json";
 
 interface GameItemProps {
-    questGameListItem: QuestGameListItem;
+    questGame: QuestGame;
     reorder?: () => void;
 }
 
-const GameItem: React.FC<GameItemProps> = ({ questGameListItem, reorder }) => {
-    const navigation = useNavigation<ScreenNavigationProp>();
-    const earliestReleaseDate = questGameListItem.release_dates
-        ?.map((date) => date.date)
-        .sort((a, b) => a - b)[0];
+const GameItem: React.FC<GameItemProps> = memo(
+    ({ questGame: QuestGame, reorder }) => {
+        const navigation = useNavigation<ScreenNavigationProp>();
 
-    const formattedReleaseDate = earliestReleaseDate
-        ? new Date(earliestReleaseDate * 1000).toLocaleDateString()
-        : "No release date available";
+        const platformReleaseDate = useMemo(
+            () =>
+                QuestGame.release_dates.find((date) => {
+                    if (!date.platform) {
+                        return false;
+                    }
 
-    return (
-        <View style={styles.gameContainer}>
-            {questGameListItem.priority && (
-                <Pressable onTouchStart={reorder} style={styles.dragHandle}>
-                    <Icon
-                        name="menu"
-                        size={24}
-                        color={colorSwatch.primary.dark}
-                    />
-                    <Text style={{ color: colorSwatch.primary.dark }}>
-                        {questGameListItem.priority}
-                    </Text>
-                </Pressable>
-            )}
+                    const platformKey = date.platform.toString();
+                    try {
+                        return (
+                            platformKey === QuestGame.platform?.id.toString()
+                        );
+                    } catch (error) {
+                        console.error("Error accessing platform:", error);
+                        return false;
+                    }
+                }),
+            [QuestGame.release_dates, QuestGame.platform?.id]
+        );
 
-            <Pressable
-                onPress={() =>
-                    navigation.navigate("QuestGameDetailPage", {
-                        name: questGameListItem.name,
-                        id: questGameListItem.id,
-                    })
-                }
-                style={styles.pressableNavigation}
-                android_ripple={{ color: colorSwatch.primary.dark }}
-            >
-                {questGameListItem.cover && questGameListItem.cover.url ? (
-                    <Image
-                        source={`https:${questGameListItem.cover.url}`}
-                        style={styles.cover}
-                        contentFit="cover"
-                        placeholder={require("../assets/placeholder.webp")}
-                        onError={() => console.error("Failed to load image")}
-                    />
-                ) : (
-                    <View style={styles.cover} />
-                )}
+        const handlePress = useMemo(
+            () => () =>
+                navigation.navigate("QuestGameDetailPage", {
+                    id: QuestGame.id,
+                    name: QuestGame.name,
+                }),
+            [navigation, QuestGame.id, QuestGame.name]
+        );
 
-                <View>
+        const genresText = useMemo(
+            () => QuestGame.genres?.map((genre) => genre.name).join(", "),
+            [QuestGame.genres]
+        );
+
+        return (
+            <View style={styles.gameContainer}>
+                <Pressable
+                    onPress={handlePress}
+                    style={styles.pressableNavigation}
+                    android_ripple={{ color: colorSwatch.primary.dark }}
+                >
+                    {QuestGame.cover && QuestGame.cover.url ? (
+                        <Image
+                            source={`https:${QuestGame.cover.url}`}
+                            style={styles.cover}
+                            contentFit="cover"
+                            placeholder={require("../assets/placeholder.webp")}
+                            onError={() =>
+                                console.error("Failed to load image")
+                            }
+                        />
+                    ) : (
+                        <View style={styles.cover} />
+                    )}
+
                     <View>
-                        <Text style={styles.title}>
-                            {questGameListItem.name}
-                        </Text>
-                        {questGameListItem.gameStatus === "completed" &&
-                            questGameListItem.rating !== undefined && (
-                                <Text style={styles.rating}>
-                                    {" "}
-                                    {"⭐".repeat(
-                                        questGameListItem.personalRating ?? 0
+                        <View>
+                            <Text style={styles.title}>{QuestGame.name}</Text>
+                            {QuestGame.gameStatus === "completed" &&
+                                QuestGame.rating !== undefined && (
+                                    <Text style={styles.rating}>
+                                        {" "}
+                                        {"⭐".repeat(
+                                            QuestGame.personalRating ?? 0
+                                        )}
+                                        {"☆".repeat(
+                                            10 - (QuestGame.personalRating ?? 0)
+                                        )}{" "}
+                                        ({QuestGame.personalRating ?? 0}/10)
+                                    </Text>
+                                )}
+                        </View>
+                        <View style={styles.detailsContainer}>
+                            <Text style={styles.textSecondary}>
+                                Platform: {QuestGame.platform?.name}
+                            </Text>
+                            {QuestGame.notes && (
+                                <View style={styles.quoteContainer}>
+                                    <Text style={styles.quote}>
+                                        {QuestGame.notes}
+                                    </Text>
+                                </View>
+                            )}
+                            {platformReleaseDate && (
+                                <Text style={styles.textSecondary}>
+                                    Release Date:{" "}
+                                    {formatReleaseDate(
+                                        platformReleaseDate.date
                                     )}
-                                    {"☆".repeat(
-                                        10 -
-                                            (questGameListItem.personalRating ??
-                                                0)
-                                    )}{" "}
-                                    ({questGameListItem.personalRating ?? 0}/10)
                                 </Text>
                             )}
+                            <Text style={styles.textSecondary}>
+                                Genres: {genresText}
+                            </Text>
+                            <Text style={styles.textSecondary}>
+                                Date Added: {QuestGame.dateAdded}
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.detailsContainer}>
-                        <Text style={styles.textSecondary}>
-                            Date Added: {questGameListItem.dateAdded}
+                </Pressable>
+                {QuestGame.priority && (
+                    <Pressable onTouchStart={reorder} style={styles.dragHandle}>
+                        <Text style={{ color: colorSwatch.primary.dark }}>
+                            {QuestGame.priority}
                         </Text>
-                        <Text style={styles.textSecondary}>
-                            Genres:{" "}
-                            {questGameListItem.genres
-                                ?.map((genre) => genre.name)
-                                .join(", ")}
-                        </Text>
-                        <Text style={styles.textSecondary}>
-                            Release Date: {formattedReleaseDate}
-                        </Text>
-                        <Text style={styles.textSecondary}>
-                            Platform: {questGameListItem.platform}
-                        </Text>
-                        {questGameListItem.notes && (
-                            <View style={styles.quoteContainer}>
-                                <Text style={styles.quote}>
-                                    {questGameListItem.notes}
-                                </Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
-            </Pressable>
-        </View>
-    );
-};
+                        <Icon
+                            name="menu"
+                            size={24}
+                            color={colorSwatch.primary.dark}
+                        />
+                    </Pressable>
+                )}
+            </View>
+        );
+    },
+    (prevProps, nextProps) => {
+        return prevProps.questGame.priority === nextProps.questGame.priority;
+    }
+);
 
 const styles = StyleSheet.create({
     gameContainer: {
         flexDirection: "row",
         borderBottomWidth: 1,
         borderColor: colorSwatch.primary.dark,
-        overflow: "hidden",
         flex: 1,
     },
     priority: {
-        fontSize: 20,
+        fontSize: 12,
         color: colorSwatch.accent.green,
         alignSelf: "center",
         marginHorizontal: 10,
@@ -128,12 +155,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         paddingHorizontal: 10,
+        backgroundColor: colorSwatch.background.dark,
     },
     title: {
         fontSize: 16,
         marginBottom: 5,
         color: colorSwatch.accent.green,
-        alignSelf: "flex-start",
+        flexWrap: "wrap",
+        maxWidth: "100%",
     },
     pressableNavigation: {
         flexDirection: "row",

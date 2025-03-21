@@ -18,52 +18,66 @@
             }
         ],
         "name": "Legacy of Kain: Soul Reaver",
-        "platform": "PlayStation",
+        "platform": {
+            "id": 7,
+            "name": "PlayStation"
+        },
         "rating": 80.25547981392299,
         "release_dates": [
             {
                 "id": 23341,
-                "date": 936748800
+                "date": 936748800,
+                "platform": 6
             },
             {
                 "id": 23342,
-                "date": 934761600
+                "date": 934761600,
+                "platform": 7
             },
             {
                 "id": 197700,
-                "date": 1258588800
+                "date": 1258588800,
+                "platform": 38
             },
             {
                 "id": 197701,
-                "date": 1299024000
+                "date": 1299024000,
+                "platform": 38
             },
             {
                 "id": 197699,
-                "date": 1299024000
+                "date": 1299024000,
+                "platform": 9
             },
             {
                 "id": 197698,
-                "date": 1258588800
+                "date": 1258588800,
+                "platform": 9
             },
             {
                 "id": 23340,
-                "date": 1169856000
+                "date": 1169856000,
+                "platform": 23
             },
             {
                 "id": 23345,
-                "date": 978220800
+                "date": 978220800,
+                "platform": 23
             },
             {
                 "id": 23343,
-                "date": 946598400
+                "date": 946598400,
+                "platform": 7
             },
             {
                 "id": 23344,
-                "date": 946598400
+                "date": 946598400,
+                "platform": 6
             },
             {
                 "id": 23348,
-                "date": 1354752000
+                "date": 1354752000,
+                "platform": 6
             }
         ]
     },
@@ -94,40 +108,51 @@
             }
         ],
         "name": "Outer Wilds",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 90.750318694499,
         "release_dates": [
             {
                 "id": 376404,
-                "date": 1663200000
+                "date": 1663200000,
+                "platform": 169
             },
             {
                 "id": 207369,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 48
             },
             {
                 "id": 207370,
-                "date": 1559001600
+                "date": 1559001600,
+                "platform": 6
             },
             {
                 "id": 536384,
-                "date": 1701907200
+                "date": 1701907200,
+                "platform": 130
             },
             {
                 "id": 536749,
-                "date": 1702339200
+                "date": 1702339200,
+                "platform": 130
             },
             {
                 "id": 376405,
-                "date": 1663200000
+                "date": 1663200000,
+                "platform": 167
             },
             {
                 "id": 301062,
-                "date": 1592438400
+                "date": 1592438400,
+                "platform": 6
             },
             {
                 "id": 207368,
-                "date": 1559088000
+                "date": 1559088000,
+                "platform": 49
             }
         ]
     },
@@ -154,20 +179,26 @@
             }
         ],
         "name": "Castlevania: Harmony of Dissonance",
-        "platform": "Game Boy Advance",
+        "platform": {
+            "id": 24,
+            "name": "Game Boy Advance"
+        },
         "rating": 74.87754202512723,
         "release_dates": [
             {
                 "id": 138217,
-                "date": 1424304000
+                "date": 1424304000,
+                "platform": 41
             },
             {
                 "id": 138216,
-                "date": 1413417600
+                "date": 1413417600,
+                "platform": 41
             },
             {
                 "id": 2860,
-                "date": 1023321600
+                "date": 1023321600,
+                "platform": 24
             }
         ]
     },
@@ -186,32 +217,41 @@
             }
         ],
         "name": "Baldur's Gate II: Shadows of Amn",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 89.88479085449315,
         "release_dates": [
             {
                 "id": 647494,
-                "date": 1413244800
+                "date": 1413244800,
+                "platform": 3
             },
             {
                 "id": 647495,
-                "date": 1003104000
+                "date": 1003104000,
+                "platform": 14
             },
             {
                 "id": 647496,
-                "date": 1003104000
+                "date": 1003104000,
+                "platform": 14
             },
             {
                 "id": 647497,
-                "date": 970185600
+                "date": 970185600,
+                "platform": 6
             },
             {
                 "id": 647498,
-                "date": 969494400
+                "date": 969494400,
+                "platform": 6
             },
             {
                 "id": 647499,
-                "date": 994377600
+                "date": 994377600,
+                "platform": 6
             }
         ],
         "priority": 1
@@ -239,20 +279,26 @@
             }
         ],
         "name": "Castlevania: Aria of Sorrow",
-        "platform": "Game Boy Advance",
+        "platform": {
+            "id": 24,
+            "name": "Game Boy Advance"
+        },
         "rating": 88.40502660459595,
         "release_dates": [
             {
                 "id": 138208,
-                "date": 1426723200
+                "date": 1426723200,
+                "platform": 41
             },
             {
                 "id": 138207,
-                "date": 1414022400
+                "date": 1414022400,
+                "platform": 41
             },
             {
                 "id": 2861,
-                "date": 1052179200
+                "date": 1052179200,
+                "platform": 24
             }
         ],
         "priority": 2
@@ -276,24 +322,31 @@
             }
         ],
         "name": "Dragon Quest VII: Fragments of the Forgotten Past",
-        "platform": "Nintendo 3DS",
+        "platform": {
+            "id": 37,
+            "name": "Nintendo 3DS"
+        },
         "rating": 79.86202985433847,
         "release_dates": [
             {
                 "id": 366995,
-                "date": 1473984000
+                "date": 1473984000,
+                "platform": 37
             },
             {
                 "id": 366996,
-                "date": 1473984000
+                "date": 1473984000,
+                "platform": 37
             },
             {
                 "id": 57723,
-                "date": 1474070400
+                "date": 1474070400,
+                "platform": 37
             },
             {
                 "id": 57720,
-                "date": 1360195200
+                "date": 1360195200,
+                "platform": 37
             }
         ],
         "priority": 3
@@ -321,24 +374,31 @@
             }
         ],
         "name": "Dragon Quest VIII: Journey of the Cursed King",
-        "platform": "Nintendo 3DS",
+        "platform": {
+            "id": 37,
+            "name": "Nintendo 3DS"
+        },
         "rating": 97.59981998116706,
         "release_dates": [
             {
                 "id": 249228,
-                "date": 1484784000
+                "date": 1484784000,
+                "platform": 37
             },
             {
                 "id": 366997,
-                "date": 1440633600
+                "date": 1440633600,
+                "platform": 37
             },
             {
                 "id": 237495,
-                "date": 1484956800
+                "date": 1484956800,
+                "platform": 37
             },
             {
                 "id": 237494,
-                "date": 1484870400
+                "date": 1484870400,
+                "platform": 37
             }
         ],
         "priority": 4
@@ -366,28 +426,36 @@
             }
         ],
         "name": "Like a Dragon: Infinite Wealth",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.41520644163845,
         "release_dates": [
             {
                 "id": 517413,
-                "date": 1706227200
+                "date": 1706227200,
+                "platform": 49
             },
             {
                 "id": 517410,
-                "date": 1706227200
+                "date": 1706227200,
+                "platform": 6
             },
             {
                 "id": 517411,
-                "date": 1706227200
+                "date": 1706227200,
+                "platform": 48
             },
             {
                 "id": 517414,
-                "date": 1706227200
+                "date": 1706227200,
+                "platform": 169
             },
             {
                 "id": 517412,
-                "date": 1706227200
+                "date": 1706227200,
+                "platform": 167
             }
         ],
         "priority": 5
@@ -415,44 +483,56 @@
             }
         ],
         "name": "Metroid: Zero Mission",
-        "platform": "Game Boy Advance",
+        "platform": {
+            "id": 24,
+            "name": "Game Boy Advance"
+        },
         "rating": 85.95291900533473,
         "release_dates": [
             {
                 "id": 44193,
-                "date": 1081382400
+                "date": 1081382400,
+                "platform": 24
             },
             {
                 "id": 110344,
-                "date": 1452729600
+                "date": 1452729600,
+                "platform": 41
             },
             {
                 "id": 110342,
-                "date": 1079654400
+                "date": 1079654400,
+                "platform": 24
             },
             {
                 "id": 44192,
-                "date": 1076284800
+                "date": 1076284800,
+                "platform": 24
             },
             {
                 "id": 110346,
-                "date": 1426118400
+                "date": 1426118400,
+                "platform": 41
             },
             {
                 "id": 141355,
-                "date": 1428796800
+                "date": 1428796800,
+                "platform": 41
             },
             {
                 "id": 110343,
-                "date": 1403136000
+                "date": 1403136000,
+                "platform": 41
             },
             {
                 "id": 501898,
-                "date": 1118793600
+                "date": 1118793600,
+                "platform": 24
             },
             {
                 "id": 44194,
-                "date": 1085616000
+                "date": 1085616000,
+                "platform": 24
             }
         ],
         "priority": 6
@@ -480,24 +560,31 @@
             }
         ],
         "name": "Pokémon Emerald Version",
-        "platform": "Game Boy Advance",
+        "platform": {
+            "id": 24,
+            "name": "Game Boy Advance"
+        },
         "rating": 86.13380033074735,
         "release_dates": [
             {
                 "id": 48569,
-                "date": 1118275200
+                "date": 1118275200,
+                "platform": 24
             },
             {
                 "id": 48570,
-                "date": 1129852800
+                "date": 1129852800,
+                "platform": 24
             },
             {
                 "id": 48568,
-                "date": 1114905600
+                "date": 1114905600,
+                "platform": 24
             },
             {
                 "id": 48571,
-                "date": 1095292800
+                "date": 1095292800,
+                "platform": 24
             }
         ],
         "priority": 7
@@ -517,24 +604,31 @@
             }
         ],
         "name": "Sekiro: Shadows Die Twice",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 91.38329516867239,
         "release_dates": [
             {
                 "id": 157282,
-                "date": 1553212800
+                "date": 1553212800,
+                "platform": 49
             },
             {
                 "id": 157283,
-                "date": 1553212800
+                "date": 1553212800,
+                "platform": 48
             },
             {
                 "id": 239669,
-                "date": 1603843200
+                "date": 1603843200,
+                "platform": 170
             },
             {
                 "id": 157284,
-                "date": 1553212800
+                "date": 1553212800,
+                "platform": 6
             }
         ],
         "priority": 8
@@ -558,20 +652,26 @@
             }
         ],
         "name": "Split Fiction",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 98.23957521378026,
         "release_dates": [
             {
                 "id": 676367,
-                "date": 1741219200
+                "date": 1741219200,
+                "platform": 6
             },
             {
                 "id": 676414,
-                "date": 1741219200
+                "date": 1741219200,
+                "platform": 167
             },
             {
                 "id": 676415,
-                "date": 1741219200
+                "date": 1741219200,
+                "platform": 169
             }
         ],
         "priority": 9
@@ -599,68 +699,83 @@
             }
         ],
         "name": "Super Metroid",
-        "platform": "Super Nintendo",
+        "platform": null,
         "rating": 92.90767314788532,
         "release_dates": [
             {
                 "id": 548650,
-                "date": 775699200
+                "date": 775699200,
+                "platform": 19
             },
             {
                 "id": 514935,
-                "date": 766627200
+                "date": 766627200,
+                "platform": 19
             },
             {
                 "id": 514936,
-                "date": 775353600
+                "date": 775353600,
+                "platform": 19
             },
             {
                 "id": 514938,
-                "date": 1187568000
+                "date": 1187568000,
+                "platform": 5
             },
             {
                 "id": 514939,
-                "date": 1190246400
+                "date": 1190246400,
+                "platform": 5
             },
             {
                 "id": 514940,
-                "date": 1209168000
+                "date": 1209168000,
+                "platform": 5
             },
             {
                 "id": 514941,
-                "date": 1192147200
+                "date": 1192147200,
+                "platform": 5
             },
             {
                 "id": 514942,
-                "date": 1192147200
+                "date": 1192147200,
+                "platform": 5
             },
             {
                 "id": 514943,
-                "date": 1368662400
+                "date": 1368662400,
+                "platform": 41
             },
             {
                 "id": 514944,
-                "date": 1368576000
+                "date": 1368576000,
+                "platform": 41
             },
             {
                 "id": 591945,
-                "date": 1460592000
+                "date": 1460592000,
+                "platform": 137
             },
             {
                 "id": 592832,
-                "date": 851990400
+                "date": 851990400,
+                "platform": 19
             },
             {
                 "id": 592833,
-                "date": 878342400
+                "date": 878342400,
+                "platform": 19
             },
             {
                 "id": 514945,
-                "date": 1368576000
+                "date": 1368576000,
+                "platform": 41
             },
             {
                 "id": 514946,
-                "date": 764035200
+                "date": 764035200,
+                "platform": 58
             }
         ],
         "priority": 10
@@ -688,51 +803,65 @@
             }
         ],
         "name": "The Legend of Zelda: The Minish Cap",
-        "platform": "Game Boy Advance",
+        "platform": {
+            "id": 24,
+            "name": "Game Boy Advance"
+        },
         "rating": 84.54129085334854,
         "release_dates": [
             {
-                "id": 496338
+                "id": 496338,
+                "platform": 24
             },
             {
                 "id": 528974,
-                "date": 1099526400
+                "date": 1099526400,
+                "platform": 24
             },
             {
                 "id": 528976,
-                "date": 1100217600
+                "date": 1100217600,
+                "platform": 24
             },
             {
                 "id": 528977,
-                "date": 1105315200
+                "date": 1105315200,
+                "platform": 24
             },
             {
                 "id": 528975,
-                "date": 1112832000
+                "date": 1112832000,
+                "platform": 24
             },
             {
                 "id": 528978,
-                "date": 1323993600
+                "date": 1323993600,
+                "platform": 37
             },
             {
                 "id": 528979,
-                "date": 1323993600
+                "date": 1323993600,
+                "platform": 37
             },
             {
                 "id": 528980,
-                "date": 1401321600
+                "date": 1401321600,
+                "platform": 41
             },
             {
                 "id": 528981,
-                "date": 1398816000
+                "date": 1398816000,
+                "platform": 41
             },
             {
                 "id": 528982,
-                "date": 1401926400
+                "date": 1401926400,
+                "platform": 41
             },
             {
                 "id": 528983,
-                "date": 1401321600
+                "date": 1401321600,
+                "platform": 41
             }
         ],
         "priority": 11
@@ -756,16 +885,21 @@
             }
         ],
         "name": "The Last of Us Part II: Remastered",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 90.39607391851493,
         "release_dates": [
             {
                 "id": 537746,
-                "date": 1705622400
+                "date": 1705622400,
+                "platform": 167
             },
             {
                 "id": 676410,
-                "date": 1743638400
+                "date": 1743638400,
+                "platform": 6
             }
         ],
         "priority": 12
@@ -801,16 +935,21 @@
             }
         ],
         "name": "Tactics Ogre: The Knight of Lodis",
-        "platform": "Game Boy Advance",
+        "platform": {
+            "id": 24,
+            "name": "Game Boy Advance"
+        },
         "rating": 80.08778964432507,
         "release_dates": [
             {
                 "id": 54040,
-                "date": 1021075200
+                "date": 1021075200,
+                "platform": 24
             },
             {
                 "id": 54039,
-                "date": 993081600
+                "date": 993081600,
+                "platform": 24
             }
         ],
         "priority": 13
@@ -834,30 +973,38 @@
             }
         ],
         "name": "Elden Ring",
-        "platform": "PC (Microsoft Windows)",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 95.33056844468483,
         "notes": "This game was long but fun throughout the whole experience. A second playthrough is on the horizon.",
         "personalRating": 9,
         "release_dates": [
             {
                 "id": 320703,
-                "date": 1645747200
+                "date": 1645747200,
+                "platform": 6
             },
             {
                 "id": 320704,
-                "date": 1645747200
+                "date": 1645747200,
+                "platform": 48
             },
             {
                 "id": 320705,
-                "date": 1645747200
+                "date": 1645747200,
+                "platform": 49
             },
             {
                 "id": 320706,
-                "date": 1645747200
+                "date": 1645747200,
+                "platform": 169
             },
             {
                 "id": 320707,
-                "date": 1645747200
+                "date": 1645747200,
+                "platform": 167
             }
         ]
     },
@@ -880,71 +1027,90 @@
             }
         ],
         "name": "The Legend of Zelda: Ocarina of Time",
-        "platform": "Nintendo 64",
+        "platform": {
+            "id": 4,
+            "name": "Nintendo 64"
+        },
         "rating": 91.874989488062,
         "release_dates": [
             {
                 "id": 549097,
-                "date": 912470400
+                "date": 912470400,
+                "platform": 4
             },
             {
                 "id": 509633,
-                "date": 913939200
+                "date": 913939200,
+                "platform": 4
             },
             {
                 "id": 509634,
-                "date": 913334400
+                "date": 913334400,
+                "platform": 4
             },
             {
                 "id": 509635,
-                "date": 911779200
+                "date": 911779200,
+                "platform": 4
             },
             {
                 "id": 509636,
-                "date": 911606400
+                "date": 911606400,
+                "platform": 4
             },
             {
                 "id": 509638,
-                "date": 1069113600
+                "date": 1069113600,
+                "platform": 4
             },
             {
                 "id": 509639,
-                "date": 1172534400
+                "date": 1172534400,
+                "platform": 5
             },
             {
                 "id": 509640,
-                "date": 1172448000
+                "date": 1172448000,
+                "platform": 5
             },
             {
                 "id": 509641,
-                "date": 1172188800
+                "date": 1172188800,
+                "platform": 5
             },
             {
                 "id": 509642,
-                "date": 1172188800
+                "date": 1172188800,
+                "platform": 5
             },
             {
                 "id": 520502,
-                "date": 915062400
+                "date": 915062400,
+                "platform": 4
             },
             {
                 "id": 625294,
-                "date": 1450828800
+                "date": 1450828800,
+                "platform": 41
             },
             {
                 "id": 625295,
-                "date": 1435881600
+                "date": 1435881600,
+                "platform": 41
             },
             {
                 "id": 509644,
-                "date": 1435795200
+                "date": 1435795200,
+                "platform": 41
             },
             {
                 "id": 509643,
-                "date": 1435795200
+                "date": 1435795200,
+                "platform": 41
             },
             {
-                "id": 626340
+                "id": 626340,
+                "platform": 416
             }
         ],
         "priority": 14
@@ -968,56 +1134,71 @@
             }
         ],
         "name": "Super Mario 64",
-        "platform": "Nintendo 64",
+        "platform": {
+            "id": 4,
+            "name": "Nintendo 64"
+        },
         "rating": 88.97355221834381,
         "release_dates": [
             {
                 "id": 509696,
-                "date": 857174400
+                "date": 857174400,
+                "platform": 4
             },
             {
                 "id": 509698,
-                "date": 857174400
+                "date": 857174400,
+                "platform": 4
             },
             {
                 "id": 509700,
-                "date": 843955200
+                "date": 843955200,
+                "platform": 4
             },
             {
                 "id": 509704,
-                "date": 1427846400
+                "date": 1427846400,
+                "platform": 41
             },
             {
                 "id": 592130,
-                "date": 915062400
+                "date": 915062400,
+                "platform": 4
             },
             {
                 "id": 509702,
-                "date": 1165536000
+                "date": 1165536000,
+                "platform": 5
             },
             {
                 "id": 509697,
-                "date": 835488000
+                "date": 835488000,
+                "platform": 4
             },
             {
                 "id": 509701,
-                "date": 1165449600
+                "date": 1165449600,
+                "platform": 5
             },
             {
                 "id": 509699,
-                "date": 843955200
+                "date": 843955200,
+                "platform": 4
             },
             {
                 "id": 509703,
-                "date": 1163894400
+                "date": 1163894400,
+                "platform": 5
             },
             {
                 "id": 509706,
-                "date": 1427932800
+                "date": 1427932800,
+                "platform": 41
             },
             {
                 "id": 509705,
-                "date": 1427846400
+                "date": 1427846400,
+                "platform": 41
             }
         ],
         "priority": 15
@@ -1041,60 +1222,76 @@
             }
         ],
         "name": "Final Fantasy VIII",
-        "platform": "PlayStation",
+        "platform": {
+            "id": 7,
+            "name": "PlayStation"
+        },
         "rating": 81.51467653705939,
         "release_dates": [
             {
                 "id": 363133,
-                "date": 1261612800
+                "date": 1261612800,
+                "platform": 9
             },
             {
                 "id": 22969,
-                "date": 918691200
+                "date": 918691200,
+                "platform": 7
             },
             {
                 "id": 363756,
-                "date": 1261008000
+                "date": 1261008000,
+                "platform": 9
             },
             {
                 "id": 103094,
-                "date": 940982400
+                "date": 940982400,
+                "platform": 7
             },
             {
                 "id": 363134,
-                "date": 1253750400
+                "date": 1253750400,
+                "platform": 38
             },
             {
                 "id": 363135,
-                "date": 1261008000
+                "date": 1261008000,
+                "platform": 38
             },
             {
                 "id": 103093,
-                "date": 936835200
+                "date": 936835200,
+                "platform": 7
             },
             {
                 "id": 230414,
-                "date": 1253750400
+                "date": 1253750400,
+                "platform": 9
             },
             {
                 "id": 363136,
-                "date": 1261612800
+                "date": 1261612800,
+                "platform": 38
             },
             {
                 "id": 363138,
-                "date": 1261008000
+                "date": 1261008000,
+                "platform": 46
             },
             {
                 "id": 22975,
-                "date": 941155200
+                "date": 941155200,
+                "platform": 7
             },
             {
                 "id": 363139,
-                "date": 1261612800
+                "date": 1261612800,
+                "platform": 46
             },
             {
                 "id": 363137,
-                "date": 1253750400
+                "date": 1253750400,
+                "platform": 46
             }
         ],
         "priority": 16
@@ -1122,20 +1319,26 @@
             }
         ],
         "name": "The Legend of Zelda: Breath of the Wild",
-        "platform": "Nintendo Switch",
+        "platform": {
+            "id": 130,
+            "name": "Nintendo Switch"
+        },
         "rating": 92.73551926187747,
         "release_dates": [
             {
                 "id": 477498,
-                "date": 1488499200
+                "date": 1488499200,
+                "platform": 130
             },
             {
                 "id": 477499,
-                "date": 1488499200
+                "date": 1488499200,
+                "platform": 41
             },
             {
                 "id": 692491,
-                "date": 1666656000
+                "date": 1666656000,
+                "platform": 130
             }
         ],
         "priority": 17
@@ -1155,76 +1358,96 @@
             }
         ],
         "name": "Half-Life 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 90.72577447273366,
         "release_dates": [
             {
                 "id": 499671,
-                "date": 1399852800
+                "date": 1399852800,
+                "platform": 34
             },
             {
                 "id": 499676,
-                "date": 1100563200
+                "date": 1100563200,
+                "platform": 6
             },
             {
                 "id": 499686,
-                "date": 1191974400
+                "date": 1191974400,
+                "platform": 12
             },
             {
                 "id": 499687,
-                "date": 1193270400
+                "date": 1193270400,
+                "platform": 12
             },
             {
                 "id": 499683,
-                "date": 1191888000
+                "date": 1191888000,
+                "platform": 12
             },
             {
                 "id": 499674,
-                "date": 1133481600
+                "date": 1133481600,
+                "platform": 6
             },
             {
                 "id": 499677,
-                "date": 1197590400
+                "date": 1197590400,
+                "platform": 9
             },
             {
                 "id": 499678,
-                "date": 1197331200
+                "date": 1197331200,
+                "platform": 9
             },
             {
                 "id": 499675,
-                "date": 1100563200
+                "date": 1100563200,
+                "platform": 6
             },
             {
                 "id": 499673,
-                "date": 1274832000
+                "date": 1274832000,
+                "platform": 14
             },
             {
                 "id": 499679,
-                "date": 1197331200
+                "date": 1197331200,
+                "platform": 9
             },
             {
                 "id": 499680,
-                "date": 1198108800
+                "date": 1198108800,
+                "platform": 9
             },
             {
                 "id": 499682,
-                "date": 1132272000
+                "date": 1132272000,
+                "platform": 11
             },
             {
                 "id": 499684,
-                "date": 1192752000
+                "date": 1192752000,
+                "platform": 12
             },
             {
                 "id": 499672,
-                "date": 1368057600
+                "date": 1368057600,
+                "platform": 3
             },
             {
                 "id": 499681,
-                "date": 1132012800
+                "date": 1132012800,
+                "platform": 11
             },
             {
                 "id": 499685,
-                "date": 1211414400
+                "date": 1211414400,
+                "platform": 12
             }
         ],
         "priority": 18
@@ -1252,28 +1475,36 @@
             }
         ],
         "name": "Grand Theft Auto V",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 89.51430031911076,
         "release_dates": [
             {
                 "id": 20291,
-                "date": 1416268800
+                "date": 1416268800,
+                "platform": 48
             },
             {
                 "id": 403430,
-                "date": 1428883200
+                "date": 1428883200,
+                "platform": 6
             },
             {
                 "id": 20294,
-                "date": 1379376000
+                "date": 1379376000,
+                "platform": 9
             },
             {
                 "id": 20293,
-                "date": 1379376000
+                "date": 1379376000,
+                "platform": 12
             },
             {
                 "id": 20290,
-                "date": 1416268800
+                "date": 1416268800,
+                "platform": 49
             }
         ],
         "priority": 19
@@ -1297,16 +1528,21 @@
             }
         ],
         "name": "The Last of Us",
-        "platform": "PlayStation 3",
+        "platform": {
+            "id": 9,
+            "name": "PlayStation 3"
+        },
         "rating": 93.08635676698536,
         "release_dates": [
             {
                 "id": 106245,
-                "date": 1371168000
+                "date": 1371168000,
+                "platform": 9
             },
             {
                 "id": 106244,
-                "date": 1371168000
+                "date": 1371168000,
+                "platform": 9
             }
         ],
         "priority": 20
@@ -1334,24 +1570,31 @@
             }
         ],
         "name": "Red Dead Redemption 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 93.0345021031779,
         "release_dates": [
             {
                 "id": 177006,
-                "date": 1572912000
+                "date": 1572912000,
+                "platform": 6
             },
             {
                 "id": 137265,
-                "date": 1540512000
+                "date": 1540512000,
+                "platform": 48
             },
             {
                 "id": 137266,
-                "date": 1540512000
+                "date": 1540512000,
+                "platform": 49
             },
             {
                 "id": 179286,
-                "date": 1574121600
+                "date": 1574121600,
+                "platform": 170
             }
         ],
         "priority": 21
@@ -1383,32 +1626,41 @@
             }
         ],
         "name": "BioShock",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 86.74514743610011,
         "release_dates": [
             {
                 "id": 421693,
-                "date": 1254873600
+                "date": 1254873600,
+                "platform": 14
             },
             {
                 "id": 223939,
-                "date": 1187913600
+                "date": 1187913600,
+                "platform": 12
             },
             {
                 "id": 533505,
-                "date": 1256256000
+                "date": 1256256000,
+                "platform": 14
             },
             {
                 "id": 384050,
-                "date": 1203552000
+                "date": 1203552000,
+                "platform": 12
             },
             {
                 "id": 421106,
-                "date": 1187654400
+                "date": 1187654400,
+                "platform": 6
             },
             {
                 "id": 223936,
-                "date": 1187654400
+                "date": 1187654400,
+                "platform": 12
             }
         ],
         "priority": 22
@@ -1432,32 +1684,41 @@
             }
         ],
         "name": "The Witcher 3: Wild Hunt",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 93.90359497661224,
         "release_dates": [
             {
                 "id": 23744,
-                "date": 1431993600
+                "date": 1431993600,
+                "platform": 49
             },
             {
                 "id": 23743,
-                "date": 1431993600
+                "date": 1431993600,
+                "platform": 6
             },
             {
                 "id": 226672,
-                "date": 1611792000
+                "date": 1611792000,
+                "platform": 130
             },
             {
                 "id": 431187,
-                "date": 1670976000
+                "date": 1670976000,
+                "platform": 169
             },
             {
                 "id": 23745,
-                "date": 1431993600
+                "date": 1431993600,
+                "platform": 48
             },
             {
                 "id": 430627,
-                "date": 1670976000
+                "date": 1670976000,
+                "platform": 167
             }
         ],
         "priority": 23
@@ -1489,48 +1750,61 @@
             }
         ],
         "name": "Portal 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 91.56021675020044,
         "release_dates": [
             {
                 "id": 707265,
-                "date": 1303430400
+                "date": 1303430400,
+                "platform": 12
             },
             {
                 "id": 707266,
-                "date": 1303430400
+                "date": 1303430400,
+                "platform": 12
             },
             {
                 "id": 707259,
-                "date": 1303084800
+                "date": 1303084800,
+                "platform": 14
             },
             {
                 "id": 485080,
-                "date": 1656374400
+                "date": 1656374400,
+                "platform": 130
             },
             {
                 "id": 591612,
-                "date": 1393372800
+                "date": 1393372800,
+                "platform": 3
             },
             {
                 "id": 707260,
-                "date": 1303084800
+                "date": 1303084800,
+                "platform": 6
             },
             {
                 "id": 707261,
-                "date": 1303257600
+                "date": 1303257600,
+                "platform": 9
             },
             {
                 "id": 707262,
-                "date": 1303430400
+                "date": 1303430400,
+                "platform": 9
             },
             {
                 "id": 707263,
-                "date": 1303430400
+                "date": 1303430400,
+                "platform": 9
             },
             {
                 "id": 707264,
-                "date": 1303257600
+                "date": 1303257600,
+                "platform": 12
             }
         ],
         "priority": 24
@@ -1558,40 +1832,51 @@
             }
         ],
         "name": "Mass Effect 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 91.34341153137642,
         "release_dates": [
             {
                 "id": 404975,
-                "date": 1264464000
+                "date": 1264464000,
+                "platform": 6
             },
             {
                 "id": 107957,
-                "date": 1295308800
+                "date": 1295308800,
+                "platform": 9
             },
             {
                 "id": 20917,
-                "date": 1296086400
+                "date": 1296086400,
+                "platform": 9
             },
             {
                 "id": 20914,
-                "date": 1264723200
+                "date": 1264723200,
+                "platform": 12
             },
             {
                 "id": 20912,
-                "date": 1264636800
+                "date": 1264636800,
+                "platform": 12
             },
             {
                 "id": 20913,
-                "date": 1264723200
+                "date": 1264723200,
+                "platform": 6
             },
             {
                 "id": 107956,
-                "date": 1295568000
+                "date": 1295568000,
+                "platform": 9
             },
             {
                 "id": 20910,
-                "date": 1264464000
+                "date": 1264464000,
+                "platform": 12
             }
         ],
         "priority": 25
@@ -1615,96 +1900,118 @@
             }
         ],
         "name": "Super Mario World",
-        "platform": "Super Nintendo",
+        "platform": null,
         "rating": 92.2695002412874,
         "release_dates": [
             {
                 "id": 505220,
-                "date": 659145600
+                "date": 659145600,
+                "platform": 58
             },
             {
                 "id": 592197,
-                "date": 851990400
+                "date": 851990400,
+                "platform": 19
             },
             {
                 "id": 592198,
-                "date": 904608000
+                "date": 904608000,
+                "platform": 19
             },
             {
                 "id": 592043,
-                "date": 1456963200
+                "date": 1456963200,
+                "platform": 137
             },
             {
                 "id": 592044,
-                "date": 1456963200
+                "date": 1456963200,
+                "platform": 137
             },
             {
                 "id": 592046,
-                "date": 1456963200
+                "date": 1456963200,
+                "platform": 137
             },
             {
                 "id": 592049,
-                "date": 1456963200
+                "date": 1456963200,
+                "platform": 137
             },
             {
                 "id": 592037,
-                "date": 694137600
+                "date": 694137600,
+                "platform": 52
             },
             {
                 "id": 505228,
-                "date": 1170979200
+                "date": 1170979200,
+                "platform": 5
             },
             {
                 "id": 505221,
-                "date": 682905600
+                "date": 682905600,
+                "platform": 19
             },
             {
                 "id": 505234,
-                "date": 1366934400
+                "date": 1366934400,
+                "platform": 41
             },
             {
                 "id": 505222,
-                "date": 709948800
+                "date": 709948800,
+                "platform": 19
             },
             {
                 "id": 505224,
-                "date": 702950400
+                "date": 702950400,
+                "platform": 19
             },
             {
                 "id": 505232,
-                "date": 1367107200
+                "date": 1367107200,
+                "platform": 41
             },
             {
                 "id": 505227,
-                "date": 1209168000
+                "date": 1209168000,
+                "platform": 5
             },
             {
                 "id": 505229,
-                "date": 1165017600
+                "date": 1165017600,
+                "platform": 5
             },
             {
                 "id": 505225,
-                "date": 746668800
+                "date": 746668800,
+                "platform": 19
             },
             {
                 "id": 505226,
-                "date": 1170979200
+                "date": 1170979200,
+                "platform": 5
             },
             {
                 "id": 505230,
-                "date": 1170633600
+                "date": 1170633600,
+                "platform": 5
             },
             {
                 "id": 505231,
-                "date": 1367020800
+                "date": 1367020800,
+                "platform": 41
             },
             {
                 "id": 505233,
-                "date": 1367020800
+                "date": 1367020800,
+                "platform": 41
             },
             {
                 "id": 505223,
-                "date": 694137600
+                "date": 694137600,
+                "platform": 19
             }
         ],
         "priority": 26
@@ -1728,44 +2035,56 @@
             }
         ],
         "name": "The Elder Scrolls V: Skyrim",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 87.54630602481492,
         "release_dates": [
             {
                 "id": 106167,
-                "date": 1323302400
+                "date": 1323302400,
+                "platform": 9
             },
             {
                 "id": 417931,
-                "date": 1320883200
+                "date": 1320883200,
+                "platform": 6
             },
             {
                 "id": 106168,
-                "date": 1320969600
+                "date": 1320969600,
+                "platform": 9
             },
             {
                 "id": 21154,
-                "date": 1320969600
+                "date": 1320969600,
+                "platform": 12
             },
             {
                 "id": 21666,
-                "date": 1323302400
+                "date": 1323302400,
+                "platform": 12
             },
             {
                 "id": 282088,
-                "date": 1320883200
+                "date": 1320883200,
+                "platform": 6
             },
             {
                 "id": 106169,
-                "date": 1320969600
+                "date": 1320969600,
+                "platform": 9
             },
             {
                 "id": 21664,
-                "date": 1323302400
+                "date": 1323302400,
+                "platform": 6
             },
             {
                 "id": 21155,
-                "date": 1320969600
+                "date": 1320969600,
+                "platform": 9
             }
         ],
         "priority": 27
@@ -1789,52 +2108,66 @@
             }
         ],
         "name": "Metal Gear Solid",
-        "platform": "PlayStation",
+        "platform": {
+            "id": 7,
+            "name": "PlayStation"
+        },
         "rating": 90.55479005370015,
         "release_dates": [
             {
                 "id": 474533,
-                "date": 904780800
+                "date": 904780800,
+                "platform": 7
             },
             {
                 "id": 645183,
-                "date": 919641600
+                "date": 919641600,
+                "platform": 7
             },
             {
                 "id": 645182,
-                "date": 972000000
+                "date": 972000000,
+                "platform": 6
             },
             {
                 "id": 645184,
-                "date": 908841600
+                "date": 908841600,
+                "platform": 7
             },
             {
                 "id": 705518,
-                "date": 1258588800
+                "date": 1258588800,
+                "platform": 9
             },
             {
                 "id": 705519,
-                "date": 1245283200
+                "date": 1245283200,
+                "platform": 9
             },
             {
                 "id": 705520,
-                "date": 1206057600
+                "date": 1206057600,
+                "platform": 9
             },
             {
                 "id": 705521,
-                "date": 1258588800
+                "date": 1258588800,
+                "platform": 38
             },
             {
                 "id": 705522,
-                "date": 1245283200
+                "date": 1245283200,
+                "platform": 38
             },
             {
                 "id": 705523,
-                "date": 1206057600
+                "date": 1206057600,
+                "platform": 38
             },
             {
                 "id": 645181,
-                "date": 969580800
+                "date": 969580800,
+                "platform": 6
             }
         ],
         "priority": 28
@@ -1854,44 +2187,56 @@
             }
         ],
         "name": "Halo: Combat Evolved",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.90781132517998,
         "release_dates": [
             {
                 "id": 22934,
-                "date": 1016064000
+                "date": 1016064000,
+                "platform": 11
             },
             {
                 "id": 22935,
-                "date": 1019692800
+                "date": 1019692800,
+                "platform": 11
             },
             {
                 "id": 27598,
-                "date": 1070409600
+                "date": 1070409600,
+                "platform": 14
             },
             {
                 "id": 27597,
-                "date": 1070409600
+                "date": 1070409600,
+                "platform": 14
             },
             {
                 "id": 231330,
-                "date": 1196726400
+                "date": 1196726400,
+                "platform": 12
             },
             {
                 "id": 22931,
-                "date": 1064880000
+                "date": 1064880000,
+                "platform": 6
             },
             {
                 "id": 22933,
-                "date": 1065744000
+                "date": 1065744000,
+                "platform": 6
             },
             {
                 "id": 22932,
-                "date": 1005782400
+                "date": 1005782400,
+                "platform": 11
             },
             {
                 "id": 458454,
-                "date": 1076457600
+                "date": 1076457600,
+                "platform": 14
             }
         ],
         "priority": 29
@@ -1915,44 +2260,56 @@
             }
         ],
         "name": "Minecraft: Java Edition",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 84.46443481434338,
         "release_dates": [
             {
                 "id": 482992,
-                "date": 1321574400
+                "date": 1321574400,
+                "platform": 14
             },
             {
                 "id": 482989,
-                "date": 1321574400
+                "date": 1321574400,
+                "platform": 3
             },
             {
                 "id": 482997,
-                "date": 1277856000
+                "date": 1277856000,
+                "platform": 6
             },
             {
                 "id": 482990,
-                "date": 1292803200
+                "date": 1292803200,
+                "platform": 3
             },
             {
                 "id": 482995,
-                "date": 1321574400
+                "date": 1321574400,
+                "platform": 6
             },
             {
                 "id": 482991,
-                "date": 1277856000
+                "date": 1277856000,
+                "platform": 3
             },
             {
                 "id": 482996,
-                "date": 1292803200
+                "date": 1292803200,
+                "platform": 6
             },
             {
                 "id": 482994,
-                "date": 1277856000
+                "date": 1277856000,
+                "platform": 14
             },
             {
                 "id": 482993,
-                "date": 1292803200
+                "date": 1292803200,
+                "platform": 14
             }
         ],
         "priority": 30
@@ -1972,20 +2329,26 @@
             }
         ],
         "name": "Counter-Strike",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.29450327582325,
         "release_dates": [
             {
                 "id": 377412,
-                "date": 973728000
+                "date": 973728000,
+                "platform": 6
             },
             {
                 "id": 296958,
-                "date": 1360800000
+                "date": 1360800000,
+                "platform": 14
             },
             {
                 "id": 296959,
-                "date": 1360800000
+                "date": 1360800000,
+                "platform": 3
             }
         ],
         "priority": 31
@@ -2009,20 +2372,26 @@
             }
         ],
         "name": "World of Warcraft",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.86097131515847,
         "release_dates": [
             {
                 "id": 48,
-                "date": 1101168000
+                "date": 1101168000,
+                "platform": 14
             },
             {
                 "id": 28789,
-                "date": 1108080000
+                "date": 1108080000,
+                "platform": 6
             },
             {
                 "id": 28788,
-                "date": 1101168000
+                "date": 1101168000,
+                "platform": 6
             }
         ],
         "priority": 32
@@ -2046,36 +2415,46 @@
             }
         ],
         "name": "Overwatch",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 81.93160998147575,
         "release_dates": [
             {
                 "id": 475597,
-                "date": 1464048000
+                "date": 1464048000,
+                "platform": 6
             },
             {
                 "id": 475599,
-                "date": 1464048000
+                "date": 1464048000,
+                "platform": 48
             },
             {
                 "id": 475601,
-                "date": 1464048000
+                "date": 1464048000,
+                "platform": 49
             },
             {
                 "id": 475602,
-                "date": 1664755200
+                "date": 1664755200,
+                "platform": 49
             },
             {
                 "id": 475598,
-                "date": 1664755200
+                "date": 1664755200,
+                "platform": 6
             },
             {
                 "id": 475604,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 130
             },
             {
                 "id": 475600,
-                "date": 1664755200
+                "date": 1664755200,
+                "platform": 48
             }
         ],
         "priority": 33
@@ -2103,16 +2482,21 @@
             }
         ],
         "name": "Sid Meier's Civilization IV",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 85.34482887217179,
         "release_dates": [
             {
                 "id": 1016,
-                "date": 1130198400
+                "date": 1130198400,
+                "platform": 6
             },
             {
                 "id": 1017,
-                "date": 1151625600
+                "date": 1151625600,
+                "platform": 14
             }
         ],
         "priority": 34
@@ -2136,52 +2520,66 @@
             }
         ],
         "name": "Call of Duty 4: Modern Warfare",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 84.24550472388904,
         "release_dates": [
             {
                 "id": 84351,
-                "date": 1194566400
+                "date": 1194566400,
+                "platform": 12
             },
             {
                 "id": 84347,
-                "date": 1296172800
+                "date": 1296172800,
+                "platform": 14
             },
             {
                 "id": 84349,
-                "date": 1194393600
+                "date": 1194393600,
+                "platform": 9
             },
             {
                 "id": 84344,
-                "date": 1194220800
+                "date": 1194220800,
+                "platform": 12
             },
             {
                 "id": 84342,
-                "date": 1194220800
+                "date": 1194220800,
+                "platform": 6
             },
             {
                 "id": 84350,
-                "date": 1194393600
+                "date": 1194393600,
+                "platform": 6
             },
             {
                 "id": 84348,
-                "date": 1194393600
+                "date": 1194393600,
+                "platform": 12
             },
             {
                 "id": 84346,
-                "date": 1222387200
+                "date": 1222387200,
+                "platform": 14
             },
             {
                 "id": 84352,
-                "date": 1194566400
+                "date": 1194566400,
+                "platform": 9
             },
             {
                 "id": 84353,
-                "date": 1194566400
+                "date": 1194566400,
+                "platform": 6
             },
             {
                 "id": 84343,
-                "date": 1194220800
+                "date": 1194220800,
+                "platform": 9
             }
         ],
         "priority": 35
@@ -2205,20 +2603,26 @@
             }
         ],
         "name": "StarCraft",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 88.43488025524194,
         "release_dates": [
             {
                 "id": 27155,
-                "date": 922665600
+                "date": 922665600,
+                "platform": 14
             },
             {
                 "id": 27156,
-                "date": 891302400
+                "date": 891302400,
+                "platform": 6
             },
             {
                 "id": 27157,
-                "date": 915062400
+                "date": 915062400,
+                "platform": 6
             }
         ],
         "priority": 36
@@ -2238,28 +2642,36 @@
             }
         ],
         "name": "The Sims",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 79.76468237660791,
         "release_dates": [
             {
                 "id": 300629,
-                "date": 949622400
+                "date": 949622400,
+                "platform": 6
             },
             {
                 "id": 300635,
-                "date": 997833600
+                "date": 997833600,
+                "platform": 14
             },
             {
                 "id": 300630,
-                "date": 964483200
+                "date": 964483200,
+                "platform": 14
             },
             {
                 "id": 300636,
-                "date": 1047427200
+                "date": 1047427200,
+                "platform": 3
             },
             {
                 "id": 422029,
-                "date": 950227200
+                "date": 950227200,
+                "platform": 6
             }
         ],
         "priority": 37
@@ -2283,44 +2695,56 @@
             }
         ],
         "name": "Fallout 3",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.33094692074695,
         "release_dates": [
             {
                 "id": 102969,
-                "date": 1231977600
+                "date": 1231977600,
+                "platform": 9
             },
             {
                 "id": 102968,
-                "date": 1225411200
+                "date": 1225411200,
+                "platform": 9
             },
             {
                 "id": 592477,
-                "date": 1225152000
+                "date": 1225152000,
+                "platform": 6
             },
             {
                 "id": 592478,
-                "date": 1225411200
+                "date": 1225411200,
+                "platform": 6
             },
             {
                 "id": 592481,
-                "date": 1225411200
+                "date": 1225411200,
+                "platform": 12
             },
             {
                 "id": 102967,
-                "date": 1225152000
+                "date": 1225152000,
+                "platform": 9
             },
             {
                 "id": 592480,
-                "date": 1225152000
+                "date": 1225152000,
+                "platform": 12
             },
             {
                 "id": 592479,
-                "date": 1225411200
+                "date": 1225411200,
+                "platform": 9
             },
             {
                 "id": 592482,
-                "date": 1225411200
+                "date": 1225411200,
+                "platform": 12
             }
         ],
         "priority": 38
@@ -2348,80 +2772,101 @@
             }
         ],
         "name": "Diablo III",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 78.30901485523997,
         "release_dates": [
             {
                 "id": 102529,
-                "date": 1378425600
+                "date": 1378425600,
+                "platform": 9
             },
             {
                 "id": 22595,
-                "date": 1378166400
+                "date": 1378166400,
+                "platform": 12
             },
             {
                 "id": 22592,
-                "date": 1378166400
+                "date": 1378166400,
+                "platform": 9
             },
             {
                 "id": 22602,
-                "date": 1408579200
+                "date": 1408579200,
+                "platform": 48
             },
             {
                 "id": 22589,
-                "date": 1337040000
+                "date": 1337040000,
+                "platform": 14
             },
             {
                 "id": 22588,
-                "date": 1337040000
+                "date": 1337040000,
+                "platform": 6
             },
             {
                 "id": 22594,
-                "date": 1391040000
+                "date": 1391040000,
+                "platform": 9
             },
             {
                 "id": 22593,
-                "date": 1378252800
+                "date": 1378252800,
+                "platform": 9
             },
             {
                 "id": 22598,
-                "date": 1378252800
+                "date": 1378252800,
+                "platform": 12
             },
             {
                 "id": 22603,
-                "date": 1408406400
+                "date": 1408406400,
+                "platform": 49
             },
             {
                 "id": 22596,
-                "date": 1378166400
+                "date": 1378166400,
+                "platform": 12
             },
             {
                 "id": 102528,
-                "date": 1378166400
+                "date": 1378166400,
+                "platform": 9
             },
             {
                 "id": 22597,
-                "date": 1378166400
+                "date": 1378166400,
+                "platform": 12
             },
             {
                 "id": 22599,
-                "date": 1408406400
+                "date": 1408406400,
+                "platform": 48
             },
             {
                 "id": 22601,
-                "date": 1408406400
+                "date": 1408406400,
+                "platform": 48
             },
             {
                 "id": 22605,
-                "date": 1408406400
+                "date": 1408406400,
+                "platform": 49
             },
             {
                 "id": 22600,
-                "date": 1408406400
+                "date": 1408406400,
+                "platform": 48
             },
             {
                 "id": 22604,
-                "date": 1408406400
+                "date": 1408406400,
+                "platform": 49
             }
         ],
         "priority": 39
@@ -2449,20 +2894,26 @@
             }
         ],
         "name": "League of Legends",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 75.14434838750557,
         "release_dates": [
             {
                 "id": 541886,
-                "date": 1316649600
+                "date": 1316649600,
+                "platform": 6
             },
             {
                 "id": 614401,
-                "date": 1256601600
+                "date": 1256601600,
+                "platform": 14
             },
             {
                 "id": 614402,
-                "date": 1256601600
+                "date": 1256601600,
+                "platform": 6
             }
         ],
         "priority": 40
@@ -2482,44 +2933,56 @@
             }
         ],
         "name": "Team Fortress 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 82.66621575611597,
         "release_dates": [
             {
                 "id": 591603,
-                "date": 1360800000
+                "date": 1360800000,
+                "platform": 3
             },
             {
                 "id": 591604,
-                "date": 1276128000
+                "date": 1276128000,
+                "platform": 14
             },
             {
                 "id": 591605,
-                "date": 1191974400
+                "date": 1191974400,
+                "platform": 6
             },
             {
                 "id": 591606,
-                "date": 1197331200
+                "date": 1197331200,
+                "platform": 9
             },
             {
                 "id": 591609,
-                "date": 1191974400
+                "date": 1191974400,
+                "platform": 12
             },
             {
                 "id": 591607,
-                "date": 1197331200
+                "date": 1197331200,
+                "platform": 9
             },
             {
                 "id": 591608,
-                "date": 1198108800
+                "date": 1198108800,
+                "platform": 9
             },
             {
                 "id": 591610,
-                "date": 1192752000
+                "date": 1192752000,
+                "platform": 12
             },
             {
                 "id": 591611,
-                "date": 1193270400
+                "date": 1193270400,
+                "platform": 12
             }
         ],
         "priority": 41
@@ -2547,52 +3010,66 @@
             }
         ],
         "name": "Sid Meier's Civilization VI",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 80.17153124049801,
         "release_dates": [
             {
                 "id": 50611,
-                "date": 1477008000
+                "date": 1477008000,
+                "platform": 6
             },
             {
                 "id": 298472,
-                "date": 1476921600
+                "date": 1476921600,
+                "platform": 6
             },
             {
                 "id": 298473,
-                "date": 1476921600
+                "date": 1476921600,
+                "platform": 14
             },
             {
                 "id": 298474,
-                "date": 1476921600
+                "date": 1476921600,
+                "platform": 3
             },
             {
                 "id": 337604,
-                "date": 1634083200
+                "date": 1634083200,
+                "platform": 130
             },
             {
                 "id": 131677,
-                "date": 1477267200
+                "date": 1477267200,
+                "platform": 14
             },
             {
                 "id": 159631,
-                "date": 1542326400
+                "date": 1542326400,
+                "platform": 130
             },
             {
                 "id": 176132,
-                "date": 1574380800
+                "date": 1574380800,
+                "platform": 49
             },
             {
                 "id": 176131,
-                "date": 1574380800
+                "date": 1574380800,
+                "platform": 48
             },
             {
                 "id": 147564,
-                "date": 1513814400
+                "date": 1513814400,
+                "platform": 39
             },
             {
                 "id": 131676,
-                "date": 1486598400
+                "date": 1486598400,
+                "platform": 3
             }
         ],
         "priority": 42
@@ -2624,32 +3101,41 @@
             }
         ],
         "name": "Grand Theft Auto III",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 84.85841137741497,
         "release_dates": [
             {
                 "id": 147109,
-                "date": 1313625600
+                "date": 1313625600,
+                "platform": 14
             },
             {
                 "id": 48658,
-                "date": 1449273600
+                "date": 1449273600,
+                "platform": 48
             },
             {
                 "id": 1607,
-                "date": 1003708800
+                "date": 1003708800,
+                "platform": 8
             },
             {
                 "id": 2202,
-                "date": 1067558400
+                "date": 1067558400,
+                "platform": 11
             },
             {
                 "id": 3314,
-                "date": 1021852800
+                "date": 1021852800,
+                "platform": 6
             },
             {
                 "id": 468247,
-                "date": 1289520000
+                "date": 1289520000,
+                "platform": 14
             }
         ],
         "priority": 43
@@ -2669,32 +3155,41 @@
             }
         ],
         "name": "Doom 3",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 79.53796957330704,
         "release_dates": [
             {
                 "id": 403,
-                "date": 1096848000
+                "date": 1096848000,
+                "platform": 3
             },
             {
                 "id": 553555,
-                "date": 1110844800
+                "date": 1110844800,
+                "platform": 14
             },
             {
                 "id": 553558,
-                "date": 1110758400
+                "date": 1110758400,
+                "platform": 14
             },
             {
                 "id": 553559,
-                "date": 1110758400
+                "date": 1110758400,
+                "platform": 14
             },
             {
                 "id": 405,
-                "date": 1112486400
+                "date": 1112486400,
+                "platform": 11
             },
             {
                 "id": 402,
-                "date": 1091491200
+                "date": 1091491200,
+                "platform": 6
             }
         ],
         "priority": 44
@@ -2714,24 +3209,31 @@
             }
         ],
         "name": "Quake II",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.15536259790196,
         "release_dates": [
             {
                 "id": 609158,
-                "date": 1034121600
+                "date": 1034121600,
+                "platform": 16
             },
             {
                 "id": 609159,
-                "date": 881625600
+                "date": 881625600,
+                "platform": 6
             },
             {
                 "id": 609160,
-                "date": 938649600
+                "date": 938649600,
+                "platform": 7
             },
             {
                 "id": 609161,
-                "date": 1243209600
+                "date": 1243209600,
+                "platform": 240
             }
         ],
         "priority": 45
@@ -2759,48 +3261,61 @@
             }
         ],
         "name": "Bastion",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 82.90390286991027,
         "release_dates": [
             {
                 "id": 21702,
-                "date": 1335398400
+                "date": 1335398400,
+                "platform": 14
             },
             {
                 "id": 63104,
-                "date": 1481500800
+                "date": 1481500800,
+                "platform": 49
             },
             {
                 "id": 166225,
-                "date": 1311120000
+                "date": 1311120000,
+                "platform": 12
             },
             {
                 "id": 21703,
-                "date": 1313452800
+                "date": 1313452800,
+                "platform": 6
             },
             {
                 "id": 21705,
-                "date": 1338422400
+                "date": 1338422400,
+                "platform": 3
             },
             {
                 "id": 495339,
-                "date": 1428364800
+                "date": 1428364800,
+                "platform": 48
             },
             {
                 "id": 495340,
-                "date": 1449273600
+                "date": 1449273600,
+                "platform": 46
             },
             {
                 "id": 495337,
-                "date": 1572825600
+                "date": 1572825600,
+                "platform": 39
             },
             {
                 "id": 495336,
-                "date": 1346198400
+                "date": 1346198400,
+                "platform": 39
             },
             {
                 "id": 495719,
-                "date": 1536796800
+                "date": 1536796800,
+                "platform": 130
             }
         ],
         "priority": 46
@@ -2824,48 +3339,61 @@
             }
         ],
         "name": "Fallout: New Vegas",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 87.08492054319954,
         "release_dates": [
             {
                 "id": 30125,
-                "date": 1287446400
+                "date": 1287446400,
+                "platform": 6
             },
             {
                 "id": 102981,
-                "date": 1288828800
+                "date": 1288828800,
+                "platform": 9
             },
             {
                 "id": 102979,
-                "date": 1287446400
+                "date": 1287446400,
+                "platform": 9
             },
             {
                 "id": 30127,
-                "date": 1287446400
+                "date": 1287446400,
+                "platform": 12
             },
             {
                 "id": 30133,
-                "date": 1288828800
+                "date": 1288828800,
+                "platform": 12
             },
             {
                 "id": 30128,
-                "date": 1287705600
+                "date": 1287705600,
+                "platform": 6
             },
             {
                 "id": 30132,
-                "date": 1288828800
+                "date": 1288828800,
+                "platform": 9
             },
             {
                 "id": 102980,
-                "date": 1287705600
+                "date": 1287705600,
+                "platform": 9
             },
             {
                 "id": 30131,
-                "date": 1288828800
+                "date": 1288828800,
+                "platform": 6
             },
             {
                 "id": 30130,
-                "date": 1287705600
+                "date": 1287705600,
+                "platform": 12
             }
         ],
         "priority": 47
@@ -2889,108 +3417,136 @@
             }
         ],
         "name": "Borderlands 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 84.03788670450596,
         "release_dates": [
             {
                 "id": 182616,
-                "date": 1468972800
+                "date": 1468972800,
+                "platform": 34
             },
             {
                 "id": 147154,
-                "date": 1355875200
+                "date": 1355875200,
+                "platform": 14
             },
             {
                 "id": 134491,
-                "date": 1401235200
+                "date": 1401235200,
+                "platform": 46
             },
             {
                 "id": 21641,
-                "date": 1348185600
+                "date": 1348185600,
+                "platform": 9
             },
             {
                 "id": 101978,
-                "date": 1348185600
+                "date": 1348185600,
+                "platform": 9
             },
             {
                 "id": 390751,
-                "date": 1590710400
+                "date": 1590710400,
+                "platform": 130
             },
             {
                 "id": 21643,
-                "date": 1401235200
+                "date": 1401235200,
+                "platform": 46
             },
             {
                 "id": 449903,
-                "date": 1395619200
+                "date": 1395619200,
+                "platform": 49
             },
             {
                 "id": 449904,
-                "date": 1427414400
+                "date": 1427414400,
+                "platform": 49
             },
             {
                 "id": 101977,
-                "date": 1347926400
+                "date": 1347926400,
+                "platform": 9
             },
             {
                 "id": 184892,
-                "date": 1427414400
+                "date": 1427414400,
+                "platform": 48
             },
             {
                 "id": 21626,
-                "date": 1347926400
+                "date": 1347926400,
+                "platform": 6
             },
             {
                 "id": 21629,
-                "date": 1351123200
+                "date": 1351123200,
+                "platform": 6
             },
             {
                 "id": 21630,
-                "date": 1351123200
+                "date": 1351123200,
+                "platform": 9
             },
             {
                 "id": 21631,
-                "date": 1351123200
+                "date": 1351123200,
+                "platform": 12
             },
             {
                 "id": 21644,
-                "date": 1417651200
+                "date": 1417651200,
+                "platform": 46
             },
             {
                 "id": 21636,
-                "date": 1348099200
+                "date": 1348099200,
+                "platform": 12
             },
             {
                 "id": 21642,
-                "date": 1412035200
+                "date": 1412035200,
+                "platform": 3
             },
             {
                 "id": 21640,
-                "date": 1348099200
+                "date": 1348099200,
+                "platform": 9
             },
             {
                 "id": 21637,
-                "date": 1348185600
+                "date": 1348185600,
+                "platform": 12
             },
             {
                 "id": 21627,
-                "date": 1347926400
+                "date": 1347926400,
+                "platform": 12
             },
             {
                 "id": 21634,
-                "date": 1348099200
+                "date": 1348099200,
+                "platform": 6
             },
             {
                 "id": 21632,
-                "date": 1399939200
+                "date": 1399939200,
+                "platform": 46
             },
             {
                 "id": 21638,
-                "date": 1348185600
+                "date": 1348185600,
+                "platform": 12
             },
             {
                 "id": 21635,
-                "date": 1348185600
+                "date": 1348185600,
+                "platform": 6
             }
         ],
         "priority": 48
@@ -3026,68 +3582,86 @@
             }
         ],
         "name": "Stardew Valley",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 86.73063773203098,
         "release_dates": [
             {
                 "id": 61570,
-                "date": 1469750400
+                "date": 1469750400,
+                "platform": 14
             },
             {
                 "id": 45397,
-                "date": 1456444800
+                "date": 1456444800,
+                "platform": 6
             },
             {
                 "id": 159758,
-                "date": 1540339200
+                "date": 1540339200,
+                "platform": 39
             },
             {
                 "id": 295811,
-                "date": 1456444800
+                "date": 1456444800,
+                "platform": 3
             },
             {
                 "id": 295810,
-                "date": 1456444800
+                "date": 1456444800,
+                "platform": 14
             },
             {
                 "id": 367415,
-                "date": 1552435200
+                "date": 1552435200,
+                "platform": 34
             },
             {
                 "id": 61574,
-                "date": 1481673600
+                "date": 1481673600,
+                "platform": 48
             },
             {
                 "id": 159757,
-                "date": 1518566400
+                "date": 1518566400,
+                "platform": 49
             },
             {
                 "id": 61573,
-                "date": 1481673600
+                "date": 1481673600,
+                "platform": 49
             },
             {
                 "id": 511594,
-                "date": 1483142400
+                "date": 1483142400,
+                "platform": 41
             },
             {
                 "id": 115520,
-                "date": 1481673600
+                "date": 1481673600,
+                "platform": 48
             },
             {
                 "id": 152528,
-                "date": 1526947200
+                "date": 1526947200,
+                "platform": 46
             },
             {
                 "id": 61572,
-                "date": 1481587200
+                "date": 1481587200,
+                "platform": 48
             },
             {
                 "id": 412636,
-                "date": 1456444800
+                "date": 1456444800,
+                "platform": 3
             },
             {
                 "id": 115521,
-                "date": 1507161600
+                "date": 1507161600,
+                "platform": 130
             }
         ],
         "priority": 49
@@ -3115,48 +3689,61 @@
             }
         ],
         "name": "Rocket League",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 81.49468505522808,
         "release_dates": [
             {
                 "id": 84001,
-                "date": 1473292800
+                "date": 1473292800,
+                "platform": 3
             },
             {
                 "id": 136259,
-                "date": 1455667200
+                "date": 1455667200,
+                "platform": 49
             },
             {
                 "id": 405375,
-                "date": 1436140800
+                "date": 1436140800,
+                "platform": 6
             },
             {
                 "id": 134046,
-                "date": 1467676800
+                "date": 1467676800,
+                "platform": 48
             },
             {
                 "id": 84000,
-                "date": 1473292800
+                "date": 1473292800,
+                "platform": 14
             },
             {
                 "id": 30993,
-                "date": 1436227200
+                "date": 1436227200,
+                "platform": 48
             },
             {
                 "id": 48539,
-                "date": 1455667200
+                "date": 1455667200,
+                "platform": 49
             },
             {
                 "id": 134045,
-                "date": 1466726400
+                "date": 1466726400,
+                "platform": 48
             },
             {
                 "id": 125471,
-                "date": 1446595200
+                "date": 1446595200,
+                "platform": 48
             },
             {
                 "id": 125470,
-                "date": 1510617600
+                "date": 1510617600,
+                "platform": 130
             }
         ],
         "priority": 50
@@ -3184,36 +3771,46 @@
             }
         ],
         "name": "Hollow Knight",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 92.17044474361057,
         "release_dates": [
             {
                 "id": 607803,
-                "date": 1528761600
+                "date": 1528761600,
+                "platform": 130
             },
             {
                 "id": 716337,
-                "date": 1514678400
+                "date": 1514678400,
+                "platform": 41
             },
             {
                 "id": 499738,
-                "date": 1487894400
+                "date": 1487894400,
+                "platform": 3
             },
             {
                 "id": 499739,
-                "date": 1491868800
+                "date": 1491868800,
+                "platform": 14
             },
             {
                 "id": 499741,
-                "date": 1487894400
+                "date": 1487894400,
+                "platform": 6
             },
             {
                 "id": 714898,
-                "date": 1537833600
+                "date": 1537833600,
+                "platform": 49
             },
             {
                 "id": 714899,
-                "date": 1537833600
+                "date": 1537833600,
+                "platform": 48
             }
         ],
         "priority": 51
@@ -3241,36 +3838,46 @@
             }
         ],
         "name": "Celeste",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 87.31460472935277,
         "release_dates": [
             {
                 "id": 134897,
-                "date": 1516838400
+                "date": 1516838400,
+                "platform": 14
             },
             {
                 "id": 134894,
-                "date": 1516838400
+                "date": 1516838400,
+                "platform": 6
             },
             {
                 "id": 134896,
-                "date": 1516838400
+                "date": 1516838400,
+                "platform": 48
             },
             {
                 "id": 147905,
-                "date": 1516838400
+                "date": 1516838400,
+                "platform": 3
             },
             {
                 "id": 134893,
-                "date": 1516838400
+                "date": 1516838400,
+                "platform": 49
             },
             {
                 "id": 134895,
-                "date": 1516838400
+                "date": 1516838400,
+                "platform": 130
             },
             {
                 "id": 239649,
-                "date": 1595894400
+                "date": 1595894400,
+                "platform": 170
             }
         ],
         "priority": 52
@@ -3306,44 +3913,56 @@
             }
         ],
         "name": "Undertale",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 86.34378624299319,
         "release_dates": [
             {
                 "id": 97200,
-                "date": 1502755200
+                "date": 1502755200,
+                "platform": 48
             },
             {
                 "id": 421552,
-                "date": 1468713600
+                "date": 1468713600,
+                "platform": 3
             },
             {
                 "id": 97199,
-                "date": 1502755200
+                "date": 1502755200,
+                "platform": 46
             },
             {
                 "id": 157718,
-                "date": 1537228800
+                "date": 1537228800,
+                "platform": 130
             },
             {
                 "id": 157719,
-                "date": 1537228800
+                "date": 1537228800,
+                "platform": 130
             },
             {
                 "id": 233933,
-                "date": 1615852800
+                "date": 1615852800,
+                "platform": 49
             },
             {
                 "id": 155763,
-                "date": 1536969600
+                "date": 1536969600,
+                "platform": 130
             },
             {
                 "id": 45798,
-                "date": 1442275200
+                "date": 1442275200,
+                "platform": 14
             },
             {
                 "id": 45799,
-                "date": 1442275200
+                "date": 1442275200,
+                "platform": 6
             }
         ],
         "priority": 53
@@ -3367,80 +3986,98 @@
             }
         ],
         "name": "The Legend of Zelda: A Link to the Past",
-        "platform": "Super Nintendo",
+        "platform": null,
         "rating": 92.39909311496795,
         "release_dates": [
             {
                 "id": 514963,
-                "date": 1457568000
+                "date": 1457568000,
+                "platform": 137
             },
             {
                 "id": 514964,
-                "date": 857260800
+                "date": 857260800,
+                "platform": 306
             },
             {
                 "id": 514965,
-                "date": 690681600
+                "date": 690681600,
+                "platform": 58
             },
             {
                 "id": 514970,
-                "date": 1174608000
+                "date": 1174608000,
+                "platform": 5
             },
             {
                 "id": 514971,
-                "date": 1169424000
+                "date": 1169424000,
+                "platform": 5
             },
             {
                 "id": 514972,
-                "date": 1213056000
+                "date": 1213056000,
+                "platform": 5
             },
             {
                 "id": 514973,
-                "date": 1174608000
+                "date": 1174608000,
+                "platform": 5
             },
             {
                 "id": 514974,
-                "date": 1165017600
+                "date": 1165017600,
+                "platform": 5
             },
             {
                 "id": 514975,
-                "date": 1386806400
+                "date": 1386806400,
+                "platform": 41
             },
             {
                 "id": 514976,
-                "date": 1392163200
+                "date": 1392163200,
+                "platform": 41
             },
             {
                 "id": 514977,
-                "date": 1391040000
+                "date": 1391040000,
+                "platform": 41
             },
             {
                 "id": 592184,
-                "date": 851990400
+                "date": 851990400,
+                "platform": 19
             },
             {
                 "id": 592185,
-                "date": 832550400
+                "date": 832550400,
+                "platform": 19
             },
             {
                 "id": 548274,
-                "date": 746668800
+                "date": 746668800,
+                "platform": 19
             },
             {
                 "id": 514967,
-                "date": 703123200
+                "date": 703123200,
+                "platform": 19
             },
             {
                 "id": 514962,
-                "date": 1460592000
+                "date": 1460592000,
+                "platform": 137
             },
             {
                 "id": 514969,
-                "date": 725760000
+                "date": 725760000,
+                "platform": 19
             },
             {
                 "id": 514968,
-                "date": 717292800
+                "date": 717292800,
+                "platform": 19
             }
         ],
         "priority": 54
@@ -3464,36 +4101,43 @@
             }
         ],
         "name": "Chrono Trigger",
-        "platform": "Super Nintendo",
+        "platform": null,
         "rating": 93.48214493746576,
         "release_dates": [
             {
                 "id": 554929,
-                "date": 807148800
+                "date": 807148800,
+                "platform": 306
             },
             {
                 "id": 526668,
-                "date": 794880000
+                "date": 794880000,
+                "platform": 58
             },
             {
                 "id": 526669,
-                "date": 808099200
+                "date": 808099200,
+                "platform": 19
             },
             {
                 "id": 526670,
-                "date": 1303776000
+                "date": 1303776000,
+                "platform": 5
             },
             {
                 "id": 526671,
-                "date": 1305849600
+                "date": 1305849600,
+                "platform": 5
             },
             {
                 "id": 526672,
-                "date": 1305504000
+                "date": 1305504000,
+                "platform": 5
             },
             {
                 "id": 526673,
-                "date": 1305849600
+                "date": 1305849600,
+                "platform": 5
             }
         ],
         "priority": 55
@@ -3517,12 +4161,13 @@
             }
         ],
         "name": "Final Fantasy VI: Ted Woolsey Uncensored Edition",
-        "platform": "Super Nintendo",
+        "platform": null,
         "rating": null,
         "release_dates": [
             {
                 "id": 622809,
-                "date": 1645228800
+                "date": 1645228800,
+                "platform": 58
             }
         ],
         "priority": 56
@@ -3550,40 +4195,48 @@
             }
         ],
         "name": "EarthBound",
-        "platform": "Super Nintendo",
+        "platform": null,
         "rating": 89.39665442996555,
         "release_dates": [
             {
                 "id": 487235,
-                "date": 802310400
+                "date": 802310400,
+                "platform": 19
             },
             {
                 "id": 592077,
-                "date": 1456963200
+                "date": 1456963200,
+                "platform": 137
             },
             {
                 "id": 592078,
-                "date": 1457049600
+                "date": 1457049600,
+                "platform": 137
             },
             {
                 "id": 592074,
-                "date": 1458691200
+                "date": 1458691200,
+                "platform": 137
             },
             {
                 "id": 487237,
-                "date": 1363737600
+                "date": 1363737600,
+                "platform": 41
             },
             {
                 "id": 487236,
-                "date": 1374105600
+                "date": 1374105600,
+                "platform": 41
             },
             {
                 "id": 487238,
-                "date": 1374019200
+                "date": 1374019200,
+                "platform": 41
             },
             {
                 "id": 487234,
-                "date": 777945600
+                "date": 777945600,
+                "platform": 58
             }
         ],
         "priority": 57
@@ -3607,16 +4260,21 @@
             }
         ],
         "name": "Street Fighter II",
-        "platform": "Arcade",
+        "platform": {
+            "id": 52,
+            "name": "Arcade"
+        },
         "rating": 82.64061884461982,
         "release_dates": [
             {
                 "id": 548247,
-                "date": 665798400
+                "date": 665798400,
+                "platform": 52
             },
             {
                 "id": 548248,
-                "date": 665366400
+                "date": 665366400,
+                "platform": 52
             }
         ],
         "priority": 58
@@ -3636,16 +4294,21 @@
             }
         ],
         "name": "Pac-Man",
-        "platform": "Arcade",
+        "platform": {
+            "id": 52,
+            "name": "Arcade"
+        },
         "rating": 78.07960251152983,
         "release_dates": [
             {
                 "id": 538312,
-                "date": 339206400
+                "date": 339206400,
+                "platform": 52
             },
             {
                 "id": 538311,
-                "date": 327801600
+                "date": 327801600,
+                "platform": 52
             }
         ],
         "priority": 59
@@ -3669,16 +4332,21 @@
             }
         ],
         "name": "Tetris Blast",
-        "platform": "Game Boy",
+        "platform": {
+            "id": 33,
+            "name": "Game Boy"
+        },
         "rating": 82,
         "release_dates": [
             {
                 "id": 365719,
-                "date": 795398400
+                "date": 795398400,
+                "platform": 33
             },
             {
                 "id": 365720,
-                "date": 820454400
+                "date": 820454400,
+                "platform": 33
             }
         ],
         "priority": 60
@@ -3702,40 +4370,48 @@
             }
         ],
         "name": "The Legend of Zelda: Link's Awakening DX",
-        "platform": "Game Boy",
+        "platform": null,
         "rating": 88.55088068766239,
         "release_dates": [
             {
                 "id": 500268,
-                "date": 913420800
+                "date": 913420800,
+                "platform": 22
             },
             {
                 "id": 514036,
-                "date": 915062400
+                "date": 915062400,
+                "platform": 22
             },
             {
                 "id": 514439,
-                "date": 1456876800
+                "date": 1456876800,
+                "platform": 37
             },
             {
                 "id": 500273,
-                "date": 1307491200
+                "date": 1307491200,
+                "platform": 37
             },
             {
                 "id": 500275,
-                "date": 1307491200
+                "date": 1307491200,
+                "platform": 37
             },
             {
                 "id": 500274,
-                "date": 1307404800
+                "date": 1307404800,
+                "platform": 37
             },
             {
                 "id": 500271,
-                "date": 913680000
+                "date": 913680000,
+                "platform": 22
             },
             {
                 "id": 500270,
-                "date": 915148800
+                "date": 915148800,
+                "platform": 22
             }
         ],
         "priority": 61
@@ -3763,40 +4439,51 @@
             }
         ],
         "name": "Pokémon Red Version",
-        "platform": "Game Boy",
+        "platform": {
+            "id": 33,
+            "name": "Game Boy"
+        },
         "rating": 84.79465997194771,
         "release_dates": [
             {
                 "id": 510088,
-                "date": 915062400
+                "date": 915062400,
+                "platform": 33
             },
             {
                 "id": 510089,
-                "date": 825379200
+                "date": 825379200,
+                "platform": 33
             },
             {
                 "id": 510090,
-                "date": 906940800
+                "date": 906940800,
+                "platform": 33
             },
             {
                 "id": 510091,
-                "date": 909100800
+                "date": 909100800,
+                "platform": 33
             },
             {
                 "id": 510092,
-                "date": 939081600
+                "date": 939081600,
+                "platform": 33
             },
             {
                 "id": 510093,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             },
             {
                 "id": 514034,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             },
             {
                 "id": 514687,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             }
         ],
         "priority": 62
@@ -3824,44 +4511,56 @@
             }
         ],
         "name": "Pokémon Blue Version",
-        "platform": "Game Boy",
+        "platform": {
+            "id": 33,
+            "name": "Game Boy"
+        },
         "rating": 86.13563384539049,
         "release_dates": [
             {
                 "id": 510095,
-                "date": 845337600
+                "date": 845337600,
+                "platform": 33
             },
             {
                 "id": 510096,
-                "date": 906940800
+                "date": 906940800,
+                "platform": 33
             },
             {
                 "id": 510097,
-                "date": 939081600
+                "date": 939081600,
+                "platform": 33
             },
             {
                 "id": 510098,
-                "date": 915062400
+                "date": 915062400,
+                "platform": 33
             },
             {
                 "id": 510099,
-                "date": 909100800
+                "date": 909100800,
+                "platform": 33
             },
             {
                 "id": 510100,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             },
             {
                 "id": 510101,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             },
             {
                 "id": 514022,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             },
             {
                 "id": 514684,
-                "date": 1456531200
+                "date": 1456531200,
+                "platform": 37
             }
         ],
         "priority": 63
@@ -3893,28 +4592,33 @@
             }
         ],
         "name": "Metroid Prime",
-        "platform": "GameCube",
+        "platform": null,
         "rating": 92.51783890387671,
         "release_dates": [
             {
                 "id": 509838,
-                "date": 1048204800
+                "date": 1048204800,
+                "platform": 21
             },
             {
                 "id": 509839,
-                "date": 1037491200
+                "date": 1037491200,
+                "platform": 21
             },
             {
                 "id": 509840,
-                "date": 1049328000
+                "date": 1049328000,
+                "platform": 21
             },
             {
                 "id": 509841,
-                "date": 1046390400
+                "date": 1046390400,
+                "platform": 21
             },
             {
                 "id": 593089,
-                "date": 1064448000
+                "date": 1064448000,
+                "platform": 21
             }
         ],
         "priority": 64
@@ -3942,28 +4646,33 @@
             }
         ],
         "name": "The Legend of Zelda: The Wind Waker",
-        "platform": "GameCube",
+        "platform": null,
         "rating": 87.4444847252377,
         "release_dates": [
             {
                 "id": 509760,
-                "date": 1050451200
+                "date": 1050451200,
+                "platform": 21
             },
             {
                 "id": 509761,
-                "date": 1048464000
+                "date": 1048464000,
+                "platform": 21
             },
             {
                 "id": 509762,
-                "date": 1052265600
+                "date": 1052265600,
+                "platform": 21
             },
             {
                 "id": 509763,
-                "date": 1039737600
+                "date": 1039737600,
+                "platform": 21
             },
             {
                 "id": 509764,
-                "date": 1051833600
+                "date": 1051833600,
+                "platform": 21
             }
         ],
         "priority": 65
@@ -3987,36 +4696,43 @@
             }
         ],
         "name": "Super Smash Bros. Melee",
-        "platform": "GameCube",
+        "platform": null,
         "rating": 88.86429625418232,
         "release_dates": [
             {
                 "id": 696478,
-                "date": 1041292800
+                "date": 1041292800,
+                "platform": 21
             },
             {
                 "id": 696497,
-                "date": 1030060800
+                "date": 1030060800,
+                "platform": 21
             },
             {
                 "id": 593074,
-                "date": 1022803200
+                "date": 1022803200,
+                "platform": 21
             },
             {
                 "id": 593076,
-                "date": 1006300800
+                "date": 1006300800,
+                "platform": 21
             },
             {
                 "id": 593073,
-                "date": 1007337600
+                "date": 1007337600,
+                "platform": 21
             },
             {
                 "id": 593075,
-                "date": 1022198400
+                "date": 1022198400,
+                "platform": 21
             },
             {
                 "id": 593088,
-                "date": 1041379200
+                "date": 1041379200,
+                "platform": 21
             }
         ],
         "priority": 66
@@ -4036,20 +4752,26 @@
             }
         ],
         "name": "Halo 3",
-        "platform": "Xbox 360",
+        "platform": {
+            "id": 12,
+            "name": "Xbox 360"
+        },
         "rating": 85.26075249399133,
         "release_dates": [
             {
                 "id": 210382,
-                "date": 1594598400
+                "date": 1594598400,
+                "platform": 6
             },
             {
                 "id": 2405,
-                "date": 1190678400
+                "date": 1190678400,
+                "platform": 12
             },
             {
                 "id": 168651,
-                "date": 1415664000
+                "date": 1415664000,
+                "platform": 49
             }
         ],
         "priority": 67
@@ -4069,28 +4791,36 @@
             }
         ],
         "name": "Gears of War 3",
-        "platform": "Xbox 360",
+        "platform": {
+            "id": 12,
+            "name": "Xbox 360"
+        },
         "rating": 82.38704805202302,
         "release_dates": [
             {
                 "id": 77302,
-                "date": 1316649600
+                "date": 1316649600,
+                "platform": 12
             },
             {
                 "id": 77299,
-                "date": 1316476800
+                "date": 1316476800,
+                "platform": 12
             },
             {
                 "id": 77301,
-                "date": 1316476800
+                "date": 1316476800,
+                "platform": 12
             },
             {
                 "id": 303400,
-                "date": 1332806400
+                "date": 1332806400,
+                "platform": 49
             },
             {
                 "id": 77300,
-                "date": 1316476800
+                "date": 1316476800,
+                "platform": 12
             }
         ],
         "priority": 68
@@ -4126,40 +4856,51 @@
             }
         ],
         "name": "Fable III",
-        "platform": "Xbox 360",
+        "platform": {
+            "id": 12,
+            "name": "Xbox 360"
+        },
         "rating": 68.36883283868231,
         "release_dates": [
             {
                 "id": 128320,
-                "date": 1305849600
+                "date": 1305849600,
+                "platform": 6
             },
             {
                 "id": 128315,
-                "date": 1288051200
+                "date": 1288051200,
+                "platform": 12
             },
             {
                 "id": 128316,
-                "date": 1288224000
+                "date": 1288224000,
+                "platform": 12
             },
             {
                 "id": 128317,
-                "date": 1288310400
+                "date": 1288310400,
+                "platform": 12
             },
             {
                 "id": 128318,
-                "date": 1305590400
+                "date": 1305590400,
+                "platform": 6
             },
             {
                 "id": 128319,
-                "date": 1305763200
+                "date": 1305763200,
+                "platform": 6
             },
             {
                 "id": 128321,
-                "date": 1305849600
+                "date": 1305849600,
+                "platform": 6
             },
             {
                 "id": 128314,
-                "date": 1288051200
+                "date": 1288051200,
+                "platform": 12
             }
         ],
         "priority": 69
@@ -4187,12 +4928,16 @@
             }
         ],
         "name": "Forza Motorsport 4",
-        "platform": "Xbox 360",
+        "platform": {
+            "id": 12,
+            "name": "Xbox 360"
+        },
         "rating": 83.17519599346701,
         "release_dates": [
             {
                 "id": 6759,
-                "date": 1318291200
+                "date": 1318291200,
+                "platform": 12
             }
         ],
         "priority": 70
@@ -4220,32 +4965,41 @@
             }
         ],
         "name": "Grand Theft Auto IV",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.47986483774685,
         "release_dates": [
             {
                 "id": 103341,
-                "date": 1209427200
+                "date": 1209427200,
+                "platform": 9
             },
             {
                 "id": 1609,
-                "date": 1228176000
+                "date": 1228176000,
+                "platform": 6
             },
             {
                 "id": 103343,
-                "date": 1225324800
+                "date": 1225324800,
+                "platform": 9
             },
             {
                 "id": 3316,
-                "date": 1209427200
+                "date": 1209427200,
+                "platform": 12
             },
             {
                 "id": 3315,
-                "date": 1209427200
+                "date": 1209427200,
+                "platform": 9
             },
             {
                 "id": 103342,
-                "date": 1209427200
+                "date": 1209427200,
+                "platform": 9
             }
         ],
         "priority": 71
@@ -4269,44 +5023,56 @@
             }
         ],
         "name": "BioShock Infinite",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 85.56712672191729,
         "release_dates": [
             {
                 "id": 48366,
-                "date": 1364169600
+                "date": 1364169600,
+                "platform": 6
             },
             {
                 "id": 48377,
-                "date": 1366848000
+                "date": 1366848000,
+                "platform": 9
             },
             {
                 "id": 48378,
-                "date": 1372377600
+                "date": 1372377600,
+                "platform": 6
             },
             {
                 "id": 48367,
-                "date": 1361836800
+                "date": 1361836800,
+                "platform": 9
             },
             {
                 "id": 48370,
-                "date": 1426550400
+                "date": 1426550400,
+                "platform": 3
             },
             {
                 "id": 48379,
-                "date": 1370044800
+                "date": 1370044800,
+                "platform": 14
             },
             {
                 "id": 48368,
-                "date": 1361836800
+                "date": 1361836800,
+                "platform": 12
             },
             {
                 "id": 48369,
-                "date": 1377734400
+                "date": 1377734400,
+                "platform": 14
             },
             {
                 "id": 48376,
-                "date": 1366848000
+                "date": 1366848000,
+                "platform": 12
             }
         ],
         "priority": 72
@@ -4330,28 +5096,36 @@
             }
         ],
         "name": "Far Cry 3",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 83.68232585697989,
         "release_dates": [
             {
                 "id": 2894,
-                "date": 1354060800
+                "date": 1354060800,
+                "platform": 9
             },
             {
                 "id": 102994,
-                "date": 1354579200
+                "date": 1354579200,
+                "platform": 9
             },
             {
                 "id": 2893,
-                "date": 1354060800
+                "date": 1354060800,
+                "platform": 12
             },
             {
                 "id": 102995,
-                "date": 1354233600
+                "date": 1354233600,
+                "platform": 9
             },
             {
                 "id": 2892,
-                "date": 1354060800
+                "date": 1354060800,
+                "platform": 6
             }
         ],
         "priority": 73
@@ -4375,40 +5149,51 @@
             }
         ],
         "name": "Assassin's Creed II",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 86.78032502111101,
         "release_dates": [
             {
                 "id": 107336,
-                "date": 1259798400
+                "date": 1259798400,
+                "platform": 9
             },
             {
                 "id": 242527,
-                "date": 1258416000
+                "date": 1258416000,
+                "platform": 12
             },
             {
                 "id": 107338,
-                "date": 1258416000
+                "date": 1258416000,
+                "platform": 9
             },
             {
                 "id": 118282,
-                "date": 1319155200
+                "date": 1319155200,
+                "platform": 39
             },
             {
                 "id": 107337,
-                "date": 1258588800
+                "date": 1258588800,
+                "platform": 9
             },
             {
                 "id": 458861,
-                "date": 1300320000
+                "date": 1300320000,
+                "platform": 14
             },
             {
                 "id": 242528,
-                "date": 1283299200
+                "date": 1283299200,
+                "platform": 14
             },
             {
                 "id": 242529,
-                "date": 1268092800
+                "date": 1268092800,
+                "platform": 6
             }
         ],
         "priority": 74
@@ -4432,44 +5217,56 @@
             }
         ],
         "name": "FIFA 21",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 68.59801635080512,
         "release_dates": [
             {
                 "id": 652212,
-                "date": 1602201600
+                "date": 1602201600,
+                "platform": 49
             },
             {
                 "id": 652210,
-                "date": 1602201600
+                "date": 1602201600,
+                "platform": 48
             },
             {
                 "id": 652207,
-                "date": 1601942400
+                "date": 1601942400,
+                "platform": 6
             },
             {
                 "id": 652213,
-                "date": 1607040000
+                "date": 1607040000,
+                "platform": 167
             },
             {
                 "id": 652211,
-                "date": 1601942400
+                "date": 1601942400,
+                "platform": 49
             },
             {
                 "id": 652209,
-                "date": 1601942400
+                "date": 1601942400,
+                "platform": 48
             },
             {
                 "id": 652208,
-                "date": 1602201600
+                "date": 1602201600,
+                "platform": 6
             },
             {
                 "id": 652206,
-                "date": 1615939200
+                "date": 1615939200,
+                "platform": 170
             },
             {
                 "id": 652214,
-                "date": 1607040000
+                "date": 1607040000,
+                "platform": 169
             }
         ],
         "priority": 75
@@ -4493,36 +5290,46 @@
             }
         ],
         "name": "NBA 2K21",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 70.22386436381694,
         "release_dates": [
             {
                 "id": 407765,
-                "date": 1599091200
+                "date": 1599091200,
+                "platform": 6
             },
             {
                 "id": 327686,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 167
             },
             {
                 "id": 203043,
-                "date": 1599177600
+                "date": 1599177600,
+                "platform": 48
             },
             {
                 "id": 214340,
-                "date": 1599177600
+                "date": 1599177600,
+                "platform": 170
             },
             {
                 "id": 214341,
-                "date": 1604966400
+                "date": 1604966400,
+                "platform": 169
             },
             {
                 "id": 205462,
-                "date": 1599177600
+                "date": 1599177600,
+                "platform": 130
             },
             {
                 "id": 205459,
-                "date": 1599177600
+                "date": 1599177600,
+                "platform": 49
             }
         ],
         "priority": 76
@@ -4550,28 +5357,36 @@
             }
         ],
         "name": "Madden NFL 21",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 70.10284606968402,
         "release_dates": [
             {
                 "id": 200356,
-                "date": 1598572800
+                "date": 1598572800,
+                "platform": 49
             },
             {
                 "id": 200358,
-                "date": 1598572800
+                "date": 1598572800,
+                "platform": 6
             },
             {
                 "id": 200355,
-                "date": 1598572800
+                "date": 1598572800,
+                "platform": 48
             },
             {
                 "id": 239712,
-                "date": 1611792000
+                "date": 1611792000,
+                "platform": 170
             },
             {
                 "id": 454835,
-                "date": 1590624000
+                "date": 1590624000,
+                "platform": 49
             }
         ],
         "priority": 77
@@ -4595,32 +5410,41 @@
             }
         ],
         "name": "PGA Tour 2K21",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 70.00425042112093,
         "release_dates": [
             {
                 "id": 409570,
-                "date": 1597881600
+                "date": 1597881600,
+                "platform": 6
             },
             {
                 "id": 339689,
-                "date": 1600992000
+                "date": 1600992000,
+                "platform": 130
             },
             {
                 "id": 195870,
-                "date": 1597968000
+                "date": 1597968000,
+                "platform": 49
             },
             {
                 "id": 195873,
-                "date": 1597968000
+                "date": 1597968000,
+                "platform": 130
             },
             {
                 "id": 195871,
-                "date": 1597968000
+                "date": 1597968000,
+                "platform": 48
             },
             {
                 "id": 195872,
-                "date": 1597968000
+                "date": 1597968000,
+                "platform": 170
             }
         ],
         "priority": 78
@@ -4648,40 +5472,51 @@
             }
         ],
         "name": "Sid Meier's Civilization V",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 85.32124429984997,
         "release_dates": [
             {
                 "id": 21880,
-                "date": 1402444800
+                "date": 1402444800,
+                "platform": 3
             },
             {
                 "id": 21878,
-                "date": 1285286400
+                "date": 1285286400,
+                "platform": 6
             },
             {
                 "id": 21877,
-                "date": 1285286400
+                "date": 1285286400,
+                "platform": 6
             },
             {
                 "id": 21879,
-                "date": 1288310400
+                "date": 1288310400,
+                "platform": 6
             },
             {
                 "id": 21875,
-                "date": 1290470400
+                "date": 1290470400,
+                "platform": 14
             },
             {
                 "id": 21876,
-                "date": 1285027200
+                "date": 1285027200,
+                "platform": 6
             },
             {
                 "id": 256740,
-                "date": 1285027200
+                "date": 1285027200,
+                "platform": 3
             },
             {
                 "id": 256739,
-                "date": 1285027200
+                "date": 1285027200,
+                "platform": 14
             }
         ],
         "priority": 79
@@ -4717,44 +5552,56 @@
             }
         ],
         "name": "XCOM: Enemy Unknown",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 82.7629517707017,
         "release_dates": [
             {
                 "id": 106992,
-                "date": 1349740800
+                "date": 1349740800,
+                "platform": 9
             },
             {
                 "id": 106993,
-                "date": 1350000000
+                "date": 1350000000,
+                "platform": 9
             },
             {
                 "id": 28292,
-                "date": 1366848000
+                "date": 1366848000,
+                "platform": 14
             },
             {
                 "id": 28293,
-                "date": 1403136000
+                "date": 1403136000,
+                "platform": 3
             },
             {
                 "id": 706586,
-                "date": 1349740800
+                "date": 1349740800,
+                "platform": 6
             },
             {
                 "id": 706587,
-                "date": 1349740800
+                "date": 1349740800,
+                "platform": 12
             },
             {
                 "id": 706588,
-                "date": 1350000000
+                "date": 1350000000,
+                "platform": 12
             },
             {
                 "id": 706589,
-                "date": 1398211200
+                "date": 1398211200,
+                "platform": 34
             },
             {
                 "id": 706342,
-                "date": 1371686400
+                "date": 1371686400,
+                "platform": 39
             }
         ],
         "priority": 80
@@ -4790,40 +5637,51 @@
             }
         ],
         "name": "The Banner Saga",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 85.10254587144382,
         "release_dates": [
             {
                 "id": 366821,
-                "date": 1416355200
+                "date": 1416355200,
+                "platform": 34
             },
             {
                 "id": 38235,
-                "date": 1389657600
+                "date": 1389657600,
+                "platform": 3
             },
             {
                 "id": 150199,
-                "date": 1412208000
+                "date": 1412208000,
+                "platform": 39
             },
             {
                 "id": 152926,
-                "date": 1452556800
+                "date": 1452556800,
+                "platform": 49
             },
             {
                 "id": 152927,
-                "date": 1389657600
+                "date": 1389657600,
+                "platform": 6
             },
             {
                 "id": 548201,
-                "date": 1526515200
+                "date": 1526515200,
+                "platform": 130
             },
             {
                 "id": 152928,
-                "date": 1389657600
+                "date": 1389657600,
+                "platform": 14
             },
             {
                 "id": 152930,
-                "date": 1452556800
+                "date": 1452556800,
+                "platform": 48
             }
         ],
         "priority": 81
@@ -4855,16 +5713,21 @@
             }
         ],
         "name": "Divinity: Original Sin 2 - Divine Ascension",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": null,
         "release_dates": [
             {
                 "id": 233710,
-                "date": 1505347200
+                "date": 1505347200,
+                "platform": 6
             },
             {
                 "id": 233711,
-                "date": 1505347200
+                "date": 1505347200,
+                "platform": 14
             }
         ],
         "priority": 82
@@ -4896,32 +5759,41 @@
             }
         ],
         "name": "Pillars of Eternity",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 80.45134266162991,
         "release_dates": [
             {
                 "id": 27760,
-                "date": 1427328000
+                "date": 1427328000,
+                "platform": 3
             },
             {
                 "id": 173441,
-                "date": 1565222400
+                "date": 1565222400,
+                "platform": 130
             },
             {
                 "id": 422404,
-                "date": 1649376000
+                "date": 1649376000,
+                "platform": 14
             },
             {
                 "id": 690647,
-                "date": 1503964800
+                "date": 1503964800,
+                "platform": 49
             },
             {
                 "id": 422403,
-                "date": 1427328000
+                "date": 1427328000,
+                "platform": 6
             },
             {
                 "id": 690646,
-                "date": 1503964800
+                "date": 1503964800,
+                "platform": 48
             }
         ],
         "priority": 83
@@ -4957,28 +5829,36 @@
             }
         ],
         "name": "Wasteland 2",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 72.40960985581177,
         "release_dates": [
             {
                 "id": 20045,
-                "date": 1411084800
+                "date": 1411084800,
+                "platform": 3
             },
             {
                 "id": 20046,
-                "date": 1411084800
+                "date": 1411084800,
+                "platform": 14
             },
             {
                 "id": 20047,
-                "date": 1411084800
+                "date": 1411084800,
+                "platform": 6
             },
             {
                 "id": 39508,
-                "date": 1444694400
+                "date": 1444694400,
+                "platform": 48
             },
             {
                 "id": 39509,
-                "date": 1444694400
+                "date": 1444694400,
+                "platform": 49
             }
         ],
         "priority": 84
@@ -5006,56 +5886,71 @@
             }
         ],
         "name": "Baldur's Gate: Enhanced Edition",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 81.40143412744486,
         "release_dates": [
             {
                 "id": 152033,
-                "date": 1411776000
+                "date": 1411776000,
+                "platform": 3
             },
             {
                 "id": 152034,
-                "date": 1397692800
+                "date": 1397692800,
+                "platform": 34
             },
             {
                 "id": 185213,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 48
             },
             {
                 "id": 299016,
-                "date": 1358294400
+                "date": 1358294400,
+                "platform": 6
             },
             {
                 "id": 152031,
-                "date": 1353974400
+                "date": 1353974400,
+                "platform": 6
             },
             {
                 "id": 152030,
-                "date": 1361491200
+                "date": 1361491200,
+                "platform": 14
             },
             {
                 "id": 152032,
-                "date": 1354752000
+                "date": 1354752000,
+                "platform": 39
             },
             {
                 "id": 175751,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 130
             },
             {
                 "id": 577679,
-                "date": 1362960000
+                "date": 1362960000,
+                "platform": 14
             },
             {
                 "id": 185212,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 49
             },
             {
                 "id": 299017,
-                "date": 1358294400
+                "date": 1358294400,
+                "platform": 14
             },
             {
                 "id": 299018,
-                "date": 1358294400
+                "date": 1358294400,
+                "platform": 3
             }
         ],
         "priority": 85
@@ -5083,40 +5978,51 @@
             }
         ],
         "name": "Icewind Dale: Enhanced Edition",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 77.27520726361577,
         "release_dates": [
             {
                 "id": 363485,
-                "date": 1414627200
+                "date": 1414627200,
+                "platform": 34
             },
             {
                 "id": 83045,
-                "date": 1414627200
+                "date": 1414627200,
+                "platform": 3
             },
             {
                 "id": 83043,
-                "date": 1414627200
+                "date": 1414627200,
+                "platform": 6
             },
             {
                 "id": 83044,
-                "date": 1414627200
+                "date": 1414627200,
+                "platform": 14
             },
             {
                 "id": 185210,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 49
             },
             {
                 "id": 176776,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 130
             },
             {
                 "id": 185211,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 48
             },
             {
                 "id": 577680,
-                "date": 1421193600
+                "date": 1421193600,
+                "platform": 14
             }
         ],
         "priority": 86
@@ -5140,56 +6046,71 @@
             }
         ],
         "name": "Neverwinter Nights: Enhanced Edition",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 62.18826868328683,
         "release_dates": [
             {
                 "id": 341882,
-                "date": 1575244800
+                "date": 1575244800,
+                "platform": 130
             },
             {
                 "id": 148910,
-                "date": 1522108800
+                "date": 1522108800,
+                "platform": 14
             },
             {
                 "id": 148909,
-                "date": 1522108800
+                "date": 1522108800,
+                "platform": 6
             },
             {
                 "id": 170531,
-                "date": 1575590400
+                "date": 1575590400,
+                "platform": 49
             },
             {
                 "id": 170397,
-                "date": 1575590400
+                "date": 1575590400,
+                "platform": 130
             },
             {
                 "id": 238073,
-                "date": 1540771200
+                "date": 1540771200,
+                "platform": 34
             },
             {
                 "id": 238071,
-                "date": 1575331200
+                "date": 1575331200,
+                "platform": 130
             },
             {
                 "id": 238072,
-                "date": 1597190400
+                "date": 1597190400,
+                "platform": 39
             },
             {
                 "id": 238075,
-                "date": 1575331200
+                "date": 1575331200,
+                "platform": 48
             },
             {
                 "id": 238074,
-                "date": 1575331200
+                "date": 1575331200,
+                "platform": 49
             },
             {
                 "id": 148911,
-                "date": 1522108800
+                "date": 1522108800,
+                "platform": 3
             },
             {
                 "id": 170532,
-                "date": 1575590400
+                "date": 1575590400,
+                "platform": 48
             }
         ],
         "priority": 87
@@ -5217,32 +6138,41 @@
             }
         ],
         "name": "The Outer Worlds",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 78.69168683159569,
         "release_dates": [
             {
                 "id": 170788,
-                "date": 1571961600
+                "date": 1571961600,
+                "platform": 48
             },
             {
                 "id": 170789,
-                "date": 1571961600
+                "date": 1571961600,
+                "platform": 49
             },
             {
                 "id": 417117,
-                "date": 1571961600
+                "date": 1571961600,
+                "platform": 6
             },
             {
                 "id": 286695,
-                "date": 1603411200
+                "date": 1603411200,
+                "platform": 6
             },
             {
                 "id": 339479,
-                "date": 1612915200
+                "date": 1612915200,
+                "platform": 130
             },
             {
                 "id": 198647,
-                "date": 1591315200
+                "date": 1591315200,
+                "platform": 130
             }
         ],
         "priority": 88
@@ -5270,36 +6200,46 @@
             }
         ],
         "name": "Cyberpunk 2077",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 81.64470226075738,
         "release_dates": [
             {
                 "id": 344301,
-                "date": 1644883200
+                "date": 1644883200,
+                "platform": 167
             },
             {
                 "id": 344300,
-                "date": 1644883200
+                "date": 1644883200,
+                "platform": 169
             },
             {
                 "id": 215923,
-                "date": 1607558400
+                "date": 1607558400,
+                "platform": 6
             },
             {
                 "id": 215922,
-                "date": 1607558400
+                "date": 1607558400,
+                "platform": 49
             },
             {
                 "id": 215920,
-                "date": 1607558400
+                "date": 1607558400,
+                "platform": 170
             },
             {
                 "id": 215921,
-                "date": 1607558400
+                "date": 1607558400,
+                "platform": 48
             },
             {
                 "id": 659463,
-                "date": 1767139200
+                "date": 1767139200,
+                "platform": 14
             }
         ],
         "priority": 89
@@ -5327,16 +6267,21 @@
             }
         ],
         "name": "Disco Elysium",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 94.51541156946865,
         "release_dates": [
             {
                 "id": 626730,
-                "date": 1571097600
+                "date": 1571097600,
+                "platform": 6
             },
             {
                 "id": 635922,
-                "date": 1587945600
+                "date": 1587945600,
+                "platform": 14
             }
         ],
         "priority": 90
@@ -5360,12 +6305,16 @@
             }
         ],
         "name": "Ground Control",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 81.46235875810669,
         "release_dates": [
             {
                 "id": 1619,
-                "date": 959817600
+                "date": 959817600,
+                "platform": 6
             }
         ],
         "priority": 91
@@ -5393,16 +6342,21 @@
             }
         ],
         "name": "Death Stranding",
-        "platform": "PC",
+        "platform": {
+            "id": 6,
+            "name": "PC (Microsoft Windows)"
+        },
         "rating": 86.62385649174907,
         "release_dates": [
             {
                 "id": 545846,
-                "date": 1573171200
+                "date": 1573171200,
+                "platform": 48
             },
             {
                 "id": 545845,
-                "date": 1594684800
+                "date": 1594684800,
+                "platform": 6
             }
         ],
         "priority": 92
@@ -5430,12 +6384,16 @@
             }
         ],
         "name": "Ghost of Tsushima",
-        "platform": "PlayStation 4",
+        "platform": {
+            "id": 48,
+            "name": "PlayStation 4"
+        },
         "rating": 89.17004936996896,
         "release_dates": [
             {
                 "id": 223511,
-                "date": 1594944000
+                "date": 1594944000,
+                "platform": 48
             }
         ],
         "priority": 93
@@ -5459,48 +6417,61 @@
             }
         ],
         "name": "Marvel's Spider-Man: Miles Morales",
-        "platform": "PlayStation 5",
+        "platform": {
+            "id": 167,
+            "name": "PlayStation 5"
+        },
         "rating": 80.23025252540612,
         "release_dates": [
             {
                 "id": 210957,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 167
             },
             {
                 "id": 397020,
-                "date": 1668729600
+                "date": 1668729600,
+                "platform": 6
             },
             {
                 "id": 210954,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 48
             },
             {
                 "id": 210958,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 167
             },
             {
                 "id": 210956,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 167
             },
             {
                 "id": 210959,
-                "date": 1605744000
+                "date": 1605744000,
+                "platform": 167
             },
             {
                 "id": 210960,
-                "date": 1605744000
+                "date": 1605744000,
+                "platform": 167
             },
             {
                 "id": 210953,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 167
             },
             {
                 "id": 210955,
-                "date": 1605139200
+                "date": 1605139200,
+                "platform": 167
             },
             {
                 "id": 210961,
-                "date": 1605744000
+                "date": 1605744000,
+                "platform": 167
             }
         ],
         "priority": 94
@@ -5528,16 +6499,21 @@
             }
         ],
         "name": "Ratchet & Clank: Rift Apart",
-        "platform": "PlayStation 5",
+        "platform": {
+            "id": 167,
+            "name": "PlayStation 5"
+        },
         "rating": 86.65075174437006,
         "release_dates": [
             {
                 "id": 539823,
-                "date": 1690329600
+                "date": 1690329600,
+                "platform": 6
             },
             {
                 "id": 539824,
-                "date": 1623369600
+                "date": 1623369600,
+                "platform": 167
             }
         ],
         "priority": 95
@@ -5561,20 +6537,26 @@
             }
         ],
         "name": "Horizon Forbidden West",
-        "platform": "PlayStation 5",
+        "platform": {
+            "id": 167,
+            "name": "PlayStation 5"
+        },
         "rating": 85.63572745227185,
         "release_dates": [
             {
                 "id": 557786,
-                "date": 1710979200
+                "date": 1710979200,
+                "platform": 6
             },
             {
                 "id": 557788,
-                "date": 1645142400
+                "date": 1645142400,
+                "platform": 167
             },
             {
                 "id": 557787,
-                "date": 1645142400
+                "date": 1645142400,
+                "platform": 48
             }
         ],
         "priority": 96

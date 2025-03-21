@@ -1,4 +1,4 @@
-import colorSwatch from "../helpers/colors";
+import colorSwatch from "../utils/colors";
 
 export type GameStatus = "preperation" | "in_progress" | "completed";
 

@@ -1,4 +1,4 @@
-import { GameStatus } from "./../data/types";
+import { GameStatus } from "../data/types";
 import { ESRB_RATINGS } from "../data/types";
 import { GameDetails } from "../interfaces/GameDetails";
 
@@ -26,16 +26,29 @@ function getAgeRatingForESRB(
     return esrbRating ?? "Unknown";
 }
 
+/**
+ * Maps an IGDB API response to our application's GameDetails format
+ * @param data The raw game data from IGDB API
+ * @returns GameDetails object in our application's format
+ */
 export const mapToGameDetails = (data: any): GameDetails => {
     const gameDetails: GameDetails = {
         id: data.id,
         name: data.name,
-        cover_url: data.cover?.url?.replace("t_thumb", "t_720p") || "",
-        platforms: data.platforms?.map((platform: any) => platform.name) || [],
-        release_date: data.release_dates?.[0]?.human || "",
+        cover: data.cover?.url?.replace("t_thumb", "t_720p") || "",
+        platforms:
+            data.platforms?.map((platform: any) => ({
+                id: platform.id,
+                name: platform.name,
+            })) || [],
+        release_dates: data.release_dates || [],
         rating: data.rating || 0,
         aggregated_rating: data.aggregated_rating,
-        genres: data.genres?.map((genre: any) => genre.name) || [],
+        genres:
+            data.genres?.map((genre: any) => ({
+                id: genre.id,
+                name: genre.name,
+            })) || [],
         summary: data.summary || "",
         screenshots:
             data.screenshots?.map((screenshot: any) => screenshot.url) || [],
@@ -56,17 +69,43 @@ export const mapToGameDetails = (data: any): GameDetails => {
         storyline: data.storyline || "",
         age_rating: getAgeRatingForESRB(data.age_ratings),
     };
-
-    for (let i: number = 0; i < gameDetails.screenshots.length; i++) {
-        gameDetails.screenshots[i] = gameDetails.screenshots[i].replace(
-            "t_thumb",
-            "t_original"
-        );
-    }
+    gameDetails.screenshots =
+        gameDetails.screenshots?.map((screenshot) =>
+            screenshot.replace("t_thumb", "t_original")
+        ) || [];
 
     return gameDetails;
 };
 
+/**
+ * Formats release dates in chronological order with platform information
+ * @param game The game details containing release dates
+ * @returns Array of formatted release date strings in the format "date (platform)"
+ */
+export function formatReleaseDates(game: GameDetails): string[] {
+    if (!game.release_dates || game.release_dates.length === 0) {
+        return [];
+    }
+
+    // Sort release dates by date in ascending order
+    const sortedDates = [...game.release_dates].sort((a, b) => a.date - b.date);
+
+    return sortedDates.map((release) => {
+        const date =
+            release.human ||
+            new Date(release.date * 1000).toISOString().split("T")[0];
+        const platform = release.platform
+            ? `Platform ${release.platform}`
+            : "Unknown Platform";
+        return `${date} (${platform})`;
+    });
+}
+
+/**
+ * Converts a GameStatus enum value to a human-readable string
+ * @param gameStatus The game status to convert
+ * @returns Human-readable status string
+ */
 export function getGameStatus(gameStatus: GameStatus): string {
     switch (gameStatus) {
         case "completed":

@@ -21,7 +21,7 @@ const colorSwatch = {
         lightGray: "#ABB2BF", // Softer Light Gray
         gray: "#676E95", // Muted Mid Gray (Comments)
         darkGray: "#1B2B34", // Near-Black Blue-Green
-        black: "#011627", // Night Owl’s Deepest Blue-Black
+        black: "#011627", // Night Owl's Deepest Blue-Black
     },
     background: {
         light: "#D6DEEB", // Soft Blue-Gray Background (Lighter UI elements)

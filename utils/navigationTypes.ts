@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
     Home: undefined;
-    QuestGameDetailPage: { name: string; id: number };
+    QuestGameDetailPage: { id: number; name: string };
 };
 
 export type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
