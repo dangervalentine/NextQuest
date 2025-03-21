@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DetailsScreenRouteProp } from "../helpers/navigationTypes";
 import colorSwatch from "../helpers/colors";
@@ -12,7 +12,7 @@ import { Image } from "expo-image";
 
 const GameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
-    const { id, name } = route.params;
+    const { id } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
 

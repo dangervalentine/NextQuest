@@ -1,14 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import GameSection from "./GameSection";
-import { questGames } from "../data/seedData";
 import colorSwatch from "../helpers/colors";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import HeaderWithIcon from "./HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { GameStatus } from "../data/types";
+import { QuestGameListItem } from "../interfaces/QuestGameListItem";
+const gamesData = require("../data/seedData.json");
 
 const Tab = createBottomTabNavigator();
+
+const questGames: QuestGameListItem[] = gamesData;
 
 const MainNavigationContainer: React.FC = () => {
     const tabScreens: {

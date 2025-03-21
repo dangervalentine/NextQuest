@@ -1,0 +1,5582 @@
+[
+    {
+        "id": 4122,
+        "gameStatus": "in_progress",
+        "cover": {
+            "id": 91101,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1yal.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Legacy of Kain: Soul Reaver",
+        "platform": "PlayStation",
+        "rating": 80.25547981392299,
+        "release_dates": [
+            {
+                "id": 23341,
+                "date": 936748800
+            },
+            {
+                "id": 23342,
+                "date": 934761600
+            },
+            {
+                "id": 197700,
+                "date": 1258588800
+            },
+            {
+                "id": 197701,
+                "date": 1299024000
+            },
+            {
+                "id": 197699,
+                "date": 1299024000
+            },
+            {
+                "id": 197698,
+                "date": 1258588800
+            },
+            {
+                "id": 23340,
+                "date": 1169856000
+            },
+            {
+                "id": 23345,
+                "date": 978220800
+            },
+            {
+                "id": 23343,
+                "date": 946598400
+            },
+            {
+                "id": 23344,
+                "date": 946598400
+            },
+            {
+                "id": 23348,
+                "date": 1354752000
+            }
+        ]
+    },
+    {
+        "id": 11737,
+        "gameStatus": "in_progress",
+        "cover": {
+            "id": 286788,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co65ac.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Outer Wilds",
+        "platform": "PC",
+        "rating": 90.750318694499,
+        "release_dates": [
+            {
+                "id": 376404,
+                "date": 1663200000
+            },
+            {
+                "id": 207369,
+                "date": 1571097600
+            },
+            {
+                "id": 207370,
+                "date": 1559001600
+            },
+            {
+                "id": 536384,
+                "date": 1701907200
+            },
+            {
+                "id": 536749,
+                "date": 1702339200
+            },
+            {
+                "id": 376405,
+                "date": 1663200000
+            },
+            {
+                "id": 301062,
+                "date": 1592438400
+            },
+            {
+                "id": 207368,
+                "date": 1559088000
+            }
+        ]
+    },
+    {
+        "id": 1133,
+        "gameStatus": "in_progress",
+        "cover": {
+            "id": 265444,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5otg.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Castlevania: Harmony of Dissonance",
+        "platform": "Game Boy Advance",
+        "rating": 74.87754202512723,
+        "release_dates": [
+            {
+                "id": 138217,
+                "date": 1424304000
+            },
+            {
+                "id": 138216,
+                "date": 1413417600
+            },
+            {
+                "id": 2860,
+                "date": 1023321600
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 329139,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co71yr.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            }
+        ],
+        "name": "Baldur's Gate II: Shadows of Amn",
+        "platform": "PC",
+        "rating": 89.88479085449315,
+        "release_dates": [
+            {
+                "id": 647494,
+                "date": 1413244800
+            },
+            {
+                "id": 647495,
+                "date": 1003104000
+            },
+            {
+                "id": 647496,
+                "date": 1003104000
+            },
+            {
+                "id": 647497,
+                "date": 970185600
+            },
+            {
+                "id": 647498,
+                "date": 969494400
+            },
+            {
+                "id": 647499,
+                "date": 994377600
+            }
+        ],
+        "priority": 1
+    },
+    {
+        "id": 1134,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 77081,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1nh5.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Castlevania: Aria of Sorrow",
+        "platform": "Game Boy Advance",
+        "rating": 88.40502660459595,
+        "release_dates": [
+            {
+                "id": 138208,
+                "date": 1426723200
+            },
+            {
+                "id": 138207,
+                "date": 1414022400
+            },
+            {
+                "id": 2861,
+                "date": 1052179200
+            }
+        ],
+        "priority": 2
+    },
+    {
+        "id": 23913,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 89765,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1x9h.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Dragon Quest VII: Fragments of the Forgotten Past",
+        "platform": "Nintendo 3DS",
+        "rating": 79.86202985433847,
+        "release_dates": [
+            {
+                "id": 366995,
+                "date": 1473984000
+            },
+            {
+                "id": 366996,
+                "date": 1473984000
+            },
+            {
+                "id": 57723,
+                "date": 1474070400
+            },
+            {
+                "id": 57720,
+                "date": 1360195200
+            }
+        ],
+        "priority": 3
+    },
+    {
+        "id": 145528,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 136512,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2xc0.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Dragon Quest VIII: Journey of the Cursed King",
+        "platform": "Nintendo 3DS",
+        "rating": 97.59981998116706,
+        "release_dates": [
+            {
+                "id": 249228,
+                "date": 1484784000
+            },
+            {
+                "id": 366997,
+                "date": 1440633600
+            },
+            {
+                "id": 237495,
+                "date": 1484956800
+            },
+            {
+                "id": 237494,
+                "date": 1484870400
+            }
+        ],
+        "priority": 4
+    },
+    {
+        "id": 217623,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 377322,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co8356.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 25,
+                "name": "Hack and slash/Beat 'em up"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Like a Dragon: Infinite Wealth",
+        "platform": "PC",
+        "rating": 83.41520644163845,
+        "release_dates": [
+            {
+                "id": 517413,
+                "date": 1706227200
+            },
+            {
+                "id": 517410,
+                "date": 1706227200
+            },
+            {
+                "id": 517411,
+                "date": 1706227200
+            },
+            {
+                "id": 517414,
+                "date": 1706227200
+            },
+            {
+                "id": 517412,
+                "date": 1706227200
+            }
+        ],
+        "priority": 5
+    },
+    {
+        "id": 1107,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 87282,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1vci.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Metroid: Zero Mission",
+        "platform": "Game Boy Advance",
+        "rating": 85.95291900533473,
+        "release_dates": [
+            {
+                "id": 44193,
+                "date": 1081382400
+            },
+            {
+                "id": 110344,
+                "date": 1452729600
+            },
+            {
+                "id": 110342,
+                "date": 1079654400
+            },
+            {
+                "id": 44192,
+                "date": 1076284800
+            },
+            {
+                "id": 110346,
+                "date": 1426118400
+            },
+            {
+                "id": 141355,
+                "date": 1428796800
+            },
+            {
+                "id": 110343,
+                "date": 1403136000
+            },
+            {
+                "id": 501898,
+                "date": 1118793600
+            },
+            {
+                "id": 44194,
+                "date": 1085616000
+            }
+        ],
+        "priority": 6
+    },
+    {
+        "id": 1517,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 92655,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1zhr.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Pokémon Emerald Version",
+        "platform": "Game Boy Advance",
+        "rating": 86.13380033074735,
+        "release_dates": [
+            {
+                "id": 48569,
+                "date": 1118275200
+            },
+            {
+                "id": 48570,
+                "date": 1129852800
+            },
+            {
+                "id": 48568,
+                "date": 1114905600
+            },
+            {
+                "id": 48571,
+                "date": 1095292800
+            }
+        ],
+        "priority": 7
+    },
+    {
+        "id": 76882,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 106347,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2a23.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Sekiro: Shadows Die Twice",
+        "platform": "PC",
+        "rating": 91.38329516867239,
+        "release_dates": [
+            {
+                "id": 157282,
+                "date": 1553212800
+            },
+            {
+                "id": 157283,
+                "date": 1553212800
+            },
+            {
+                "id": 239669,
+                "date": 1603843200
+            },
+            {
+                "id": 157284,
+                "date": 1553212800
+            }
+        ],
+        "priority": 8
+    },
+    {
+        "id": 325594,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 426975,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co95gf.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Split Fiction",
+        "platform": "PC",
+        "rating": 98.23957521378026,
+        "release_dates": [
+            {
+                "id": 676367,
+                "date": 1741219200
+            },
+            {
+                "id": 676414,
+                "date": 1741219200
+            },
+            {
+                "id": 676415,
+                "date": 1741219200
+            }
+        ],
+        "priority": 9
+    },
+    {
+        "id": 1103,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 265426,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5osy.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Super Metroid",
+        "platform": "Super Nintendo",
+        "rating": 92.90767314788532,
+        "release_dates": [
+            {
+                "id": 548650,
+                "date": 775699200
+            },
+            {
+                "id": 514935,
+                "date": 766627200
+            },
+            {
+                "id": 514936,
+                "date": 775353600
+            },
+            {
+                "id": 514938,
+                "date": 1187568000
+            },
+            {
+                "id": 514939,
+                "date": 1190246400
+            },
+            {
+                "id": 514940,
+                "date": 1209168000
+            },
+            {
+                "id": 514941,
+                "date": 1192147200
+            },
+            {
+                "id": 514942,
+                "date": 1192147200
+            },
+            {
+                "id": 514943,
+                "date": 1368662400
+            },
+            {
+                "id": 514944,
+                "date": 1368576000
+            },
+            {
+                "id": 591945,
+                "date": 1460592000
+            },
+            {
+                "id": 592832,
+                "date": 851990400
+            },
+            {
+                "id": 592833,
+                "date": 878342400
+            },
+            {
+                "id": 514945,
+                "date": 1368576000
+            },
+            {
+                "id": 514946,
+                "date": 764035200
+            }
+        ],
+        "priority": 10
+    },
+    {
+        "id": 1035,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 170804,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3nsk.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Legend of Zelda: The Minish Cap",
+        "platform": "Game Boy Advance",
+        "rating": 84.54129085334854,
+        "release_dates": [
+            {
+                "id": 496338
+            },
+            {
+                "id": 528974,
+                "date": 1099526400
+            },
+            {
+                "id": 528976,
+                "date": 1100217600
+            },
+            {
+                "id": 528977,
+                "date": 1105315200
+            },
+            {
+                "id": 528975,
+                "date": 1112832000
+            },
+            {
+                "id": 528978,
+                "date": 1323993600
+            },
+            {
+                "id": 528979,
+                "date": 1323993600
+            },
+            {
+                "id": 528980,
+                "date": 1401321600
+            },
+            {
+                "id": 528981,
+                "date": 1398816000
+            },
+            {
+                "id": 528982,
+                "date": 1401926400
+            },
+            {
+                "id": 528983,
+                "date": 1401321600
+            }
+        ],
+        "priority": 11
+    },
+    {
+        "id": 277143,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 344601,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co7dw9.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Last of Us Part II: Remastered",
+        "platform": "PC",
+        "rating": 90.39607391851493,
+        "release_dates": [
+            {
+                "id": 537746,
+                "date": 1705622400
+            },
+            {
+                "id": 676410,
+                "date": 1743638400
+            }
+        ],
+        "priority": 12
+    },
+    {
+        "id": 6635,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 155252,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3bsk.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 24,
+                "name": "Tactical"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Tactics Ogre: The Knight of Lodis",
+        "platform": "Game Boy Advance",
+        "rating": 80.08778964432507,
+        "release_dates": [
+            {
+                "id": 54040,
+                "date": 1021075200
+            },
+            {
+                "id": 54039,
+                "date": 993081600
+            }
+        ],
+        "priority": 13
+    },
+    {
+        "id": 119133,
+        "gameStatus": "completed",
+        "cover": {
+            "id": 212094,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co4jni.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Elden Ring",
+        "platform": "PC (Microsoft Windows)",
+        "rating": 95.33056844468483,
+        "notes": "This game was long but fun throughout the whole experience. A second playthrough is on the horizon.",
+        "personalRating": 9,
+        "release_dates": [
+            {
+                "id": 320703,
+                "date": 1645747200
+            },
+            {
+                "id": 320704,
+                "date": 1645747200
+            },
+            {
+                "id": 320705,
+                "date": 1645747200
+            },
+            {
+                "id": 320706,
+                "date": 1645747200
+            },
+            {
+                "id": 320707,
+                "date": 1645747200
+            }
+        ]
+    },
+    {
+        "id": 1029,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 170637,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3nnx.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Legend of Zelda: Ocarina of Time",
+        "platform": "Nintendo 64",
+        "rating": 91.874989488062,
+        "release_dates": [
+            {
+                "id": 549097,
+                "date": 912470400
+            },
+            {
+                "id": 509633,
+                "date": 913939200
+            },
+            {
+                "id": 509634,
+                "date": 913334400
+            },
+            {
+                "id": 509635,
+                "date": 911779200
+            },
+            {
+                "id": 509636,
+                "date": 911606400
+            },
+            {
+                "id": 509638,
+                "date": 1069113600
+            },
+            {
+                "id": 509639,
+                "date": 1172534400
+            },
+            {
+                "id": 509640,
+                "date": 1172448000
+            },
+            {
+                "id": 509641,
+                "date": 1172188800
+            },
+            {
+                "id": 509642,
+                "date": 1172188800
+            },
+            {
+                "id": 520502,
+                "date": 915062400
+            },
+            {
+                "id": 625294,
+                "date": 1450828800
+            },
+            {
+                "id": 625295,
+                "date": 1435881600
+            },
+            {
+                "id": 509644,
+                "date": 1435795200
+            },
+            {
+                "id": 509643,
+                "date": 1435795200
+            },
+            {
+                "id": 626340
+            }
+        ],
+        "priority": 14
+    },
+    {
+        "id": 1074,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 329251,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co721v.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Super Mario 64",
+        "platform": "Nintendo 64",
+        "rating": 88.97355221834381,
+        "release_dates": [
+            {
+                "id": 509696,
+                "date": 857174400
+            },
+            {
+                "id": 509698,
+                "date": 857174400
+            },
+            {
+                "id": 509700,
+                "date": 843955200
+            },
+            {
+                "id": 509704,
+                "date": 1427846400
+            },
+            {
+                "id": 592130,
+                "date": 915062400
+            },
+            {
+                "id": 509702,
+                "date": 1165536000
+            },
+            {
+                "id": 509697,
+                "date": 835488000
+            },
+            {
+                "id": 509701,
+                "date": 1165449600
+            },
+            {
+                "id": 509699,
+                "date": 843955200
+            },
+            {
+                "id": 509703,
+                "date": 1163894400
+            },
+            {
+                "id": 509706,
+                "date": 1427932800
+            },
+            {
+                "id": 509705,
+                "date": 1427846400
+            }
+        ],
+        "priority": 15
+    },
+    {
+        "id": 425,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 138937,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2z7d.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Final Fantasy VIII",
+        "platform": "PlayStation",
+        "rating": 81.51467653705939,
+        "release_dates": [
+            {
+                "id": 363133,
+                "date": 1261612800
+            },
+            {
+                "id": 22969,
+                "date": 918691200
+            },
+            {
+                "id": 363756,
+                "date": 1261008000
+            },
+            {
+                "id": 103094,
+                "date": 940982400
+            },
+            {
+                "id": 363134,
+                "date": 1253750400
+            },
+            {
+                "id": 363135,
+                "date": 1261008000
+            },
+            {
+                "id": 103093,
+                "date": 936835200
+            },
+            {
+                "id": 230414,
+                "date": 1253750400
+            },
+            {
+                "id": 363136,
+                "date": 1261612800
+            },
+            {
+                "id": 363138,
+                "date": 1261008000
+            },
+            {
+                "id": 22975,
+                "date": 941155200
+            },
+            {
+                "id": 363139,
+                "date": 1261612800
+            },
+            {
+                "id": 363137,
+                "date": 1253750400
+            }
+        ],
+        "priority": 16
+    },
+    {
+        "id": 7346,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 172453,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3p2d.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Legend of Zelda: Breath of the Wild",
+        "platform": "Nintendo Switch",
+        "rating": 92.73551926187747,
+        "release_dates": [
+            {
+                "id": 477498,
+                "date": 1488499200
+            },
+            {
+                "id": 477499,
+                "date": 1488499200
+            },
+            {
+                "id": 692491,
+                "date": 1666656000
+            }
+        ],
+        "priority": 17
+    },
+    {
+        "id": 233,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 77288,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1nmw.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Half-Life 2",
+        "platform": "PC",
+        "rating": 90.72577447273366,
+        "release_dates": [
+            {
+                "id": 499671,
+                "date": 1399852800
+            },
+            {
+                "id": 499676,
+                "date": 1100563200
+            },
+            {
+                "id": 499686,
+                "date": 1191974400
+            },
+            {
+                "id": 499687,
+                "date": 1193270400
+            },
+            {
+                "id": 499683,
+                "date": 1191888000
+            },
+            {
+                "id": 499674,
+                "date": 1133481600
+            },
+            {
+                "id": 499677,
+                "date": 1197590400
+            },
+            {
+                "id": 499678,
+                "date": 1197331200
+            },
+            {
+                "id": 499675,
+                "date": 1100563200
+            },
+            {
+                "id": 499673,
+                "date": 1274832000
+            },
+            {
+                "id": 499679,
+                "date": 1197331200
+            },
+            {
+                "id": 499680,
+                "date": 1198108800
+            },
+            {
+                "id": 499682,
+                "date": 1132272000
+            },
+            {
+                "id": 499684,
+                "date": 1192752000
+            },
+            {
+                "id": 499672,
+                "date": 1368057600
+            },
+            {
+                "id": 499681,
+                "date": 1132012800
+            },
+            {
+                "id": 499685,
+                "date": 1211414400
+            }
+        ],
+        "priority": 18
+    },
+    {
+        "id": 1020,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 120937,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2lbd.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 10,
+                "name": "Racing"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Grand Theft Auto V",
+        "platform": "PC",
+        "rating": 89.51430031911076,
+        "release_dates": [
+            {
+                "id": 20291,
+                "date": 1416268800
+            },
+            {
+                "id": 403430,
+                "date": 1428883200
+            },
+            {
+                "id": 20294,
+                "date": 1379376000
+            },
+            {
+                "id": 20293,
+                "date": 1379376000
+            },
+            {
+                "id": 20290,
+                "date": 1416268800
+            }
+        ],
+        "priority": 19
+    },
+    {
+        "id": 1009,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 81915,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1r7f.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Last of Us",
+        "platform": "PlayStation 3",
+        "rating": 93.08635676698536,
+        "release_dates": [
+            {
+                "id": 106245,
+                "date": 1371168000
+            },
+            {
+                "id": 106244,
+                "date": 1371168000
+            }
+        ],
+        "priority": 20
+    },
+    {
+        "id": 25076,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 80403,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1q1f.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Red Dead Redemption 2",
+        "platform": "PC",
+        "rating": 93.0345021031779,
+        "release_dates": [
+            {
+                "id": 177006,
+                "date": 1572912000
+            },
+            {
+                "id": 137265,
+                "date": 1540512000
+            },
+            {
+                "id": 137266,
+                "date": 1540512000
+            },
+            {
+                "id": 179286,
+                "date": 1574121600
+            }
+        ],
+        "priority": 21
+    },
+    {
+        "id": 20,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 122598,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2mli.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "BioShock",
+        "platform": "PC",
+        "rating": 86.74514743610011,
+        "release_dates": [
+            {
+                "id": 421693,
+                "date": 1254873600
+            },
+            {
+                "id": 223939,
+                "date": 1187913600
+            },
+            {
+                "id": 533505,
+                "date": 1256256000
+            },
+            {
+                "id": 384050,
+                "date": 1203552000
+            },
+            {
+                "id": 421106,
+                "date": 1187654400
+            },
+            {
+                "id": 223936,
+                "date": 1187654400
+            }
+        ],
+        "priority": 22
+    },
+    {
+        "id": 1942,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 89386,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1wyy.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Witcher 3: Wild Hunt",
+        "platform": "PC",
+        "rating": 93.90359497661224,
+        "release_dates": [
+            {
+                "id": 23744,
+                "date": 1431993600
+            },
+            {
+                "id": 23743,
+                "date": 1431993600
+            },
+            {
+                "id": 226672,
+                "date": 1611792000
+            },
+            {
+                "id": 431187,
+                "date": 1670976000
+            },
+            {
+                "id": 23745,
+                "date": 1431993600
+            },
+            {
+                "id": 430627,
+                "date": 1670976000
+            }
+        ],
+        "priority": 23
+    },
+    {
+        "id": 72,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 82660,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1rs4.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Portal 2",
+        "platform": "PC",
+        "rating": 91.56021675020044,
+        "release_dates": [
+            {
+                "id": 707265,
+                "date": 1303430400
+            },
+            {
+                "id": 707266,
+                "date": 1303430400
+            },
+            {
+                "id": 707259,
+                "date": 1303084800
+            },
+            {
+                "id": 485080,
+                "date": 1656374400
+            },
+            {
+                "id": 591612,
+                "date": 1393372800
+            },
+            {
+                "id": 707260,
+                "date": 1303084800
+            },
+            {
+                "id": 707261,
+                "date": 1303257600
+            },
+            {
+                "id": 707262,
+                "date": 1303430400
+            },
+            {
+                "id": 707263,
+                "date": 1303430400
+            },
+            {
+                "id": 707264,
+                "date": 1303257600
+            }
+        ],
+        "priority": 24
+    },
+    {
+        "id": 74,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 93684,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co20ac.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Mass Effect 2",
+        "platform": "PC",
+        "rating": 91.34341153137642,
+        "release_dates": [
+            {
+                "id": 404975,
+                "date": 1264464000
+            },
+            {
+                "id": 107957,
+                "date": 1295308800
+            },
+            {
+                "id": 20917,
+                "date": 1296086400
+            },
+            {
+                "id": 20914,
+                "date": 1264723200
+            },
+            {
+                "id": 20912,
+                "date": 1264636800
+            },
+            {
+                "id": 20913,
+                "date": 1264723200
+            },
+            {
+                "id": 107956,
+                "date": 1295568000
+            },
+            {
+                "id": 20910,
+                "date": 1264464000
+            }
+        ],
+        "priority": 25
+    },
+    {
+        "id": 1070,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 401336,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co8lo8.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Super Mario World",
+        "platform": "Super Nintendo",
+        "rating": 92.2695002412874,
+        "release_dates": [
+            {
+                "id": 505220,
+                "date": 659145600
+            },
+            {
+                "id": 592197,
+                "date": 851990400
+            },
+            {
+                "id": 592198,
+                "date": 904608000
+            },
+            {
+                "id": 592043,
+                "date": 1456963200
+            },
+            {
+                "id": 592044,
+                "date": 1456963200
+            },
+            {
+                "id": 592046,
+                "date": 1456963200
+            },
+            {
+                "id": 592049,
+                "date": 1456963200
+            },
+            {
+                "id": 592037,
+                "date": 694137600
+            },
+            {
+                "id": 505228,
+                "date": 1170979200
+            },
+            {
+                "id": 505221,
+                "date": 682905600
+            },
+            {
+                "id": 505234,
+                "date": 1366934400
+            },
+            {
+                "id": 505222,
+                "date": 709948800
+            },
+            {
+                "id": 505224,
+                "date": 702950400
+            },
+            {
+                "id": 505232,
+                "date": 1367107200
+            },
+            {
+                "id": 505227,
+                "date": 1209168000
+            },
+            {
+                "id": 505229,
+                "date": 1165017600
+            },
+            {
+                "id": 505225,
+                "date": 746668800
+            },
+            {
+                "id": 505226,
+                "date": 1170979200
+            },
+            {
+                "id": 505230,
+                "date": 1170633600
+            },
+            {
+                "id": 505231,
+                "date": 1367020800
+            },
+            {
+                "id": 505233,
+                "date": 1367020800
+            },
+            {
+                "id": 505223,
+                "date": 694137600
+            }
+        ],
+        "priority": 26
+    },
+    {
+        "id": 472,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 85100,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1tnw.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Elder Scrolls V: Skyrim",
+        "platform": "PC",
+        "rating": 87.54630602481492,
+        "release_dates": [
+            {
+                "id": 106167,
+                "date": 1323302400
+            },
+            {
+                "id": 417931,
+                "date": 1320883200
+            },
+            {
+                "id": 106168,
+                "date": 1320969600
+            },
+            {
+                "id": 21154,
+                "date": 1320969600
+            },
+            {
+                "id": 21666,
+                "date": 1323302400
+            },
+            {
+                "id": 282088,
+                "date": 1320883200
+            },
+            {
+                "id": 106169,
+                "date": 1320969600
+            },
+            {
+                "id": 21664,
+                "date": 1323302400
+            },
+            {
+                "id": 21155,
+                "date": 1320969600
+            }
+        ],
+        "priority": 27
+    },
+    {
+        "id": 375,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 352610,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co7k2q.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 24,
+                "name": "Tactical"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Metal Gear Solid",
+        "platform": "PlayStation",
+        "rating": 90.55479005370015,
+        "release_dates": [
+            {
+                "id": 474533,
+                "date": 904780800
+            },
+            {
+                "id": 645183,
+                "date": 919641600
+            },
+            {
+                "id": 645182,
+                "date": 972000000
+            },
+            {
+                "id": 645184,
+                "date": 908841600
+            },
+            {
+                "id": 705518,
+                "date": 1258588800
+            },
+            {
+                "id": 705519,
+                "date": 1245283200
+            },
+            {
+                "id": 705520,
+                "date": 1206057600
+            },
+            {
+                "id": 705521,
+                "date": 1258588800
+            },
+            {
+                "id": 705522,
+                "date": 1245283200
+            },
+            {
+                "id": 705523,
+                "date": 1206057600
+            },
+            {
+                "id": 645181,
+                "date": 969580800
+            }
+        ],
+        "priority": 28
+    },
+    {
+        "id": 740,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 128403,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2r2r.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Halo: Combat Evolved",
+        "platform": "PC",
+        "rating": 83.90781132517998,
+        "release_dates": [
+            {
+                "id": 22934,
+                "date": 1016064000
+            },
+            {
+                "id": 22935,
+                "date": 1019692800
+            },
+            {
+                "id": 27598,
+                "date": 1070409600
+            },
+            {
+                "id": 27597,
+                "date": 1070409600
+            },
+            {
+                "id": 231330,
+                "date": 1196726400
+            },
+            {
+                "id": 22931,
+                "date": 1064880000
+            },
+            {
+                "id": 22933,
+                "date": 1065744000
+            },
+            {
+                "id": 22932,
+                "date": 1005782400
+            },
+            {
+                "id": 458454,
+                "date": 1076457600
+            }
+        ],
+        "priority": 29
+    },
+    {
+        "id": 121,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 393774,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co8fu6.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Minecraft: Java Edition",
+        "platform": "PC",
+        "rating": 84.46443481434338,
+        "release_dates": [
+            {
+                "id": 482992,
+                "date": 1321574400
+            },
+            {
+                "id": 482989,
+                "date": 1321574400
+            },
+            {
+                "id": 482997,
+                "date": 1277856000
+            },
+            {
+                "id": 482990,
+                "date": 1292803200
+            },
+            {
+                "id": 482995,
+                "date": 1321574400
+            },
+            {
+                "id": 482991,
+                "date": 1277856000
+            },
+            {
+                "id": 482996,
+                "date": 1292803200
+            },
+            {
+                "id": 482994,
+                "date": 1277856000
+            },
+            {
+                "id": 482993,
+                "date": 1292803200
+            }
+        ],
+        "priority": 30
+    },
+    {
+        "id": 241,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 375465,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co81pl.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Counter-Strike",
+        "platform": "PC",
+        "rating": 83.29450327582325,
+        "release_dates": [
+            {
+                "id": 377412,
+                "date": 973728000
+            },
+            {
+                "id": 296958,
+                "date": 1360800000
+            },
+            {
+                "id": 296959,
+                "date": 1360800000
+            }
+        ],
+        "priority": 31
+    },
+    {
+        "id": 123,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 120815,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2l7z.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "World of Warcraft",
+        "platform": "PC",
+        "rating": 83.86097131515847,
+        "release_dates": [
+            {
+                "id": 48,
+                "date": 1101168000
+            },
+            {
+                "id": 28789,
+                "date": 1108080000
+            },
+            {
+                "id": 28788,
+                "date": 1101168000
+            }
+        ],
+        "priority": 32
+    },
+    {
+        "id": 8173,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 82091,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1rcb.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            }
+        ],
+        "name": "Overwatch",
+        "platform": "PC",
+        "rating": 81.93160998147575,
+        "release_dates": [
+            {
+                "id": 475597,
+                "date": 1464048000
+            },
+            {
+                "id": 475599,
+                "date": 1464048000
+            },
+            {
+                "id": 475601,
+                "date": 1464048000
+            },
+            {
+                "id": 475602,
+                "date": 1664755200
+            },
+            {
+                "id": 475598,
+                "date": 1664755200
+            },
+            {
+                "id": 475604,
+                "date": 1571097600
+            },
+            {
+                "id": 475600,
+                "date": 1664755200
+            }
+        ],
+        "priority": 33
+    },
+    {
+        "id": 293,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 82357,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1rjp.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            }
+        ],
+        "name": "Sid Meier's Civilization IV",
+        "platform": "PC",
+        "rating": 85.34482887217179,
+        "release_dates": [
+            {
+                "id": 1016,
+                "date": 1130198400
+            },
+            {
+                "id": 1017,
+                "date": 1151625600
+            }
+        ],
+        "priority": 34
+    },
+    {
+        "id": 623,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 88872,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1wko.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            }
+        ],
+        "name": "Call of Duty 4: Modern Warfare",
+        "platform": "PC",
+        "rating": 84.24550472388904,
+        "release_dates": [
+            {
+                "id": 84351,
+                "date": 1194566400
+            },
+            {
+                "id": 84347,
+                "date": 1296172800
+            },
+            {
+                "id": 84349,
+                "date": 1194393600
+            },
+            {
+                "id": 84344,
+                "date": 1194220800
+            },
+            {
+                "id": 84342,
+                "date": 1194220800
+            },
+            {
+                "id": 84350,
+                "date": 1194393600
+            },
+            {
+                "id": 84348,
+                "date": 1194393600
+            },
+            {
+                "id": 84346,
+                "date": 1222387200
+            },
+            {
+                "id": 84352,
+                "date": 1194566400
+            },
+            {
+                "id": 84353,
+                "date": 1194566400
+            },
+            {
+                "id": 84343,
+                "date": 1194220800
+            }
+        ],
+        "priority": 35
+    },
+    {
+        "id": 230,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 89699,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1x7n.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 11,
+                "name": "Real Time Strategy (RTS)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            }
+        ],
+        "name": "StarCraft",
+        "platform": "PC",
+        "rating": 88.43488025524194,
+        "release_dates": [
+            {
+                "id": 27155,
+                "date": 922665600
+            },
+            {
+                "id": 27156,
+                "date": 891302400
+            },
+            {
+                "id": 27157,
+                "date": 915062400
+            }
+        ],
+        "priority": 36
+    },
+    {
+        "id": 223,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 398206,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co8j9a.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            }
+        ],
+        "name": "The Sims",
+        "platform": "PC",
+        "rating": 79.76468237660791,
+        "release_dates": [
+            {
+                "id": 300629,
+                "date": 949622400
+            },
+            {
+                "id": 300635,
+                "date": 997833600
+            },
+            {
+                "id": 300630,
+                "date": 964483200
+            },
+            {
+                "id": 300636,
+                "date": 1047427200
+            },
+            {
+                "id": 422029,
+                "date": 950227200
+            }
+        ],
+        "priority": 37
+    },
+    {
+        "id": 15,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 91184,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1ycw.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            }
+        ],
+        "name": "Fallout 3",
+        "platform": "PC",
+        "rating": 83.33094692074695,
+        "release_dates": [
+            {
+                "id": 102969,
+                "date": 1231977600
+            },
+            {
+                "id": 102968,
+                "date": 1225411200
+            },
+            {
+                "id": 592477,
+                "date": 1225152000
+            },
+            {
+                "id": 592478,
+                "date": 1225411200
+            },
+            {
+                "id": 592481,
+                "date": 1225411200
+            },
+            {
+                "id": 102967,
+                "date": 1225152000
+            },
+            {
+                "id": 592480,
+                "date": 1225152000
+            },
+            {
+                "id": 592479,
+                "date": 1225411200
+            },
+            {
+                "id": 592482,
+                "date": 1225411200
+            }
+        ],
+        "priority": 38
+    },
+    {
+        "id": 120,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 120594,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2l1u.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 25,
+                "name": "Hack and slash/Beat 'em up"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Diablo III",
+        "platform": "PC",
+        "rating": 78.30901485523997,
+        "release_dates": [
+            {
+                "id": 102529,
+                "date": 1378425600
+            },
+            {
+                "id": 22595,
+                "date": 1378166400
+            },
+            {
+                "id": 22592,
+                "date": 1378166400
+            },
+            {
+                "id": 22602,
+                "date": 1408579200
+            },
+            {
+                "id": 22589,
+                "date": 1337040000
+            },
+            {
+                "id": 22588,
+                "date": 1337040000
+            },
+            {
+                "id": 22594,
+                "date": 1391040000
+            },
+            {
+                "id": 22593,
+                "date": 1378252800
+            },
+            {
+                "id": 22598,
+                "date": 1378252800
+            },
+            {
+                "id": 22603,
+                "date": 1408406400
+            },
+            {
+                "id": 22596,
+                "date": 1378166400
+            },
+            {
+                "id": 102528,
+                "date": 1378166400
+            },
+            {
+                "id": 22597,
+                "date": 1378166400
+            },
+            {
+                "id": 22599,
+                "date": 1408406400
+            },
+            {
+                "id": 22601,
+                "date": 1408406400
+            },
+            {
+                "id": 22605,
+                "date": 1408406400
+            },
+            {
+                "id": 22600,
+                "date": 1408406400
+            },
+            {
+                "id": 22604,
+                "date": 1408406400
+            }
+        ],
+        "priority": 39
+    },
+    {
+        "id": 115,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 199459,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co49wj.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 36,
+                "name": "MOBA"
+            }
+        ],
+        "name": "League of Legends",
+        "platform": "PC",
+        "rating": 75.14434838750557,
+        "release_dates": [
+            {
+                "id": 541886,
+                "date": 1316649600
+            },
+            {
+                "id": 614401,
+                "date": 1256601600
+            },
+            {
+                "id": 614402,
+                "date": 1256601600
+            }
+        ],
+        "priority": 40
+    },
+    {
+        "id": 891,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 316209,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co6rzl.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Team Fortress 2",
+        "platform": "PC",
+        "rating": 82.66621575611597,
+        "release_dates": [
+            {
+                "id": 591603,
+                "date": 1360800000
+            },
+            {
+                "id": 591604,
+                "date": 1276128000
+            },
+            {
+                "id": 591605,
+                "date": 1191974400
+            },
+            {
+                "id": 591606,
+                "date": 1197331200
+            },
+            {
+                "id": 591609,
+                "date": 1191974400
+            },
+            {
+                "id": 591607,
+                "date": 1197331200
+            },
+            {
+                "id": 591608,
+                "date": 1198108800
+            },
+            {
+                "id": 591610,
+                "date": 1192752000
+            },
+            {
+                "id": 591611,
+                "date": 1193270400
+            }
+        ],
+        "priority": 41
+    },
+    {
+        "id": 19130,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 268456,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5r54.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            }
+        ],
+        "name": "Sid Meier's Civilization VI",
+        "platform": "PC",
+        "rating": 80.17153124049801,
+        "release_dates": [
+            {
+                "id": 50611,
+                "date": 1477008000
+            },
+            {
+                "id": 298472,
+                "date": 1476921600
+            },
+            {
+                "id": 298473,
+                "date": 1476921600
+            },
+            {
+                "id": 298474,
+                "date": 1476921600
+            },
+            {
+                "id": 337604,
+                "date": 1634083200
+            },
+            {
+                "id": 131677,
+                "date": 1477267200
+            },
+            {
+                "id": 159631,
+                "date": 1542326400
+            },
+            {
+                "id": 176132,
+                "date": 1574380800
+            },
+            {
+                "id": 176131,
+                "date": 1574380800
+            },
+            {
+                "id": 147564,
+                "date": 1513814400
+            },
+            {
+                "id": 131676,
+                "date": 1486598400
+            }
+        ],
+        "priority": 42
+    },
+    {
+        "id": 730,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 120932,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2lb8.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 10,
+                "name": "Racing"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Grand Theft Auto III",
+        "platform": "PC",
+        "rating": 84.85841137741497,
+        "release_dates": [
+            {
+                "id": 147109,
+                "date": 1313625600
+            },
+            {
+                "id": 48658,
+                "date": 1449273600
+            },
+            {
+                "id": 1607,
+                "date": 1003708800
+            },
+            {
+                "id": 2202,
+                "date": 1067558400
+            },
+            {
+                "id": 3314,
+                "date": 1021852800
+            },
+            {
+                "id": 468247,
+                "date": 1289520000
+            }
+        ],
+        "priority": 43
+    },
+    {
+        "id": 280,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 86963,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1v3n.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Doom 3",
+        "platform": "PC",
+        "rating": 79.53796957330704,
+        "release_dates": [
+            {
+                "id": 403,
+                "date": 1096848000
+            },
+            {
+                "id": 553555,
+                "date": 1110844800
+            },
+            {
+                "id": 553558,
+                "date": 1110758400
+            },
+            {
+                "id": 553559,
+                "date": 1110758400
+            },
+            {
+                "id": 405,
+                "date": 1112486400
+            },
+            {
+                "id": 402,
+                "date": 1091491200
+            }
+        ],
+        "priority": 44
+    },
+    {
+        "id": 286,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 434744,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co9bg8.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Quake II",
+        "platform": "PC",
+        "rating": 83.15536259790196,
+        "release_dates": [
+            {
+                "id": 609158,
+                "date": 1034121600
+            },
+            {
+                "id": 609159,
+                "date": 881625600
+            },
+            {
+                "id": 609160,
+                "date": 938649600
+            },
+            {
+                "id": 609161,
+                "date": 1243209600
+            }
+        ],
+        "priority": 45
+    },
+    {
+        "id": 1983,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 81127,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1qlj.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Bastion",
+        "platform": "PC",
+        "rating": 82.90390286991027,
+        "release_dates": [
+            {
+                "id": 21702,
+                "date": 1335398400
+            },
+            {
+                "id": 63104,
+                "date": 1481500800
+            },
+            {
+                "id": 166225,
+                "date": 1311120000
+            },
+            {
+                "id": 21703,
+                "date": 1313452800
+            },
+            {
+                "id": 21705,
+                "date": 1338422400
+            },
+            {
+                "id": 495339,
+                "date": 1428364800
+            },
+            {
+                "id": 495340,
+                "date": 1449273600
+            },
+            {
+                "id": 495337,
+                "date": 1572825600
+            },
+            {
+                "id": 495336,
+                "date": 1346198400
+            },
+            {
+                "id": 495719,
+                "date": 1536796800
+            }
+        ],
+        "priority": 46
+    },
+    {
+        "id": 16,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 85752,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1u60.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            }
+        ],
+        "name": "Fallout: New Vegas",
+        "platform": "PC",
+        "rating": 87.08492054319954,
+        "release_dates": [
+            {
+                "id": 30125,
+                "date": 1287446400
+            },
+            {
+                "id": 102981,
+                "date": 1288828800
+            },
+            {
+                "id": 102979,
+                "date": 1287446400
+            },
+            {
+                "id": 30127,
+                "date": 1287446400
+            },
+            {
+                "id": 30133,
+                "date": 1288828800
+            },
+            {
+                "id": 30128,
+                "date": 1287705600
+            },
+            {
+                "id": 30132,
+                "date": 1288828800
+            },
+            {
+                "id": 102980,
+                "date": 1287705600
+            },
+            {
+                "id": 30131,
+                "date": 1288828800
+            },
+            {
+                "id": 30130,
+                "date": 1287705600
+            }
+        ],
+        "priority": 47
+    },
+    {
+        "id": 1011,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 434523,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co9ba3.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            }
+        ],
+        "name": "Borderlands 2",
+        "platform": "PC",
+        "rating": 84.03788670450596,
+        "release_dates": [
+            {
+                "id": 182616,
+                "date": 1468972800
+            },
+            {
+                "id": 147154,
+                "date": 1355875200
+            },
+            {
+                "id": 134491,
+                "date": 1401235200
+            },
+            {
+                "id": 21641,
+                "date": 1348185600
+            },
+            {
+                "id": 101978,
+                "date": 1348185600
+            },
+            {
+                "id": 390751,
+                "date": 1590710400
+            },
+            {
+                "id": 21643,
+                "date": 1401235200
+            },
+            {
+                "id": 449903,
+                "date": 1395619200
+            },
+            {
+                "id": 449904,
+                "date": 1427414400
+            },
+            {
+                "id": 101977,
+                "date": 1347926400
+            },
+            {
+                "id": 184892,
+                "date": 1427414400
+            },
+            {
+                "id": 21626,
+                "date": 1347926400
+            },
+            {
+                "id": 21629,
+                "date": 1351123200
+            },
+            {
+                "id": 21630,
+                "date": 1351123200
+            },
+            {
+                "id": 21631,
+                "date": 1351123200
+            },
+            {
+                "id": 21644,
+                "date": 1417651200
+            },
+            {
+                "id": 21636,
+                "date": 1348099200
+            },
+            {
+                "id": 21642,
+                "date": 1412035200
+            },
+            {
+                "id": 21640,
+                "date": 1348099200
+            },
+            {
+                "id": 21637,
+                "date": 1348185600
+            },
+            {
+                "id": 21627,
+                "date": 1347926400
+            },
+            {
+                "id": 21634,
+                "date": 1348099200
+            },
+            {
+                "id": 21632,
+                "date": 1399939200
+            },
+            {
+                "id": 21638,
+                "date": 1348185600
+            },
+            {
+                "id": 21635,
+                "date": 1348185600
+            }
+        ],
+        "priority": 48
+    },
+    {
+        "id": 17000,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 14012,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/xrpmydnu9rpxvxfjkiu7.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Stardew Valley",
+        "platform": "PC",
+        "rating": 86.73063773203098,
+        "release_dates": [
+            {
+                "id": 61570,
+                "date": 1469750400
+            },
+            {
+                "id": 45397,
+                "date": 1456444800
+            },
+            {
+                "id": 159758,
+                "date": 1540339200
+            },
+            {
+                "id": 295811,
+                "date": 1456444800
+            },
+            {
+                "id": 295810,
+                "date": 1456444800
+            },
+            {
+                "id": 367415,
+                "date": 1552435200
+            },
+            {
+                "id": 61574,
+                "date": 1481673600
+            },
+            {
+                "id": 159757,
+                "date": 1518566400
+            },
+            {
+                "id": 61573,
+                "date": 1481673600
+            },
+            {
+                "id": 511594,
+                "date": 1483142400
+            },
+            {
+                "id": 115520,
+                "date": 1481673600
+            },
+            {
+                "id": 152528,
+                "date": 1526947200
+            },
+            {
+                "id": 61572,
+                "date": 1481587200
+            },
+            {
+                "id": 412636,
+                "date": 1456444800
+            },
+            {
+                "id": 115521,
+                "date": 1507161600
+            }
+        ],
+        "priority": 49
+    },
+    {
+        "id": 11198,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 274784,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5w0w.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 10,
+                "name": "Racing"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Rocket League",
+        "platform": "PC",
+        "rating": 81.49468505522808,
+        "release_dates": [
+            {
+                "id": 84001,
+                "date": 1473292800
+            },
+            {
+                "id": 136259,
+                "date": 1455667200
+            },
+            {
+                "id": 405375,
+                "date": 1436140800
+            },
+            {
+                "id": 134046,
+                "date": 1467676800
+            },
+            {
+                "id": 84000,
+                "date": 1473292800
+            },
+            {
+                "id": 30993,
+                "date": 1436227200
+            },
+            {
+                "id": 48539,
+                "date": 1455667200
+            },
+            {
+                "id": 134045,
+                "date": 1466726400
+            },
+            {
+                "id": 125471,
+                "date": 1446595200
+            },
+            {
+                "id": 125470,
+                "date": 1510617600
+            }
+        ],
+        "priority": 50
+    },
+    {
+        "id": 14593,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 424251,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co93cr.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Hollow Knight",
+        "platform": "PC",
+        "rating": 92.17044474361057,
+        "release_dates": [
+            {
+                "id": 607803,
+                "date": 1528761600
+            },
+            {
+                "id": 716337,
+                "date": 1514678400
+            },
+            {
+                "id": 499738,
+                "date": 1487894400
+            },
+            {
+                "id": 499739,
+                "date": 1491868800
+            },
+            {
+                "id": 499741,
+                "date": 1487894400
+            },
+            {
+                "id": 714898,
+                "date": 1537833600
+            },
+            {
+                "id": 714899,
+                "date": 1537833600
+            }
+        ],
+        "priority": 51
+    },
+    {
+        "id": 26226,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 155482,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3byy.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Celeste",
+        "platform": "PC",
+        "rating": 87.31460472935277,
+        "release_dates": [
+            {
+                "id": 134897,
+                "date": 1516838400
+            },
+            {
+                "id": 134894,
+                "date": 1516838400
+            },
+            {
+                "id": 134896,
+                "date": 1516838400
+            },
+            {
+                "id": 147905,
+                "date": 1516838400
+            },
+            {
+                "id": 134893,
+                "date": 1516838400
+            },
+            {
+                "id": 134895,
+                "date": 1516838400
+            },
+            {
+                "id": 239649,
+                "date": 1595894400
+            }
+        ],
+        "priority": 52
+    },
+    {
+        "id": 12517,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 103865,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2855.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Undertale",
+        "platform": "PC",
+        "rating": 86.34378624299319,
+        "release_dates": [
+            {
+                "id": 97200,
+                "date": 1502755200
+            },
+            {
+                "id": 421552,
+                "date": 1468713600
+            },
+            {
+                "id": 97199,
+                "date": 1502755200
+            },
+            {
+                "id": 157718,
+                "date": 1537228800
+            },
+            {
+                "id": 157719,
+                "date": 1537228800
+            },
+            {
+                "id": 233933,
+                "date": 1615852800
+            },
+            {
+                "id": 155763,
+                "date": 1536969600
+            },
+            {
+                "id": 45798,
+                "date": 1442275200
+            },
+            {
+                "id": 45799,
+                "date": 1442275200
+            }
+        ],
+        "priority": 53
+    },
+    {
+        "id": 1026,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 181427,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3vzn.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Legend of Zelda: A Link to the Past",
+        "platform": "Super Nintendo",
+        "rating": 92.39909311496795,
+        "release_dates": [
+            {
+                "id": 514963,
+                "date": 1457568000
+            },
+            {
+                "id": 514964,
+                "date": 857260800
+            },
+            {
+                "id": 514965,
+                "date": 690681600
+            },
+            {
+                "id": 514970,
+                "date": 1174608000
+            },
+            {
+                "id": 514971,
+                "date": 1169424000
+            },
+            {
+                "id": 514972,
+                "date": 1213056000
+            },
+            {
+                "id": 514973,
+                "date": 1174608000
+            },
+            {
+                "id": 514974,
+                "date": 1165017600
+            },
+            {
+                "id": 514975,
+                "date": 1386806400
+            },
+            {
+                "id": 514976,
+                "date": 1392163200
+            },
+            {
+                "id": 514977,
+                "date": 1391040000
+            },
+            {
+                "id": 592184,
+                "date": 851990400
+            },
+            {
+                "id": 592185,
+                "date": 832550400
+            },
+            {
+                "id": 548274,
+                "date": 746668800
+            },
+            {
+                "id": 514967,
+                "date": 703123200
+            },
+            {
+                "id": 514962,
+                "date": 1460592000
+            },
+            {
+                "id": 514969,
+                "date": 725760000
+            },
+            {
+                "id": 514968,
+                "date": 717292800
+            }
+        ],
+        "priority": 54
+    },
+    {
+        "id": 1802,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 173156,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3plw.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Chrono Trigger",
+        "platform": "Super Nintendo",
+        "rating": 93.48214493746576,
+        "release_dates": [
+            {
+                "id": 554929,
+                "date": 807148800
+            },
+            {
+                "id": 526668,
+                "date": 794880000
+            },
+            {
+                "id": 526669,
+                "date": 808099200
+            },
+            {
+                "id": 526670,
+                "date": 1303776000
+            },
+            {
+                "id": 526671,
+                "date": 1305849600
+            },
+            {
+                "id": 526672,
+                "date": 1305504000
+            },
+            {
+                "id": 526673,
+                "date": 1305849600
+            }
+        ],
+        "priority": 55
+    },
+    {
+        "id": 246582,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 352879,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co7ka7.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Final Fantasy VI: Ted Woolsey Uncensored Edition",
+        "platform": "Super Nintendo",
+        "rating": null,
+        "release_dates": [
+            {
+                "id": 622809,
+                "date": 1645228800
+            }
+        ],
+        "priority": 56
+    },
+    {
+        "id": 2899,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 320119,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co6v07.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "EarthBound",
+        "platform": "Super Nintendo",
+        "rating": 89.39665442996555,
+        "release_dates": [
+            {
+                "id": 487235,
+                "date": 802310400
+            },
+            {
+                "id": 592077,
+                "date": 1456963200
+            },
+            {
+                "id": 592078,
+                "date": 1457049600
+            },
+            {
+                "id": 592074,
+                "date": 1458691200
+            },
+            {
+                "id": 487237,
+                "date": 1363737600
+            },
+            {
+                "id": 487236,
+                "date": 1374105600
+            },
+            {
+                "id": 487238,
+                "date": 1374019200
+            },
+            {
+                "id": 487234,
+                "date": 777945600
+            }
+        ],
+        "priority": 57
+    },
+    {
+        "id": 3186,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 240293,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co55et.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 4,
+                "name": "Fighting"
+            },
+            {
+                "id": 33,
+                "name": "Arcade"
+            }
+        ],
+        "name": "Street Fighter II",
+        "platform": "Arcade",
+        "rating": 82.64061884461982,
+        "release_dates": [
+            {
+                "id": 548247,
+                "date": 665798400
+            },
+            {
+                "id": 548248,
+                "date": 665366400
+            }
+        ],
+        "priority": 58
+    },
+    {
+        "id": 2750,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 226272,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co4ulc.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 33,
+                "name": "Arcade"
+            }
+        ],
+        "name": "Pac-Man",
+        "platform": "Arcade",
+        "rating": 78.07960251152983,
+        "release_dates": [
+            {
+                "id": 538312,
+                "date": 339206400
+            },
+            {
+                "id": 538311,
+                "date": 327801600
+            }
+        ],
+        "priority": 59
+    },
+    {
+        "id": 48969,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 111061,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2dp1.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            }
+        ],
+        "name": "Tetris Blast",
+        "platform": "Game Boy",
+        "rating": 82,
+        "release_dates": [
+            {
+                "id": 365719,
+                "date": 795398400
+            },
+            {
+                "id": 365720,
+                "date": 820454400
+            }
+        ],
+        "priority": 60
+    },
+    {
+        "id": 1027,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 217879,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co4o47.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Legend of Zelda: Link's Awakening DX",
+        "platform": "Game Boy",
+        "rating": 88.55088068766239,
+        "release_dates": [
+            {
+                "id": 500268,
+                "date": 913420800
+            },
+            {
+                "id": 514036,
+                "date": 915062400
+            },
+            {
+                "id": 514439,
+                "date": 1456876800
+            },
+            {
+                "id": 500273,
+                "date": 1307491200
+            },
+            {
+                "id": 500275,
+                "date": 1307491200
+            },
+            {
+                "id": 500274,
+                "date": 1307404800
+            },
+            {
+                "id": 500271,
+                "date": 913680000
+            },
+            {
+                "id": 500270,
+                "date": 915148800
+            }
+        ],
+        "priority": 61
+    },
+    {
+        "id": 1561,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 266332,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5pi4.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Pokémon Red Version",
+        "platform": "Game Boy",
+        "rating": 84.79465997194771,
+        "release_dates": [
+            {
+                "id": 510088,
+                "date": 915062400
+            },
+            {
+                "id": 510089,
+                "date": 825379200
+            },
+            {
+                "id": 510090,
+                "date": 906940800
+            },
+            {
+                "id": 510091,
+                "date": 909100800
+            },
+            {
+                "id": 510092,
+                "date": 939081600
+            },
+            {
+                "id": 510093,
+                "date": 1456531200
+            },
+            {
+                "id": 514034,
+                "date": 1456531200
+            },
+            {
+                "id": 514687,
+                "date": 1456531200
+            }
+        ],
+        "priority": 62
+    },
+    {
+        "id": 1511,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 266335,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5pi7.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Pokémon Blue Version",
+        "platform": "Game Boy",
+        "rating": 86.13563384539049,
+        "release_dates": [
+            {
+                "id": 510095,
+                "date": 845337600
+            },
+            {
+                "id": 510096,
+                "date": 906940800
+            },
+            {
+                "id": 510097,
+                "date": 939081600
+            },
+            {
+                "id": 510098,
+                "date": 915062400
+            },
+            {
+                "id": 510099,
+                "date": 909100800
+            },
+            {
+                "id": 510100,
+                "date": 1456531200
+            },
+            {
+                "id": 510101,
+                "date": 1456531200
+            },
+            {
+                "id": 514022,
+                "date": 1456531200
+            },
+            {
+                "id": 514684,
+                "date": 1456531200
+            }
+        ],
+        "priority": 63
+    },
+    {
+        "id": 1105,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 181616,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3w4w.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Metroid Prime",
+        "platform": "GameCube",
+        "rating": 92.51783890387671,
+        "release_dates": [
+            {
+                "id": 509838,
+                "date": 1048204800
+            },
+            {
+                "id": 509839,
+                "date": 1037491200
+            },
+            {
+                "id": 509840,
+                "date": 1049328000
+            },
+            {
+                "id": 509841,
+                "date": 1046390400
+            },
+            {
+                "id": 593089,
+                "date": 1064448000
+            }
+        ],
+        "priority": 64
+    },
+    {
+        "id": 1033,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 171719,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3ohz.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 9,
+                "name": "Puzzle"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Legend of Zelda: The Wind Waker",
+        "platform": "GameCube",
+        "rating": 87.4444847252377,
+        "release_dates": [
+            {
+                "id": 509760,
+                "date": 1050451200
+            },
+            {
+                "id": 509761,
+                "date": 1048464000
+            },
+            {
+                "id": 509762,
+                "date": 1052265600
+            },
+            {
+                "id": 509763,
+                "date": 1039737600
+            },
+            {
+                "id": 509764,
+                "date": 1051833600
+            }
+        ],
+        "priority": 65
+    },
+    {
+        "id": 1627,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 95863,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co21yv.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 4,
+                "name": "Fighting"
+            },
+            {
+                "id": 8,
+                "name": "Platform"
+            }
+        ],
+        "name": "Super Smash Bros. Melee",
+        "platform": "GameCube",
+        "rating": 88.86429625418232,
+        "release_dates": [
+            {
+                "id": 696478,
+                "date": 1041292800
+            },
+            {
+                "id": 696497,
+                "date": 1030060800
+            },
+            {
+                "id": 593074,
+                "date": 1022803200
+            },
+            {
+                "id": 593076,
+                "date": 1006300800
+            },
+            {
+                "id": 593073,
+                "date": 1007337600
+            },
+            {
+                "id": 593075,
+                "date": 1022198400
+            },
+            {
+                "id": 593088,
+                "date": 1041379200
+            }
+        ],
+        "priority": 66
+    },
+    {
+        "id": 987,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 90048,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1xhc.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Halo 3",
+        "platform": "Xbox 360",
+        "rating": 85.26075249399133,
+        "release_dates": [
+            {
+                "id": 210382,
+                "date": 1594598400
+            },
+            {
+                "id": 2405,
+                "date": 1190678400
+            },
+            {
+                "id": 168651,
+                "date": 1415664000
+            }
+        ],
+        "priority": 67
+    },
+    {
+        "id": 492,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 106345,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2a21.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Gears of War 3",
+        "platform": "Xbox 360",
+        "rating": 82.38704805202302,
+        "release_dates": [
+            {
+                "id": 77302,
+                "date": 1316649600
+            },
+            {
+                "id": 77299,
+                "date": 1316476800
+            },
+            {
+                "id": 77301,
+                "date": 1316476800
+            },
+            {
+                "id": 303400,
+                "date": 1332806400
+            },
+            {
+                "id": 77300,
+                "date": 1316476800
+            }
+        ],
+        "priority": 68
+    },
+    {
+        "id": 504,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 97264,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co231s.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 25,
+                "name": "Hack and slash/Beat 'em up"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Fable III",
+        "platform": "Xbox 360",
+        "rating": 68.36883283868231,
+        "release_dates": [
+            {
+                "id": 128320,
+                "date": 1305849600
+            },
+            {
+                "id": 128315,
+                "date": 1288051200
+            },
+            {
+                "id": 128316,
+                "date": 1288224000
+            },
+            {
+                "id": 128317,
+                "date": 1288310400
+            },
+            {
+                "id": 128318,
+                "date": 1305590400
+            },
+            {
+                "id": 128319,
+                "date": 1305763200
+            },
+            {
+                "id": 128321,
+                "date": 1305849600
+            },
+            {
+                "id": 128314,
+                "date": 1288051200
+            }
+        ],
+        "priority": 69
+    },
+    {
+        "id": 3068,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 96228,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2290.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 10,
+                "name": "Racing"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "name": "Forza Motorsport 4",
+        "platform": "Xbox 360",
+        "rating": 83.17519599346701,
+        "release_dates": [
+            {
+                "id": 6759,
+                "date": 1318291200
+            }
+        ],
+        "priority": 70
+    },
+    {
+        "id": 731,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 120955,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2lbv.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 10,
+                "name": "Racing"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Grand Theft Auto IV",
+        "platform": "PC",
+        "rating": 83.47986483774685,
+        "release_dates": [
+            {
+                "id": 103341,
+                "date": 1209427200
+            },
+            {
+                "id": 1609,
+                "date": 1228176000
+            },
+            {
+                "id": 103343,
+                "date": 1225324800
+            },
+            {
+                "id": 3316,
+                "date": 1209427200
+            },
+            {
+                "id": 3315,
+                "date": 1209427200
+            },
+            {
+                "id": 103342,
+                "date": 1209427200
+            }
+        ],
+        "priority": 71
+    },
+    {
+        "id": 538,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 123158,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2n12.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "BioShock Infinite",
+        "platform": "PC",
+        "rating": 85.56712672191729,
+        "release_dates": [
+            {
+                "id": 48366,
+                "date": 1364169600
+            },
+            {
+                "id": 48377,
+                "date": 1366848000
+            },
+            {
+                "id": 48378,
+                "date": 1372377600
+            },
+            {
+                "id": 48367,
+                "date": 1361836800
+            },
+            {
+                "id": 48370,
+                "date": 1426550400
+            },
+            {
+                "id": 48379,
+                "date": 1370044800
+            },
+            {
+                "id": 48368,
+                "date": 1361836800
+            },
+            {
+                "id": 48369,
+                "date": 1377734400
+            },
+            {
+                "id": 48376,
+                "date": 1366848000
+            }
+        ],
+        "priority": 72
+    },
+    {
+        "id": 529,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 87745,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1vpd.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Far Cry 3",
+        "platform": "PC",
+        "rating": 83.68232585697989,
+        "release_dates": [
+            {
+                "id": 2894,
+                "date": 1354060800
+            },
+            {
+                "id": 102994,
+                "date": 1354579200
+            },
+            {
+                "id": 2893,
+                "date": 1354060800
+            },
+            {
+                "id": 102995,
+                "date": 1354233600
+            },
+            {
+                "id": 2892,
+                "date": 1354060800
+            }
+        ],
+        "priority": 73
+    },
+    {
+        "id": 127,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 82095,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1rcf.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Assassin's Creed II",
+        "platform": "PC",
+        "rating": 86.78032502111101,
+        "release_dates": [
+            {
+                "id": 107336,
+                "date": 1259798400
+            },
+            {
+                "id": 242527,
+                "date": 1258416000
+            },
+            {
+                "id": 107338,
+                "date": 1258416000
+            },
+            {
+                "id": 118282,
+                "date": 1319155200
+            },
+            {
+                "id": 107337,
+                "date": 1258588800
+            },
+            {
+                "id": 458861,
+                "date": 1300320000
+            },
+            {
+                "id": 242528,
+                "date": 1283299200
+            },
+            {
+                "id": 242529,
+                "date": 1268092800
+            }
+        ],
+        "priority": 74
+    },
+    {
+        "id": 134101,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 182234,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3wm2.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "name": "FIFA 21",
+        "platform": "PC",
+        "rating": 68.59801635080512,
+        "release_dates": [
+            {
+                "id": 652212,
+                "date": 1602201600
+            },
+            {
+                "id": 652210,
+                "date": 1602201600
+            },
+            {
+                "id": 652207,
+                "date": 1601942400
+            },
+            {
+                "id": 652213,
+                "date": 1607040000
+            },
+            {
+                "id": 652211,
+                "date": 1601942400
+            },
+            {
+                "id": 652209,
+                "date": 1601942400
+            },
+            {
+                "id": 652208,
+                "date": 1602201600
+            },
+            {
+                "id": 652206,
+                "date": 1615939200
+            },
+            {
+                "id": 652214,
+                "date": 1607040000
+            }
+        ],
+        "priority": 75
+    },
+    {
+        "id": 134599,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 111908,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2eck.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "name": "NBA 2K21",
+        "platform": "PC",
+        "rating": 70.22386436381694,
+        "release_dates": [
+            {
+                "id": 407765,
+                "date": 1599091200
+            },
+            {
+                "id": 327686,
+                "date": 1605139200
+            },
+            {
+                "id": 203043,
+                "date": 1599177600
+            },
+            {
+                "id": 214340,
+                "date": 1599177600
+            },
+            {
+                "id": 214341,
+                "date": 1604966400
+            },
+            {
+                "id": 205462,
+                "date": 1599177600
+            },
+            {
+                "id": 205459,
+                "date": 1599177600
+            }
+        ],
+        "priority": 76
+    },
+    {
+        "id": 132707,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 182295,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3wnr.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            }
+        ],
+        "name": "Madden NFL 21",
+        "platform": "PC",
+        "rating": 70.10284606968402,
+        "release_dates": [
+            {
+                "id": 200356,
+                "date": 1598572800
+            },
+            {
+                "id": 200358,
+                "date": 1598572800
+            },
+            {
+                "id": 200355,
+                "date": 1598572800
+            },
+            {
+                "id": 239712,
+                "date": 1611792000
+            },
+            {
+                "id": 454835,
+                "date": 1590624000
+            }
+        ],
+        "priority": 77
+    },
+    {
+        "id": 133939,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 104370,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co28j6.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "name": "PGA Tour 2K21",
+        "platform": "PC",
+        "rating": 70.00425042112093,
+        "release_dates": [
+            {
+                "id": 409570,
+                "date": 1597881600
+            },
+            {
+                "id": 339689,
+                "date": 1600992000
+            },
+            {
+                "id": 195870,
+                "date": 1597968000
+            },
+            {
+                "id": 195873,
+                "date": 1597968000
+            },
+            {
+                "id": 195871,
+                "date": 1597968000
+            },
+            {
+                "id": 195872,
+                "date": 1597968000
+            }
+        ],
+        "priority": 78
+    },
+    {
+        "id": 866,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 94417,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co20up.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            }
+        ],
+        "name": "Sid Meier's Civilization V",
+        "platform": "PC",
+        "rating": 85.32124429984997,
+        "release_dates": [
+            {
+                "id": 21880,
+                "date": 1402444800
+            },
+            {
+                "id": 21878,
+                "date": 1285286400
+            },
+            {
+                "id": 21877,
+                "date": 1285286400
+            },
+            {
+                "id": 21879,
+                "date": 1288310400
+            },
+            {
+                "id": 21875,
+                "date": 1290470400
+            },
+            {
+                "id": 21876,
+                "date": 1285027200
+            },
+            {
+                "id": 256740,
+                "date": 1285027200
+            },
+            {
+                "id": 256739,
+                "date": 1285027200
+            }
+        ],
+        "priority": 79
+    },
+    {
+        "id": 1318,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 105626,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co29i2.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 24,
+                "name": "Tactical"
+            }
+        ],
+        "name": "XCOM: Enemy Unknown",
+        "platform": "PC",
+        "rating": 82.7629517707017,
+        "release_dates": [
+            {
+                "id": 106992,
+                "date": 1349740800
+            },
+            {
+                "id": 106993,
+                "date": 1350000000
+            },
+            {
+                "id": 28292,
+                "date": 1366848000
+            },
+            {
+                "id": 28293,
+                "date": 1403136000
+            },
+            {
+                "id": 706586,
+                "date": 1349740800
+            },
+            {
+                "id": 706587,
+                "date": 1349740800
+            },
+            {
+                "id": 706588,
+                "date": 1350000000
+            },
+            {
+                "id": 706589,
+                "date": 1398211200
+            },
+            {
+                "id": 706342,
+                "date": 1371686400
+            }
+        ],
+        "priority": 80
+    },
+    {
+        "id": 5508,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 102761,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co27ah.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 24,
+                "name": "Tactical"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "The Banner Saga",
+        "platform": "PC",
+        "rating": 85.10254587144382,
+        "release_dates": [
+            {
+                "id": 366821,
+                "date": 1416355200
+            },
+            {
+                "id": 38235,
+                "date": 1389657600
+            },
+            {
+                "id": 150199,
+                "date": 1412208000
+            },
+            {
+                "id": 152926,
+                "date": 1452556800
+            },
+            {
+                "id": 152927,
+                "date": 1389657600
+            },
+            {
+                "id": 548201,
+                "date": 1526515200
+            },
+            {
+                "id": 152928,
+                "date": 1389657600
+            },
+            {
+                "id": 152930,
+                "date": 1452556800
+            }
+        ],
+        "priority": 81
+    },
+    {
+        "id": 144597,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 133559,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2v1z.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Divinity: Original Sin 2 - Divine Ascension",
+        "platform": "PC",
+        "rating": null,
+        "release_dates": [
+            {
+                "id": 233710,
+                "date": 1505347200
+            },
+            {
+                "id": 233711,
+                "date": 1505347200
+            }
+        ],
+        "priority": 82
+    },
+    {
+        "id": 1593,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 412108,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co8tzg.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Pillars of Eternity",
+        "platform": "PC",
+        "rating": 80.45134266162991,
+        "release_dates": [
+            {
+                "id": 27760,
+                "date": 1427328000
+            },
+            {
+                "id": 173441,
+                "date": 1565222400
+            },
+            {
+                "id": 422404,
+                "date": 1649376000
+            },
+            {
+                "id": 690647,
+                "date": 1503964800
+            },
+            {
+                "id": 422403,
+                "date": 1427328000
+            },
+            {
+                "id": 690646,
+                "date": 1503964800
+            }
+        ],
+        "priority": 83
+    },
+    {
+        "id": 3101,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 101089,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2601.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 16,
+                "name": "Turn-based strategy (TBS)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Wasteland 2",
+        "platform": "PC",
+        "rating": 72.40960985581177,
+        "release_dates": [
+            {
+                "id": 20045,
+                "date": 1411084800
+            },
+            {
+                "id": 20046,
+                "date": 1411084800
+            },
+            {
+                "id": 20047,
+                "date": 1411084800
+            },
+            {
+                "id": 39508,
+                "date": 1444694400
+            },
+            {
+                "id": 39509,
+                "date": 1444694400
+            }
+        ],
+        "priority": 84
+    },
+    {
+        "id": 1880,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 366075,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co7ugr.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Baldur's Gate: Enhanced Edition",
+        "platform": "PC",
+        "rating": 81.40143412744486,
+        "release_dates": [
+            {
+                "id": 152033,
+                "date": 1411776000
+            },
+            {
+                "id": 152034,
+                "date": 1397692800
+            },
+            {
+                "id": 185213,
+                "date": 1571097600
+            },
+            {
+                "id": 299016,
+                "date": 1358294400
+            },
+            {
+                "id": 152031,
+                "date": 1353974400
+            },
+            {
+                "id": 152030,
+                "date": 1361491200
+            },
+            {
+                "id": 152032,
+                "date": 1354752000
+            },
+            {
+                "id": 175751,
+                "date": 1571097600
+            },
+            {
+                "id": 577679,
+                "date": 1362960000
+            },
+            {
+                "id": 185212,
+                "date": 1571097600
+            },
+            {
+                "id": 299017,
+                "date": 1358294400
+            },
+            {
+                "id": 299018,
+                "date": 1358294400
+            }
+        ],
+        "priority": 85
+    },
+    {
+        "id": 36240,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 84546,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1t8i.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Icewind Dale: Enhanced Edition",
+        "platform": "PC",
+        "rating": 77.27520726361577,
+        "release_dates": [
+            {
+                "id": 363485,
+                "date": 1414627200
+            },
+            {
+                "id": 83045,
+                "date": 1414627200
+            },
+            {
+                "id": 83043,
+                "date": 1414627200
+            },
+            {
+                "id": 83044,
+                "date": 1414627200
+            },
+            {
+                "id": 185210,
+                "date": 1571097600
+            },
+            {
+                "id": 176776,
+                "date": 1571097600
+            },
+            {
+                "id": 185211,
+                "date": 1571097600
+            },
+            {
+                "id": 577680,
+                "date": 1421193600
+            }
+        ],
+        "priority": 86
+    },
+    {
+        "id": 23719,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 76954,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1ndm.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Neverwinter Nights: Enhanced Edition",
+        "platform": "PC",
+        "rating": 62.18826868328683,
+        "release_dates": [
+            {
+                "id": 341882,
+                "date": 1575244800
+            },
+            {
+                "id": 148910,
+                "date": 1522108800
+            },
+            {
+                "id": 148909,
+                "date": 1522108800
+            },
+            {
+                "id": 170531,
+                "date": 1575590400
+            },
+            {
+                "id": 170397,
+                "date": 1575590400
+            },
+            {
+                "id": 238073,
+                "date": 1540771200
+            },
+            {
+                "id": 238071,
+                "date": 1575331200
+            },
+            {
+                "id": 238072,
+                "date": 1597190400
+            },
+            {
+                "id": 238075,
+                "date": 1575331200
+            },
+            {
+                "id": 238074,
+                "date": 1575331200
+            },
+            {
+                "id": 148911,
+                "date": 1522108800
+            },
+            {
+                "id": 170532,
+                "date": 1575590400
+            }
+        ],
+        "priority": 87
+    },
+    {
+        "id": 113114,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 111992,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2eew.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "The Outer Worlds",
+        "platform": "PC",
+        "rating": 78.69168683159569,
+        "release_dates": [
+            {
+                "id": 170788,
+                "date": 1571961600
+            },
+            {
+                "id": 170789,
+                "date": 1571961600
+            },
+            {
+                "id": 417117,
+                "date": 1571961600
+            },
+            {
+                "id": 286695,
+                "date": 1603411200
+            },
+            {
+                "id": 339479,
+                "date": 1612915200
+            },
+            {
+                "id": 198647,
+                "date": 1591315200
+            }
+        ],
+        "priority": 88
+    },
+    {
+        "id": 1877,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 332107,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co7497.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Cyberpunk 2077",
+        "platform": "PC",
+        "rating": 81.64470226075738,
+        "release_dates": [
+            {
+                "id": 344301,
+                "date": 1644883200
+            },
+            {
+                "id": 344300,
+                "date": 1644883200
+            },
+            {
+                "id": 215923,
+                "date": 1607558400
+            },
+            {
+                "id": 215922,
+                "date": 1607558400
+            },
+            {
+                "id": 215920,
+                "date": 1607558400
+            },
+            {
+                "id": 215921,
+                "date": 1607558400
+            },
+            {
+                "id": 659463,
+                "date": 1767139200
+            }
+        ],
+        "priority": 89
+    },
+    {
+        "id": 26472,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 83503,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1sfj.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            },
+            {
+                "id": 32,
+                "name": "Indie"
+            }
+        ],
+        "name": "Disco Elysium",
+        "platform": "PC",
+        "rating": 94.51541156946865,
+        "release_dates": [
+            {
+                "id": 626730,
+                "date": 1571097600
+            },
+            {
+                "id": 635922,
+                "date": 1587945600
+            }
+        ],
+        "priority": 90
+    },
+    {
+        "id": 734,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 104483,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co28mb.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 11,
+                "name": "Real Time Strategy (RTS)"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            }
+        ],
+        "name": "Ground Control",
+        "platform": "PC",
+        "rating": 81.46235875810669,
+        "release_dates": [
+            {
+                "id": 1619,
+                "date": 959817600
+            }
+        ],
+        "priority": 91
+    },
+    {
+        "id": 19564,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 274400,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co5vq8.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Death Stranding",
+        "platform": "PC",
+        "rating": 86.62385649174907,
+        "release_dates": [
+            {
+                "id": 545846,
+                "date": 1573171200
+            },
+            {
+                "id": 545845,
+                "date": 1594684800
+            }
+        ],
+        "priority": 92
+    },
+    {
+        "id": 75235,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 109855,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2crj.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 25,
+                "name": "Hack and slash/Beat 'em up"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Ghost of Tsushima",
+        "platform": "PlayStation 4",
+        "rating": 89.17004936996896,
+        "release_dates": [
+            {
+                "id": 223511,
+                "date": 1594944000
+            }
+        ],
+        "priority": 93
+    },
+    {
+        "id": 134581,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 111326,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2dwe.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 25,
+                "name": "Hack and slash/Beat 'em up"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Marvel's Spider-Man: Miles Morales",
+        "platform": "PlayStation 5",
+        "rating": 80.23025252540612,
+        "release_dates": [
+            {
+                "id": 210957,
+                "date": 1605139200
+            },
+            {
+                "id": 397020,
+                "date": 1668729600
+            },
+            {
+                "id": 210954,
+                "date": 1605139200
+            },
+            {
+                "id": 210958,
+                "date": 1605139200
+            },
+            {
+                "id": 210956,
+                "date": 1605139200
+            },
+            {
+                "id": 210959,
+                "date": 1605744000
+            },
+            {
+                "id": 210960,
+                "date": 1605744000
+            },
+            {
+                "id": 210953,
+                "date": 1605139200
+            },
+            {
+                "id": 210955,
+                "date": 1605139200
+            },
+            {
+                "id": 210961,
+                "date": 1605744000
+            }
+        ],
+        "priority": 94
+    },
+    {
+        "id": 134582,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 130671,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2str.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 8,
+                "name": "Platform"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Ratchet & Clank: Rift Apart",
+        "platform": "PlayStation 5",
+        "rating": 86.65075174437006,
+        "release_dates": [
+            {
+                "id": 539823,
+                "date": 1690329600
+            },
+            {
+                "id": 539824,
+                "date": 1623369600
+            }
+        ],
+        "priority": 95
+    },
+    {
+        "id": 112874,
+        "gameStatus": "preperation",
+        "cover": {
+            "id": 115194,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co2gvu.jpg"
+        },
+        "dateAdded": "3/20/2025",
+        "genres": [
+            {
+                "id": 12,
+                "name": "Role-playing (RPG)"
+            },
+            {
+                "id": 31,
+                "name": "Adventure"
+            }
+        ],
+        "name": "Horizon Forbidden West",
+        "platform": "PlayStation 5",
+        "rating": 85.63572745227185,
+        "release_dates": [
+            {
+                "id": 557786,
+                "date": 1710979200
+            },
+            {
+                "id": 557788,
+                "date": 1645142400
+            },
+            {
+                "id": 557787,
+                "date": 1645142400
+            }
+        ],
+        "priority": 96
+    }
+]
