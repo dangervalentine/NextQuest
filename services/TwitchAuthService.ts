@@ -39,7 +39,6 @@ class TwitchAuthService {
             }
 
             const data: TwitchAuthResponse = await response.json();
-            console.log("Twitch Token Response:", data);
 
             const expirationTime = Date.now() + data.expires_in * 1000;
 

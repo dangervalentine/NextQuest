@@ -1,31 +1,16 @@
-import SQLite from "react-native-sqlite-storage";
+export { initializeDatabase } from "./seed/databaseSeeder";
+export {
+    getAllQuestGames,
+    getQuestGamesByStatus,
+    updateQuestGame,
+    deleteQuestGame,
+    updateGamePriorities,
+    type GamePriorityUpdate,
+} from "./repositories/questGames";
+export {
+    getAllPlatforms,
+    getPlatformById,
+    getPlatformByName,
+} from "./repositories/platforms";
 
-const db = SQLite.openDatabase(
-    {
-        name: "QuestLogger.db",
-        location: "default",
-    },
-    () => {
-        console.log("Database opened successfully");
-    },
-    (error) => {
-        console.error("Error opening database:", error);
-    }
-);
-
-export const initializeDatabase = () => {
-    db.transaction((tx) => {
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS games (
-                id INTEGER PRIMARY KEY,
-                name TEXT,
-                platform TEXT,
-                rating REAL,
-                dateAdded TEXT,
-                genres TEXT
-            );`
-        );
-    });
-};
-
-export default db;
+export { default as db } from "./config/database";

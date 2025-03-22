@@ -5,7 +5,7 @@ import Carousel, {
     ICarouselInstance,
     Pagination,
 } from "react-native-reanimated-carousel";
-import { generateRandomColorSequence } from "../helpers";
+import { generateRandomColorSequence } from "../utils/colors";
 import { Image } from "expo-image";
 
 const { width } = Dimensions.get("window");
@@ -40,7 +40,7 @@ function ImageCarousel({ images }: ImageCarouselProps) {
                             source={`https:${images[index]}`}
                             style={styles.image}
                             contentFit="contain"
-                            placeholder={require("../assets/placeholder.webp")}
+                            placeholder={require("../assets/placeholder.png")}
                             onError={() =>
                                 console.error("Failed to load image")
                             }

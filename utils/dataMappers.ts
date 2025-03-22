@@ -1,5 +1,5 @@
-import { GameStatus } from "../data/types";
-import { ESRB_RATINGS } from "../data/types";
+import { GameStatus } from "../types/game";
+import { ESRB_RATINGS } from "../constants/ratings";
 import { GameDetails } from "../interfaces/GameDetails";
 
 function getAgeRatingForESRB(

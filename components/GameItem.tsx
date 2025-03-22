@@ -1,13 +1,12 @@
 import React, { memo, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { QuestGame } from "../interfaces/QuestGame";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
-import colorSwatch from "../utils/colors";
+import { colorSwatch } from "../utils/colorConstants";
 import { ScreenNavigationProp } from "../utils/navigationTypes";
 import { formatReleaseDate } from "../utils/dateFormatters";
-import platforms from "../data/platforms.json";
 
 interface GameItemProps {
     questGame: QuestGame;
@@ -54,17 +53,40 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         return (
             <View style={styles.gameContainer}>
+                {typeof QuestGame.priority === "number" &&
+                    QuestGame.priority > 0 && (
+                        <Pressable
+                            onTouchStart={reorder}
+                            style={styles.dragHandle}
+                        >
+                            <View style={styles.dragHandleContent}>
+                                <Text
+                                    style={styles.priorityText}
+                                    numberOfLines={1}
+                                >
+                                    {QuestGame.priority}
+                                </Text>
+                                <SimpleLineIcons
+                                    name="menu"
+                                    size={20}
+                                    color={colorSwatch.primary.dark}
+                                />
+                            </View>
+                        </Pressable>
+                    )}
                 <Pressable
                     onPress={handlePress}
-                    style={styles.pressableNavigation}
-                    android_ripple={{ color: colorSwatch.primary.dark }}
+                    style={({ pressed }) => [
+                        styles.pressableNavigation,
+                        pressed && styles.pressed,
+                    ]}
                 >
                     {QuestGame.cover && QuestGame.cover.url ? (
                         <Image
                             source={`https:${QuestGame.cover.url}`}
                             style={styles.cover}
                             contentFit="cover"
-                            placeholder={require("../assets/placeholder.webp")}
+                            placeholder={require("../assets/placeholder.png")}
                             onError={() =>
                                 console.error("Failed to load image")
                             }
@@ -73,23 +95,19 @@ const GameItem: React.FC<GameItemProps> = memo(
                         <View style={styles.cover} />
                     )}
 
-                    <View>
-                        <View>
-                            <Text style={styles.title}>{QuestGame.name}</Text>
-                            {QuestGame.gameStatus === "completed" &&
-                                QuestGame.rating !== undefined && (
-                                    <Text style={styles.rating}>
-                                        {" "}
-                                        {"⭐".repeat(
-                                            QuestGame.personalRating ?? 0
-                                        )}
-                                        {"☆".repeat(
-                                            10 - (QuestGame.personalRating ?? 0)
-                                        )}{" "}
-                                        ({QuestGame.personalRating ?? 0}/10)
-                                    </Text>
-                                )}
-                        </View>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.title}>{QuestGame.name}</Text>
+                        {QuestGame.gameStatus === "completed" &&
+                            QuestGame.rating !== undefined && (
+                                <Text style={styles.rating}>
+                                    {" "}
+                                    {"⭐".repeat(QuestGame.personalRating ?? 0)}
+                                    {"☆".repeat(
+                                        10 - (QuestGame.personalRating ?? 0)
+                                    )}{" "}
+                                    ({QuestGame.personalRating ?? 0}/10)
+                                </Text>
+                            )}
                         <View style={styles.detailsContainer}>
                             <Text style={styles.textSecondary}>
                                 Platform: {QuestGame.platform?.name}
@@ -118,18 +136,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                         </View>
                     </View>
                 </Pressable>
-                {QuestGame.priority && (
-                    <Pressable onTouchStart={reorder} style={styles.dragHandle}>
-                        <Text style={{ color: colorSwatch.primary.dark }}>
-                            {QuestGame.priority}
-                        </Text>
-                        <Icon
-                            name="menu"
-                            size={24}
-                            color={colorSwatch.primary.dark}
-                        />
-                    </Pressable>
-                )}
             </View>
         );
     },
@@ -141,21 +147,23 @@ const GameItem: React.FC<GameItemProps> = memo(
 const styles = StyleSheet.create({
     gameContainer: {
         flexDirection: "row",
-        borderBottomWidth: 1,
-        borderColor: colorSwatch.primary.dark,
         flex: 1,
-    },
-    priority: {
-        fontSize: 12,
-        color: colorSwatch.accent.green,
-        alignSelf: "center",
-        marginHorizontal: 10,
+        backgroundColor: colorSwatch.background.dark,
     },
     dragHandle: {
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 10,
-        backgroundColor: colorSwatch.background.dark,
+        width: 40,
+        paddingHorizontal: 8,
+    },
+    dragHandleContent: {
+        alignItems: "center",
+    },
+    priorityText: {
+        color: colorSwatch.primary.dark,
+        fontSize: 12,
+        fontWeight: "bold",
+        marginBottom: 2,
     },
     title: {
         fontSize: 16,
@@ -175,33 +183,35 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.purple,
     },
     cover: {
-        minWidth: 75,
-        minHeight: 100,
-        marginRight: 10,
+        width: 75,
+        height: 100,
+        marginLeft: 12,
+        marginRight: 12,
         resizeMode: "cover",
         backgroundColor: colorSwatch.neutral.gray,
+        borderRadius: 4,
     },
-    textSecondary: {
-        fontSize: 12,
-        color: colorSwatch.text.secondary,
+    contentContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
     detailsContainer: {
-        flexDirection: "column",
-        alignSelf: "flex-start",
         flex: 1,
+        marginTop: 5,
+    },
+    textSecondary: {
+        fontSize: 14,
+        color: colorSwatch.text.secondary,
     },
     quoteContainer: {
-        marginTop: 5,
+        marginVertical: 5,
     },
     quote: {
         fontStyle: "italic",
-        color: colorSwatch.secondary.light,
-    },
-    buttonInnerContainer: {
-        backgroundColor: colorSwatch.background.dark,
-        paddingVertical: 8,
-        elevation: 4,
-        flexDirection: "row",
+        color: colorSwatch.secondary.main,
+        fontSize: 14,
+        flexWrap: "wrap",
     },
     pressed: {
         opacity: 0.75,

@@ -1,22 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Animated,
+    ActivityIndicator,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DetailsScreenRouteProp } from "../utils/navigationTypes";
-import colorSwatch from "../utils/colors";
 import IGDBService from "../services/IGDBService";
 import { QuestGame } from "../interfaces/QuestGame";
-import { getGameStatus, formatReleaseDates } from "../utils/dataMappers";
+import { getGameStatus } from "../utils/dataMappers";
 import ImageCarousel from "../components/ImageCarousel";
 import { Image } from "expo-image";
-import { GameDetails } from "../interfaces/GameDetails";
-
-function getPlatformNameForReleaseDate(
-    game: GameDetails,
-    releaseDate: GameDetails["release_dates"][0]
-): string {
-    const platform = game.platforms.find((p) => p.id === releaseDate.platform);
-    return platform?.name ?? "Unknown Platform";
-}
+import { colorSwatch } from "../utils/colorConstants";
 
 const GameDetailPage: React.FC = () => {
     const route = useRoute<DetailsScreenRouteProp>();
@@ -26,7 +23,7 @@ const GameDetailPage: React.FC = () => {
 
     useEffect(() => {
         const loadGameDetails = async () => {
-            const game: GameDetails | null = await IGDBService.fetchGameDetails(
+            const game: QuestGame | null = await IGDBService.fetchGameDetails(
                 id
             );
             setGameDetails(game);
@@ -43,7 +40,12 @@ const GameDetailPage: React.FC = () => {
     if (!game) {
         return (
             <View style={styles.container}>
-                <Text style={styles.info}>Loading...</Text>
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                        size="large"
+                        color={colorSwatch.accent.green}
+                    />
+                </View>
             </View>
         );
     }
@@ -191,9 +193,18 @@ const GameDetailPage: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
-        backgroundColor: colorSwatch.background.dark,
         flex: 1,
+        backgroundColor: colorSwatch.background.dark,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    loadingText: {
+        color: colorSwatch.accent.green,
+        marginTop: 12,
+        fontSize: 16,
     },
     coverImage: {
         width: "100%",

@@ -3,7 +3,7 @@ import { TWITCH_CLIENT_ID } from "@env";
 import TwitchAuthService from "./TwitchAuthService";
 import { mapToGameDetails } from "../utils/dataMappers";
 import { GameDetails } from "../interfaces/GameDetails";
-const questGames = require("../data/seedData.json");
+const questGames = require("../data/seed_data.json");
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4/games";

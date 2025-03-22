@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
-import colorSwatch from "../utils/colors";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { colorSwatch } from "../utils/colorConstants";
 
 interface HeaderWithIconProps {
-    iconName: string;
+    iconName: keyof typeof SimpleLineIcons.glyphMap;
     title: string;
 }
 
@@ -16,7 +16,7 @@ const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({ iconName, title }) => {
                 alignItems: "center",
             }}
         >
-            <Icon
+            <SimpleLineIcons
                 name={iconName}
                 size={24}
                 color={colorSwatch.secondary.main}

@@ -4,7 +4,7 @@ import { RootStackParamList } from "../utils/navigationTypes";
 import QuestGameDetailPage from "../screens/QuestGameDetailPage";
 import MainNavigationContainer from "../screens/GameListNavigationContainer";
 import { NavigationContainer } from "@react-navigation/native";
-import colorSwatch from "../utils/colors";
+import { colorSwatch } from "../utils/colorConstants";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

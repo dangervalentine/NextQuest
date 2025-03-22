@@ -1,22 +1,19 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import GameSection from "../components/GameSection";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 import HeaderWithIcon from "../components/HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
-import { GameStatus } from "../data/types";
-import { QuestGame } from "../interfaces/QuestGame";
-import colorSwatch from "../utils/colors";
-const gamesData = require("../data/seedData.json");
+import { GameStatus } from "../types/game";
+import { colorSwatch } from "../utils/colorConstants";
+import { View } from "react-native";
 
 const Tab = createBottomTabNavigator();
-
-const questGames: QuestGame[] = gamesData;
 
 const MainNavigationContainer: React.FC = () => {
     const tabScreens: {
         name: string;
-        iconName: string;
+        iconName: keyof typeof SimpleLineIcons.glyphMap;
         title: string;
         gameStatus: GameStatus;
     }[] = [
@@ -40,9 +37,6 @@ const MainNavigationContainer: React.FC = () => {
         },
     ];
 
-    const getFilteredGames = (gameStatus: GameStatus) =>
-        questGames.filter((QuestGame) => QuestGame.gameStatus === gameStatus);
-
     return (
         <Tab.Navigator screenOptions={screenOptions}>
             {tabScreens.map((screen) => (
@@ -52,7 +46,7 @@ const MainNavigationContainer: React.FC = () => {
                     options={{
                         tabBarLabel: screen.name,
                         tabBarIcon: ({ color, size }) => (
-                            <Icon
+                            <SimpleLineIcons
                                 name={screen.iconName}
                                 size={size}
                                 color={color}
@@ -66,11 +60,7 @@ const MainNavigationContainer: React.FC = () => {
                         ),
                     }}
                 >
-                    {() => (
-                        <GameSection
-                            QuestGames={getFilteredGames(screen.gameStatus)}
-                        />
-                    )}
+                    {() => <GameSection gameStatus={screen.gameStatus} />}
                 </Tab.Screen>
             ))}
         </Tab.Navigator>
@@ -112,6 +102,11 @@ const screenOptions: BottomTabNavigationOptions = {
         textAlign: "center",
     },
     headerStyle,
+    tabBarBackground: () => (
+        <View
+            style={{ backgroundColor: colorSwatch.background.dark, flex: 1 }}
+        />
+    ),
 };
 
 export default MainNavigationContainer;

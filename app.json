@@ -4,11 +4,11 @@
     "slug": "QuestLogger",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/quest-logger.webp",
+    "icon": "./assets/quest-logger.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/quest-logger.webp",
+      "image": "./assets/quest-logger.png",
       "resizeMode": "contain",
       "backgroundColor": "#011627"
     },
@@ -18,15 +18,16 @@
     "android": {
       "package": "com.victor.questlogger",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/quest-logger.webp",
+        "foregroundImage": "./assets/quest-logger.png",
         "backgroundColor": "#292731"
       }
     },
     "web": {
-      "favicon": "./assets/quest-logger.webp"
+      "favicon": "./assets/quest-logger.png"
     },
     "plugins": [
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-font"
     ]
   }
 }
