@@ -1,22 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-    View,
-    Text,
+    ScrollView,
     StyleSheet,
-    Animated,
+    Text,
+    View,
     ActivityIndicator,
+    Animated,
+    ImageBackground,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { DetailsScreenRouteProp } from "../utils/navigationTypes";
-import IGDBService from "../services/IGDBService";
-import { QuestGame } from "../interfaces/QuestGame";
+import { QuestGameDetailRouteProp } from "../utils/navigationTypes";
 import { getGameStatus } from "../utils/dataMappers";
 import ImageCarousel from "./GameDetail/components/ImageCarousel";
-import { Image } from "expo-image";
 import { colorSwatch } from "../utils/colorConstants";
+import { QuestGame } from "../interfaces/QuestGame";
+import IGDBService from "../services/IGDBService";
+import FullWidthImage from "./shared/FullWidthImage";
+import { GameStatus } from "../types/game";
 
-const GameDetailPage: React.FC = () => {
-    const route = useRoute<DetailsScreenRouteProp>();
+const QuestGameDetailPage: React.FC = () => {
+    const route = useRoute<QuestGameDetailRouteProp>();
     const { id } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -26,6 +29,7 @@ const GameDetailPage: React.FC = () => {
             const game: QuestGame | null = await IGDBService.fetchGameDetails(
                 id
             );
+
             setGameDetails(game);
 
             Animated.timing(fadeAnim, {
@@ -39,155 +43,217 @@ const GameDetailPage: React.FC = () => {
 
     if (!game) {
         return (
-            <View style={styles.container}>
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                        size="large"
-                        color={colorSwatch.accent.green}
-                    />
-                </View>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator
+                    size="large"
+                    color={colorSwatch.accent.green}
+                />
             </View>
         );
     }
 
-    return (
-        <View style={styles.container}>
-            <Animated.ScrollView style={[{ opacity: fadeAnim }]}>
-                <Image
-                    source={{ uri: `https:${game.cover}` }}
+    const HeaderSection: React.FC = () => (
+        <View style={styles.headerSection}>
+            {game.cover && (
+                <FullWidthImage
+                    source={`https:${game.cover}`}
                     style={styles.coverImage}
-                    contentFit="cover"
-                    transition={200}
                 />
+            )}
+            <View style={styles.headerInfo}>
+                <Text style={styles.gameTitle}>{game.name}</Text>
+                <Text style={styles.releaseDate}>
+                    {game.release_dates?.[0]?.human || "Release date unknown"}
+                </Text>
+            </View>
+        </View>
+    );
 
-                <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Genres:</Text>
-                    <Text style={styles.categoryDetails}>
-                        {game.genres.map((genre) => genre.name).join(", ")}
+    const MetadataGrid: React.FC = () => {
+        const getStatusStyles = (status: GameStatus | undefined) => {
+            switch (status) {
+                case "completed":
+                    return {
+                        color: colorSwatch.accent.green,
+                        fontWeight: "bold" as "bold",
+                        fontStyle: "normal" as "normal", // Default to normal
+                    };
+                case "in_progress":
+                    return {
+                        color: colorSwatch.accent.yellow,
+                        fontWeight: "normal" as "normal",
+                        fontStyle: "italic" as "italic", // Set to italic for in_progress
+                    };
+                default:
+                    return {
+                        color: colorSwatch.accent.pink,
+                        fontWeight: "normal" as "normal",
+                        fontStyle: "normal" as "normal", // Default to normal
+                    };
+            }
+        };
+        return (
+            <View style={styles.metadataGrid}>
+                <View style={styles.metadataItem}>
+                    <Text style={styles.metadataLabel}>Status</Text>
+                    <Text
+                        style={[
+                            styles.metadataValue,
+                            getStatusStyles(game.gameStatus),
+                        ]}
+                    >
+                        {game.gameStatus
+                            ? getGameStatus(game.gameStatus)
+                            : "Not set"}
                     </Text>
                 </View>
-                <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Platforms:</Text>
-                    <Text style={styles.categoryDetails}>
-                        {game.platforms
-                            ?.map((p) => {
-                                const releaseDate = game.release_dates.find(
-                                    (rd) => rd.platform === p.id
-                                );
-                                return {
-                                    name: p.name,
-                                    date: releaseDate?.date || Infinity,
-                                    human: releaseDate?.human || "",
-                                };
-                            })
-                            .sort((a, b) => a.date - b.date)
-                            .map(
-                                (p) =>
-                                    `${p.name}${p.human ? ` (${p.human})` : ""}`
-                            )
-                            .join(",\n ") ?? "N/A"}
+                <View style={styles.metadataItem}>
+                    <Text style={styles.metadataLabel}>Age Rating</Text>
+                    <Text style={styles.metadataValue}>
+                        {game.age_rating || "N/A"}
                     </Text>
                 </View>
-                <View style={styles.rowContainer}>
-                    <Text style={styles.categoryTitle}>Age Rating:</Text>
-                    <Text style={styles.categoryDetails}>
-                        {game.age_rating}
+                <View style={styles.metadataItem}>
+                    <Text style={styles.metadataLabel}>Date Added</Text>
+                    <Text style={styles.metadataValue}>
+                        {game.dateAdded?.split("T")[0]}
                     </Text>
                 </View>
-
-                {game.gameStatus && (
-                    <View style={styles.rowContainer}>
-                        <Text style={styles.categoryTitle}>Status:</Text>
-                        <Text style={styles.categoryDetails}>
-                            {getGameStatus(game.gameStatus)}
-                        </Text>
-                    </View>
-                )}
-
                 {game.personalRating && (
-                    <View style={styles.rowContainer}>
-                        <Text style={styles.categoryTitle}>
-                            Personal Rating:
+                    <View style={styles.metadataItem}>
+                        <Text style={styles.metadataLabel}>
+                            Personal Rating
                         </Text>
-                        <Text style={styles.categoryDetails}>
-                            {game.personalRating ?? "N/A"}
-                        </Text>
-                    </View>
-                )}
-
-                {game.gameStatus === "completed" && (
-                    <View style={styles.rowContainer}>
-                        <Text style={styles.categoryTitle}>
-                            Completion Date:
-                        </Text>
-                        <Text style={styles.categoryDetails}>
-                            {game.completionDate ?? "N/A"}
+                        <Text style={styles.metadataValue}>
+                            {game.personalRating}/10
                         </Text>
                     </View>
                 )}
+            </View>
+        );
+    };
 
-                {game.dateAdded && (
-                    <View style={styles.rowContainer}>
-                        <Text style={styles.categoryTitle}>Date Added:</Text>
-                        <Text style={styles.categoryDetails}>
-                            {game.dateAdded}
-                        </Text>
-                    </View>
-                )}
+    const NotesSection: React.FC = () => (
+        <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Personal Notes</Text>
+            <View style={styles.noteContainer}>
+                <Text style={styles.noteText}>"{game.notes}"</Text>
+            </View>
+        </View>
+    );
 
-                {game.gameStatus === "completed" &&
-                    game.rating !== undefined && (
-                        <View style={styles.personalNotes}>
-                            <Text style={styles.title}>Personal Notes:</Text>
-                            <Text style={styles.rating}>
-                                {" "}
-                                {"⭐".repeat(game.personalRating ?? 0)}
-                                {"☆".repeat(10 - (game.personalRating ?? 0))} (
-                                {game.personalRating ?? 0}/10)
-                            </Text>
-                            <Text style={styles.quote}>
-                                {game.notes ?? "No notes available"}
-                            </Text>
-                        </View>
-                    )}
-
-                <Text style={styles.sectionTitle}>Companies:</Text>
-                {game.involved_companies?.map((company, index) => (
-                    <Text key={index} style={styles.info}>
-                        {company.role}: {company.name}
+    const GenresSection: React.FC = () => (
+        <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Genres</Text>
+            <View style={styles.genresContainer}>
+                {game.genres?.map((genre: { name: string }, index: number) => (
+                    <Text key={index} style={styles.genreText}>
+                        {genre.name}
                     </Text>
                 ))}
-
-                <Text style={styles.sectionTitle}>Storyline:</Text>
-                <Text style={styles.text}>{game.storyline}</Text>
-
-                <Text style={styles.sectionTitle}>Screenshots:</Text>
-                <View style={{ marginBottom: 10 }}>
-                    <ImageCarousel images={game.screenshots ?? []} />
-                </View>
-                {/* <Text style={styles.sectionTitle}>Videos:</Text>
-            {game.videos.map((video, index) => (
-                <Text
-                key={index}
-                style={styles.video}
-                onPress={async () => {
-                    const supported = await Linking.canOpenURL(video.url);
-                    if (supported) {
-                        Linking.openURL(video.url);
-                        } else {
-                            console.error(`Cannot open URL: ${video.url}`);
-                    }
-                    }}
-                    >
-                    {`Video ${index + 1}`}
-                    </Text>
-                    ))} */}
-                <Text style={styles.sectionTitle}>Summary:</Text>
-                <Text style={styles.text}>{game.summary}</Text>
-
-                <View style={styles.bottomClearance}></View>
-            </Animated.ScrollView>
+            </View>
         </View>
+    );
+
+    const PlatformsSection: React.FC = () => (
+        <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Platforms</Text>
+            <View style={styles.platformsContainer}>
+                {game.platforms
+                    ?.map(
+                        (platform: {
+                            id: number;
+                            name: string;
+                            release_date?: string;
+                        }) => {
+                            const releaseDate = game.release_dates.find(
+                                (rd) => rd.platform === platform.id
+                            );
+                            return {
+                                date: releaseDate?.date || Infinity,
+                                name: platform.name,
+                                human: releaseDate?.human || "",
+                            };
+                        }
+                    )
+                    .sort((a, b) => a.date - b.date)
+                    .map((platform, index) => (
+                        <Text key={index} style={styles.platformText}>
+                            {platform.name} ({platform.human?.split("T")[0]})
+                        </Text>
+                    ))}
+            </View>
+        </View>
+    );
+
+    const CompaniesSection: React.FC = () => {
+        const groupedCompanies: { [key: string]: string[] } = {};
+
+        game.involved_companies?.forEach((company) => {
+            if (groupedCompanies[company.role]) {
+                groupedCompanies[company.role].push(company.name);
+            } else {
+                groupedCompanies[company.role] = [company.name];
+            }
+        });
+
+        return (
+            <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Companies</Text>
+                {Object.entries(groupedCompanies).map(
+                    ([role, names], index) => (
+                        <View key={index} style={styles.companyItem}>
+                            <Text style={styles.companyRole}>{role}</Text>
+                            <Text style={styles.companyName}>
+                                {names.join(", ")}
+                            </Text>
+                        </View>
+                    )
+                )}
+            </View>
+        );
+    };
+
+    const StorylineSection: React.FC = () => (
+        <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Storyline</Text>
+            <Text style={styles.storylineText}>
+                {game.storyline || game.summary}
+            </Text>
+        </View>
+    );
+
+    const ScreenshotsSection: React.FC = () => (
+        <View style={styles.screenshotsSection}>
+            <Text style={styles.screenshotsTitle}>Screenshots</Text>
+            <ImageCarousel images={game.screenshots ?? []} />
+        </View>
+    );
+
+    return (
+        <ImageBackground
+            source={require("../assets/quest-logger.png")}
+            style={styles.container}
+            resizeMode="contain"
+        >
+            <View style={styles.overlay} />
+            <ScrollView style={{ flex: 1 }}>
+                <HeaderSection />
+                <MetadataGrid />
+                {game.notes && <NotesSection />}
+                {game.screenshots && game.screenshots.length > 0 && (
+                    <ScreenshotsSection />
+                )}
+                {game.genres && game.genres.length > 0 && <GenresSection />}
+                {game.platforms && game.platforms.length > 0 && (
+                    <PlatformsSection />
+                )}
+                {(game.storyline || game.summary) && <StorylineSection />}
+                {game.involved_companies &&
+                    game.involved_companies.length > 0 && <CompaniesSection />}
+                <View style={styles.bottomClearance}></View>
+            </ScrollView>
+        </ImageBackground>
     );
 };
 
@@ -196,76 +262,150 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colorSwatch.background.dark,
     },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: colorSwatch.background.dark,
+        opacity: 0.98,
+    },
+    headerSection: {
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 6,
+    },
+    coverImage: {
+        width: "100%",
+        marginBottom: 12,
+        backgroundColor: colorSwatch.background.dark,
+        resizeMode: "contain",
+    },
+    headerInfo: {
+        margin: 12,
+    },
+    gameTitle: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: colorSwatch.text.primary,
+        marginBottom: 4,
+    },
+    releaseDate: {
+        fontSize: 14,
+        color: colorSwatch.text.secondary,
+    },
+    metadataGrid: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginHorizontal: 4,
+        marginTop: 16,
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 12,
+        padding: 8,
+    },
+    metadataItem: {
+        width: "50%",
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+    },
+    metadataLabel: {
+        fontSize: 12,
+        color: colorSwatch.text.secondary,
+        marginBottom: 4,
+    },
+    metadataValue: {
+        fontSize: 16,
+        color: colorSwatch.text.primary,
+        fontWeight: "600",
+    },
+    sectionContainer: {
+        marginTop: 16,
+        marginHorizontal: 4,
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 12,
+        padding: 16,
+        elevation: 4,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: "600",
+        color: colorSwatch.accent.green,
+        marginBottom: 12,
+    },
+    genresContainer: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginTop: 4,
+    },
+    genreText: {
+        color: colorSwatch.text.primary,
+        backgroundColor: colorSwatch.background.dark,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 16,
+        marginRight: 8,
+        marginBottom: 8,
+        fontSize: 14,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    platformsContainer: {
+        marginTop: 4,
+    },
+    platformText: {
+        color: colorSwatch.text.primary,
+        fontSize: 14,
+        marginBottom: 8,
+    },
+    companyItem: {
+        fontSize: 16,
+        color: colorSwatch.text.primary,
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 8,
+        marginBottom: 8,
+    },
+    companyRole: {
+        fontSize: 12,
+        color: colorSwatch.text.secondary,
+        marginBottom: 2,
+    },
+    companyName: {
+        fontSize: 16,
+        color: colorSwatch.text.primary,
+    },
+    storylineText: {
+        fontSize: 16,
+        lineHeight: 24,
+        color: colorSwatch.text.primary,
+    },
+    screenshotsSection: {
+        marginTop: 16,
+        marginHorizontal: 4,
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 12,
+        padding: 16,
+        overflow: "hidden",
+        paddingBottom: 30,
+        resizeMode: "cover",
+    },
+    screenshotsTitle: {
+        fontSize: 20,
+        fontWeight: "600",
+        color: colorSwatch.accent.purple,
+        marginBottom: 12,
+    },
     loadingContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: colorSwatch.background.dark,
     },
-    loadingText: {
-        color: colorSwatch.accent.green,
-        marginTop: 12,
-        fontSize: 16,
-    },
-    coverImage: {
-        width: "100%",
-        aspectRatio: 1 / 1.5,
-        resizeMode: "cover",
-        borderRadius: 10,
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 10,
-        color: colorSwatch.accent.green,
-    },
-    categoryTitle: { color: colorSwatch.accent.green, marginRight: 5 },
-    categoryDetails: {
-        color: colorSwatch.text.primary,
-        flexWrap: "wrap",
-        flex: 1,
-    },
-    rowContainer: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        marginBottom: 10,
-    },
-    info: { fontSize: 16, marginBottom: 5, color: colorSwatch.text.primary },
-    sectionTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginTop: 15,
-        marginBottom: 5,
-        color: colorSwatch.primary.main,
-    },
-    text: { fontSize: 16, marginBottom: 10, color: colorSwatch.text.primary },
-    quote: {
-        fontStyle: "italic",
+    noteText: {
         color: colorSwatch.secondary.main,
-        marginBottom: 10,
-    },
-    screenshot: {
-        width: "100%",
-        height: 200,
-        resizeMode: "cover",
-        marginBottom: 10,
-    },
-    video: {
+        fontStyle: "italic",
+        fontWeight: "600",
         fontSize: 16,
-        color: colorSwatch.text.primary,
-        flexDirection: "row",
+        lineHeight: 24,
     },
-    rating: {
-        fontSize: 10,
-        marginBottom: 5,
-        color: colorSwatch.accent.purple,
-    },
-    personalNotes: {
-        marginVertical: 10,
-        borderColor: colorSwatch.primary.dark,
-        borderWidth: 1,
-        padding: 8,
-        borderRadius: 5,
+    noteContainer: {
+        borderRadius: 12,
+        backgroundColor: colorSwatch.background.medium,
     },
     bottomClearance: {
         height: 60,
@@ -277,4 +417,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GameDetailPage;
+export default QuestGameDetailPage;

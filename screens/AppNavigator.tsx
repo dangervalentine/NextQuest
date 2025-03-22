@@ -35,16 +35,6 @@ const AppNavigator = () => {
 const styles = StyleSheet.create({
     headerStyle: {
         backgroundColor: colorSwatch.background.dark,
-        borderBottomWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
-        shadowOffset: {
-            width: 5,
-            height: 8,
-        },
-        shadowColor: colorSwatch.neutral.darkGray,
-        shadowOpacity: 1,
-        shadowRadius: 3.84,
-        elevation: 20,
     },
     headerTitleStyle: {
         fontSize: 24,

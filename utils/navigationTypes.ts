@@ -8,7 +8,7 @@ export type RootStackParamList = {
 
 export type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
-export type DetailsScreenRouteProp = RouteProp<
+export type QuestGameDetailRouteProp = RouteProp<
     RootStackParamList,
     "QuestGameDetailPage"
 >;

@@ -2,11 +2,12 @@ import React, { memo, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Image } from "expo-image";
 import { QuestGame } from "../../../interfaces/QuestGame";
 import { colorSwatch } from "../../../utils/colorConstants";
 import { formatReleaseDate } from "../../../utils/dateFormatters";
 import { ScreenNavigationProp } from "../../../utils/navigationTypes";
+import { GameStatus } from "../../../types/game";
+import FullHeightImage from "../../shared/FullHeightImage";
 
 interface GameItemProps {
     questGame: QuestGame;
@@ -51,6 +52,22 @@ const GameItem: React.FC<GameItemProps> = memo(
             [QuestGame.genres]
         );
 
+        const getStatusStyles = (status: GameStatus | undefined) => {
+            switch (status) {
+                case "completed":
+                    return {
+                        borderWidth: 3,
+                        borderLeftColor: colorSwatch.accent.yellow,
+                        borderBottomColor: colorSwatch.accent.pink,
+                        borderTopColor: colorSwatch.accent.green,
+                        borderRightColor: colorSwatch.accent.purple,
+                    };
+
+                default:
+                    return;
+            }
+        };
+
         return (
             <View style={styles.gameContainer}>
                 {typeof QuestGame.priority === "number" &&
@@ -82,14 +99,9 @@ const GameItem: React.FC<GameItemProps> = memo(
                     ]}
                 >
                     {QuestGame.cover && QuestGame.cover.url ? (
-                        <Image
-                            source={`https:${QuestGame.cover.url}`}
-                            style={styles.cover}
-                            contentFit="cover"
-                            placeholder={require("../../../assets/placeholder.png")}
-                            onError={() =>
-                                console.error("Failed to load image")
-                            }
+                        <FullHeightImage
+                            source={QuestGame.cover.url}
+                            style={getStatusStyles(QuestGame.gameStatus)}
                         />
                     ) : (
                         <View style={styles.cover} />
@@ -148,7 +160,6 @@ const styles = StyleSheet.create({
     gameContainer: {
         flexDirection: "row",
         flex: 1,
-        backgroundColor: colorSwatch.background.dark,
     },
     dragHandle: {
         justifyContent: "center",
@@ -176,6 +187,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flex: 1,
         paddingVertical: 10,
+        alignItems: "center",
     },
     rating: {
         fontSize: 10,
@@ -187,6 +199,7 @@ const styles = StyleSheet.create({
         height: 100,
         marginLeft: 12,
         marginRight: 12,
+        padding: 3,
         resizeMode: "cover",
         backgroundColor: colorSwatch.neutral.gray,
         borderRadius: 4,

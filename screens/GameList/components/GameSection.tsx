@@ -48,12 +48,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
         }: DragListRenderItemInfo<QuestGame>) => {
             if (!item) return null;
             return (
-                <View
-                    style={[
-                        styles.itemContainer,
-                        isActive && styles.activeItem,
-                    ]}
-                >
+                <View style={[isActive && styles.activeItem]}>
                     <GameItem questGame={item} reorder={onDragStart} />
                 </View>
             );
@@ -104,9 +99,6 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
                         size="large"
                         color={colorSwatch.accent.green}
                     />
-                    <Text style={styles.loadingText}>
-                        Loading your quest log...
-                    </Text>
                 </View>
             </ImageBackground>
         );
@@ -193,9 +185,6 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         padding: 10,
-    },
-    itemContainer: {
-        // Add any necessary styles for the item container
     },
 });
 
