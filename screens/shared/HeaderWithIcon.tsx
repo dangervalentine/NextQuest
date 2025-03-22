@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import { colorSwatch } from "../utils/colorConstants";
+import { colorSwatch } from "../../utils/colorConstants";
 
 interface HeaderWithIconProps {
     iconName: keyof typeof SimpleLineIcons.glyphMap;

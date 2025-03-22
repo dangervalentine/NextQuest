@@ -1,11 +1,11 @@
 import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import AppNavigator from "./components/AppNavigator";
+import AppNavigator from "./screens/AppNavigator";
 import { colorSwatch } from "./utils/colorConstants";
-import { initializeDatabase, getAllPlatforms } from "./data/db";
+import { initializeDatabase } from "./data/db";
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(true);

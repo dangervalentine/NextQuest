@@ -1,12 +1,12 @@
 import React, { memo, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { QuestGame } from "../interfaces/QuestGame";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
-import { colorSwatch } from "../utils/colorConstants";
-import { ScreenNavigationProp } from "../utils/navigationTypes";
-import { formatReleaseDate } from "../utils/dateFormatters";
+import { QuestGame } from "../../../interfaces/QuestGame";
+import { colorSwatch } from "../../../utils/colorConstants";
+import { formatReleaseDate } from "../../../utils/dateFormatters";
+import { ScreenNavigationProp } from "../../../utils/navigationTypes";
 
 interface GameItemProps {
     questGame: QuestGame;
@@ -86,7 +86,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                             source={`https:${QuestGame.cover.url}`}
                             style={styles.cover}
                             contentFit="cover"
-                            placeholder={require("../assets/placeholder.png")}
+                            placeholder={require("../../../assets/placeholder.png")}
                             onError={() =>
                                 console.error("Failed to load image")
                             }

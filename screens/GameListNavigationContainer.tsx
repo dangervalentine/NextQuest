@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import GameSection from "../components/GameSection";
+import GameSection from "./GameList/components/GameSection";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import HeaderWithIcon from "../components/HeaderWithIcon";
+import HeaderWithIcon from "./shared/HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { GameStatus } from "../types/game";
 import { colorSwatch } from "../utils/colorConstants";

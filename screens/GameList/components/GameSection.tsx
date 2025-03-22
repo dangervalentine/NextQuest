@@ -7,11 +7,11 @@ import {
     Text,
 } from "react-native";
 import GameItem from "./GameItem";
-import { QuestGame } from "../interfaces/QuestGame";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
-import { colorSwatch } from "../utils/colorConstants";
-import { updateGamePriorities, getQuestGamesByStatus } from "../data/db";
-import { GameStatus } from "../types/game";
+import { getQuestGamesByStatus, updateGamePriorities } from "../../../data/db";
+import { QuestGame } from "../../../interfaces/QuestGame";
+import { GameStatus } from "../../../types/game";
+import { colorSwatch } from "../../../utils/colorConstants";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -94,7 +94,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
     if (isLoading) {
         return (
             <ImageBackground
-                source={require("../assets/quest-logger.png")}
+                source={require("../../../assets/quest-logger.png")}
                 style={styles.pageContainer}
                 resizeMode="contain"
             >
@@ -114,7 +114,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
 
     return data.length === 0 ? (
         <ImageBackground
-            source={require("../assets/quest-logger.png")}
+            source={require("../../../assets/quest-logger.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -127,7 +127,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
         </ImageBackground>
     ) : (
         <ImageBackground
-            source={require("../assets/quest-logger.png")}
+            source={require("../../../assets/quest-logger.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >

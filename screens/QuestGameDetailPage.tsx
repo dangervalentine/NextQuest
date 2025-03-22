@@ -11,7 +11,7 @@ import { DetailsScreenRouteProp } from "../utils/navigationTypes";
 import IGDBService from "../services/IGDBService";
 import { QuestGame } from "../interfaces/QuestGame";
 import { getGameStatus } from "../utils/dataMappers";
-import ImageCarousel from "../components/ImageCarousel";
+import ImageCarousel from "./GameDetail/components/ImageCarousel";
 import { Image } from "expo-image";
 import { colorSwatch } from "../utils/colorConstants";
 
