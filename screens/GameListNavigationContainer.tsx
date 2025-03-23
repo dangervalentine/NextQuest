@@ -1,38 +1,46 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import GameSection from "./GameList/components/GameSection";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import {
+    FontAwesome5,
+    MaterialCommunityIcons,
+    SimpleLineIcons,
+} from "@expo/vector-icons";
 import HeaderWithIcon from "./shared/HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { GameStatus } from "../constants/gameStatus";
 import { colorSwatch } from "../utils/colorConstants";
 import { View } from "react-native";
+import GameIcon from "./shared/GameIcon";
 
 const Tab = createBottomTabNavigator();
 
 const MainNavigationContainer: React.FC = () => {
     const tabScreens: {
         name: string;
-        iconName: keyof typeof SimpleLineIcons.glyphMap;
+        iconName:
+            | keyof typeof MaterialCommunityIcons.glyphMap
+            | keyof typeof SimpleLineIcons.glyphMap
+            | keyof typeof FontAwesome5.glyphMap;
         title: string;
         gameStatus: GameStatus;
     }[] = [
         {
-            name: "In Progress",
-            iconName: "game-controller",
-            title: "In Progress",
+            name: "Active",
+            iconName: "sword-cross", // MaterialCommunityIcons
+            title: "Active Quests",
             gameStatus: "active",
         },
         {
             name: "Quest Log",
-            iconName: "book-open",
+            iconName: "scroll", // FontAwesome5
             title: "Quest Log",
             gameStatus: "inactive",
         },
         {
             name: "Completed",
-            iconName: "check",
-            title: "Completed",
+            iconName: "trophy", // FontAwesome5
+            title: "Completed Quests",
             gameStatus: "completed",
         },
     ];
@@ -46,7 +54,7 @@ const MainNavigationContainer: React.FC = () => {
                     options={{
                         tabBarLabel: screen.name,
                         tabBarIcon: ({ color, size }) => (
-                            <SimpleLineIcons
+                            <GameIcon
                                 name={screen.iconName}
                                 size={size}
                                 color={color}

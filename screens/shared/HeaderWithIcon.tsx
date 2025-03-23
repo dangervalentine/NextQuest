@@ -1,10 +1,18 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import {
+    FontAwesome5,
+    MaterialCommunityIcons,
+    SimpleLineIcons,
+} from "@expo/vector-icons";
 import { colorSwatch } from "../../utils/colorConstants";
+import GameIcon from "./GameIcon";
 
 interface HeaderWithIconProps {
-    iconName: keyof typeof SimpleLineIcons.glyphMap;
+    iconName:
+        | keyof typeof MaterialCommunityIcons.glyphMap
+        | keyof typeof SimpleLineIcons.glyphMap
+        | keyof typeof FontAwesome5.glyphMap;
     title: string;
 }
 
@@ -16,12 +24,13 @@ const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({ iconName, title }) => {
                 alignItems: "center",
             }}
         >
-            <SimpleLineIcons
-                name={iconName}
-                size={24}
-                color={colorSwatch.secondary.main}
-                style={{ marginRight: 8 }}
-            />
+            <View style={{ marginRight: 8 }}>
+                <GameIcon
+                    name={iconName}
+                    size={24}
+                    color={colorSwatch.secondary.main}
+                />
+            </View>
             <Text
                 style={{
                     fontSize: 24,

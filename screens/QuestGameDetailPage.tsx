@@ -268,17 +268,18 @@ const styles = StyleSheet.create({
         opacity: 0.98,
     },
     headerSection: {
-        backgroundColor: colorSwatch.background.medium,
+        backgroundColor: colorSwatch.background.dark,
         borderRadius: 6,
     },
     coverImage: {
         width: "100%",
-        marginBottom: 12,
         backgroundColor: colorSwatch.background.dark,
         resizeMode: "contain",
     },
     headerInfo: {
+        backgroundColor: colorSwatch.background.dark,
         margin: 12,
+        alignItems: "center",
     },
     gameTitle: {
         fontSize: 24,
