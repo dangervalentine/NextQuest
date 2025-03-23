@@ -3,7 +3,7 @@ import TwitchAuthService from "./TwitchAuthService";
 import { mapToGameDetails } from "../utils/dataMappers";
 import { GameDetails } from "../data/models/GameDetails";
 import { QuestGame } from "../data/models/QuestGame";
-const seedData = require("../data/seed_data.json");
+import { getQuestGameById } from "../data/repositories/questGames";
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4/games";
@@ -66,21 +66,46 @@ sort release_dates.date asc;
             }
 
             const gameDetails: GameDetails = mapToGameDetails(gameData);
-            const savedData = seedData.find(
-                (x: QuestGame) => x.id === gameDetails.id
-            );
+
+            // Get saved data from database using the repository method
+            const savedData = await getQuestGameById(gameDetails.id);
 
             const questGame: QuestGame = {
-                ...gameDetails,
+                ...gameData,
+                alternative_names: gameData.alternative_names || [],
+                game_modes: gameData.game_modes || [],
+                player_perspectives: gameData.player_perspectives || [],
+                themes: gameData.themes || [],
                 priority: savedData?.priority,
-                platform: savedData?.platform,
-                dateAdded: savedData?.dateAdded,
-                gameStatus: savedData?.gameStatus,
+                selectedPlatform: savedData?.selectedPlatform || {
+                    id: 0,
+                    name: "",
+                },
+                dateAdded: savedData?.dateAdded || new Date().toISOString(),
+                gameStatus: savedData?.gameStatus || "undiscovered",
                 personalRating: savedData?.personalRating,
                 notes: savedData?.notes,
             };
 
-            return questGame;
+            if (questGame) {
+                return questGame;
+            }
+
+            // If no quest game exists, return default quest properties
+            return {
+                ...gameData,
+                alternative_names: gameData.alternative_names || [],
+                game_modes: gameData.game_modes || [],
+                player_perspectives: gameData.player_perspectives || [],
+                themes: gameData.themes || [],
+                gameStatus: "undiscovered",
+                dateAdded: new Date().toISOString(),
+                priority: 0,
+                selectedPlatform: { id: 0, name: "" },
+                personalRating: undefined,
+                completionDate: undefined,
+                notes: undefined,
+            };
         } catch (error) {
             console.error("Error fetching game details:", error);
             return null;

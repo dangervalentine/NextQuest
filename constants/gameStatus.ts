@@ -5,4 +5,6 @@ export type GameStatus =
     | "active" // A game currently being played; an ongoing quest.
     | "inactive" // A game that was started but is currently on hold.
     | "completed" // A game that has been fully finished or conquered.
-    | "undiscovered"; // A game yet to be started; a future adventure awaits.
+    | "undiscovered" // A game yet to be started; a future adventure awaits.
+    | "on_hold" // A game that is temporarily paused.
+    | "dropped"; // A game that has been abandoned.

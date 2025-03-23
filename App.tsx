@@ -14,11 +14,15 @@ const App = () => {
     useEffect(() => {
         const setupDatabase = async () => {
             try {
-                await initializeDatabase();
+                // await initializeDatabase();
                 setIsLoading(false);
             } catch (err) {
                 console.error("Database initialization failed:", err);
-                setError(err.message || "Failed to initialize database");
+                setError(
+                    err instanceof Error
+                        ? err.message
+                        : "Failed to initialize database"
+                );
                 setIsLoading(false);
             }
         };

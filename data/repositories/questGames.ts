@@ -1,37 +1,26 @@
 import db from "../config/database";
 import { GameStatus } from "../../constants/gameStatus";
 import { QuestGame } from "../models/QuestGame";
+import * as igdbRepo from "./igdbGames";
 
-const parseQuestGame = (row: any): QuestGame => {
+const parseQuestGame = async (row: any): Promise<QuestGame> => {
+    // Get the base IGDB game data
+    const igdbGame = await igdbRepo.getIGDBGameById(row.game_id);
+    if (!igdbGame) {
+        throw new Error(`IGDB game data not found for id: ${row.game_id}`);
+    }
+
+    // Combine IGDB data with quest-specific data
     return {
-        id: row.id,
-        name: row.name,
-        cover:
-            row.cover_id && row.cover_url
-                ? {
-                      id: row.cover_id,
-                      url: row.cover_url,
-                  }
-                : { id: 0, url: "" },
-        genres: JSON.parse(row.genres || "[]"),
-        release_dates: JSON.parse(row.release_dates || "[]"),
-        rating: row.rating,
-        aggregated_rating: row.aggregated_rating,
-        age_rating: row.age_rating,
-        platforms: JSON.parse(row.platforms || "[]"),
-        summary: row.summary,
-        screenshots: JSON.parse(row.screenshots || "[]"),
-        videos: JSON.parse(row.videos || "[]"),
-        involved_companies: JSON.parse(row.involved_companies || "[]"),
-        storyline: row.storyline,
+        ...igdbGame,
         gameStatus: row.game_status as GameStatus,
         personalRating: row.personal_rating,
         completionDate: row.completion_date,
         notes: row.notes,
         dateAdded: row.date_added,
         priority: row.priority,
-        platform: {
-            id: row.platform_id || 0,
+        selectedPlatform: {
+            id: row.selected_platform_id || 0,
             name: row.platform_name || "",
         },
     };
@@ -42,7 +31,7 @@ export const getAllQuestGames = async () => {
         const games = await db.getAllAsync(
             "SELECT * FROM quest_games ORDER BY name ASC"
         );
-        return games.map(parseQuestGame);
+        return Promise.all(games.map(parseQuestGame));
     } catch (error) {
         console.error("Error getting all quest games:", error);
         throw error;
@@ -51,11 +40,56 @@ export const getAllQuestGames = async () => {
 
 export const getQuestGamesByStatus = async (status: GameStatus) => {
     try {
-        const query = `SELECT * FROM quest_games WHERE game_status = '${status}' ORDER BY priority DESC, name ASC`;
+        const query = `
+            SELECT qg.game_id, qg.personal_rating, qg.completion_date, 
+                   qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
+                   qs.name as game_status,
+                   p.name as platform_name
+            FROM quest_games qg
+            JOIN quest_game_status qs ON qg.status_id = qs.id
+            LEFT JOIN platforms p ON qg.selected_platform_id = p.id
+            WHERE qs.name = '${status}'
+            ORDER BY qg.priority DESC NULLS LAST, qg.game_id ASC
+        `;
         const games = await db.getAllAsync(query);
-        return games.map(parseQuestGame);
+        return Promise.all(games.map(parseQuestGame));
     } catch (error) {
         console.error("Error getting quest games by status:", error);
+        throw error;
+    }
+};
+
+export const createQuestGame = async (
+    igdbGameId: number,
+    platformId: number,
+    platformName: string
+) => {
+    try {
+        // First, ensure the IGDB game exists in our database
+        const igdbGame = await igdbRepo.getIGDBGameById(igdbGameId);
+        if (!igdbGame) {
+            throw new Error(`IGDB game not found with id: ${igdbGameId}`);
+        }
+
+        // Create the quest game entry
+        const query = `
+            INSERT INTO quest_games (
+                id, name, game_status, date_added,
+                platform_id, platform_name
+            ) VALUES (
+                ${igdbGameId},
+                '${igdbGame.name?.replace(/'/g, "''")}',
+                'Not Started',
+                datetime('now'),
+                ${platformId},
+                '${platformName.replace(/'/g, "''")}'
+            )
+        `;
+        await db.execAsync(query);
+
+        return await getQuestGameById(igdbGameId);
+    } catch (error) {
+        console.error("Error creating quest game:", error);
         throw error;
     }
 };
@@ -65,13 +99,11 @@ export const updateQuestGame = async (
 ) => {
     try {
         const updates = [];
-        const values = [];
 
-        if (game.name !== undefined) {
-            updates.push(`name = '${game.name.replace(/'/g, "''")}'`);
-        }
         if (game.gameStatus !== undefined) {
-            updates.push(`game_status = '${game.gameStatus}'`);
+            updates.push(
+                `status_id = (SELECT id FROM quest_game_status WHERE name = '${game.gameStatus}')`
+            );
         }
         if (game.personalRating !== undefined) {
             updates.push(`personal_rating = ${game.personalRating}`);
@@ -85,18 +117,14 @@ export const updateQuestGame = async (
         if (game.priority !== undefined) {
             updates.push(`priority = ${game.priority}`);
         }
-        if (game.platform !== undefined) {
-            updates.push(
-                `platform_id = ${
-                    game.platform.id
-                }, platform_name = '${game.platform.name.replace(/'/g, "''")}'`
-            );
+        if (game.selectedPlatform !== undefined) {
+            updates.push(`selected_platform_id = ${game.selectedPlatform.id}`);
         }
 
         if (updates.length > 0) {
             const query = `UPDATE quest_games SET ${updates.join(
                 ", "
-            )} WHERE id = ${game.id}`;
+            )} WHERE game_id = ${game.id}`;
             await db.execAsync(query);
         }
     } catch (error) {
@@ -115,26 +143,52 @@ export const deleteQuestGame = async (id: number) => {
 };
 
 export interface GamePriorityUpdate {
-    id: number;
+    id: number; // This is the game_id
     priority: number;
 }
 
 export const updateGamePriorities = async (updates: GamePriorityUpdate[]) => {
     try {
-        const cases = updates
-            .map((update) => `WHEN id = ${update.id} THEN ${update.priority}`)
-            .join(" ");
-        const ids = updates.map((update) => update.id).join(",");
+        // Start transaction
+        await db.execAsync("BEGIN TRANSACTION");
 
-        const query = `
-            UPDATE quest_games 
-            SET priority = CASE ${cases} END 
-            WHERE id IN (${ids})
-        `;
+        // Update each game's priority
+        for (const update of updates) {
+            await db.execAsync(
+                `UPDATE quest_games SET priority = ${update.priority} WHERE game_id = ${update.id}`
+            );
+        }
 
-        await db.execAsync(query);
+        // Commit transaction
+        await db.execAsync("COMMIT");
     } catch (error) {
+        // Rollback on error
+        await db.execAsync("ROLLBACK");
         console.error("Error updating game priorities:", error);
+        throw error;
+    }
+};
+
+export const getQuestGameById = async (
+    id: number
+): Promise<QuestGame | null> => {
+    try {
+        const [game] = await db.getAllAsync(
+            `
+            SELECT qg.game_id, qg.personal_rating, qg.completion_date, 
+                   qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
+                   qs.name as game_status,
+                   p.name as platform_name
+            FROM quest_games qg
+            JOIN quest_game_status qs ON qg.status_id = qs.id
+            LEFT JOIN platforms p ON qg.selected_platform_id = p.id
+            WHERE qg.game_id = ?
+        `,
+            [id]
+        );
+        return game ? await parseQuestGame(game) : null;
+    } catch (error) {
+        console.error("Error getting quest game by id:", error);
         throw error;
     }
 };

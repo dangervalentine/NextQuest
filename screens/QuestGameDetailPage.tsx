@@ -56,7 +56,10 @@ const QuestGameDetailPage: React.FC = () => {
         <View style={styles.headerSection}>
             {game.cover && (
                 <FullWidthImage
-                    source={`https:${game.cover}`}
+                    source={`https:${game.cover.url.replace(
+                        "t_thumb",
+                        "t_720p"
+                    )}`}
                     style={styles.coverImage}
                 />
             )}
@@ -110,7 +113,7 @@ const QuestGameDetailPage: React.FC = () => {
                 <View style={styles.metadataItem}>
                     <Text style={styles.metadataLabel}>Age Rating</Text>
                     <Text style={styles.metadataValue}>
-                        {game.age_rating || "N/A"}
+                        {game.age_ratings?.[0]?.rating || "N/A"}
                     </Text>
                 </View>
                 <View style={styles.metadataItem}>
@@ -129,6 +132,12 @@ const QuestGameDetailPage: React.FC = () => {
                         </Text>
                     </View>
                 )}
+                <View style={styles.metadataItem}>
+                    <Text style={styles.metadataLabel}>Platform</Text>
+                    <Text style={styles.metadataValue}>
+                        {game.selectedPlatform?.name || "Not set"}
+                    </Text>
+                </View>
             </View>
         );
     };
@@ -160,22 +169,16 @@ const QuestGameDetailPage: React.FC = () => {
             <Text style={styles.sectionTitle}>Platforms</Text>
             <View style={styles.platformsContainer}>
                 {game.platforms
-                    ?.map(
-                        (platform: {
-                            id: number;
-                            name: string;
-                            release_date?: string;
-                        }) => {
-                            const releaseDate = game.release_dates.find(
-                                (rd) => rd.platform === platform.id
-                            );
-                            return {
-                                date: releaseDate?.date || Infinity,
-                                name: platform.name,
-                                human: releaseDate?.human || "",
-                            };
-                        }
-                    )
+                    ?.map((platform) => {
+                        const releaseDate = game.release_dates?.find(
+                            (rd) => rd.platform_id === platform.id
+                        );
+                        return {
+                            date: releaseDate?.date || Infinity,
+                            name: platform.name,
+                            human: releaseDate?.human || "",
+                        };
+                    })
                     .sort((a, b) => a.date - b.date)
                     .map((platform, index) => (
                         <Text key={index} style={styles.platformText}>
@@ -186,33 +189,25 @@ const QuestGameDetailPage: React.FC = () => {
         </View>
     );
 
-    const CompaniesSection: React.FC = () => {
-        const groupedCompanies: { [key: string]: string[] } = {};
-
-        game.involved_companies?.forEach((company) => {
-            if (groupedCompanies[company.role]) {
-                groupedCompanies[company.role].push(company.name);
-            } else {
-                groupedCompanies[company.role] = [company.name];
-            }
-        });
-
-        return (
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Companies</Text>
-                {Object.entries(groupedCompanies).map(
-                    ([role, names], index) => (
-                        <View key={index} style={styles.companyItem}>
-                            <Text style={styles.companyRole}>{role}</Text>
-                            <Text style={styles.companyName}>
-                                {names.join(", ")}
-                            </Text>
-                        </View>
-                    )
-                )}
-            </View>
-        );
-    };
+    const CompaniesSection: React.FC = () => (
+        <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Companies</Text>
+            {game.involved_companies?.map((company, index) => (
+                <View key={index} style={styles.companyItem}>
+                    <Text style={styles.companyRole}>
+                        {company.developer
+                            ? "Developer"
+                            : company.publisher
+                            ? "Publisher"
+                            : "Other"}
+                    </Text>
+                    <Text style={styles.companyName}>
+                        {company.company.name}
+                    </Text>
+                </View>
+            ))}
+        </View>
+    );
 
     const StorylineSection: React.FC = () => (
         <View style={styles.sectionContainer}>
@@ -226,7 +221,13 @@ const QuestGameDetailPage: React.FC = () => {
     const ScreenshotsSection: React.FC = () => (
         <View style={styles.screenshotsSection}>
             <Text style={styles.screenshotsTitle}>Screenshots</Text>
-            <ImageCarousel images={game.screenshots ?? []} />
+            <ImageCarousel
+                images={
+                    game.screenshots?.map((s) =>
+                        s.url.replace("t_thumb", "t_720p")
+                    ) ?? []
+                }
+            />
         </View>
     );
 

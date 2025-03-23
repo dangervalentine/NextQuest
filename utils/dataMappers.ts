@@ -106,7 +106,6 @@ export function formatReleaseDates(game: GameDetails): string[] {
  * @returns Human-readable status string
  */
 export function getGameStatus(gameStatus: GameStatus): string {
-    console.log("gameStatus", gameStatus);
     switch (gameStatus) {
         case "completed":
             return "Completed";
@@ -114,6 +113,12 @@ export function getGameStatus(gameStatus: GameStatus): string {
             return "Active";
         case "inactive":
             return "Inactive";
+        case "undiscovered":
+            return "Undiscovered";
+        case "on_hold":
+            return "On Hold";
+        case "dropped":
+            return "Dropped";
         default:
             return "Undiscovered";
     }

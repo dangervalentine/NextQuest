@@ -6,7 +6,7 @@ import {
     SimpleLineIcons,
 } from "@expo/vector-icons";
 import { colorSwatch } from "../../utils/colorConstants";
-import GameIcon from "./GameIcon";
+import QuestIcon from "./GameIcon";
 
 interface HeaderWithIconProps {
     iconName:
@@ -25,7 +25,7 @@ const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({ iconName, title }) => {
             }}
         >
             <View style={{ marginRight: 8 }}>
-                <GameIcon
+                <QuestIcon
                     name={iconName}
                     size={24}
                     color={colorSwatch.secondary.main}

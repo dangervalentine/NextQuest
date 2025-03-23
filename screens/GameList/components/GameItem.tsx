@@ -20,35 +20,27 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const platformReleaseDate = useMemo(
             () =>
-                QuestGame.release_dates.find((date) => {
-                    if (!date.platform) {
+                QuestGame.release_dates?.find((date) => {
+                    if (!date.platform_id) {
                         return false;
                     }
 
-                    const platformKey = date.platform.toString();
-                    try {
-                        return (
-                            platformKey === QuestGame.platform?.id.toString()
-                        );
-                    } catch (error) {
-                        console.error("Error accessing platform:", error);
-                        return false;
-                    }
+                    return date.platform_id === QuestGame.selectedPlatform?.id;
                 }),
-            [QuestGame.release_dates, QuestGame.platform?.id]
+            [QuestGame.release_dates, QuestGame.selectedPlatform?.id]
         );
 
         const handlePress = useMemo(
             () => () =>
                 navigation.navigate("QuestGameDetailPage", {
                     id: QuestGame.id,
-                    name: QuestGame.name,
+                    name: QuestGame.name || "",
                 }),
             [navigation, QuestGame.id, QuestGame.name]
         );
 
         const genresText = useMemo(
-            () => QuestGame.genres?.map((genre) => genre.name).join(", "),
+            () => QuestGame.genres?.map((genre) => genre.name).join(", ") || "",
             [QuestGame.genres]
         );
 
@@ -71,7 +63,8 @@ const GameItem: React.FC<GameItemProps> = memo(
         return (
             <View style={styles.gameContainer}>
                 {typeof QuestGame.priority === "number" &&
-                    QuestGame.priority > 0 && (
+                    QuestGame.priority > 0 &&
+                    QuestGame.gameStatus === "inactive" && (
                         <Pressable
                             onTouchStart={reorder}
                             style={styles.dragHandle}
@@ -122,7 +115,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                             )}
                         <View style={styles.detailsContainer}>
                             <Text style={styles.textSecondary}>
-                                Platform: {QuestGame.platform?.name}
+                                Platform: {QuestGame.selectedPlatform?.name}
                             </Text>
                             {QuestGame.notes && (
                                 <View style={styles.quoteContainer}>
@@ -195,14 +188,10 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.purple,
     },
     cover: {
-        width: 75,
-        height: 100,
+        height: 110,
         marginLeft: 12,
         marginRight: 12,
-        padding: 3,
-        resizeMode: "cover",
         backgroundColor: colorSwatch.neutral.gray,
-        borderRadius: 4,
     },
     contentContainer: {
         flex: 1,

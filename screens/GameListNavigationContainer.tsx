@@ -11,7 +11,7 @@ import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { GameStatus } from "../constants/gameStatus";
 import { colorSwatch } from "../utils/colorConstants";
 import { View } from "react-native";
-import GameIcon from "./shared/GameIcon";
+import QuestIcon from "./shared/GameIcon";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,7 +54,7 @@ const MainNavigationContainer: React.FC = () => {
                     options={{
                         tabBarLabel: screen.name,
                         tabBarIcon: ({ color, size }) => (
-                            <GameIcon
+                            <QuestIcon
                                 name={screen.iconName}
                                 size={size}
                                 color={color}

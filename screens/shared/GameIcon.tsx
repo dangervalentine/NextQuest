@@ -3,6 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { Image } from "react-native";
+import { colorSwatch } from "../../utils/colorConstants";
 
 // Define the valid icon names for each library
 type MaterialCommunityIconNames = keyof typeof MaterialCommunityIcons.glyphMap;
@@ -16,10 +17,10 @@ type IconProps = {
 };
 
 // Map icon names to their respective libraries
-const GameIcon: React.FC<IconProps> = ({
+const QuestIcon: React.FC<IconProps> = ({
     name,
     size = 24,
-    color = "black",
+    color = colorSwatch.text.primary,
 }) => {
     if (name in MaterialCommunityIcons.glyphMap) {
         return (
@@ -58,4 +59,4 @@ const GameIcon: React.FC<IconProps> = ({
     ); // Fallback to quest-logger image
 };
 
-export default GameIcon;
+export default QuestIcon;

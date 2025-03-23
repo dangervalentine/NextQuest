@@ -1,4 +1,4 @@
-export { initializeDatabase } from "./seed/databaseSeeder";
+export { initializeDatabase } from "./config/databaseSeeder";
 export {
     getAllQuestGames,
     getQuestGamesByStatus,
