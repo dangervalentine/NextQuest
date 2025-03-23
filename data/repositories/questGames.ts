@@ -1,6 +1,6 @@
 import db from "../config/database";
-import { QuestGame } from "../../interfaces/QuestGame";
-import { GameStatus } from "../../types/game";
+import { GameStatus } from "../../constants/gameStatus";
+import { QuestGame } from "../models/QuestGame";
 
 const parseQuestGame = (row: any): QuestGame => {
     return {

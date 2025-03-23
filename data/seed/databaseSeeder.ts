@@ -1,6 +1,6 @@
 import db from "../config/database";
+import { QuestGame } from "../models/QuestGame";
 import seedData from "../seed_data.json";
-import { QuestGame } from "../../interfaces/QuestGame";
 
 const createTables = async () => {
     await db.execAsync(`

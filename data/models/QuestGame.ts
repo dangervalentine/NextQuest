@@ -1,4 +1,4 @@
-import { GameStatus } from "../types/game";
+import { GameStatus } from "../../constants/gameStatus";
 import { GameDetails } from "./GameDetails";
 
 /**

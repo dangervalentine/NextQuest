@@ -13,10 +13,10 @@ import { QuestGameDetailRouteProp } from "../utils/navigationTypes";
 import { getGameStatus } from "../utils/dataMappers";
 import ImageCarousel from "./GameDetail/components/ImageCarousel";
 import { colorSwatch } from "../utils/colorConstants";
-import { QuestGame } from "../interfaces/QuestGame";
 import IGDBService from "../services/IGDBService";
 import FullWidthImage from "./shared/FullWidthImage";
-import { GameStatus } from "../types/game";
+import { GameStatus } from "../constants/gameStatus";
+import { QuestGame } from "../data/models/QuestGame";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -78,7 +78,7 @@ const QuestGameDetailPage: React.FC = () => {
                         fontWeight: "bold" as "bold",
                         fontStyle: "normal" as "normal", // Default to normal
                     };
-                case "in_progress":
+                case "active":
                     return {
                         color: colorSwatch.accent.yellow,
                         fontWeight: "normal" as "normal",

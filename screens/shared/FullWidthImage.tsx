@@ -36,12 +36,12 @@ const FullWidthImage = ({
 
 const styles = StyleSheet.create({
     imageContainer: {
-        width: "100%", // Full width
-        overflow: "hidden", // Optional: to hide overflow if needed
+        width: "100%",
+        overflow: "hidden",
     },
     image: {
-        width: "100%", // Full width
-        height: undefined, // Height will be set dynamically
+        width: "100%",
+        height: undefined,
     },
 });
 

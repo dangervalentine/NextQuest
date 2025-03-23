@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { colorSwatch } from "../utils/colorConstants";
+import { colorSwatch } from "../../utils/colorConstants";
 
 function GameLoggerHeader() {
     return (

@@ -1,4 +1,4 @@
-import { GameDetails } from "../interfaces/GameDetails";
+import { GameDetails } from "../data/models/GameDetails";
 
 /**
  * Formats release dates in chronological order with platform information

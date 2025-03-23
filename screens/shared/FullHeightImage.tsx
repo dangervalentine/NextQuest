@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Image, View, StyleSheet, StyleProp, ViewStyle } from "react-native";
-import { QuestGame } from "../../interfaces/QuestGame";
 
 const FullHeightImage = ({
     source,
@@ -43,8 +42,7 @@ const FullHeightImage = ({
 
 const styles = StyleSheet.create({
     container: {
-        // Define your container styles here
-        height: 110, // Set the desired height for the container
+        height: 110, 
         marginRight: 12,
         borderRadius: 4,
     },

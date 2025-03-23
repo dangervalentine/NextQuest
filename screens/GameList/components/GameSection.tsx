@@ -9,9 +9,9 @@ import {
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import { getQuestGamesByStatus, updateGamePriorities } from "../../../data/db";
-import { QuestGame } from "../../../interfaces/QuestGame";
-import { GameStatus } from "../../../types/game";
+import { GameStatus } from "../../../constants/gameStatus";
 import { colorSwatch } from "../../../utils/colorConstants";
+import { QuestGame } from "../../../data/models/QuestGame";
 
 interface GameSectionProps {
     gameStatus: GameStatus;

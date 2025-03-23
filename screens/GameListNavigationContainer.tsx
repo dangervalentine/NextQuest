@@ -4,7 +4,7 @@ import GameSection from "./GameList/components/GameSection";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import HeaderWithIcon from "./shared/HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
-import { GameStatus } from "../types/game";
+import { GameStatus } from "../constants/gameStatus";
 import { colorSwatch } from "../utils/colorConstants";
 import { View } from "react-native";
 
@@ -21,13 +21,13 @@ const MainNavigationContainer: React.FC = () => {
             name: "In Progress",
             iconName: "game-controller",
             title: "In Progress",
-            gameStatus: "in_progress",
+            gameStatus: "active",
         },
         {
             name: "Quest Log",
             iconName: "book-open",
             title: "Quest Log",
-            gameStatus: "preperation",
+            gameStatus: "inactive",
         },
         {
             name: "Completed",

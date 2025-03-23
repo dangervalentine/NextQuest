@@ -2,12 +2,12 @@ import React, { memo, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { QuestGame } from "../../../interfaces/QuestGame";
 import { colorSwatch } from "../../../utils/colorConstants";
 import { formatReleaseDate } from "../../../utils/dateFormatters";
 import { ScreenNavigationProp } from "../../../utils/navigationTypes";
-import { GameStatus } from "../../../types/game";
+import { GameStatus } from "../../../constants/gameStatus";
 import FullHeightImage from "../../shared/FullHeightImage";
+import { QuestGame } from "../../../data/models/QuestGame";
 
 interface GameItemProps {
     questGame: QuestGame;

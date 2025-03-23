@@ -1,8 +1,4 @@
-import {
-    TWITCH_CLIENT_ID,
-    TWITCH_CLIENT_SECRET,
-    TWITCH_GRANT_TYPE,
-} from "@env";
+import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface TwitchAuthResponse {
@@ -20,7 +16,7 @@ class TwitchAuthService {
         const bodyData = new URLSearchParams({
             client_id: TWITCH_CLIENT_ID,
             client_secret: TWITCH_CLIENT_SECRET,
-            grant_type: TWITCH_GRANT_TYPE,
+            grant_type: "client_credentials",
         }).toString();
 
         try {

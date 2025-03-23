@@ -1,7 +1,6 @@
-import { GameStatus } from "../types/game";
+import { GameStatus } from "../constants/gameStatus";
 import { ESRB_RATINGS } from "../constants/ratings";
-import { GameDetails } from "../interfaces/GameDetails";
-
+import { GameDetails } from "../data/models/GameDetails";
 function getAgeRatingForESRB(
     ageRatings?: { category: number; rating: number }[]
 ): string {
@@ -107,12 +106,15 @@ export function formatReleaseDates(game: GameDetails): string[] {
  * @returns Human-readable status string
  */
 export function getGameStatus(gameStatus: GameStatus): string {
+    console.log("gameStatus", gameStatus);
     switch (gameStatus) {
         case "completed":
             return "Completed";
-        case "in_progress":
-            return "In Progress";
-        case "preperation":
-            return "Not Started";
+        case "active":
+            return "Active";
+        case "inactive":
+            return "Inactive";
+        default:
+            return "Undiscovered";
     }
 }

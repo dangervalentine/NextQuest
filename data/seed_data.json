@@ -1,7 +1,7 @@
 [
     {
         "id": 4122,
-        "gameStatus": "in_progress",
+        "gameStatus": "active",
         "cover": {
             "id": 91101,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co1yal.jpg"
@@ -83,7 +83,7 @@
     },
     {
         "id": 11737,
-        "gameStatus": "in_progress",
+        "gameStatus": "active",
         "cover": {
             "id": 286788,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co65ac.jpg"
@@ -158,7 +158,7 @@
     },
     {
         "id": 1133,
-        "gameStatus": "in_progress",
+        "gameStatus": "active",
         "cover": {
             "id": 265444,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co5otg.jpg"
@@ -204,7 +204,7 @@
     },
     {
         "id": 6,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 329139,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co71yr.jpg"
@@ -258,7 +258,7 @@
     },
     {
         "id": 1134,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 77081,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co1nh5.jpg"
@@ -305,7 +305,7 @@
     },
     {
         "id": 23913,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 89765,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co1x9h.jpg"
@@ -353,7 +353,7 @@
     },
     {
         "id": 145528,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 136512,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co2xc0.jpg"
@@ -405,7 +405,7 @@
     },
     {
         "id": 217623,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 377322,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co8356.jpg"
@@ -462,7 +462,7 @@
     },
     {
         "id": 1107,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 87282,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co1vci.jpg"
@@ -539,7 +539,7 @@
     },
     {
         "id": 1517,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 92655,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co1zhr.jpg"
@@ -591,7 +591,7 @@
     },
     {
         "id": 76882,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 106347,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co2a23.jpg"
@@ -635,7 +635,7 @@
     },
     {
         "id": 325594,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 426975,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co95gf.jpg"
@@ -678,7 +678,7 @@
     },
     {
         "id": 1103,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 265426,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co5osy.jpg"
@@ -782,7 +782,7 @@
     },
     {
         "id": 1035,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 170804,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co3nsk.jpg"
@@ -868,7 +868,7 @@
     },
     {
         "id": 277143,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 344601,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co7dw9.jpg"
@@ -906,7 +906,7 @@
     },
     {
         "id": 6635,
-        "gameStatus": "preperation",
+        "gameStatus": "inactive",
         "cover": {
             "id": 155252,
             "url": "//images.igdb.com/igdb/image/upload/t_720p/co3bsk.jpg"
