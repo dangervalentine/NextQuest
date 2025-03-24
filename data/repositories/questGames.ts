@@ -10,6 +10,21 @@ const parseQuestGame = async (row: any): Promise<QuestGame> => {
         throw new Error(`IGDB game data not found for id: ${row.game_id}`);
     }
 
+    // Parse the GROUP_CONCAT results into arrays of objects
+    const game_modes = row.game_modes
+        ? row.game_modes
+              .split(",")
+              .map((name: string) => ({ name: name.trim() }))
+        : [];
+    const player_perspectives = row.player_perspectives
+        ? row.player_perspectives
+              .split(",")
+              .map((name: string) => ({ name: name.trim() }))
+        : [];
+    const themes = row.themes
+        ? row.themes.split(",").map((name: string) => ({ name: name.trim() }))
+        : [];
+
     // Combine IGDB data with quest-specific data
     return {
         ...igdbGame,
@@ -23,6 +38,9 @@ const parseQuestGame = async (row: any): Promise<QuestGame> => {
             id: row.selected_platform_id || 0,
             name: row.platform_name || "",
         },
+        game_modes,
+        player_perspectives,
+        themes,
     };
 };
 
@@ -173,18 +191,28 @@ export const getQuestGameById = async (
     id: number
 ): Promise<QuestGame | null> => {
     try {
+        // First get the main game data
         const [game] = await db.getAllAsync(
             `
             SELECT qg.game_id, qg.personal_rating, qg.completion_date, 
                    qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
                    qs.name as game_status,
-                   p.name as platform_name
+                   p.name as platform_name,
+                   GROUP_CONCAT(DISTINCT gm.name) as game_modes,
+                   GROUP_CONCAT(DISTINCT pp.name) as player_perspectives,
+                   GROUP_CONCAT(DISTINCT t.name) as themes
             FROM quest_games qg
             JOIN quest_game_status qs ON qg.status_id = qs.id
             LEFT JOIN platforms p ON qg.selected_platform_id = p.id
-            WHERE qg.game_id = ?
-        `,
-            [id]
+            LEFT JOIN game_modes_map gmm ON qg.game_id = gmm.game_id
+            LEFT JOIN game_modes gm ON gmm.game_mode_id = gm.id
+            LEFT JOIN game_perspectives gp ON qg.game_id = gp.game_id
+            LEFT JOIN player_perspectives pp ON gp.perspective_id = pp.id
+            LEFT JOIN game_themes gt ON qg.game_id = gt.game_id
+            LEFT JOIN themes t ON gt.theme_id = t.id
+            WHERE qg.game_id = ${id}
+            GROUP BY qg.game_id
+        `
         );
         return game ? await parseQuestGame(game) : null;
     } catch (error) {

@@ -14,7 +14,7 @@ const App = () => {
     useEffect(() => {
         const setupDatabase = async () => {
             try {
-                // await initializeDatabase();
+                await initializeDatabase();
                 setIsLoading(false);
             } catch (err) {
                 console.error("Database initialization failed:", err);

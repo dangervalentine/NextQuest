@@ -201,6 +201,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
         "videos": [
             {
                 "id": 3203,
@@ -250,7 +276,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:47.663Z",
+            "date_added": "2025-03-24T00:42:47.756Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -433,6 +459,36 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            },
+            {
+                "id": 43,
+                "name": "Mystery"
+            }
+        ],
         "videos": [
             {
                 "id": 26228,
@@ -510,7 +566,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:48.519Z",
+            "date_added": "2025-03-24T00:42:48.769Z",
             "priority": 0,
             "selected_platform_id": 169
         }
@@ -663,6 +719,24 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            }
+        ],
         "videos": [
             {
                 "id": 136471,
@@ -701,7 +775,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:50.164Z",
+            "date_added": "2025-03-24T00:42:50.114Z",
             "priority": 0,
             "selected_platform_id": 41
         }
@@ -871,6 +945,28 @@
                 "name": "Role-playing (RPG)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 247,
@@ -898,7 +994,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:51.420Z",
+            "date_added": "2025-03-24T00:42:51.287Z",
             "priority": 0,
             "selected_platform_id": 3
         }
@@ -1046,6 +1142,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
         "videos": [],
         "age_ratings": [
             {
@@ -1073,7 +1191,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:52.507Z",
+            "date_added": "2025-03-24T00:42:52.212Z",
             "priority": 0,
             "selected_platform_id": 41
         }
@@ -1083,7 +1201,7 @@
         "name": "Chrono Trigger",
         "summary": "In this turn-based Japanese RPG, young Crono must travel through time through a misfunctioning teleporter to rescue his misfortunate companion and take part in an intricate web of past and present perils. The adventure that ensues soon unveils an evil force set to destroy the world, triggering Crono's race against time to change the course of history and bring about a brighter future.",
         "storyline": null,
-        "rating": 93.48213282694402,
+        "rating": 93.48247814344859,
         "aggregated_rating": 91.33333333333333,
         "cover": {
             "id": 173156,
@@ -1253,6 +1371,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 108100,
@@ -1314,7 +1458,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:53.404Z",
+            "date_added": "2025-03-24T00:42:53.279Z",
             "priority": 0,
             "selected_platform_id": 306
         }
@@ -1476,6 +1620,24 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 10103,
@@ -1514,7 +1676,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:54.376Z",
+            "date_added": "2025-03-24T00:42:54.387Z",
             "priority": 0,
             "selected_platform_id": 37
         }
@@ -1625,6 +1787,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 47625,
@@ -1658,7 +1842,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:55.784Z",
+            "date_added": "2025-03-24T00:42:55.393Z",
             "priority": 0,
             "selected_platform_id": 37
         }
@@ -1809,6 +1993,28 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 6259,
@@ -1896,7 +2102,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:56.841Z",
+            "date_added": "2025-03-24T00:42:56.372Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -2040,6 +2246,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            }
+        ],
         "videos": [
             {
                 "id": 74692,
@@ -2122,7 +2350,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:57.786Z",
+            "date_added": "2025-03-24T00:42:57.381Z",
             "priority": 0,
             "selected_platform_id": 169
         }
@@ -2317,6 +2545,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 6715,
@@ -2354,7 +2608,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:58.769Z",
+            "date_added": "2025-03-24T00:42:58.382Z",
             "priority": 0,
             "selected_platform_id": 41
         }
@@ -2470,6 +2724,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            },
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 35,
+                "name": "Kids"
+            }
+        ],
         "videos": [
             {
                 "id": 7837,
@@ -2503,7 +2791,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:02:59.668Z",
+            "date_added": "2025-03-24T00:43:00.007Z",
             "priority": 0,
             "selected_platform_id": 24
         }
@@ -2648,6 +2936,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            }
+        ],
         "videos": [
             {
                 "id": 22362,
@@ -2739,7 +3057,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:01.211Z",
+            "date_added": "2025-03-24T00:43:01.013Z",
             "priority": 0,
             "selected_platform_id": 170
         }
@@ -2749,7 +3067,7 @@
         "name": "Split Fiction",
         "summary": "Embrace mind-blowing moments as you’re pulled deep into the many worlds of Split Fiction, a boundary-pushing co-op adventure.",
         "storyline": "Mio and Zoe are contrasting writers – one writes sci-fi and the other writes fantasy – who become trapped in their own stories after being hooked up to a machine designed to steal their creative ideas. They’ll have to rely on each other to break free with their memories in-tact, working together to master a variety of abilities and overcome diverse challenges while jumping between sci-fi and fantasy worlds in this unexpected tale of friendship.",
-        "rating": 98.22235860079253,
+        "rating": 98.22826697246074,
         "aggregated_rating": 90,
         "cover": {
             "id": 426975,
@@ -2872,6 +3190,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 140241,
@@ -2939,7 +3287,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:02.183Z",
+            "date_added": "2025-03-24T00:43:02.008Z",
             "priority": 0,
             "selected_platform_id": 169
         }
@@ -3203,6 +3551,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 20,
+                "name": "Thriller"
+            }
+        ],
         "videos": [
             {
                 "id": 776,
@@ -3260,7 +3634,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:03.142Z",
+            "date_added": "2025-03-24T00:43:02.989Z",
             "priority": 0,
             "selected_platform_id": 19
         }
@@ -3432,6 +3806,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 15521,
@@ -3471,7 +3867,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:04.499Z",
+            "date_added": "2025-03-24T00:43:04.018Z",
             "priority": 0,
             "selected_platform_id": 37
         }
@@ -3668,6 +4064,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            }
+        ],
         "videos": [
             {
                 "id": 101888,
@@ -3730,7 +4156,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:05.475Z",
+            "date_added": "2025-03-24T00:43:05.024Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -3830,6 +4256,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
         "videos": [
             {
                 "id": 26567,
@@ -3851,7 +4303,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:06.887Z",
+            "date_added": "2025-03-24T00:43:06.074Z",
             "priority": 0,
             "selected_platform_id": 24
         }
@@ -4011,6 +4463,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 58619,
@@ -4098,7 +4584,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:07.857Z",
+            "date_added": "2025-03-24T00:43:07.122Z",
             "priority": 0,
             "selected_platform_id": 169
         }
@@ -4370,6 +4856,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 62852,
@@ -4415,7 +4931,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:08.865Z",
+            "date_added": "2025-03-24T00:43:08.142Z",
             "priority": 0,
             "selected_platform_id": 5
         }
@@ -4631,6 +5147,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 21802,
@@ -4686,7 +5228,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:10.120Z",
+            "date_added": "2025-03-24T00:43:09.473Z",
             "priority": 0,
             "selected_platform_id": 5
         }
@@ -4898,6 +5440,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            },
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 321,
@@ -4919,7 +5491,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:10.974Z",
+            "date_added": "2025-03-24T00:43:10.481Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -5062,6 +5634,48 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 11648,
@@ -5154,7 +5768,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:12.035Z",
+            "date_added": "2025-03-24T00:43:11.573Z",
             "priority": 0,
             "selected_platform_id": 41
         }
@@ -5387,6 +6001,32 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
         "videos": [
             {
                 "id": 94931,
@@ -5448,7 +6088,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:13.093Z",
+            "date_added": "2025-03-24T00:43:12.576Z",
             "priority": 0,
             "selected_platform_id": 11
         }
@@ -5458,7 +6098,7 @@
         "name": "Grand Theft Auto V",
         "summary": "Grand Theft Auto V is a vast open world game set in Los Santos, a sprawling sun-soaked metropolis struggling to stay afloat in an era of economic uncertainty and cheap reality TV. The game blends storytelling and gameplay in new ways as players repeatedly jump in and out of the lives of the game’s three lead characters, playing all sides of the game’s interwoven story.",
         "storyline": "Los Santos: a sprawling sun-soaked metropolis full of self-help gurus, starlets and fading celebrities, once the envy of the Western world, now struggling to stay afloat in an era of economic uncertainty and cheap reality TV.\n\nAmidst the turmoil, three very different criminals plot their own chances of survival and success: Franklin, a street hustler looking for real opportunities and serious money; Michael, a professional ex-con whose retirement is a lot less rosy than he hoped it would be; and Trevor, a violent maniac driven by the chance of a cheap high and the next big score. Running out of options, the crew risks everything in a series of daring",
-        "rating": 89.51438083432308,
+        "rating": 89.5142309928724,
         "aggregated_rating": 88.13793103448276,
         "cover": {
             "id": 120937,
@@ -5632,6 +6272,48 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 3164,
@@ -5704,7 +6386,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:13.954Z",
+            "date_added": "2025-03-24T00:43:13.632Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -5800,6 +6482,40 @@
             {
                 "id": 31,
                 "name": "Adventure"
+            }
+        ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
             }
         ],
         "videos": [
@@ -5904,7 +6620,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:14.905Z",
+            "date_added": "2025-03-24T00:43:14.675Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -6077,6 +6793,44 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 22763,
@@ -6164,7 +6918,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:15.902Z",
+            "date_added": "2025-03-24T00:43:15.676Z",
             "priority": 0,
             "selected_platform_id": 170
         }
@@ -6336,6 +7090,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 3353,
@@ -6398,7 +7186,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:16.757Z",
+            "date_added": "2025-03-24T00:43:16.994Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -6408,7 +7196,7 @@
         "name": "The Witcher 3: Wild Hunt",
         "summary": "RPG and sequel to The Witcher 2 (2011), The Witcher 3 follows witcher Geralt of Rivia as he seeks out his former lover and his young subject while intermingling with the political workings of the wartorn Northern Kingdoms. Geralt has to fight monsters and deal with people of all sorts in order to solve complex problems and settle contentious disputes, each ranging from the personal to the world-changing.",
         "storyline": "The Witcher 3: Wild Hunt concludes the story of the witcher Geralt of Rivia, the series' protagonist, whose story to date has been covered in the previous installments. Geralt's new mission comes in dark times as the mysterious and otherworldly army known as the Wild Hunt invades the Northern Kingdoms, leaving only blood soaked earth and fiery ruin in its wake; and it seems the Witcher is the key to stopping their cataclysmic rampage.",
-        "rating": 93.90708535400836,
+        "rating": 93.9071352029575,
         "aggregated_rating": 91.72,
         "cover": {
             "id": 89386,
@@ -6629,6 +7417,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 9648,
@@ -6761,7 +7575,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:17.805Z",
+            "date_added": "2025-03-24T00:43:18.090Z",
             "priority": 0,
             "selected_platform_id": 169
         }
@@ -6943,6 +7757,44 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            }
+        ],
         "videos": [
             {
                 "id": 432,
@@ -7025,7 +7877,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:18.735Z",
+            "date_added": "2025-03-24T00:43:19.050Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -7197,6 +8049,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 3344,
@@ -7248,7 +8122,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:19.759Z",
+            "date_added": "2025-03-24T00:43:20.039Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -7541,6 +8415,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 35369,
@@ -7586,7 +8486,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:20.668Z",
+            "date_added": "2025-03-24T00:43:21.097Z",
             "priority": 0,
             "selected_platform_id": 52
         }
@@ -7751,6 +8651,44 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 17548,
@@ -7848,7 +8786,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:21.571Z",
+            "date_added": "2025-03-24T00:43:22.197Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -8036,6 +8974,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            }
+        ],
         "videos": [
             {
                 "id": 40896,
@@ -8095,7 +9063,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:22.531Z",
+            "date_added": "2025-03-24T00:43:23.167Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -8280,6 +9248,48 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
         "videos": [
             {
                 "id": 1690,
@@ -8307,7 +9317,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:23.784Z",
+            "date_added": "2025-03-24T00:43:24.082Z",
             "priority": 0,
             "selected_platform_id": 11
         }
@@ -8487,6 +9497,64 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            },
+            {
+                "id": 5,
+                "name": "Massively Multiplayer Online (MMO)"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            },
+            {
+                "id": 7,
+                "name": "Virtual Reality"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 35,
+                "name": "Kids"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 118720,
@@ -8544,7 +9612,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:24.622Z",
+            "date_added": "2025-03-24T00:43:25.144Z",
             "priority": 0,
             "selected_platform_id": 3
         }
@@ -8707,6 +9775,28 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
         "videos": [
             {
                 "id": 49923,
@@ -8758,7 +9848,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:25.909Z",
+            "date_added": "2025-03-24T00:43:26.222Z",
             "priority": 0,
             "selected_platform_id": 11
         }
@@ -8877,6 +9967,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 5,
+                "name": "Massively Multiplayer Online (MMO)"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 35587,
@@ -8915,7 +10035,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:26.854Z",
+            "date_added": "2025-03-24T00:43:27.747Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -9060,6 +10180,32 @@
                 "name": "Strategy"
             }
         ],
+        "game_modes": [
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            }
+        ],
         "videos": [
             {
                 "id": 76035,
@@ -9117,7 +10263,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:27.755Z",
+            "date_added": "2025-03-24T00:43:28.836Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -9243,6 +10389,40 @@
                 "name": "Turn-based strategy (TBS)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 34,
+                "name": "Educational"
+            },
+            {
+                "id": 41,
+                "name": "4X (explore, expand, exploit, and exterminate)"
+            }
+        ],
         "videos": [
             {
                 "id": 15055,
@@ -9270,7 +10450,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:28.762Z",
+            "date_added": "2025-03-24T00:43:29.904Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -9443,6 +10623,44 @@
                 "name": "Simulator"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
         "videos": [
             {
                 "id": 633,
@@ -9499,7 +10717,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:29.648Z",
+            "date_added": "2025-03-24T00:43:30.908Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -9638,6 +10856,28 @@
                 "name": "Strategy"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 487,
@@ -9670,7 +10910,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:30.587Z",
+            "date_added": "2025-03-24T00:43:32.040Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -9818,6 +11058,36 @@
                 "name": "Simulator"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 44,
+                "name": "Romance"
+            }
+        ],
         "videos": [
             {
                 "id": 1965,
@@ -9861,7 +11131,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:32.086Z",
+            "date_added": "2025-03-24T00:43:32.995Z",
             "priority": 0,
             "selected_platform_id": 3
         }
@@ -10016,6 +11286,48 @@
                 "name": "Role-playing (RPG)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 2362,
@@ -10067,7 +11379,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:32.924Z",
+            "date_added": "2025-03-24T00:43:33.976Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -10311,6 +11623,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
         "videos": [
             {
                 "id": 30,
@@ -10354,7 +11700,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:33.887Z",
+            "date_added": "2025-03-24T00:43:35.250Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -10364,7 +11710,7 @@
         "name": "League of Legends",
         "summary": "League of Legends is a fast-paced, competitive online game that blends the speed and intensity of an RTS with RPG elements. Two teams of powerful champions, each with a unique design and playstyle, battle head-to-head across multiple battlefields and game modes. With an ever-expanding roster of champions, frequent updates and a thriving tournament scene, League of Legends offers endless replayability for players of every skill level.",
         "storyline": null,
-        "rating": 75.14647197793425,
+        "rating": 75.145102936429,
         "aggregated_rating": 84,
         "cover": {
             "id": 199459,
@@ -10477,6 +11823,32 @@
                 "name": "MOBA"
             }
         ],
+        "game_modes": [
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 35582,
@@ -10548,7 +11920,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:34.851Z",
+            "date_added": "2025-03-24T00:43:36.373Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -10737,6 +12109,32 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            }
+        ],
         "videos": [
             {
                 "id": 78383,
@@ -10867,7 +12265,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:35.799Z",
+            "date_added": "2025-03-24T00:43:37.564Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -11066,6 +12464,36 @@
                 "name": "Turn-based strategy (TBS)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 41,
+                "name": "4X (explore, expand, exploit, and exterminate)"
+            }
+        ],
         "videos": [
             {
                 "id": 9090,
@@ -11173,7 +12601,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:36.705Z",
+            "date_added": "2025-03-24T00:43:38.485Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -11378,6 +12806,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            },
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 19493,
@@ -11440,7 +12898,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:37.702Z",
+            "date_added": "2025-03-24T00:43:39.480Z",
             "priority": 0,
             "selected_platform_id": 11
         }
@@ -11619,6 +13077,44 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            }
+        ],
         "videos": [
             {
                 "id": 107,
@@ -11657,7 +13153,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:38.727Z",
+            "date_added": "2025-03-24T00:43:40.708Z",
             "priority": 0,
             "selected_platform_id": 11
         }
@@ -11874,6 +13370,40 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
         "videos": [
             {
                 "id": 435,
@@ -11924,7 +13454,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:39.658Z",
+            "date_added": "2025-03-24T00:43:41.670Z",
             "priority": 0,
             "selected_platform_id": 240
         }
@@ -12154,6 +13684,28 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 67291,
@@ -12210,7 +13762,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:40.482Z",
+            "date_added": "2025-03-24T00:43:42.710Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -12402,6 +13954,48 @@
                 "name": "Role-playing (RPG)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 295,
@@ -12464,7 +14058,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:41.452Z",
+            "date_added": "2025-03-24T00:43:44.067Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -12814,6 +14408,52 @@
                 "name": "Role-playing (RPG)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 8297,
@@ -12874,7 +14514,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:42.291Z",
+            "date_added": "2025-03-24T00:43:45.194Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -13141,6 +14781,44 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 28,
+                "name": "Business"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 44,
+                "name": "Romance"
+            }
+        ],
         "videos": [
             {
                 "id": 6893,
@@ -13202,7 +14880,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:43.252Z",
+            "date_added": "2025-03-24T00:43:46.053Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -13415,6 +15093,40 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 68569,
@@ -13517,7 +15229,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:44.218Z",
+            "date_added": "2025-03-24T00:43:46.904Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -13668,6 +15380,28 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 6259,
@@ -13755,7 +15489,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:45.059Z",
+            "date_added": "2025-03-24T00:43:48.073Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -14001,6 +15735,28 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 11172,
@@ -14073,7 +15829,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:46.146Z",
+            "date_added": "2025-03-24T00:43:49.015Z",
             "priority": 0,
             "selected_platform_id": 170
         }
@@ -14341,6 +16097,36 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            }
+        ],
         "videos": [
             {
                 "id": 5474,
@@ -14487,7 +16273,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:46.975Z",
+            "date_added": "2025-03-24T00:43:49.964Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -14767,6 +16553,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 715,
@@ -14827,7 +16635,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:47.921Z",
+            "date_added": "2025-03-24T00:43:50.960Z",
             "priority": 0,
             "selected_platform_id": 306
         }
@@ -14837,7 +16645,7 @@
         "name": "Chrono Trigger",
         "summary": "In this turn-based Japanese RPG, young Crono must travel through time through a misfunctioning teleporter to rescue his misfortunate companion and take part in an intricate web of past and present perils. The adventure that ensues soon unveils an evil force set to destroy the world, triggering Crono's race against time to change the course of history and bring about a brighter future.",
         "storyline": null,
-        "rating": 93.48213282694402,
+        "rating": 93.48247814344859,
         "aggregated_rating": 91.33333333333333,
         "cover": {
             "id": 173156,
@@ -15007,6 +16815,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 108100,
@@ -15068,7 +16902,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:48.884Z",
+            "date_added": "2025-03-24T00:43:52.000Z",
             "priority": 0,
             "selected_platform_id": 306
         }
@@ -15148,6 +16982,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            },
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [],
         "age_ratings": [],
         "quest_data": {
@@ -15156,7 +17020,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:49.733Z",
+            "date_added": "2025-03-24T00:43:53.037Z",
             "priority": 0,
             "selected_platform_id": 19
         }
@@ -15337,6 +17201,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            }
+        ],
         "videos": [
             {
                 "id": 3750,
@@ -15401,7 +17299,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:50.681Z",
+            "date_added": "2025-03-24T00:43:53.991Z",
             "priority": 0,
             "selected_platform_id": 19
         }
@@ -15665,6 +17563,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 20,
+                "name": "Thriller"
+            }
+        ],
         "videos": [
             {
                 "id": 776,
@@ -15722,7 +17646,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:51.519Z",
+            "date_added": "2025-03-24T00:43:55.082Z",
             "priority": 0,
             "selected_platform_id": 19
         }
@@ -15840,6 +17764,32 @@
                 "name": "Arcade"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 2494,
@@ -15854,7 +17804,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:52.486Z",
+            "date_added": "2025-03-24T00:43:56.519Z",
             "priority": 0,
             "selected_platform_id": 52
         }
@@ -15963,6 +17913,28 @@
                 "name": "Arcade"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            }
+        ],
         "videos": [
             {
                 "id": 57662,
@@ -16002,7 +17974,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:53.440Z",
+            "date_added": "2025-03-24T00:43:57.471Z",
             "priority": 0,
             "selected_platform_id": 52
         }
@@ -16100,6 +18072,23 @@
                 "name": "Strategy"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [],
         "videos": [
             {
                 "id": 34442,
@@ -16121,7 +18110,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:54.389Z",
+            "date_added": "2025-03-24T00:43:58.364Z",
             "priority": 0,
             "selected_platform_id": 33
         }
@@ -16290,6 +18279,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            },
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 82237,
@@ -16323,7 +18338,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:55.402Z",
+            "date_added": "2025-03-24T00:43:59.443Z",
             "priority": 0,
             "selected_platform_id": 22
         }
@@ -16481,6 +18496,44 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            },
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 35,
+                "name": "Kids"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 1646,
@@ -16520,7 +18573,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:56.253Z",
+            "date_added": "2025-03-24T00:44:00.362Z",
             "priority": 0,
             "selected_platform_id": 37
         }
@@ -16680,6 +18733,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            },
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 35,
+                "name": "Kids"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 62128,
@@ -16724,7 +18811,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:57.209Z",
+            "date_added": "2025-03-24T00:44:01.299Z",
             "priority": 0,
             "selected_platform_id": 37
         }
@@ -16886,6 +18973,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 76232,
@@ -16936,7 +19049,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:58.133Z",
+            "date_added": "2025-03-24T00:44:02.591Z",
             "priority": 0,
             "selected_platform_id": 21
         }
@@ -17084,6 +19197,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 6612,
@@ -17111,7 +19246,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:03:59.036Z",
+            "date_added": "2025-03-24T00:44:03.689Z",
             "priority": 0,
             "selected_platform_id": 21
         }
@@ -17254,6 +19389,32 @@
                 "name": "Platform"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            }
+        ],
         "videos": [
             {
                 "id": 2158,
@@ -17316,7 +19477,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:00.006Z",
+            "date_added": "2025-03-24T00:44:04.555Z",
             "priority": 0,
             "selected_platform_id": 21
         }
@@ -17460,6 +19621,48 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
         "videos": [
             {
                 "id": 7112,
@@ -17567,7 +19770,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:00.958Z",
+            "date_added": "2025-03-24T00:44:05.510Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -17686,6 +19889,44 @@
                 "name": "Shooter"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
         "videos": [
             {
                 "id": 22138,
@@ -17731,7 +19972,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:01.969Z",
+            "date_added": "2025-03-24T00:44:06.531Z",
             "priority": 0,
             "selected_platform_id": 12
         }
@@ -17887,6 +20128,44 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 27,
+                "name": "Comedy"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 535,
@@ -17943,7 +20222,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:02.842Z",
+            "date_added": "2025-03-24T00:44:07.399Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -18028,6 +20307,31 @@
                 "name": "Sport"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [],
         "videos": [
             {
                 "id": 34904,
@@ -18066,7 +20370,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:04.128Z",
+            "date_added": "2025-03-24T00:44:08.336Z",
             "priority": 0,
             "selected_platform_id": 12
         }
@@ -18224,6 +20528,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 2707,
@@ -18296,7 +20626,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:05.097Z",
+            "date_added": "2025-03-24T00:44:09.697Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -18569,6 +20899,44 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            }
+        ],
         "videos": [
             {
                 "id": 51639,
@@ -18641,7 +21009,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:06.068Z",
+            "date_added": "2025-03-24T00:44:10.672Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -18793,6 +21161,48 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 3088,
@@ -18863,7 +21273,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:07.063Z",
+            "date_added": "2025-03-24T00:44:12.211Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -19029,6 +21439,48 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 3352,
@@ -19096,9 +21548,983 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:08.026Z",
+            "date_added": "2025-03-24T00:44:13.219Z",
             "priority": 0,
             "selected_platform_id": 9
+        }
+    },
+    {
+        "id": 134101,
+        "name": "FIFA 21",
+        "summary": "Football is back with EA Sports FIFA 21, featuring more ways to team up on the street or in the stadium to enjoy even bigger victories with friends. Play the world's game with 17,000+ players, over 700 teams in 90+ stadiums, and more than 30 leagues from all over the globe.",
+        "storyline": null,
+        "rating": 68.59801635080512,
+        "aggregated_rating": 72.375,
+        "cover": {
+            "id": 182234,
+            "game_id": 134101,
+            "url": "//images.igdb.com/igdb/image/upload/t_cover_big/co3wm2.jpg"
+        },
+        "screenshots": [
+            {
+                "id": 393768,
+                "game_id": 134101,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fu0.jpg"
+            },
+            {
+                "id": 393769,
+                "game_id": 134101,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fu1.jpg"
+            },
+            {
+                "id": 393770,
+                "game_id": 134101,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fu2.jpg"
+            },
+            {
+                "id": 393771,
+                "game_id": 134101,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fu3.jpg"
+            }
+        ],
+        "platforms": [
+            {
+                "id": 170,
+                "name": "Google Stadia"
+            },
+            {
+                "id": 169,
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 48,
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 167,
+                "name": "PlayStation 5"
+            },
+            {
+                "id": 49,
+                "name": "Xbox One"
+            }
+        ],
+        "release_dates": [
+            {
+                "id": 652212,
+                "game_id": 134101,
+                "date": 1602201600,
+                "human": "Oct 09, 2020",
+                "platform_id": 49
+            },
+            {
+                "id": 652210,
+                "game_id": 134101,
+                "date": 1602201600,
+                "human": "Oct 09, 2020",
+                "platform_id": 48
+            },
+            {
+                "id": 652207,
+                "game_id": 134101,
+                "date": 1601942400,
+                "human": "Oct 06, 2020",
+                "platform_id": 6
+            },
+            {
+                "id": 652213,
+                "game_id": 134101,
+                "date": 1607040000,
+                "human": "Dec 04, 2020",
+                "platform_id": 167
+            },
+            {
+                "id": 652211,
+                "game_id": 134101,
+                "date": 1601942400,
+                "human": "Oct 06, 2020",
+                "platform_id": 49
+            },
+            {
+                "id": 652209,
+                "game_id": 134101,
+                "date": 1601942400,
+                "human": "Oct 06, 2020",
+                "platform_id": 48
+            },
+            {
+                "id": 652208,
+                "game_id": 134101,
+                "date": 1602201600,
+                "human": "Oct 09, 2020",
+                "platform_id": 6
+            },
+            {
+                "id": 652206,
+                "game_id": 134101,
+                "date": 1615939200,
+                "human": "Mar 17, 2021",
+                "platform_id": 170
+            },
+            {
+                "id": 652214,
+                "game_id": 134101,
+                "date": 1607040000,
+                "human": "Dec 04, 2020",
+                "platform_id": 169
+            }
+        ],
+        "involved_companies": [
+            {
+                "game_id": 134101,
+                "company_id": 27222,
+                "developer": true,
+                "publisher": false,
+                "company": {
+                    "id": 27222,
+                    "name": "EA Vancouver"
+                }
+            },
+            {
+                "game_id": 134101,
+                "company_id": 4148,
+                "developer": false,
+                "publisher": false,
+                "company": {
+                    "id": 4148,
+                    "name": "EA Romania"
+                }
+            },
+            {
+                "game_id": 134101,
+                "company_id": 454,
+                "developer": false,
+                "publisher": true,
+                "company": {
+                    "id": 454,
+                    "name": "EA Sports"
+                }
+            }
+        ],
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            },
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 32,
+                "name": "Non-fiction"
+            }
+        ],
+        "videos": [
+            {
+                "id": 38790,
+                "game_id": 134101,
+                "video_id": "tuLAn9adQpI"
+            },
+            {
+                "id": 44126,
+                "game_id": 134101,
+                "video_id": "sSUx54kmUD8"
+            }
+        ],
+        "age_ratings": [
+            {
+                "id": 125314,
+                "game_id": 134101,
+                "category": 4,
+                "rating": 18
+            },
+            {
+                "id": 56305,
+                "game_id": 134101,
+                "category": 2,
+                "rating": 1
+            },
+            {
+                "id": 66691,
+                "game_id": 134101,
+                "category": 3,
+                "rating": 13
+            },
+            {
+                "id": 108320,
+                "game_id": 134101,
+                "category": 5,
+                "rating": 23
+            },
+            {
+                "id": 105243,
+                "game_id": 134101,
+                "category": 6,
+                "rating": 28
+            },
+            {
+                "id": 188649,
+                "game_id": 134101,
+                "category": 1,
+                "rating": 8
+            }
+        ],
+        "quest_data": {
+            "game_id": 134101,
+            "game_status": "undiscovered",
+            "personal_rating": null,
+            "completion_date": null,
+            "notes": null,
+            "date_added": "2025-03-24T00:44:14.509Z",
+            "priority": 0,
+            "selected_platform_id": 170
+        }
+    },
+    {
+        "id": 134599,
+        "name": "NBA 2K21",
+        "summary": "With exciting improvements upon its best-in-class gameplay, competitive and community online features, and deep, varied game modes, NBA 2K21 offers one-of-a-kind immersion into all facets of NBA basketball and culture - where Everything is Game. In NBA 2K21, new, old, and returning ballers alike will find exciting game modes that offer a variety of basketball experiences.",
+        "storyline": null,
+        "rating": 70.22386436381694,
+        "aggregated_rating": 77.36363636363636,
+        "cover": {
+            "id": 111908,
+            "game_id": 134599,
+            "url": "//images.igdb.com/igdb/image/upload/t_cover_big/co2eck.jpg"
+        },
+        "screenshots": [
+            {
+                "id": 400103,
+                "game_id": 134599,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8kpz.jpg"
+            },
+            {
+                "id": 400104,
+                "game_id": 134599,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8kq0.jpg"
+            },
+            {
+                "id": 400105,
+                "game_id": 134599,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8kq1.jpg"
+            },
+            {
+                "id": 400106,
+                "game_id": 134599,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8kq2.jpg"
+            },
+            {
+                "id": 400107,
+                "game_id": 134599,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8kq3.jpg"
+            },
+            {
+                "id": 400108,
+                "game_id": 134599,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8kq4.jpg"
+            }
+        ],
+        "platforms": [
+            {
+                "id": 170,
+                "name": "Google Stadia"
+            },
+            {
+                "id": 169,
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 48,
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 167,
+                "name": "PlayStation 5"
+            },
+            {
+                "id": 49,
+                "name": "Xbox One"
+            },
+            {
+                "id": 130,
+                "name": "Nintendo Switch"
+            }
+        ],
+        "release_dates": [
+            {
+                "id": 407765,
+                "game_id": 134599,
+                "date": 1599091200,
+                "human": "Sep 03, 2020",
+                "platform_id": 6
+            },
+            {
+                "id": 327686,
+                "game_id": 134599,
+                "date": 1605139200,
+                "human": "Nov 12, 2020",
+                "platform_id": 167
+            },
+            {
+                "id": 203043,
+                "game_id": 134599,
+                "date": 1599177600,
+                "human": "Sep 04, 2020",
+                "platform_id": 48
+            },
+            {
+                "id": 214340,
+                "game_id": 134599,
+                "date": 1599177600,
+                "human": "Sep 04, 2020",
+                "platform_id": 170
+            },
+            {
+                "id": 214341,
+                "game_id": 134599,
+                "date": 1604966400,
+                "human": "Nov 10, 2020",
+                "platform_id": 169
+            },
+            {
+                "id": 205462,
+                "game_id": 134599,
+                "date": 1599177600,
+                "human": "Sep 04, 2020",
+                "platform_id": 130
+            },
+            {
+                "id": 205459,
+                "game_id": 134599,
+                "date": 1599177600,
+                "human": "Sep 04, 2020",
+                "platform_id": 49
+            }
+        ],
+        "involved_companies": [
+            {
+                "game_id": 134599,
+                "company_id": 8,
+                "developer": false,
+                "publisher": true,
+                "company": {
+                    "id": 8,
+                    "name": "2K Games"
+                }
+            },
+            {
+                "game_id": 134599,
+                "company_id": 694,
+                "developer": true,
+                "publisher": false,
+                "company": {
+                    "id": 694,
+                    "name": "Visual Concepts"
+                }
+            },
+            {
+                "game_id": 134599,
+                "company_id": 20228,
+                "developer": false,
+                "publisher": true,
+                "company": {
+                    "id": 20228,
+                    "name": "2K"
+                }
+            }
+        ],
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 28,
+                "name": "Business"
+            },
+            {
+                "id": 32,
+                "name": "Non-fiction"
+            }
+        ],
+        "videos": [
+            {
+                "id": 48365,
+                "game_id": 134599,
+                "video_id": "UwwySDPim5g"
+            },
+            {
+                "id": 38955,
+                "game_id": 134599,
+                "video_id": "VHNXC5DGqe8"
+            }
+        ],
+        "age_ratings": [
+            {
+                "id": 31715,
+                "game_id": 134599,
+                "category": 2,
+                "rating": 1
+            },
+            {
+                "id": 106806,
+                "game_id": 134599,
+                "category": 5,
+                "rating": 24
+            },
+            {
+                "id": 149382,
+                "game_id": 134599,
+                "category": 5,
+                "rating": 23
+            },
+            {
+                "id": 189612,
+                "game_id": 134599,
+                "category": 1,
+                "rating": 8
+            },
+            {
+                "id": 67322,
+                "game_id": 134599,
+                "category": 3,
+                "rating": 13
+            }
+        ],
+        "quest_data": {
+            "game_id": 134599,
+            "game_status": "undiscovered",
+            "personal_rating": null,
+            "completion_date": null,
+            "notes": null,
+            "date_added": "2025-03-24T00:44:15.533Z",
+            "priority": 0,
+            "selected_platform_id": 170
+        }
+    },
+    {
+        "id": 132707,
+        "name": "Madden NFL 21",
+        "summary": "Go all out in Madden NFL 21 where a fearless new generation of rising NFL stars is poised to change the game. Packed with fresh new features and innovative gameplay enhancements, Madden NFL 21 delivers new levels of ingenuity and control developed to inspire creativity on and off the field.",
+        "storyline": null,
+        "rating": 70.10284606968402,
+        "aggregated_rating": 67.22222222222223,
+        "cover": {
+            "id": 182295,
+            "game_id": 132707,
+            "url": "//images.igdb.com/igdb/image/upload/t_cover_big/co3wnr.jpg"
+        },
+        "screenshots": [
+            {
+                "id": 393784,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fug.jpg"
+            },
+            {
+                "id": 393785,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fuh.jpg"
+            },
+            {
+                "id": 393786,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fui.jpg"
+            },
+            {
+                "id": 393787,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fuj.jpg"
+            },
+            {
+                "id": 393788,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fuk.jpg"
+            },
+            {
+                "id": 393789,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8ful.jpg"
+            },
+            {
+                "id": 393790,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fum.jpg"
+            },
+            {
+                "id": 393791,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fun.jpg"
+            },
+            {
+                "id": 393792,
+                "game_id": 132707,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8fuo.jpg"
+            }
+        ],
+        "platforms": [
+            {
+                "id": 170,
+                "name": "Google Stadia"
+            },
+            {
+                "id": 48,
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 49,
+                "name": "Xbox One"
+            }
+        ],
+        "release_dates": [
+            {
+                "id": 200356,
+                "game_id": 132707,
+                "date": 1598572800,
+                "human": "Aug 28, 2020",
+                "platform_id": 49
+            },
+            {
+                "id": 200358,
+                "game_id": 132707,
+                "date": 1598572800,
+                "human": "Aug 28, 2020",
+                "platform_id": 6
+            },
+            {
+                "id": 200355,
+                "game_id": 132707,
+                "date": 1598572800,
+                "human": "Aug 28, 2020",
+                "platform_id": 48
+            },
+            {
+                "id": 239712,
+                "game_id": 132707,
+                "date": 1611792000,
+                "human": "Jan 28, 2021",
+                "platform_id": 170
+            },
+            {
+                "id": 454835,
+                "game_id": 132707,
+                "date": 1590624000,
+                "human": "May 28, 2020",
+                "platform_id": 49
+            }
+        ],
+        "involved_companies": [
+            {
+                "game_id": 132707,
+                "company_id": 555,
+                "developer": true,
+                "publisher": false,
+                "company": {
+                    "id": 555,
+                    "name": "EA Orlando"
+                }
+            },
+            {
+                "game_id": 132707,
+                "company_id": 1,
+                "developer": false,
+                "publisher": true,
+                "company": {
+                    "id": 1,
+                    "name": "Electronic Arts"
+                }
+            }
+        ],
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            },
+            {
+                "id": 15,
+                "name": "Strategy"
+            }
+        ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            },
+            {
+                "id": 4,
+                "name": "Split screen"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [],
+        "videos": [
+            {
+                "id": 38796,
+                "game_id": 132707,
+                "video_id": "HNY5nsyMm-A"
+            },
+            {
+                "id": 38795,
+                "game_id": 132707,
+                "video_id": "kfEUX1fVy5A"
+            }
+        ],
+        "age_ratings": [
+            {
+                "id": 56374,
+                "game_id": 132707,
+                "category": 2,
+                "rating": 1
+            },
+            {
+                "id": 190511,
+                "game_id": 132707,
+                "category": 1,
+                "rating": 8
+            },
+            {
+                "id": 66656,
+                "game_id": 132707,
+                "category": 3,
+                "rating": 13
+            },
+            {
+                "id": 124850,
+                "game_id": 132707,
+                "category": 4,
+                "rating": 18
+            },
+            {
+                "id": 109025,
+                "game_id": 132707,
+                "category": 5,
+                "rating": 23
+            }
+        ],
+        "quest_data": {
+            "game_id": 132707,
+            "game_status": "undiscovered",
+            "personal_rating": null,
+            "completion_date": null,
+            "notes": null,
+            "date_added": "2025-03-24T00:44:16.481Z",
+            "priority": 0,
+            "selected_platform_id": 170
+        }
+    },
+    {
+        "id": 133939,
+        "name": "PGA Tour 2K21",
+        "summary": "Play against the pros. Play with your crew. In PGA Tour 2K21, you can play by the rules or create your own featuring a new PGA Tour Career Mode, licensed courses and more!",
+        "storyline": null,
+        "rating": 70.00425042112093,
+        "aggregated_rating": 75,
+        "cover": {
+            "id": 104370,
+            "game_id": 133939,
+            "url": "//images.igdb.com/igdb/image/upload/t_cover_big/co28j6.jpg"
+        },
+        "screenshots": [
+            {
+                "id": 386900,
+                "game_id": 133939,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8aj8.jpg"
+            },
+            {
+                "id": 386901,
+                "game_id": 133939,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8aj9.jpg"
+            },
+            {
+                "id": 386905,
+                "game_id": 133939,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8ajd.jpg"
+            },
+            {
+                "id": 386902,
+                "game_id": 133939,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8aja.jpg"
+            },
+            {
+                "id": 386903,
+                "game_id": 133939,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8ajb.jpg"
+            },
+            {
+                "id": 386904,
+                "game_id": 133939,
+                "url": "//images.igdb.com/igdb/image/upload/t_screenshot_big/sc8ajc.jpg"
+            }
+        ],
+        "platforms": [
+            {
+                "id": 170,
+                "name": "Google Stadia"
+            },
+            {
+                "id": 48,
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 49,
+                "name": "Xbox One"
+            },
+            {
+                "id": 130,
+                "name": "Nintendo Switch"
+            }
+        ],
+        "release_dates": [
+            {
+                "id": 409570,
+                "game_id": 133939,
+                "date": 1597881600,
+                "human": "Aug 20, 2020",
+                "platform_id": 6
+            },
+            {
+                "id": 339689,
+                "game_id": 133939,
+                "date": 1600992000,
+                "human": "Sep 25, 2020",
+                "platform_id": 130
+            },
+            {
+                "id": 195870,
+                "game_id": 133939,
+                "date": 1597968000,
+                "human": "Aug 21, 2020",
+                "platform_id": 49
+            },
+            {
+                "id": 195873,
+                "game_id": 133939,
+                "date": 1597968000,
+                "human": "Aug 21, 2020",
+                "platform_id": 130
+            },
+            {
+                "id": 195871,
+                "game_id": 133939,
+                "date": 1597968000,
+                "human": "Aug 21, 2020",
+                "platform_id": 48
+            },
+            {
+                "id": 195872,
+                "game_id": 133939,
+                "date": 1597968000,
+                "human": "Aug 21, 2020",
+                "platform_id": 170
+            }
+        ],
+        "involved_companies": [
+            {
+                "game_id": 133939,
+                "company_id": 20228,
+                "developer": false,
+                "publisher": true,
+                "company": {
+                    "id": 20228,
+                    "name": "2K"
+                }
+            },
+            {
+                "game_id": 133939,
+                "company_id": 6577,
+                "developer": true,
+                "publisher": false,
+                "company": {
+                    "id": 6577,
+                    "name": "Illogika Studios"
+                }
+            },
+            {
+                "game_id": 133939,
+                "company_id": 696,
+                "developer": true,
+                "publisher": false,
+                "company": {
+                    "id": 696,
+                    "name": "HB Studios"
+                }
+            }
+        ],
+        "genres": [
+            {
+                "id": 13,
+                "name": "Simulator"
+            },
+            {
+                "id": 14,
+                "name": "Sport"
+            }
+        ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 32,
+                "name": "Non-fiction"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            }
+        ],
+        "videos": [
+            {
+                "id": 35979,
+                "game_id": 133939,
+                "video_id": "UsfYeLABYgo"
+            }
+        ],
+        "age_ratings": [
+            {
+                "id": 31884,
+                "game_id": 133939,
+                "category": 2,
+                "rating": 1
+            },
+            {
+                "id": 92904,
+                "game_id": 133939,
+                "category": 5,
+                "rating": 26
+            },
+            {
+                "id": 67437,
+                "game_id": 133939,
+                "category": 3,
+                "rating": 13
+            },
+            {
+                "id": 190503,
+                "game_id": 133939,
+                "category": 1,
+                "rating": 8
+            }
+        ],
+        "quest_data": {
+            "game_id": 133939,
+            "game_status": "undiscovered",
+            "personal_rating": null,
+            "completion_date": null,
+            "notes": null,
+            "date_added": "2025-03-24T00:44:17.583Z",
+            "priority": 0,
+            "selected_platform_id": 170
         }
     },
     {
@@ -19268,6 +22694,44 @@
                 "name": "Turn-based strategy (TBS)"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            },
+            {
+                "id": 41,
+                "name": "4X (explore, expand, exploit, and exterminate)"
+            }
+        ],
         "videos": [
             {
                 "id": 682,
@@ -19301,7 +22765,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:13.213Z",
+            "date_added": "2025-03-24T00:44:18.622Z",
             "priority": 0,
             "selected_platform_id": 3
         }
@@ -19494,6 +22958,36 @@
                 "name": "Tactical"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
         "videos": [
             {
                 "id": 933,
@@ -19549,7 +23043,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:14.198Z",
+            "date_added": "2025-03-24T00:44:19.603Z",
             "priority": 0,
             "selected_platform_id": 9
         }
@@ -19729,6 +23223,32 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 4,
+                "name": "Side view"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            }
+        ],
         "videos": [
             {
                 "id": 5774,
@@ -19785,7 +23305,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:15.176Z",
+            "date_added": "2025-03-24T00:44:20.644Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -19880,6 +23400,27 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 64801,
@@ -19904,7 +23445,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:16.172Z",
+            "date_added": "2025-03-24T00:44:21.689Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -20058,6 +23599,24 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 1785,
@@ -20101,7 +23660,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:17.043Z",
+            "date_added": "2025-03-24T00:44:22.677Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -20253,6 +23812,36 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 21,
+                "name": "Survival"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            }
+        ],
         "videos": [
             {
                 "id": 1672,
@@ -20285,7 +23874,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:17.996Z",
+            "date_added": "2025-03-24T00:44:23.578Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -20500,6 +24089,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 2071,
@@ -20549,7 +24164,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:18.994Z",
+            "date_added": "2025-03-24T00:44:24.532Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -20717,6 +24332,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 16104,
@@ -20756,7 +24397,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:20.369Z",
+            "date_added": "2025-03-24T00:44:25.538Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -20997,6 +24638,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            },
+            {
+                "id": 3,
+                "name": "Co-operative"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            },
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 17,
+                "name": "Fantasy"
+            }
+        ],
         "videos": [
             {
                 "id": 16815,
@@ -21048,7 +24719,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:21.894Z",
+            "date_added": "2025-03-24T00:44:26.581Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -21239,6 +24910,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 27866,
@@ -21306,7 +25003,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:22.825Z",
+            "date_added": "2025-03-24T00:44:27.566Z",
             "priority": 0,
             "selected_platform_id": 169
         }
@@ -21316,7 +25013,7 @@
         "name": "Cyberpunk 2077",
         "summary": "Cyberpunk 2077 is an open-world, action-adventure story set in Night City, a megalopolis obsessed with power, glamour and body modification. You play as V, a mercenary outlaw going after a one-of-a-kind implant that is the key to immortality. You can customize your character’s cyberware, skillset and playstyle, and explore a vast city where the choices you make shape the story and the world around you.",
         "storyline": "In 2077, following an economic collapse sometime during the early 21st century, the United States is forced to rely on large corporations to survive. These corporations deal in a wide range of areas, such as weapons, robotics, cybernetics, pharmaceuticals, communications and biotechnology, and many of these companies operate above the law. The world in between is where decadence, sex and pop culture mix with violent crime, extreme poverty and the unattainable promise of the American Dream. You play as V, a mercenary outlaw deeply embedded in the crime-ridden city of Night City, going after a one-of-a-kind implant that is the key to immortality.",
-        "rating": 81.64462347314681,
+        "rating": 81.64459411060568,
         "aggregated_rating": 75.23809523809524,
         "cover": {
             "id": 332107,
@@ -21547,6 +25244,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 1,
+                "name": "First person"
+            },
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 33,
+                "name": "Sandbox"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 36458,
@@ -21699,7 +25430,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:23.701Z",
+            "date_added": "2025-03-24T00:44:28.451Z",
             "priority": 0,
             "selected_platform_id": 170
         }
@@ -21831,6 +25562,36 @@
                 "name": "Indie"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            },
+            {
+                "id": 5,
+                "name": "Text"
+            }
+        ],
+        "themes": [
+            {
+                "id": 20,
+                "name": "Thriller"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            },
+            {
+                "id": 43,
+                "name": "Mystery"
+            }
+        ],
         "videos": [
             {
                 "id": 37260,
@@ -21850,7 +25611,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:24.550Z",
+            "date_added": "2025-03-24T00:44:29.484Z",
             "priority": 0,
             "selected_platform_id": 170
         }
@@ -21936,6 +25697,32 @@
                 "name": "Strategy"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 3,
+                "name": "Bird view / Isometric"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 131496,
@@ -21967,7 +25754,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:25.503Z",
+            "date_added": "2025-03-24T00:44:30.448Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -22128,6 +25915,36 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 29494,
@@ -22225,7 +26042,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:26.536Z",
+            "date_added": "2025-03-24T00:44:31.432Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -22235,7 +26052,7 @@
         "name": "Ghost of Tsushima",
         "summary": "Uncover the hidden wonders of Tsushima in this open-world action adventure. Forge a new path and wage an unconventional war for the freedom of Tsushima. Challenge opponents with your katana, master the bow to eliminate distant threats, develop stealth tactics to ambush enemies in order to win over the mongols.",
         "storyline": "The year is 1274. Samurai warriors are the legendary defenders of Japan — until the fearsome Mongol Empire invades the island of Tsushima, wreaking havoc and conquering the local population. As one of the last surviving samurai, you rise from the ashes to fight back. But, honorable tactics won’t lead you to victory. You must move beyond your samurai traditions to forge a new way of fighting — the way of the Ghost — as you wage an unconventional war for the freedom of Japan.",
-        "rating": 89.1697107837557,
+        "rating": 89.16975100354499,
         "aggregated_rating": 91.91666666666667,
         "cover": {
             "id": 109855,
@@ -22355,6 +26172,40 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 22,
+                "name": "Historical"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 31,
+                "name": "Drama"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 16583,
@@ -22437,7 +26288,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:27.546Z",
+            "date_added": "2025-03-24T00:44:32.473Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -22589,6 +26440,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 23,
+                "name": "Stealth"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 40714,
@@ -22651,7 +26528,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:28.526Z",
+            "date_added": "2025-03-24T00:44:33.511Z",
             "priority": 0,
             "selected_platform_id": 48
         }
@@ -22802,6 +26679,28 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            }
+        ],
         "videos": [
             {
                 "id": 51390,
@@ -22874,7 +26773,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:29.562Z",
+            "date_added": "2025-03-24T00:44:34.792Z",
             "priority": 0,
             "selected_platform_id": 6
         }
@@ -23007,6 +26906,32 @@
                 "name": "Adventure"
             }
         ],
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "player_perspectives": [
+            {
+                "id": 2,
+                "name": "Third person"
+            }
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 38,
+                "name": "Open world"
+            }
+        ],
         "videos": [
             {
                 "id": 37072,
@@ -23089,7 +27014,7 @@
             "personal_rating": null,
             "completion_date": null,
             "notes": null,
-            "date_added": "2025-03-23T21:04:30.542Z",
+            "date_added": "2025-03-24T00:44:35.772Z",
             "priority": 0,
             "selected_platform_id": 48
         }

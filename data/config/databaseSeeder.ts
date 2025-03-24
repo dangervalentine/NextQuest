@@ -6,18 +6,18 @@ import * as FileSystem from "expo-file-system";
 interface GameResult {
     id: number;
     name: string;
-    summary: string | null;
-    storyline: string | null;
-    rating: number | null;
-    aggregated_rating: number | null;
-    game_status: string;
-    personal_rating: number | null;
-    completion_date: string | null;
-    notes: string | null;
-    date_added: string;
-    priority: number;
-    selected_platform_id: number | null;
-    cover_url: string | null;
+    summary?: string;
+    cover_url?: string;
+    game_status?: string;
+    personal_rating?: number;
+    completion_date?: string;
+    notes?: string;
+    date_added?: string;
+    priority?: number;
+    selected_platform_id?: number;
+    game_modes?: string;
+    player_perspectives?: string;
+    themes?: string;
 }
 
 const createTables = async () => {
@@ -269,9 +269,6 @@ const createTables = async () => {
 
 const seedOneGame = async (game: any) => {
     try {
-        // Start transaction
-        await db.execAsync("BEGIN TRANSACTION");
-
         // Insert base game data
         await db.execAsync(
             `INSERT OR REPLACE INTO games (id, name, summary, storyline, rating, aggregated_rating)
@@ -413,6 +410,66 @@ const seedOneGame = async (game: any) => {
             }
         }
 
+        // Insert game modes if they exist
+        if (game.game_modes && Array.isArray(game.game_modes)) {
+            for (const mode of game.game_modes) {
+                if (mode && mode.id && mode.name) {
+                    // Insert game mode if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO game_modes (id, name) VALUES (${
+                            mode.id
+                        }, '${mode.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-mode relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_modes_map (game_id, game_mode_id) VALUES (${game.id}, ${mode.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert player perspectives if they exist
+        if (
+            game.player_perspectives &&
+            Array.isArray(game.player_perspectives)
+        ) {
+            for (const perspective of game.player_perspectives) {
+                if (perspective && perspective.id && perspective.name) {
+                    // Insert perspective if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO player_perspectives (id, name) VALUES (${
+                            perspective.id
+                        }, '${perspective.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-perspective relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_perspectives (game_id, perspective_id) VALUES (${game.id}, ${perspective.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert themes if they exist
+        if (game.themes && Array.isArray(game.themes)) {
+            for (const theme of game.themes) {
+                if (theme && theme.id && theme.name) {
+                    // Insert theme if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO themes (id, name) VALUES (${
+                            theme.id
+                        }, '${theme.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-theme relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_themes (game_id, theme_id) VALUES (${game.id}, ${theme.id})`
+                    );
+                }
+            }
+        }
+
         // Get the 'inactive' status id
         const [inactiveStatus] = await db.getAllAsync<{ id: number }>(`
             SELECT id FROM quest_game_status WHERE name = 'inactive'
@@ -453,12 +510,8 @@ const seedOneGame = async (game: any) => {
                 ${questData.selected_platform_id || "NULL"}
             )`
         );
-
-        // Commit transaction
-        await db.execAsync("COMMIT");
         console.log(`Successfully seeded game: ${game.name}`);
     } catch (error) {
-        await db.execAsync("ROLLBACK");
         console.error("Error seeding game:", error);
         throw error;
     }
@@ -472,14 +525,23 @@ const getSeededGame = async (gameId: number) => {
             SELECT g.*, qg.personal_rating, qg.completion_date, 
                    qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
                    c.url as cover_url,
-                   qs.name as game_status
+                   qs.name as game_status,
+                   GROUP_CONCAT(DISTINCT gm.name) as game_modes,
+                   GROUP_CONCAT(DISTINCT pp.name) as player_perspectives,
+                   GROUP_CONCAT(DISTINCT t.name) as themes
             FROM games g
             LEFT JOIN quest_games qg ON g.id = qg.game_id
             LEFT JOIN quest_game_status qs ON qg.status_id = qs.id
             LEFT JOIN covers c ON g.id = c.game_id
-            WHERE g.id = ?
-        `,
-            [gameId]
+            LEFT JOIN game_modes_map gmm ON g.id = gmm.game_id
+            LEFT JOIN game_modes gm ON gmm.game_mode_id = gm.id
+            LEFT JOIN game_perspectives gp ON g.id = gp.game_id
+            LEFT JOIN player_perspectives pp ON gp.perspective_id = pp.id
+            LEFT JOIN game_themes gt ON g.id = gt.game_id
+            LEFT JOIN themes t ON gt.theme_id = t.id
+            WHERE g.id = ${gameId}
+            GROUP BY g.id
+        `
         );
 
         const game = games?.[0];
@@ -497,6 +559,11 @@ const getSeededGame = async (gameId: number) => {
         console.log(`Cover URL: ${game.cover_url || "N/A"}`);
         console.log(`Date Added: ${game.date_added}`);
         console.log(`Priority: ${game.priority}`);
+        console.log(`Game Modes: ${game.game_modes || "N/A"}`);
+        console.log(
+            `Player Perspectives: ${game.player_perspectives || "N/A"}`
+        );
+        console.log(`Themes: ${game.themes || "N/A"}`);
 
         return game;
     } catch (error) {
@@ -629,31 +696,34 @@ const seedQuestGameStatus = async () => {
 export const initializeDatabase = async () => {
     try {
         // Drop existing tables in correct order
-        await db.execAsync("DROP TABLE IF EXISTS quest_games");
-        await db.execAsync("DROP TABLE IF EXISTS quest_game_status");
-        await db.execAsync("DROP TABLE IF EXISTS game_themes");
-        await db.execAsync("DROP TABLE IF EXISTS game_perspectives");
-        await db.execAsync("DROP TABLE IF EXISTS game_modes_map");
-        await db.execAsync("DROP TABLE IF EXISTS game_platforms");
-        await db.execAsync("DROP TABLE IF EXISTS game_genres");
-        await db.execAsync("DROP TABLE IF EXISTS multiplayer_modes");
-        await db.execAsync("DROP TABLE IF EXISTS dlcs");
-        await db.execAsync("DROP TABLE IF EXISTS age_ratings");
-        await db.execAsync("DROP TABLE IF EXISTS websites");
-        await db.execAsync("DROP TABLE IF EXISTS videos");
-        await db.execAsync("DROP TABLE IF EXISTS release_dates");
-        await db.execAsync("DROP TABLE IF EXISTS involved_companies");
-        await db.execAsync("DROP TABLE IF EXISTS alternative_names");
-        await db.execAsync("DROP TABLE IF EXISTS screenshots");
-        await db.execAsync("DROP TABLE IF EXISTS covers");
-        await db.execAsync("DROP TABLE IF EXISTS games");
-        await db.execAsync("DROP TABLE IF EXISTS themes");
-        await db.execAsync("DROP TABLE IF EXISTS player_perspectives");
-        await db.execAsync("DROP TABLE IF EXISTS game_modes");
-        await db.execAsync("DROP TABLE IF EXISTS platforms");
-        await db.execAsync("DROP TABLE IF EXISTS genres");
-        await db.execAsync("DROP TABLE IF EXISTS companies");
-
+        for (const table of [
+            "quest_games",
+            "quest_game_status",
+            "game_themes",
+            "game_perspectives",
+            "game_modes_map",
+            "game_platforms",
+            "game_genres",
+            "multiplayer_modes",
+            "dlcs",
+            "age_ratings",
+            "websites",
+            "videos",
+            "release_dates",
+            "involved_companies",
+            "alternative_names",
+            "screenshots",
+            "covers",
+            "games",
+            "themes",
+            "player_perspectives",
+            "game_modes",
+            "platforms",
+            "genres",
+            "companies",
+        ]) {
+            await db.execAsync(`DROP TABLE IF EXISTS ${table}`);
+        }
         console.log("Existing tables dropped successfully");
 
         // Create new tables
@@ -664,16 +734,32 @@ export const initializeDatabase = async () => {
         await seedQuestGameStatus();
         console.log("Quest game status table seeded successfully");
 
-        // Seed all games
-        for (const game of seedData) {
+        // Seed all games in batches to avoid overwhelming the connection
+        const batchSize = 5;
+        for (let i = 0; i < seedData.length; i += batchSize) {
+            const batch = seedData.slice(i, i + batchSize);
+            await db.execAsync("BEGIN TRANSACTION");
             try {
-                await seedOneGame(game);
-            } catch (error) {
-                console.error(
-                    `Failed to seed game ${game.name || game.id}:`,
-                    error
+                for (const game of batch) {
+                    try {
+                        await seedOneGame(game);
+                    } catch (error) {
+                        console.error(
+                            `Failed to seed game ${
+                                game.name || game.id
+                            }: ${error}`
+                        );
+                    }
+                }
+                await db.execAsync("COMMIT");
+                console.log(
+                    `${Math.min(i + batchSize, seedData.length)} of ${
+                        seedData.length
+                    } games seeded`
                 );
-                // Continue with next game even if one fails
+            } catch (error) {
+                await db.execAsync("ROLLBACK");
+                console.error("Batch seeding error:", error);
             }
         }
         console.log("All games seeded successfully");
