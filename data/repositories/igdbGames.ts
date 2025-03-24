@@ -63,7 +63,6 @@ export const getIGDBGameById = async (
     id: number
 ): Promise<IGDBGameResponse | null> => {
     try {
-        console.log(`[getIGDBGameById] Fetching game with ID: ${id}`);
         const [game] = await db.getAllAsync<IGDBGameRow>(
             `
             SELECT 
@@ -123,12 +122,9 @@ export const getIGDBGameById = async (
         );
 
         if (!game) {
-            console.log(`[getIGDBGameById] No game found with ID: ${id}`);
+            console.error(`No game found with ID: ${id}`);
             return null;
         }
-
-        console.log(`[getIGDBGameById] Found game: ${game.name}`);
-        console.log(`[getIGDBGameById] Cover URL: ${game.cover_url}`);
 
         // Initialize arrays for related data
         let screenshots: Screenshot[] = [];
@@ -143,83 +139,52 @@ export const getIGDBGameById = async (
         // Get related data
         try {
             screenshots = await screenshotRepo.getScreenshotsForGame(id);
-            console.log(
-                `[getIGDBGameById] Found ${screenshots.length} screenshots`
-            );
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error getting screenshots:`,
-                error
-            );
+            console.error(`Error getting screenshots:`, error);
         }
 
         try {
             alternativeNames = await altNameRepo.getAlternativeNamesForGame(id);
-            console.log(
-                `[getIGDBGameById] Found ${alternativeNames.length} alternative names`
-            );
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error getting alternative names:`,
-                error
-            );
+            console.error(`Error getting alternative names:`, error);
         }
 
         try {
             releaseDates = await releaseDateRepo.getReleaseDatesForGame(id);
-            console.log(
-                `[getIGDBGameById] Found ${releaseDates.length} release dates`
-            );
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error getting release dates:`,
-                error
-            );
+            console.error(`Error getting release dates:`, error);
         }
 
         try {
             videos = await videoRepo.getVideosForGame(id);
-            console.log(`[getIGDBGameById] Found ${videos.length} videos`);
         } catch (error) {
-            console.error(`[getIGDBGameById] Error getting videos:`, error);
+            console.error(`Error getting videos:`, error);
         }
 
         try {
             websites = await websiteRepo.getWebsitesForGame(id);
-            console.log(`[getIGDBGameById] Found ${websites.length} websites`);
         } catch (error) {
-            console.error(`[getIGDBGameById] Error getting websites:`, error);
+            console.error(`Error getting websites:`, error);
         }
 
         try {
             ageRatings = await ageRatingRepo.getAgeRatingsForGame(id);
-            console.log(
-                `[getIGDBGameById] Found ${ageRatings.length} age ratings`
-            );
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error getting age ratings:`,
-                error
-            );
+            console.error(`Error getting age ratings:`, error);
         }
 
         try {
             dlcs = await dlcRepo.getDLCsForGame(id);
-            console.log(`[getIGDBGameById] Found ${dlcs.length} DLCs`);
         } catch (error) {
-            console.error(`[getIGDBGameById] Error getting DLCs:`, error);
+            console.error(`Error getting DLCs:`, error);
         }
 
         try {
             multiplayerModes = await multiplayerRepo.getMultiplayerModesForGame(
                 id
             );
-            console.log(`[getIGDBGameById] Found multiplayer modes`);
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error getting multiplayer modes:`,
-                error
-            );
+            console.error(`Error getting multiplayer modes:`, error);
         }
 
         // Parse JSON arrays
@@ -237,10 +202,9 @@ export const getIGDBGameById = async (
                 genres = Array.isArray(parsedGenres)
                     ? parsedGenres.filter((g) => g && g.id && g.name)
                     : [];
-                console.log(`[getIGDBGameById] Parsed ${genres.length} genres`);
             }
         } catch (error) {
-            console.error(`[getIGDBGameById] Error parsing genres:`, error);
+            console.error(`Error parsing genres:`, error);
         }
 
         try {
@@ -249,12 +213,9 @@ export const getIGDBGameById = async (
                 platforms = Array.isArray(parsedPlatforms)
                     ? parsedPlatforms.filter((p) => p && p.id && p.name)
                     : [];
-                console.log(
-                    `[getIGDBGameById] Parsed ${platforms.length} platforms`
-                );
             }
         } catch (error) {
-            console.error(`[getIGDBGameById] Error parsing platforms:`, error);
+            console.error(`Error parsing platforms:`, error);
         }
 
         try {
@@ -263,12 +224,9 @@ export const getIGDBGameById = async (
                 gameModes = Array.isArray(parsedModes)
                     ? parsedModes.filter((m) => m && m.id && m.name)
                     : [];
-                console.log(
-                    `[getIGDBGameById] Parsed ${gameModes.length} game modes`
-                );
             }
         } catch (error) {
-            console.error(`[getIGDBGameById] Error parsing game modes:`, error);
+            console.error(`Error parsing game modes:`, error);
         }
 
         try {
@@ -277,15 +235,9 @@ export const getIGDBGameById = async (
                 playerPerspectives = Array.isArray(parsedPerspectives)
                     ? parsedPerspectives.filter((p) => p && p.id && p.name)
                     : [];
-                console.log(
-                    `[getIGDBGameById] Parsed ${playerPerspectives.length} player perspectives`
-                );
             }
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error parsing player perspectives:`,
-                error
-            );
+            console.error(`Error parsing player perspectives:`, error);
         }
 
         try {
@@ -294,10 +246,9 @@ export const getIGDBGameById = async (
                 themes = Array.isArray(parsedThemes)
                     ? parsedThemes.filter((t) => t && t.id && t.name)
                     : [];
-                console.log(`[getIGDBGameById] Parsed ${themes.length} themes`);
             }
         } catch (error) {
-            console.error(`[getIGDBGameById] Error parsing themes:`, error);
+            console.error(`Error parsing themes:`, error);
         }
 
         try {
@@ -314,15 +265,9 @@ export const getIGDBGameById = async (
                               ic.company.name
                       )
                     : [];
-                console.log(
-                    `[getIGDBGameById] Parsed ${involvedCompanies.length} involved companies`
-                );
             }
         } catch (error) {
-            console.error(
-                `[getIGDBGameById] Error parsing involved companies:`,
-                error
-            );
+            console.error(`Error parsing involved companies:`, error);
         }
 
         try {
@@ -331,12 +276,9 @@ export const getIGDBGameById = async (
                 franchises = Array.isArray(parsedFranchises)
                     ? parsedFranchises.filter((f) => f && f.id && f.name)
                     : [];
-                console.log(
-                    `[getIGDBGameById] Parsed ${franchises.length} franchises`
-                );
             }
         } catch (error) {
-            console.error(`[getIGDBGameById] Error parsing franchises:`, error);
+            console.error(`Error parsing franchises:`, error);
         }
 
         // Construct the response object with null checks
@@ -371,12 +313,9 @@ export const getIGDBGameById = async (
             franchises: franchises || [],
         };
 
-        console.log(
-            `[getIGDBGameById] Successfully constructed response object`
-        );
         return response;
     } catch (error) {
-        console.error(`[getIGDBGameById] Error:`, error);
+        console.error(`Error fetching game:`, error);
         throw error;
     }
 };

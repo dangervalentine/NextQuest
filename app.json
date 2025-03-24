@@ -1,33 +1,33 @@
 {
-  "expo": {
-    "name": "QuestLogger",
-    "slug": "QuestLogger",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/quest-logger.png",
-    "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/quest-logger.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#011627"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "package": "com.victor.questlogger",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/quest-logger.png",
-        "backgroundColor": "#292731"
-      }
-    },
-    "web": {
-      "favicon": "./assets/quest-logger.png"
-    },
-    "plugins": [
-      "expo-sqlite",
-      "expo-font"
-    ]
-  }
+    "expo": {
+        "name": "QuestLogger",
+        "slug": "QuestLogger",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/quest-logger.png",
+        "userInterfaceStyle": "dark",
+        "newArchEnabled": true,
+        "splash": {
+            "image": "./assets/quest-logger.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#011627"
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "package": "com.victor.questlogger",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/quest-logger.png",
+                "backgroundColor": "#011627"
+            }
+        },
+        "web": {
+            "favicon": "./assets/quest-logger.png"
+        },
+        "plugins": [
+            "expo-sqlite",
+            "expo-font"
+        ]
+    }
 }

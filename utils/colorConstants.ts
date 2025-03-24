@@ -10,27 +10,29 @@ export const colorSwatch = {
         dark: "#D76D51", // Deeper Orange-Red
     },
     accent: {
-        cyan: "#5DE4C7", // Bright Cyan (Night Owl's emphasis)
-        green: "#C3E88D", // Soft Green (Strings and literals)
-        purple: "#C792EA", // Pastel Purple (Keywords and special types)
-        pink: "#F07178", // Soft Red-Pink (Errors and exceptions)
-        yellow: "#FFCB6B", // Warm Yellow (Variables, attributes)
+        cyan: "#7fdbca", // Night Owl's Cyan (Links and special elements)
+        green: "#C3E88D", // Soft Green (Success states and completion)
+        purple: "#C792EA", // Night Owl's Purple (Section titles and keywords)
+        pink: "#F07178", // Soft Red-Pink (Errors and warnings)
+        yellow: "#FFCB6B", // Warm Yellow (Highlights and active states)
     },
     neutral: {
         white: "#FFFFFF",
-        lightGray: "#ABB2BF", // Softer Light Gray
-        gray: "#676E95", // Muted Mid Gray (Comments)
-        darkGray: "#1B2B34", // Near-Black Blue-Green
+        lightGray: "#D6DEEB", // Night Owl's Light Text
+        gray: "#637777", // Night Owl's Comment Color
+        darkGray: "#1D3B53", // Night Owl's Border Color
         black: "#011627", // Night Owl's Deepest Blue-Black
     },
     background: {
-        light: "#D6DEEB", // Soft Blue-Gray Background (Lighter UI elements)
-        dark: "#011627", // True Night Owl Background (Editor Background)
-        medium: "#1D3B53", // Middle tone for UI panels, modals
+        light: "#D6DEEB", // Light mode text / dark mode background text
+        dark: "#011627", // Night Owl's Main Background
+        medium: "#1D3B53", // Night Owl's Selection Background
+        darker: "#020f1d", // Nested Background (Even darker than dark)
+        darkest: "#01111d", // Deepest Background (For maximum contrast)
     },
     text: {
-        primary: "#D6DEEB", // Light Blue for Readability (General text)
-        secondary: "#82AAFF", // Softer Blue for Less Contrast (Function names)
+        primary: "#D6DEEB", // Night Owl's Primary Text
+        secondary: "#637777", // Night Owl's Comment Color (Muted text)
         inverse: "#011627", // Dark Text on Light Backgrounds
         muted: "#637777", // Comment text
     },
@@ -38,9 +40,9 @@ export const colorSwatch = {
 
 export const COLOR_ARRAY = [
     colorSwatch.secondary.main, // Vibrant Coral
-    colorSwatch.accent.cyan, // Bright Cyan
+    colorSwatch.accent.cyan, // Night Owl Cyan
     colorSwatch.accent.green, // Soft Green
-    colorSwatch.accent.purple, // Pastel Purple
+    colorSwatch.accent.purple, // Night Owl Purple
     colorSwatch.accent.pink, // Soft Red-Pink
     colorSwatch.accent.yellow, // Warm Yellow
 ];

@@ -29,7 +29,7 @@ const FullHeightImage = ({
     }, [source]);
 
     return (
-        <View style={[styles.container]}>
+        <View style={[styles.container, style]}>
             {imageHeight > 0 && imageWidth > 0 ? (
                 <Image
                     source={{ uri: `https:${source}` }}

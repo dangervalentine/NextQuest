@@ -48,7 +48,12 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
         }: DragListRenderItemInfo<QuestGame>) => {
             if (!item) return null;
             return (
-                <View style={[isActive && styles.activeItem]}>
+                <View
+                    style={[
+                        styles.itemContainer,
+                        isActive && styles.activeItem,
+                    ]}
+                >
                     <GameItem questGame={item} reorder={onDragStart} />
                 </View>
             );
@@ -97,7 +102,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
                         size="large"
-                        color={colorSwatch.accent.green}
+                        color={colorSwatch.accent.cyan}
                     />
                 </View>
             </ImageBackground>
@@ -112,7 +117,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
         >
             <View style={styles.overlay} />
             <View style={styles.loadingContainer}>
-                <Text style={styles.loadingText}>
+                <Text style={styles.emptyText}>
                     No games found in this category
                 </Text>
             </View>
@@ -143,9 +148,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
                 }}
                 ListEmptyComponent={() => (
                     <View style={styles.loadingContainer}>
-                        <Text style={styles.loadingText}>
-                            No games available
-                        </Text>
+                        <Text style={styles.emptyText}>No games available</Text>
                     </View>
                 )}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -166,25 +169,38 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.dark,
         opacity: 0.98,
     },
+    itemContainer: {
+        backgroundColor: colorSwatch.background.darkest,
+        borderRadius: 12,
+        marginVertical: 4,
+        shadowColor: colorSwatch.background.dark,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
     activeItem: {
-        opacity: 0.3,
+        opacity: 0.5,
+        backgroundColor: colorSwatch.background.darker,
+        borderWidth: 1,
+        borderColor: colorSwatch.accent.cyan,
     },
     loadingContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
-    loadingText: {
-        color: colorSwatch.accent.green,
-        marginTop: 10,
+    emptyText: {
+        color: colorSwatch.text.secondary,
         fontSize: 16,
+        textAlign: "center",
+        fontStyle: "italic",
     },
     separator: {
-        height: 1,
-        backgroundColor: colorSwatch.primary.dark,
+        height: 8,
     },
     listContainer: {
-        padding: 10,
+        backgroundColor: colorSwatch.background.darkest,
     },
 });
 

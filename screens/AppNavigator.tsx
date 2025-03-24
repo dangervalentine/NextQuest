@@ -11,7 +11,14 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: styles.headerStyle,
+                    headerTitleStyle: styles.headerTitleStyle,
+                    headerTintColor: colorSwatch.accent.cyan,
+                    headerShadowVisible: false,
+                }}
+            >
                 <Stack.Screen
                     name="Home"
                     component={MainNavigationContainer}
@@ -21,9 +28,6 @@ const AppNavigator = () => {
                     name="QuestGameDetailPage"
                     component={QuestGameDetailPage}
                     options={({ route }) => ({
-                        headerStyle: styles.headerStyle,
-                        headerTitleStyle: styles.headerTitleStyle,
-                        headerTintColor: colorSwatch.secondary.main,
                         title: route.params?.name || "Game Details",
                     })}
                 />
@@ -34,12 +38,16 @@ const AppNavigator = () => {
 
 const styles = StyleSheet.create({
     headerStyle: {
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: colorSwatch.neutral.darkGray,
     },
     headerTitleStyle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: colorSwatch.secondary.main,
+        fontSize: 20,
+        fontWeight: "600",
+        color: colorSwatch.accent.purple,
         textAlign: "center",
     },
 });

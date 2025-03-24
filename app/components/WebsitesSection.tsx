@@ -256,15 +256,17 @@ const WebsitesSection: React.FC<WebsitesSectionProps> = ({ websites }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colorSwatch.background.dark,
-        borderRadius: 8,
+        backgroundColor: colorSwatch.background.darker,
+        borderRadius: 12,
         padding: 16,
         marginVertical: 8,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     title: {
         fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.accent.yellow,
+        color: colorSwatch.accent.purple,
         marginBottom: 12,
     },
     websitesContainer: {
@@ -273,18 +275,20 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     websiteButton: {
-        backgroundColor: colorSwatch.background.medium,
+        backgroundColor: colorSwatch.background.darkest,
         borderRadius: 20,
         paddingVertical: 8,
         paddingHorizontal: 16,
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     websiteType: {
-        color: colorSwatch.accent.cyan,
+        color: colorSwatch.neutral.lightGray,
         fontSize: 14,
-        fontWeight: "600",
+        fontWeight: "500",
     },
 });
 export default WebsitesSection;

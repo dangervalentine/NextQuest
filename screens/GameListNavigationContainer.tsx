@@ -76,43 +76,45 @@ const MainNavigationContainer: React.FC = () => {
 };
 
 const tabBarStyle = {
-    backgroundColor: colorSwatch.background.dark,
+    backgroundColor: colorSwatch.background.darkest,
     borderColor: colorSwatch.neutral.darkGray,
     borderTopWidth: 1,
+    height: 60,
+    paddingBottom: 8,
 };
 
 const headerStyle = {
-    backgroundColor: colorSwatch.background.dark,
+    backgroundColor: colorSwatch.background.darkest,
     borderBottomWidth: 1,
     borderColor: colorSwatch.neutral.darkGray,
     shadowOffset: {
-        width: 5,
-        height: 8,
+        width: 0,
+        height: 4,
     },
-    shadowColor: colorSwatch.neutral.darkGray,
-    shadowOpacity: 1,
-    shadowRadius: 3.84,
-    elevation: 20,
+    shadowColor: colorSwatch.background.darker,
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 8,
 };
 
 const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
-    tabBarActiveTintColor: colorSwatch.secondary.main,
+    tabBarActiveTintColor: colorSwatch.accent.cyan,
     tabBarInactiveTintColor: colorSwatch.text.secondary,
     tabBarLabelStyle: {
         fontSize: 12,
-        fontWeight: "bold",
+        fontWeight: "500",
     },
     headerTitleStyle: {
         fontSize: 24,
-        fontWeight: "bold",
-        color: colorSwatch.secondary.main,
+        fontWeight: "600",
+        color: colorSwatch.accent.purple,
         textAlign: "center",
     },
     headerStyle,
     tabBarBackground: () => (
         <View
-            style={{ backgroundColor: colorSwatch.background.dark, flex: 1 }}
+            style={{ backgroundColor: colorSwatch.background.darkest, flex: 1 }}
         />
     ),
 };

@@ -33,6 +33,7 @@ type Styles = {
     gameTitle: TextStyle;
     releaseDate: TextStyle;
     sectionContainer: ViewStyle;
+    screenshotsContainer: ViewStyle;
     characteristicsContainer: ViewStyle;
     platformSection: ViewStyle;
     platformTitle: TextStyle;
@@ -541,7 +542,7 @@ const QuestGameDetailPage: React.FC = () => {
 
                 {/* Visual Showcase */}
                 {game.screenshots && game.screenshots.length > 0 && (
-                    <View style={styles.sectionContainer}>
+                    <View style={styles.screenshotsContainer}>
                         <ScreenshotsSection />
                     </View>
                 )}
@@ -630,7 +631,7 @@ const styles = StyleSheet.create<Styles>({
     gameTitle: {
         fontSize: 24,
         fontWeight: "bold",
-        color: colorSwatch.text.primary,
+        color: colorSwatch.neutral.lightGray,
         marginBottom: 4,
         marginTop: 12,
     },
@@ -641,24 +642,30 @@ const styles = StyleSheet.create<Styles>({
     sectionContainer: {
         marginHorizontal: 16,
         marginTop: 24,
-        backgroundColor: colorSwatch.background.medium,
-        borderRadius: 8,
+        backgroundColor: colorSwatch.background.darkest,
+        borderRadius: 12,
         padding: 16,
         elevation: 4,
+    },
+    screenshotsContainer: {
+        marginTop: 24,
+        backgroundColor: colorSwatch.background.darkest,
+        borderRadius: 12,
+        padding: 0,
     },
     characteristicsContainer: {
         marginTop: 16,
         gap: 16,
     },
     platformSection: {
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darker,
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 12,
     },
     platformTitle: {
         fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.accent.yellow,
+        color: colorSwatch.accent.purple,
         marginBottom: 8,
     },
     infoSection: {
@@ -668,9 +675,6 @@ const styles = StyleSheet.create<Styles>({
         padding: 16,
     },
     screenshotsSection: {
-        backgroundColor: colorSwatch.background.medium,
-        borderRadius: 8,
-        overflow: "hidden",
         paddingBottom: 30,
     },
     mainSectionTitle: {
@@ -688,7 +692,7 @@ const styles = StyleSheet.create<Styles>({
     storylineText: {
         fontSize: 16,
         lineHeight: 24,
-        color: colorSwatch.text.primary,
+        color: colorSwatch.neutral.lightGray,
     },
     loadingContainer: {
         flex: 1,
@@ -701,9 +705,9 @@ const styles = StyleSheet.create<Styles>({
         flexWrap: "wrap",
         marginHorizontal: 4,
         marginTop: 16,
-        backgroundColor: colorSwatch.background.medium,
-        borderRadius: 8,
-        padding: 8,
+        backgroundColor: colorSwatch.background.darker,
+        borderRadius: 12,
+        padding: 12,
     },
     metadataItem: {
         width: "50%",
@@ -717,7 +721,7 @@ const styles = StyleSheet.create<Styles>({
     },
     metadataValue: {
         fontSize: 16,
-        color: colorSwatch.text.primary,
+        color: colorSwatch.neutral.lightGray,
         fontWeight: "600",
     },
     sectionTitle: {
@@ -772,12 +776,14 @@ const styles = StyleSheet.create<Styles>({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
-        padding: 8,
-        borderRadius: 8,
+        backgroundColor: colorSwatch.background.darkest,
+        padding: 12,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     platformName: {
-        color: colorSwatch.text.primary,
+        color: colorSwatch.neutral.lightGray,
         fontSize: 14,
         fontWeight: "500",
     },
@@ -799,13 +805,15 @@ const styles = StyleSheet.create<Styles>({
         gap: 8,
     },
     tagItem: {
-        backgroundColor: colorSwatch.background.medium,
+        backgroundColor: colorSwatch.background.darkest,
         paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 16,
+        paddingVertical: 8,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     tagText: {
-        color: colorSwatch.text.primary,
+        color: colorSwatch.neutral.lightGray,
         fontSize: 14,
     },
     section: {
@@ -823,32 +831,34 @@ const styles = StyleSheet.create<Styles>({
         borderRadius: 16,
     },
     characteristicSection: {
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darker,
         padding: 16,
-        borderRadius: 8,
+        borderRadius: 12,
     },
     characteristicTitle: {
         fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.accent.yellow,
+        color: colorSwatch.accent.purple,
         marginBottom: 12,
     },
     companiesGrid: {
         gap: 12,
     },
     companyCard: {
-        backgroundColor: colorSwatch.background.medium,
+        backgroundColor: colorSwatch.background.darkest,
         padding: 12,
-        borderRadius: 8,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     companyRole: {
         fontSize: 12,
-        color: colorSwatch.accent.yellow,
+        color: colorSwatch.accent.purple,
         marginBottom: 4,
     },
     companyName: {
         fontSize: 16,
-        color: colorSwatch.text.primary,
+        color: colorSwatch.neutral.lightGray,
         fontWeight: "500",
         flexWrap: "wrap",
     },

@@ -53,10 +53,28 @@ const GameItem: React.FC<GameItemProps> = memo(
                         borderBottomColor: colorSwatch.accent.pink,
                         borderTopColor: colorSwatch.accent.green,
                         borderRightColor: colorSwatch.accent.purple,
+                        borderRadius: 3,
                     };
-
+                case "active":
+                    return {
+                        // borderWidth: 2,
+                        // borderColor: colorSwatch.accent.yellow,
+                    };
+                case "on_hold":
+                    return {
+                        // borderWidth: 2,
+                        // borderColor: colorSwatch.accent.purple,
+                    };
+                case "dropped":
+                    return {
+                        // borderWidth: 2,
+                        // borderColor: colorSwatch.accent.pink,
+                    };
                 default:
-                    return;
+                    return {
+                        // borderWidth: 2,
+                        // borderColor: colorSwatch.neutral.darkGray,
+                    };
             }
         };
 
@@ -123,7 +141,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                             {QuestGame.notes && (
                                 <View style={styles.quoteContainer}>
                                     <Text style={styles.quote}>
-                                        {QuestGame.notes}
+                                        "{QuestGame.notes}"
                                     </Text>
                                 </View>
                             )}
@@ -163,64 +181,78 @@ const styles = StyleSheet.create({
     gameContainer: {
         flexDirection: "row",
         flex: 1,
+        backgroundColor: colorSwatch.background.darkest,
+        overflow: "hidden",
     },
     dragHandle: {
         justifyContent: "center",
         alignItems: "center",
-        width: 40,
-        paddingHorizontal: 8,
+        width: 48,
+        backgroundColor: colorSwatch.background.darker,
+        borderRightWidth: 1,
+        borderRightColor: colorSwatch.neutral.darkGray,
     },
     dragHandleContent: {
         alignItems: "center",
+        gap: 4,
     },
     priorityText: {
-        color: colorSwatch.primary.dark,
-        fontSize: 12,
+        color: colorSwatch.accent.cyan,
+        fontSize: 14,
         fontWeight: "bold",
-        marginBottom: 2,
     },
     title: {
-        fontSize: 16,
-        marginBottom: 5,
-        color: colorSwatch.accent.green,
+        fontSize: 18,
+        marginBottom: 8,
+        color: colorSwatch.accent.purple,
+        fontWeight: "600",
         flexWrap: "wrap",
         maxWidth: "100%",
     },
     pressableNavigation: {
         flexDirection: "row",
         flex: 1,
-        paddingVertical: 10,
-        alignItems: "center",
+        padding: 12,
+        alignItems: "flex-start",
+        gap: 12,
     },
     rating: {
-        fontSize: 10,
-        marginBottom: 5,
-        color: colorSwatch.accent.purple,
+        fontSize: 12,
+        marginBottom: 8,
+        color: colorSwatch.accent.yellow,
+        letterSpacing: 1,
     },
     contentContainer: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
     },
     detailsContainer: {
         flex: 1,
-        marginTop: 5,
+        gap: 6,
     },
     textSecondary: {
         fontSize: 14,
         color: colorSwatch.text.secondary,
+        lineHeight: 20,
     },
     quoteContainer: {
-        marginVertical: 5,
+        backgroundColor: colorSwatch.background.darker,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderLeftWidth: 3,
+        borderLeftColor: colorSwatch.accent.cyan,
     },
     quote: {
         fontStyle: "italic",
         color: colorSwatch.secondary.main,
         fontSize: 14,
         flexWrap: "wrap",
+        lineHeight: 20,
     },
     pressed: {
         opacity: 0.75,
+        backgroundColor: colorSwatch.background.darker,
     },
 });
 
