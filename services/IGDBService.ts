@@ -15,7 +15,6 @@ class IGDBService {
             // Try to get the game from the database first
             const savedGame = await getQuestGameById(id);
             if (savedGame) {
-                console.log("Game found in database:", savedGame.game_modes);
                 return {
                     ...savedGame,
                     alternative_names: savedGame.alternative_names || [],

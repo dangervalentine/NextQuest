@@ -136,7 +136,14 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 Genres: {genresText}
                             </Text>
                             <Text style={styles.textSecondary}>
-                                Date Added: {QuestGame.dateAdded}
+                                Date Added:{" "}
+                                {new Date(
+                                    QuestGame.dateAdded
+                                ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "2-digit",
+                                })}
                             </Text>
                         </View>
                     </View>
