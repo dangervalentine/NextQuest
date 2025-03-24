@@ -26,10 +26,10 @@ function ImageCarousel({ images }: ImageCarouselProps) {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: "center" }}>
             <Carousel
                 ref={ref}
-                width={width - 60}
+                width={width - 10}
                 height={width / 1.7}
                 data={images}
                 onProgressChange={progress}
@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         resizeMode: "contain",
-        alignSelf: "flex-start",
+        justifyContent: "center",
+        alignItems: "center",
     },
 });
 

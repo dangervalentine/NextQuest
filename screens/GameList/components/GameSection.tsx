@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.dark,
-        opacity: 0.99,
+        opacity: 0.98,
     },
     activeItem: {
         opacity: 0.3,

@@ -18,6 +18,7 @@ import IGDBService from "../services/IGDBService";
 import FullWidthImage from "./shared/FullWidthImage";
 import { GameStatus } from "../constants/gameStatus";
 import { QuestGame } from "../data/models/QuestGame";
+import { getAgeRating } from "../utils/getAgeRating";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -58,7 +59,7 @@ const QuestGameDetailPage: React.FC = () => {
             {game.cover && (
                 <FullWidthImage
                     source={`https:${game.cover.url.replace(
-                        "t_thumb",
+                        "t_cover_big",
                         "t_720p"
                     )}`}
                     style={styles.coverImage}
@@ -127,13 +128,15 @@ const QuestGameDetailPage: React.FC = () => {
                 <View style={styles.metadataItem}>
                     <Text style={styles.metadataLabel}>Age Rating</Text>
                     <Text style={styles.metadataValue}>
-                        {game.age_ratings?.[0]?.rating || "N/A"}
+                        {getAgeRating(game) || "N/A"}
                     </Text>
                 </View>
                 <View style={styles.metadataItem}>
                     <Text style={styles.metadataLabel}>Date Added</Text>
                     <Text style={styles.metadataValue}>
-                        {game.dateAdded?.split("T")[0]}
+                        {new Date(
+                            game.dateAdded?.split("T")[0]
+                        ).toLocaleDateString()}
                     </Text>
                 </View>
                 <View style={styles.metadataItem}>
@@ -250,7 +253,7 @@ const QuestGameDetailPage: React.FC = () => {
                 )}
                 {game.notes && (
                     <View style={styles.noteContainer}>
-                        <Text style={styles.noteText}>{game.notes}</Text>
+                        <Text style={styles.noteText}>"{game.notes}"</Text>
                     </View>
                 )}
             </View>
@@ -282,15 +285,23 @@ const QuestGameDetailPage: React.FC = () => {
         </View>
     );
 
-    const GenresSection: React.FC = () => (
-        <View style={styles.genresGrid}>
-            {game.genres?.map((genre: { name: string }, index: number) => (
-                <View key={index} style={styles.genreItem}>
-                    <Text style={styles.genreText}>{genre.name}</Text>
+    const GenresSection: React.FC = () => {
+        if (!game.genres?.length) return null;
+        return (
+            <View style={styles.characteristicSection}>
+                <Text style={styles.characteristicTitle}>Genres</Text>
+                <View style={styles.tagsFlow}>
+                    {game.genres?.map(
+                        (genre: { name: string }, index: number) => (
+                            <View key={index} style={styles.tagItem}>
+                                <Text style={styles.tagText}>{genre.name}</Text>
+                            </View>
+                        )
+                    )}
                 </View>
-            ))}
-        </View>
-    );
+            </View>
+        );
+    };
 
     const ThemesSection: React.FC = () => {
         if (!game.themes?.length) return null;
@@ -356,16 +367,27 @@ const QuestGameDetailPage: React.FC = () => {
             developers:
                 game.involved_companies
                     ?.filter((c) => c.developer)
-                    .map((c) => c.company.name) || [],
+                    .map((c) => c.company?.name || "")
+                    .filter(Boolean) || [],
             publishers:
                 game.involved_companies
                     ?.filter((c) => c.publisher)
-                    .map((c) => c.company.name) || [],
+                    .map((c) => c.company?.name || "")
+                    .filter(Boolean) || [],
             others:
                 game.involved_companies
                     ?.filter((c) => !c.developer && !c.publisher)
-                    .map((c) => c.company.name) || [],
+                    .map((c) => c.company?.name || "")
+                    .filter(Boolean) || [],
         };
+
+        if (
+            !groupedCompanies.developers.length &&
+            !groupedCompanies.publishers.length &&
+            !groupedCompanies.others.length
+        ) {
+            return null;
+        }
 
         return (
             <View style={styles.companiesGrid}>
@@ -479,28 +501,17 @@ const QuestGameDetailPage: React.FC = () => {
                 >
                     <Text style={styles.mainSectionTitle}>Game Details</Text>
 
-                    {/* Quick Facts */}
-                    <View style={styles.quickFactsColumn}>
-                        {game.platforms && game.platforms.length > 0 && (
-                            <View style={styles.quickFactSection}>
-                                <Text style={styles.quickFactTitle}>
-                                    Platforms
-                                </Text>
-                                <PlatformsSection />
-                            </View>
-                        )}
-                        {game.genres && game.genres.length > 0 && (
-                            <View style={styles.quickFactSection}>
-                                <Text style={styles.quickFactTitle}>
-                                    Genres
-                                </Text>
-                                <GenresSection />
-                            </View>
-                        )}
-                    </View>
+                    {/* Platforms */}
+                    {game.platforms && game.platforms.length > 0 && (
+                        <View style={styles.platformSection}>
+                            <Text style={styles.platformTitle}>Platforms</Text>
+                            <PlatformsSection />
+                        </View>
+                    )}
 
                     {/* Game Characteristics */}
                     <View style={styles.characteristicsContainer}>
+                        <GenresSection />
                         <ThemesSection />
                         <GameModesSection />
                         <PerspectivesSection />
@@ -548,7 +559,6 @@ const styles = StyleSheet.create({
         opacity: 0.98,
     },
     headerSection: {
-        backgroundColor: colorSwatch.background.dark,
         borderRadius: 6,
     },
     coverImage: {
@@ -557,8 +567,6 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
     headerInfo: {
-        backgroundColor: colorSwatch.background.dark,
-        margin: 12,
         alignItems: "center",
     },
     gameTitle: {
@@ -566,6 +574,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: colorSwatch.text.primary,
         marginBottom: 4,
+        marginTop: 12,
     },
     releaseDate: {
         fontSize: 14,
@@ -577,7 +586,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 4,
         marginTop: 16,
         backgroundColor: colorSwatch.background.medium,
-        borderRadius: 12,
+        borderRadius: 8,
         padding: 8,
     },
     metadataItem: {
@@ -597,9 +606,8 @@ const styles = StyleSheet.create({
     },
     sectionContainer: {
         marginTop: 16,
-        marginHorizontal: 4,
         backgroundColor: colorSwatch.background.medium,
-        borderRadius: 12,
+        borderRadius: 8,
         padding: 16,
         elevation: 4,
     },
@@ -684,10 +692,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     noteText: {
-        color: colorSwatch.text.primary,
         fontSize: 16,
         lineHeight: 24,
         fontStyle: "italic",
+        color: colorSwatch.secondary.main,
     },
     bottomClearance: {
         height: 60,
@@ -745,16 +753,12 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.purple,
         marginBottom: 20,
     },
-    quickFactsColumn: {
-        marginBottom: 20,
-        gap: 16,
-    },
-    quickFactSection: {
+    platformSection: {
         backgroundColor: colorSwatch.background.dark,
         padding: 16,
-        borderRadius: 12,
+        borderRadius: 8,
     },
-    quickFactTitle: {
+    platformTitle: {
         fontSize: 16,
         fontWeight: "600",
         color: colorSwatch.accent.yellow,
@@ -768,7 +772,7 @@ const styles = StyleSheet.create({
         marginTop: 24,
         padding: 16,
         backgroundColor: colorSwatch.background.dark,
-        borderRadius: 12,
+        borderRadius: 8,
     },
     subSectionTitle: {
         fontSize: 18,
@@ -782,13 +786,13 @@ const styles = StyleSheet.create({
     },
     infoSection: {
         backgroundColor: colorSwatch.background.dark,
-        borderRadius: 12,
+        borderRadius: 8,
         padding: 16,
     },
     characteristicSection: {
         backgroundColor: colorSwatch.background.dark,
         padding: 16,
-        borderRadius: 12,
+        borderRadius: 8,
     },
     characteristicTitle: {
         fontSize: 16,
@@ -817,10 +821,8 @@ const styles = StyleSheet.create({
     },
     screenshotsSection: {
         marginTop: 16,
-        marginHorizontal: 4,
         backgroundColor: colorSwatch.background.medium,
-        borderRadius: 12,
-        padding: 16,
+        borderRadius: 8,
         overflow: "hidden",
         paddingBottom: 30,
         resizeMode: "cover",
@@ -828,6 +830,8 @@ const styles = StyleSheet.create({
     screenshotsTitle: {
         fontSize: 20,
         fontWeight: "600",
+        padding: 16,
+        paddingBottom: 0,
         color: colorSwatch.accent.purple,
         marginBottom: 12,
     },

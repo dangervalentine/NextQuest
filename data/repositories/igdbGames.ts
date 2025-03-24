@@ -1,4 +1,3 @@
-import db from "../config/database";
 import {
     IGDBGameResponse,
     Cover,
@@ -8,23 +7,33 @@ import {
     PlayerPerspective,
     Theme,
     InvolvedCompany,
+    Screenshot,
+    AlternativeName,
+    ReleaseDate,
+    Video,
+    Website,
+    AgeRating,
+    DLC,
+    MultiplayerMode,
 } from "../models/IGDBGameResponse";
-import * as genreRepo from "./genres";
-import * as platformRepo from "./platforms";
-import * as gameModeRepo from "./gameModes";
-import * as perspectiveRepo from "./playerPerspectives";
-import * as themeRepo from "./themes";
-import * as coverRepo from "./covers";
+import db from "../config/database";
 import * as screenshotRepo from "./screenshots";
 import * as altNameRepo from "./alternativeNames";
-import * as companyRepo from "./companies";
 import * as releaseDateRepo from "./releaseDates";
 import * as videoRepo from "./videos";
 import * as websiteRepo from "./websites";
 import * as ageRatingRepo from "./ageRatings";
 import * as dlcRepo from "./dlcs";
 import * as multiplayerRepo from "./multiplayerModes";
+import * as genreRepo from "./genres";
+import * as platformRepo from "./platforms";
+import * as gameModeRepo from "./gameModes";
+import * as perspectiveRepo from "./playerPerspectives";
+import * as themeRepo from "./themes";
+import * as coverRepo from "./covers";
+import * as companyRepo from "./companies";
 
+// Database row type
 interface IGDBGameRow {
     id: number;
     name: string;
@@ -46,17 +55,19 @@ export const getIGDBGameById = async (
     id: number
 ): Promise<IGDBGameResponse | null> => {
     try {
+        console.log(`[getIGDBGameById] Fetching game with ID: ${id}`);
         const [game] = await db.getAllAsync<IGDBGameRow>(
             `
             SELECT 
-                g.id, g.name, g.summary, g.storyline, g.rating, g.aggregated_rating,
-                c.id as cover_id, c.url as cover_url,
-                GROUP_CONCAT(DISTINCT json_object('id', gn.id, 'name', gn.name)) as genres,
-                GROUP_CONCAT(DISTINCT json_object('id', p.id, 'name', p.name)) as platforms,
-                GROUP_CONCAT(DISTINCT json_object('id', gm.id, 'name', gm.name)) as game_modes,
-                GROUP_CONCAT(DISTINCT json_object('id', pp.id, 'name', pp.name)) as player_perspectives,
-                GROUP_CONCAT(DISTINCT json_object('id', t.id, 'name', t.name)) as themes,
-                GROUP_CONCAT(DISTINCT json_object(
+                g.*,
+                c.id as cover_id,
+                c.url as cover_url,
+                json_group_array(DISTINCT json_object('id', gn.id, 'name', gn.name)) as genres,
+                json_group_array(DISTINCT json_object('id', p.id, 'name', p.name)) as platforms,
+                json_group_array(DISTINCT json_object('id', gm.id, 'name', gm.name)) as game_modes,
+                json_group_array(DISTINCT json_object('id', pp.id, 'name', pp.name)) as player_perspectives,
+                json_group_array(DISTINCT json_object('id', t.id, 'name', t.name)) as themes,
+                json_group_array(DISTINCT json_object(
                     'id', ic.id, 
                     'game_id', ic.game_id, 
                     'company_id', ic.company_id,
@@ -80,76 +91,248 @@ export const getIGDBGameById = async (
             LEFT JOIN companies co ON ic.company_id = co.id
             WHERE g.id = ${id}
             GROUP BY g.id
-        `
+            `
         );
 
-        if (!game) return null;
+        if (!game) {
+            console.log(`[getIGDBGameById] No game found with ID: ${id}`);
+            return null;
+        }
+
+        console.log(`[getIGDBGameById] Found game: ${game.name}`);
+        console.log(`[getIGDBGameById] Cover URL: ${game.cover_url}`);
+
+        // Initialize arrays for related data
+        let screenshots: Screenshot[] = [];
+        let alternativeNames: AlternativeName[] = [];
+        let releaseDates: ReleaseDate[] = [];
+        let videos: Video[] = [];
+        let websites: Website[] = [];
+        let ageRatings: AgeRating[] = [];
+        let dlcs: DLC[] = [];
+        let multiplayerModes: MultiplayerMode[] | null = null;
 
         // Get related data
-        const screenshots = await screenshotRepo.getScreenshotsForGame(id);
-        const alternativeNames = await altNameRepo.getAlternativeNamesForGame(
-            id
-        );
-        const releaseDates = await releaseDateRepo.getReleaseDatesForGame(id);
-        const videos = await videoRepo.getVideosForGame(id);
-        const websites = await websiteRepo.getWebsitesForGame(id);
-        const ageRatings = await ageRatingRepo.getAgeRatingsForGame(id);
-        const dlcs = await dlcRepo.getDLCsForGame(id);
-        const multiplayerModes = await multiplayerRepo.getMultiplayerModesForGame(
-            id
-        );
+        try {
+            screenshots = await screenshotRepo.getScreenshotsForGame(id);
+            console.log(
+                `[getIGDBGameById] Found ${screenshots.length} screenshots`
+            );
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error getting screenshots:`,
+                error
+            );
+        }
 
-        // Create the cover object if we have both id and url
-        const cover: Cover =
-            game.cover_id && game.cover_url
-                ? { id: game.cover_id, game_id: id, url: game.cover_url }
-                : { id: 0, game_id: id, url: "" }; // Default cover if none exists
+        try {
+            alternativeNames = await altNameRepo.getAlternativeNamesForGame(id);
+            console.log(
+                `[getIGDBGameById] Found ${alternativeNames.length} alternative names`
+            );
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error getting alternative names:`,
+                error
+            );
+        }
 
-        // Parse JSON arrays with type safety
-        const genres: Genre[] = game.genres
-            ? JSON.parse(`[${game.genres}]`.replace(/\\/g, ""))
-            : [];
-        const platforms: Platform[] = game.platforms
-            ? JSON.parse(`[${game.platforms}]`.replace(/\\/g, ""))
-            : [];
-        const gameModes: GameMode[] = game.game_modes
-            ? JSON.parse(`[${game.game_modes}]`.replace(/\\/g, ""))
-            : [];
-        const playerPerspectives: PlayerPerspective[] = game.player_perspectives
-            ? JSON.parse(`[${game.player_perspectives}]`.replace(/\\/g, ""))
-            : [];
-        const themes: Theme[] = game.themes
-            ? JSON.parse(`[${game.themes}]`.replace(/\\/g, ""))
-            : [];
-        const involvedCompanies: InvolvedCompany[] = game.involved_companies
-            ? JSON.parse(`[${game.involved_companies}]`.replace(/\\/g, ""))
-            : [];
+        try {
+            releaseDates = await releaseDateRepo.getReleaseDatesForGame(id);
+            console.log(
+                `[getIGDBGameById] Found ${releaseDates.length} release dates`
+            );
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error getting release dates:`,
+                error
+            );
+        }
 
-        return {
+        try {
+            videos = await videoRepo.getVideosForGame(id);
+            console.log(`[getIGDBGameById] Found ${videos.length} videos`);
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error getting videos:`, error);
+        }
+
+        try {
+            websites = await websiteRepo.getWebsitesForGame(id);
+            console.log(`[getIGDBGameById] Found ${websites.length} websites`);
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error getting websites:`, error);
+        }
+
+        try {
+            ageRatings = await ageRatingRepo.getAgeRatingsForGame(id);
+            console.log(
+                `[getIGDBGameById] Found ${ageRatings.length} age ratings`
+            );
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error getting age ratings:`,
+                error
+            );
+        }
+
+        try {
+            dlcs = await dlcRepo.getDLCsForGame(id);
+            console.log(`[getIGDBGameById] Found ${dlcs.length} DLCs`);
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error getting DLCs:`, error);
+        }
+
+        try {
+            multiplayerModes = await multiplayerRepo.getMultiplayerModesForGame(
+                id
+            );
+            console.log(`[getIGDBGameById] Found multiplayer modes`);
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error getting multiplayer modes:`,
+                error
+            );
+        }
+
+        // Parse JSON arrays
+        let genres: Genre[] = [];
+        let platforms: Platform[] = [];
+        let gameModes: GameMode[] = [];
+        let playerPerspectives: PlayerPerspective[] = [];
+        let themes: Theme[] = [];
+        let involvedCompanies: InvolvedCompany[] = [];
+
+        try {
+            if (game.genres) {
+                const parsedGenres = JSON.parse(game.genres);
+                genres = Array.isArray(parsedGenres)
+                    ? parsedGenres.filter((g) => g && g.id && g.name)
+                    : [];
+                console.log(`[getIGDBGameById] Parsed ${genres.length} genres`);
+            }
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error parsing genres:`, error);
+        }
+
+        try {
+            if (game.platforms) {
+                const parsedPlatforms = JSON.parse(game.platforms);
+                platforms = Array.isArray(parsedPlatforms)
+                    ? parsedPlatforms.filter((p) => p && p.id && p.name)
+                    : [];
+                console.log(
+                    `[getIGDBGameById] Parsed ${platforms.length} platforms`
+                );
+            }
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error parsing platforms:`, error);
+        }
+
+        try {
+            if (game.game_modes) {
+                const parsedModes = JSON.parse(game.game_modes);
+                gameModes = Array.isArray(parsedModes)
+                    ? parsedModes.filter((m) => m && m.id && m.name)
+                    : [];
+                console.log(
+                    `[getIGDBGameById] Parsed ${gameModes.length} game modes`
+                );
+            }
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error parsing game modes:`, error);
+        }
+
+        try {
+            if (game.player_perspectives) {
+                const parsedPerspectives = JSON.parse(game.player_perspectives);
+                playerPerspectives = Array.isArray(parsedPerspectives)
+                    ? parsedPerspectives.filter((p) => p && p.id && p.name)
+                    : [];
+                console.log(
+                    `[getIGDBGameById] Parsed ${playerPerspectives.length} player perspectives`
+                );
+            }
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error parsing player perspectives:`,
+                error
+            );
+        }
+
+        try {
+            if (game.themes) {
+                const parsedThemes = JSON.parse(game.themes);
+                themes = Array.isArray(parsedThemes)
+                    ? parsedThemes.filter((t) => t && t.id && t.name)
+                    : [];
+                console.log(`[getIGDBGameById] Parsed ${themes.length} themes`);
+            }
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error parsing themes:`, error);
+        }
+
+        try {
+            if (game.involved_companies) {
+                const parsedCompanies = JSON.parse(game.involved_companies);
+                involvedCompanies = Array.isArray(parsedCompanies)
+                    ? parsedCompanies.filter(
+                          (ic) =>
+                              ic &&
+                              ic.id &&
+                              ic.company_id &&
+                              ic.company &&
+                              ic.company.id &&
+                              ic.company.name
+                      )
+                    : [];
+                console.log(
+                    `[getIGDBGameById] Parsed ${involvedCompanies.length} involved companies`
+                );
+            }
+        } catch (error) {
+            console.error(
+                `[getIGDBGameById] Error parsing involved companies:`,
+                error
+            );
+        }
+
+        // Construct the response object with null checks
+        const response: IGDBGameResponse = {
             id: game.id,
-            name: game.name,
+            name: game.name || "",
             summary: game.summary || "",
             storyline: game.storyline || "",
             rating: game.rating || 0,
             aggregated_rating: game.aggregated_rating || 0,
-            cover,
-            genres,
-            platforms,
-            game_modes: gameModes,
-            player_perspectives: playerPerspectives,
-            themes,
-            involved_companies: involvedCompanies,
-            alternative_names: alternativeNames,
-            screenshots,
-            release_dates: releaseDates,
-            videos,
-            websites,
-            age_ratings: ageRatings,
-            dlcs,
-            multiplayer_modes: multiplayerModes,
+            cover:
+                game.cover_id && game.cover_url
+                    ? {
+                          id: game.cover_id,
+                          url: game.cover_url,
+                      }
+                    : null,
+            genres: genres || [],
+            platforms: platforms || [],
+            game_modes: gameModes || [],
+            player_perspectives: playerPerspectives || [],
+            themes: themes || [],
+            involved_companies: involvedCompanies || [],
+            screenshots: screenshots || [],
+            release_dates: releaseDates || [],
+            videos: videos || [],
+            age_ratings: ageRatings || [],
+            alternative_names: alternativeNames || [],
+            websites: websites || [],
+            dlcs: dlcs || [],
+            multiplayer_modes: multiplayerModes || undefined,
         };
+
+        console.log(
+            `[getIGDBGameById] Successfully constructed response object`
+        );
+        return response;
     } catch (error) {
-        console.error("Error getting IGDB game by id:", error);
+        console.error(`[getIGDBGameById] Error:`, error);
         throw error;
     }
 };

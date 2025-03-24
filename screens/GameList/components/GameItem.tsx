@@ -97,7 +97,10 @@ const GameItem: React.FC<GameItemProps> = memo(
                             style={getStatusStyles(QuestGame.gameStatus)}
                         />
                     ) : (
-                        <View style={styles.cover} />
+                        <FullHeightImage
+                            source={require("../../../assets/placeholder.png")}
+                            style={getStatusStyles(QuestGame.gameStatus)}
+                        />
                     )}
 
                     <View style={styles.contentContainer}>
@@ -193,12 +196,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         marginBottom: 5,
         color: colorSwatch.accent.purple,
-    },
-    cover: {
-        height: 110,
-        marginLeft: 12,
-        marginRight: 12,
-        backgroundColor: colorSwatch.neutral.gray,
     },
     contentContainer: {
         flex: 1,

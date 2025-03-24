@@ -11,6 +11,7 @@ const FullWidthImage = ({
     style?: StyleProp<ViewStyle>;
 }): React.JSX.Element => {
     const [imageHeight, setImageHeight] = useState(0);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         // Get the image dimensions
@@ -24,12 +25,21 @@ const FullWidthImage = ({
 
     return (
         <View style={[styles.imageContainer, style]}>
-            <Image
-                source={{ uri: source }}
-                style={[styles.image, { height: imageHeight }]}
-                contentFit="cover"
-                transition={200}
-            />
+            {!hasError ? (
+                <Image
+                    source={{ uri: source }}
+                    style={[styles.image, { height: imageHeight }]}
+                    contentFit="cover"
+                    transition={200}
+                    onError={() => setHasError(true)}
+                />
+            ) : (
+                <Image
+                    source={require("../../assets/placeholder.png")}
+                    style={[styles.image, { height: imageHeight || 200 }]}
+                    contentFit="cover"
+                />
+            )}
         </View>
     );
 };
