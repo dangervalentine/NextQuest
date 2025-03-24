@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     priorityText: {
         color: colorSwatch.accent.cyan,
         fontSize: 14,
-        fontWeight: "bold",
+        fontWeight: "600",
     },
     title: {
         fontSize: 18,
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         flexWrap: "wrap",
         maxWidth: "100%",
+        lineHeight: 24,
     },
     pressableNavigation: {
         flexDirection: "row",
@@ -215,6 +216,10 @@ const styles = StyleSheet.create({
         padding: 12,
         alignItems: "flex-start",
         gap: 12,
+    },
+    pressed: {
+        opacity: 0.8,
+        backgroundColor: colorSwatch.background.darker,
     },
     rating: {
         fontSize: 12,
@@ -229,7 +234,7 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         flex: 1,
-        gap: 6,
+        gap: 8,
     },
     textSecondary: {
         fontSize: 14,
@@ -238,8 +243,8 @@ const styles = StyleSheet.create({
     },
     quoteContainer: {
         backgroundColor: colorSwatch.background.darker,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
         borderLeftWidth: 3,
         borderLeftColor: colorSwatch.accent.cyan,
     },
@@ -249,10 +254,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         flexWrap: "wrap",
         lineHeight: 20,
-    },
-    pressed: {
-        opacity: 0.75,
-        backgroundColor: colorSwatch.background.darker,
     },
 });
 

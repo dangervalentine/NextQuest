@@ -84,7 +84,6 @@ function ImageCarousel({ images }: ImageCarouselProps) {
                                 contentFit="contain"
                                 placeholder={require("../../../assets/placeholder.png")}
                                 onLoad={({ source }) => {
-                                    console.log("source", source);
                                     handleImageLoad(
                                         index,
                                         source.width,

@@ -615,7 +615,7 @@ const styles = StyleSheet.create<Styles>({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.dark,
-        opacity: 0.98,
+        opacity: 0.99,
     },
     headerSection: {
         borderRadius: 6,

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import {
     FontAwesome5,
     MaterialCommunityIcons,
@@ -18,30 +18,32 @@ interface HeaderWithIconProps {
 
 const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({ iconName, title }) => {
     return (
-        <View
-            style={{
-                flexDirection: "row",
-                alignItems: "center",
-            }}
-        >
-            <View style={{ marginRight: 8 }}>
+        <View style={styles.container}>
+            <View style={styles.iconContainer}>
                 <QuestIcon
                     name={iconName}
                     size={24}
-                    color={colorSwatch.secondary.main}
+                    color={colorSwatch.accent.cyan}
                 />
             </View>
-            <Text
-                style={{
-                    fontSize: 24,
-                    fontWeight: "bold",
-                    color: colorSwatch.secondary.main,
-                }}
-            >
-                {title}
-            </Text>
+            <Text style={styles.title}>{title}</Text>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    iconContainer: {
+        marginRight: 12,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "600",
+        color: colorSwatch.accent.purple,
+    },
+});
 
 export default HeaderWithIcon;

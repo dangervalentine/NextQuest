@@ -162,27 +162,28 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
 const styles = StyleSheet.create({
     pageContainer: {
         flex: 1,
-        backgroundColor: colorSwatch.background.dark,
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: colorSwatch.background.dark,
-        opacity: 0.98,
+        backgroundColor: colorSwatch.background.darker,
+        opacity: 0.99,
     },
     itemContainer: {
-        backgroundColor: colorSwatch.background.darkest,
         borderRadius: 12,
-        marginVertical: 4,
+        marginHorizontal: 4,
         shadowColor: colorSwatch.background.dark,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        shadowRadius: 4,
+        elevation: 4,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
+        marginVertical: 8,
     },
     activeItem: {
-        opacity: 0.5,
+        opacity: 0.7,
         backgroundColor: colorSwatch.background.darker,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: colorSwatch.accent.cyan,
     },
     loadingContainer: {
@@ -195,12 +196,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         fontStyle: "italic",
+        lineHeight: 24,
     },
-    separator: {
-        height: 8,
-    },
+    separator: {},
     listContainer: {
-        backgroundColor: colorSwatch.background.darkest,
+        paddingVertical: 8,
     },
 });
 

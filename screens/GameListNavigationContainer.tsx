@@ -105,12 +105,6 @@ const screenOptions: BottomTabNavigationOptions = {
         fontSize: 12,
         fontWeight: "500",
     },
-    headerTitleStyle: {
-        fontSize: 24,
-        fontWeight: "600",
-        color: colorSwatch.accent.purple,
-        textAlign: "center",
-    },
     headerStyle,
     tabBarBackground: () => (
         <View

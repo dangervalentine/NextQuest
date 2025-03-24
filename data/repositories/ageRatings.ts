@@ -16,9 +16,7 @@ export const getAgeRatingById = async (id: number) => {
 
 export const getAgeRatingsForGame = async (gameId: number) => {
     try {
-        const query =
-            "SELECT id, game_id, category, rating FROM age_ratings WHERE game_id = " +
-            gameId;
+        const query = `SELECT id, game_id, category, rating FROM age_ratings WHERE game_id = ${gameId}`;
         return await db.getAllAsync<AgeRating>(query);
     } catch (error) {
         console.error("Error getting age ratings for game:", error);
