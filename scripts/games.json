@@ -1,0 +1,406 @@
+[
+    {
+        "title": "Legacy of Kain: Soul Reaver",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Outer Wilds",
+        "platform": "PC"
+    },
+    {
+        "title": "Castlevania: Harmony of Dissonance",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Baldur's Gate II",
+        "platform": "PC"
+    },
+    {
+        "title": "Castlevania: Aria of Sorrow",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Chrono Trigger",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "Dragon Quest VII",
+        "platform": "Nintendo 3DS"
+    },
+    {
+        "title": "Dragon Quest VIII",
+        "platform": "Nintendo 3DS"
+    },
+    {
+        "title": "Hollow Knight",
+        "platform": "PC"
+    },
+    {
+        "title": "Like a Dragon: Infinite Wealth",
+        "platform": "PC"
+    },
+    {
+        "title": "Metroid: Zero Mission",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Sekiro: Shadows Die Twice",
+        "platform": "PC"
+    },
+    {
+        "title": "Split Fiction",
+        "platform": "PC"
+    },
+    {
+        "title": "Super Metroid",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "The Legend of Zelda: The Minish Cap",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "The Last of Us Part II",
+        "platform": "PC"
+    },
+    {
+        "title": "Tactics Ogre: The Knight of Lodis",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Elden Ring",
+        "platform": "PC (Microsoft Windows)"
+    },
+    {
+        "title": "The Legend of Zelda: Ocarina of Time",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Super Mario 64",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Final Fantasy VII",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "The Legend of Zelda: Breath of the Wild",
+        "platform": "Nintendo Switch"
+    },
+    {
+        "title": "Half-Life 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Grand Theft Auto V",
+        "platform": "PC"
+    },
+    {
+        "title": "The Last of Us",
+        "platform": "PlayStation 3"
+    },
+    {
+        "title": "Red Dead Redemption 2",
+        "platform": "PC"
+    },
+    {
+        "title": "BioShock",
+        "platform": "PC"
+    },
+    {
+        "title": "The Witcher 3: Wild Hunt",
+        "platform": "PC"
+    },
+    {
+        "title": "Portal 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Mass Effect 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Super Mario World",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "The Elder Scrolls V: Skyrim",
+        "platform": "PC"
+    },
+    {
+        "title": "Metal Gear Solid",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Halo: Combat Evolved",
+        "platform": "PC"
+    },
+    {
+        "title": "Minecraft",
+        "platform": "PC"
+    },
+    {
+        "title": "Counter-Strike",
+        "platform": "PC"
+    },
+    {
+        "title": "World of Warcraft",
+        "platform": "PC"
+    },
+    {
+        "title": "Overwatch",
+        "platform": "PC"
+    },
+    {
+        "title": "Sid Meier's Civilization IV",
+        "platform": "PC"
+    },
+    {
+        "title": "Call of Duty 4: Modern Warfare",
+        "platform": "PC"
+    },
+    {
+        "title": "StarCraft",
+        "platform": "PC"
+    },
+    {
+        "title": "The Sims",
+        "platform": "PC"
+    },
+    {
+        "title": "Fallout 3",
+        "platform": "PC"
+    },
+    {
+        "title": "Diablo II",
+        "platform": "PC"
+    },
+    {
+        "title": "League of Legends",
+        "platform": "PC"
+    },
+    {
+        "title": "Team Fortress 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Sid Meier's Civilization VI",
+        "platform": "PC"
+    },
+    {
+        "title": "Grand Theft Auto III",
+        "platform": "PC"
+    },
+    {
+        "title": "Doom",
+        "platform": "PC"
+    },
+    {
+        "title": "Quake",
+        "platform": "PC"
+    },
+    {
+        "title": "Bastion",
+        "platform": "PC"
+    },
+    {
+        "title": "Fallout: New Vegas",
+        "platform": "PC"
+    },
+    {
+        "title": "Borderlands 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Stardew Valley",
+        "platform": "PC"
+    },
+    {
+        "title": "Rocket League",
+        "platform": "PC"
+    },
+    {
+        "title": "Hollow Knight",
+        "platform": "PC"
+    },
+    {
+        "title": "Celeste",
+        "platform": "PC"
+    },
+    {
+        "title": "Undertale",
+        "platform": "PC"
+    },
+    {
+        "title": "The Legend of Zelda: A Link to the Past",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "Chrono Trigger",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "Final Fantasy VI",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "EarthBound",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "Super Metroid",
+        "platform": "Super Nintendo"
+    },
+    {
+        "title": "Street Fighter II",
+        "platform": "Arcade"
+    },
+    {
+        "title": "Pac-Man",
+        "platform": "Arcade"
+    },
+    {
+        "title": "Tetris",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "The Legend of Zelda: Link's Awakening",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Pokémon Red",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Pokémon Blue",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Metroid Prime",
+        "platform": "GameCube"
+    },
+    {
+        "title": "The Legend of Zelda: The Wind Waker",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Super Smash Bros. Melee",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Halo 3",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Gears of War",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Fable II",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Forza Motorsport 4",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Grand Theft Auto IV",
+        "platform": "PC"
+    },
+    {
+        "title": "BioShock Infinite",
+        "platform": "PC"
+    },
+    {
+        "title": "Far Cry 3",
+        "platform": "PC"
+    },
+    {
+        "title": "Assassin's Creed II",
+        "platform": "PC"
+    },
+    {
+        "title": "Pokémon Emerald Version",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "NBA 2K21",
+        "platform": "PC"
+    },
+    {
+        "title": "Madden NFL 21",
+        "platform": "PC"
+    },
+    {
+        "title": "PGA Tour 2K21",
+        "platform": "PC"
+    },
+    {
+        "title": "Sid Meier's Civilization V",
+        "platform": "PC"
+    },
+    {
+        "title": "XCOM: Enemy Unknown",
+        "platform": "PC"
+    },
+    {
+        "title": "The Banner Saga",
+        "platform": "PC"
+    },
+    {
+        "title": "Pillars of Eternity",
+        "platform": "PC"
+    },
+    {
+        "title": "Wasteland 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Baldur's Gate: Enhanced Edition",
+        "platform": "PC"
+    },
+    {
+        "title": "Icewind Dale: Enhanced Edition",
+        "platform": "PC"
+    },
+    {
+        "title": "Neverwinter Nights: Enhanced Edition",
+        "platform": "PC"
+    },
+    {
+        "title": "The Outer Worlds",
+        "platform": "PC"
+    },
+    {
+        "title": "Cyberpunk 2077",
+        "platform": "PC"
+    },
+    {
+        "title": "Disco Elysium",
+        "platform": "PC"
+    },
+    {
+        "title": "Control",
+        "platform": "PC"
+    },
+    {
+        "title": "Death Stranding",
+        "platform": "PC"
+    },
+    {
+        "title": "Ghost of Tsushima",
+        "platform": "PlayStation 4"
+    },
+    {
+        "title": "Spider-Man: Miles Morales",
+        "platform": "PlayStation 5"
+    },
+    {
+        "title": "Ratchet & Clank: Rift Apart",
+        "platform": "PlayStation 5"
+    },
+    {
+        "title": "Horizon Forbidden West",
+        "platform": "PlayStation 5"
+    }
+]

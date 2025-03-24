@@ -7,6 +7,9 @@ import {
     ActivityIndicator,
     Animated,
     ImageBackground,
+    ViewStyle,
+    TextStyle,
+    ImageStyle,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRoute } from "@react-navigation/native";
@@ -19,6 +22,59 @@ import FullWidthImage from "./shared/FullWidthImage";
 import { GameStatus } from "../constants/gameStatus";
 import { QuestGame } from "../data/models/QuestGame";
 import { getAgeRating } from "../utils/getAgeRating";
+import WebsitesSection from "../app/components/WebsitesSection";
+
+type Styles = {
+    container: ViewStyle;
+    overlay: ViewStyle;
+    headerSection: ViewStyle;
+    coverImage: ImageStyle;
+    headerInfo: ViewStyle;
+    gameTitle: TextStyle;
+    releaseDate: TextStyle;
+    sectionContainer: ViewStyle;
+    characteristicsContainer: ViewStyle;
+    platformSection: ViewStyle;
+    platformTitle: TextStyle;
+    infoSection: ViewStyle;
+    screenshotsSection: ViewStyle;
+    mainSectionTitle: TextStyle;
+    subSectionTitle: TextStyle;
+    storylineText: TextStyle;
+    loadingContainer: ViewStyle;
+    metadataGrid: ViewStyle;
+    metadataItem: ViewStyle;
+    metadataLabel: TextStyle;
+    metadataValue: TextStyle;
+    ratingContainer: ViewStyle;
+    ratingLabel: TextStyle;
+    ratingValue: TextStyle;
+    ratingBar: ViewStyle;
+    ratingFill: ViewStyle;
+    noteContainer: ViewStyle;
+    noteText: TextStyle;
+    platformsList: ViewStyle;
+    platformItem: ViewStyle;
+    platformName: TextStyle;
+    platformDate: TextStyle;
+    bottomClearance: ViewStyle;
+    tagsFlow: ViewStyle;
+    tagItem: ViewStyle;
+    tagText: TextStyle;
+    section: ViewStyle;
+    tagsContainer: ViewStyle;
+    tag: ViewStyle;
+    characteristicSection: ViewStyle;
+    characteristicTitle: TextStyle;
+    companiesGrid: ViewStyle;
+    companyCard: ViewStyle;
+    companyRole: TextStyle;
+    companyName: TextStyle;
+    screenshotsTitle: TextStyle;
+    sectionTitle: TextStyle;
+    franchiseLinks: ViewStyle;
+    franchiseLink: TextStyle;
+};
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -62,7 +118,10 @@ const QuestGameDetailPage: React.FC = () => {
                         "t_cover_big",
                         "t_720p"
                     )}`}
-                    style={styles.coverImage}
+                    style={{
+                        width: "100%",
+                        backgroundColor: colorSwatch.background.dark,
+                    }}
                 />
             )}
             <View style={styles.headerInfo}>
@@ -97,6 +156,12 @@ const QuestGameDetailPage: React.FC = () => {
                     };
             }
         };
+
+        const handleFranchisePress = (franchiseId: number) => {
+            // TODO: Implement franchise navigation
+            console.log(`Navigate to franchise: ${franchiseId}`);
+        };
+
         return (
             <View style={styles.metadataGrid}>
                 <View style={styles.metadataItem}>
@@ -145,6 +210,29 @@ const QuestGameDetailPage: React.FC = () => {
                         {game.selectedPlatform?.name || "Not set"}
                     </Text>
                 </View>
+                {game.franchises && game.franchises.length > 0 && (
+                    <View style={[styles.metadataItem]}>
+                        <Text style={styles.metadataLabel}>Franchises</Text>
+                        <View style={styles.franchiseLinks}>
+                            {game.franchises.map((franchise) => (
+                                <Text
+                                    key={franchise.id}
+                                    style={styles.franchiseLink}
+                                    onPress={() =>
+                                        handleFranchisePress(franchise.id)
+                                    }
+                                >
+                                    {franchise.name}
+                                    {franchise.id !==
+                                    game.franchises[game.franchises.length - 1]
+                                        .id
+                                        ? ", "
+                                        : ""}
+                                </Text>
+                            ))}
+                        </View>
+                    </View>
+                )}
             </View>
         );
     };
@@ -432,47 +520,6 @@ const QuestGameDetailPage: React.FC = () => {
         </View>
     );
 
-    const WebsitesSection: React.FC = () => {
-        if (!game.websites?.length) return null;
-
-        const getWebsiteType = (category: number) => {
-            const types = {
-                1: "Official",
-                2: "Wikia",
-                3: "Wikipedia",
-                4: "Facebook",
-                5: "Twitter",
-                6: "Twitch",
-                8: "Instagram",
-                9: "YouTube",
-                13: "Steam",
-                14: "Reddit",
-                15: "Discord",
-                16: "Google Play",
-                17: "App Store",
-            };
-            return types[category as keyof typeof types] || "Other";
-        };
-
-        return (
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Websites</Text>
-                <View style={styles.websitesContainer}>
-                    {game.websites.map((website, index) => (
-                        <View key={index} style={styles.websiteItem}>
-                            <Text style={styles.websiteType}>
-                                {getWebsiteType(website.category)}
-                            </Text>
-                            <Text style={styles.websiteUrl} numberOfLines={1}>
-                                {website.url}
-                            </Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
-        );
-    };
-
     return (
         <ImageBackground
             source={require("../assets/quest-logger.png")}
@@ -481,26 +528,36 @@ const QuestGameDetailPage: React.FC = () => {
         >
             <View style={styles.overlay} />
             <ScrollView style={{ flex: 1 }}>
-                {/* Essential Game Info */}
+                {/* Hero Section */}
                 <HeaderSection />
 
-                {/* Personal Progress Section */}
-                <View style={styles.mainSection}>
+                {/* Progress Tracking */}
+                <View style={styles.sectionContainer}>
                     <MetadataGrid />
-                    <PersonalReviewSection />
                 </View>
+
+                {/* Personal Review Section */}
+                <PersonalReviewSection />
 
                 {/* Visual Showcase */}
                 {game.screenshots && game.screenshots.length > 0 && (
-                    <ScreenshotsSection />
+                    <View style={styles.sectionContainer}>
+                        <ScreenshotsSection />
+                    </View>
                 )}
 
-                {/* Game Details */}
-                <View
-                    style={[styles.sectionContainer, styles.detailsContainer]}
-                >
-                    <Text style={styles.mainSectionTitle}>Game Details</Text>
+                {/* Core Game Information */}
+                {(game.storyline || game.summary) && (
+                    <View style={styles.sectionContainer}>
+                        <Text style={styles.mainSectionTitle}>
+                            About the Game
+                        </Text>
+                        <StorylineSection />
+                    </View>
+                )}
 
+                {/* Essential Game Categories */}
+                <View style={styles.sectionContainer}>
                     {/* Platforms */}
                     {game.platforms && game.platforms.length > 0 && (
                         <View style={styles.platformSection}>
@@ -509,37 +566,38 @@ const QuestGameDetailPage: React.FC = () => {
                         </View>
                     )}
 
-                    {/* Game Characteristics */}
+                    {/* Core Categories */}
                     <View style={styles.characteristicsContainer}>
                         <GenresSection />
                         <ThemesSection />
+                    </View>
+                </View>
+
+                {/* Additional Game Details */}
+                <View style={styles.sectionContainer}>
+                    <Text style={styles.mainSectionTitle}>
+                        Additional Details
+                    </Text>
+
+                    {/* External Links */}
+                    <WebsitesSection websites={game.websites || []} />
+
+                    {/* Gameplay Specifics */}
+                    <View style={styles.characteristicsContainer}>
                         <GameModesSection />
                         <PerspectivesSection />
                     </View>
 
-                    {/* Story & Description */}
-                    {(game.storyline || game.summary) && (
-                        <View style={styles.storyContainer}>
-                            <Text style={styles.subSectionTitle}>
-                                About the Game
-                            </Text>
-                            <StorylineSection />
-                        </View>
-                    )}
-
-                    {/* Additional Information */}
-                    <View style={styles.additionalInfoContainer}>
-                        {game.involved_companies &&
-                            game.involved_companies.length > 0 && (
-                                <View style={styles.infoSection}>
-                                    <Text style={styles.subSectionTitle}>
-                                        Development
-                                    </Text>
-                                    <CompaniesSection />
-                                </View>
-                            )}
-                        <WebsitesSection />
-                    </View>
+                    {/* Development Info */}
+                    {game.involved_companies &&
+                        game.involved_companies.length > 0 && (
+                            <View style={styles.infoSection}>
+                                <Text style={styles.subSectionTitle}>
+                                    Development
+                                </Text>
+                                <CompaniesSection />
+                            </View>
+                        )}
                 </View>
 
                 <View style={styles.bottomClearance} />
@@ -548,7 +606,7 @@ const QuestGameDetailPage: React.FC = () => {
     );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
     container: {
         flex: 1,
         backgroundColor: colorSwatch.background.dark,
@@ -580,6 +638,64 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: colorSwatch.text.secondary,
     },
+    sectionContainer: {
+        marginHorizontal: 16,
+        marginTop: 24,
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 8,
+        padding: 16,
+        elevation: 4,
+    },
+    characteristicsContainer: {
+        marginTop: 16,
+        gap: 16,
+    },
+    platformSection: {
+        backgroundColor: colorSwatch.background.dark,
+        padding: 16,
+        borderRadius: 8,
+    },
+    platformTitle: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: colorSwatch.accent.yellow,
+        marginBottom: 8,
+    },
+    infoSection: {
+        marginTop: 16,
+        backgroundColor: colorSwatch.background.dark,
+        borderRadius: 8,
+        padding: 16,
+    },
+    screenshotsSection: {
+        backgroundColor: colorSwatch.background.medium,
+        borderRadius: 8,
+        overflow: "hidden",
+        paddingBottom: 30,
+    },
+    mainSectionTitle: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: colorSwatch.accent.purple,
+        marginBottom: 20,
+    },
+    subSectionTitle: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: colorSwatch.accent.cyan,
+        marginBottom: 12,
+    },
+    storylineText: {
+        fontSize: 16,
+        lineHeight: 24,
+        color: colorSwatch.text.primary,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.dark,
+    },
     metadataGrid: {
         flexDirection: "row",
         flexWrap: "wrap",
@@ -604,59 +720,11 @@ const styles = StyleSheet.create({
         color: colorSwatch.text.primary,
         fontWeight: "600",
     },
-    sectionContainer: {
-        marginTop: 16,
-        backgroundColor: colorSwatch.background.medium,
-        borderRadius: 8,
-        padding: 16,
-        elevation: 4,
-    },
     sectionTitle: {
         fontSize: 20,
         fontWeight: "600",
         color: colorSwatch.accent.green,
         marginBottom: 12,
-    },
-    genresGrid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-    },
-    genreItem: {
-        backgroundColor: colorSwatch.background.dark,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 16,
-    },
-    genreText: {
-        color: colorSwatch.text.primary,
-        fontSize: 14,
-    },
-    platformsList: {
-        gap: 8,
-    },
-    platformItem: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
-        padding: 8,
-        borderRadius: 8,
-    },
-    platformName: {
-        color: colorSwatch.text.primary,
-        fontSize: 14,
-        fontWeight: "500",
-    },
-    platformDate: {
-        color: colorSwatch.text.secondary,
-        fontSize: 12,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
     },
     ratingContainer: {
         marginBottom: 16,
@@ -697,6 +765,26 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         color: colorSwatch.secondary.main,
     },
+    platformsList: {
+        gap: 8,
+    },
+    platformItem: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.dark,
+        padding: 8,
+        borderRadius: 8,
+    },
+    platformName: {
+        color: colorSwatch.text.primary,
+        fontSize: 14,
+        fontWeight: "500",
+    },
+    platformDate: {
+        color: colorSwatch.text.secondary,
+        fontSize: 12,
+    },
     bottomClearance: {
         height: 60,
         width: "80%",
@@ -720,74 +808,19 @@ const styles = StyleSheet.create({
         color: colorSwatch.text.primary,
         fontSize: 14,
     },
-    websitesContainer: {
-        gap: 12,
-    },
-    websiteItem: {
+    section: {
+        marginTop: 16,
         backgroundColor: colorSwatch.background.dark,
+        padding: 16,
+        borderRadius: 8,
+    },
+    tagsContainer: {
+        gap: 8,
+    },
+    tag: {
+        backgroundColor: colorSwatch.background.medium,
         padding: 12,
-        borderRadius: 8,
-    },
-    websiteType: {
-        color: colorSwatch.accent.purple,
-        fontSize: 14,
-        fontWeight: "bold",
-        marginBottom: 4,
-    },
-    websiteUrl: {
-        color: colorSwatch.text.primary,
-        fontSize: 14,
-    },
-    mainSection: {
-        marginTop: 16,
-        marginHorizontal: 4,
-        gap: 16,
-    },
-    detailsContainer: {
-        marginTop: 24,
-        padding: 20,
-    },
-    mainSectionTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: colorSwatch.accent.purple,
-        marginBottom: 20,
-    },
-    platformSection: {
-        backgroundColor: colorSwatch.background.dark,
-        padding: 16,
-        borderRadius: 8,
-    },
-    platformTitle: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: colorSwatch.accent.yellow,
-        marginBottom: 8,
-    },
-    characteristicsContainer: {
-        marginTop: 16,
-        gap: 16,
-    },
-    storyContainer: {
-        marginTop: 24,
-        padding: 16,
-        backgroundColor: colorSwatch.background.dark,
-        borderRadius: 8,
-    },
-    subSectionTitle: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: colorSwatch.accent.cyan,
-        marginBottom: 12,
-    },
-    additionalInfoContainer: {
-        marginTop: 24,
-        gap: 20,
-    },
-    infoSection: {
-        backgroundColor: colorSwatch.background.dark,
-        borderRadius: 8,
-        padding: 16,
+        borderRadius: 16,
     },
     characteristicSection: {
         backgroundColor: colorSwatch.background.dark,
@@ -819,14 +852,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         flexWrap: "wrap",
     },
-    screenshotsSection: {
-        marginTop: 16,
-        backgroundColor: colorSwatch.background.medium,
-        borderRadius: 8,
-        overflow: "hidden",
-        paddingBottom: 30,
-        resizeMode: "cover",
-    },
     screenshotsTitle: {
         fontSize: 20,
         fontWeight: "600",
@@ -835,10 +860,16 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.purple,
         marginBottom: 12,
     },
-    storylineText: {
+    franchiseLinks: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 4,
+    },
+    franchiseLink: {
         fontSize: 16,
-        lineHeight: 24,
-        color: colorSwatch.text.primary,
+        color: colorSwatch.accent.cyan,
+        textDecorationLine: "underline",
+        fontWeight: "600",
     },
 });
 

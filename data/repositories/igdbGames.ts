@@ -49,6 +49,14 @@ interface IGDBGameRow {
     player_perspectives: string | null;
     themes: string | null;
     involved_companies: string | null;
+    franchises: string | null;
+    game_status: string | null;
+    personal_rating: number | null;
+    completion_date: string | null;
+    notes: string | null;
+    date_added: string | null;
+    priority: number | null;
+    selected_platform_id: number | null;
 }
 
 export const getIGDBGameById = async (
@@ -60,35 +68,55 @@ export const getIGDBGameById = async (
             `
             SELECT 
                 g.*,
-                c.id as cover_id,
-                c.url as cover_url,
-                json_group_array(DISTINCT json_object('id', gn.id, 'name', gn.name)) as genres,
-                json_group_array(DISTINCT json_object('id', p.id, 'name', p.name)) as platforms,
-                json_group_array(DISTINCT json_object('id', gm.id, 'name', gm.name)) as game_modes,
+                qg.personal_rating,
+                qg.completion_date,
+                qg.notes,
+                qg.date_added,
+                qg.priority,
+                qg.selected_platform_id,
+                qs.name as game_status,
+                cov.id as cover_id,
+                cov.url as cover_url,
+                json_group_array(DISTINCT json_object('id', gmod.id, 'name', gmod.name)) as game_modes,
                 json_group_array(DISTINCT json_object('id', pp.id, 'name', pp.name)) as player_perspectives,
-                json_group_array(DISTINCT json_object('id', t.id, 'name', t.name)) as themes,
+                json_group_array(DISTINCT json_object('id', th.id, 'name', th.name)) as themes,
                 json_group_array(DISTINCT json_object(
-                    'id', ic.id, 
-                    'game_id', ic.game_id, 
-                    'company_id', ic.company_id,
+                    'id', fr.id,
+                    'name', fr.name
+                )) as franchises,
+                json_group_array(DISTINCT json_object('id', gen.id, 'name', gen.name)) as genres,
+                json_group_array(DISTINCT json_object('id', plat.id, 'name', plat.name)) as platforms,
+                json_group_array(DISTINCT json_object(
+                    'id', ic.id,
+                    'company_id', comp.id,
                     'developer', ic.developer,
                     'publisher', ic.publisher,
-                    'company', json_object('id', co.id, 'name', co.name)
-                )) as involved_companies
+                    'company', json_object('id', comp.id, 'name', comp.name)
+                )) as involved_companies,
+                json_group_array(DISTINCT json_object(
+                    'id', w.id,
+                    'category', w.category,
+                    'url', w.url
+                )) as websites
             FROM games g
-            LEFT JOIN covers c ON g.id = c.game_id
+            LEFT JOIN quest_games qg ON g.id = qg.game_id
+            LEFT JOIN quest_game_status qs ON qg.status_id = qs.id
+            LEFT JOIN covers cov ON g.id = cov.game_id
             LEFT JOIN game_genres gg ON g.id = gg.game_id
-            LEFT JOIN genres gn ON gg.genre_id = gn.id
-            LEFT JOIN game_platforms gp ON g.id = gp.game_id
-            LEFT JOIN platforms p ON gp.platform_id = p.id
+            LEFT JOIN genres gen ON gg.genre_id = gen.id
+            LEFT JOIN game_platforms gpl ON g.id = gpl.game_id
+            LEFT JOIN platforms plat ON gpl.platform_id = plat.id
             LEFT JOIN game_modes_map gmm ON g.id = gmm.game_id
-            LEFT JOIN game_modes gm ON gmm.game_mode_id = gm.id
-            LEFT JOIN game_perspectives gpp ON g.id = gpp.game_id
-            LEFT JOIN player_perspectives pp ON gpp.perspective_id = pp.id
-            LEFT JOIN game_themes gt ON g.id = gt.game_id
-            LEFT JOIN themes t ON gt.theme_id = t.id
+            LEFT JOIN game_modes gmod ON gmm.game_mode_id = gmod.id
+            LEFT JOIN game_perspectives gpersp ON g.id = gpersp.game_id
+            LEFT JOIN player_perspectives pp ON gpersp.perspective_id = pp.id
+            LEFT JOIN game_themes gth ON g.id = gth.game_id
+            LEFT JOIN themes th ON gth.theme_id = th.id
+            LEFT JOIN game_franchises gf ON g.id = gf.game_id
+            LEFT JOIN franchises fr ON gf.franchise_id = fr.id
             LEFT JOIN involved_companies ic ON g.id = ic.game_id
-            LEFT JOIN companies co ON ic.company_id = co.id
+            LEFT JOIN companies comp ON ic.company_id = comp.id
+            LEFT JOIN websites w ON g.id = w.game_id
             WHERE g.id = ${id}
             GROUP BY g.id
             `
@@ -201,6 +229,7 @@ export const getIGDBGameById = async (
         let playerPerspectives: PlayerPerspective[] = [];
         let themes: Theme[] = [];
         let involvedCompanies: InvolvedCompany[] = [];
+        let franchises: { id: number; name: string }[] = [];
 
         try {
             if (game.genres) {
@@ -296,6 +325,20 @@ export const getIGDBGameById = async (
             );
         }
 
+        try {
+            if (game.franchises) {
+                const parsedFranchises = JSON.parse(game.franchises);
+                franchises = Array.isArray(parsedFranchises)
+                    ? parsedFranchises.filter((f) => f && f.id && f.name)
+                    : [];
+                console.log(
+                    `[getIGDBGameById] Parsed ${franchises.length} franchises`
+                );
+            }
+        } catch (error) {
+            console.error(`[getIGDBGameById] Error parsing franchises:`, error);
+        }
+
         // Construct the response object with null checks
         const response: IGDBGameResponse = {
             id: game.id,
@@ -325,6 +368,7 @@ export const getIGDBGameById = async (
             websites: websites || [],
             dlcs: dlcs || [],
             multiplayer_modes: multiplayerModes || undefined,
+            franchises: franchises || [],
         };
 
         console.log(

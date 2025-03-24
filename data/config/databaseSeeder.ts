@@ -64,6 +64,13 @@ const createTables = async () => {
         );
     `);
 
+    await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS franchises (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL
+        );
+    `);
+
     // Main games table
     await db.execAsync(`
         CREATE TABLE IF NOT EXISTS games (
@@ -226,6 +233,16 @@ const createTables = async () => {
             PRIMARY KEY(game_id, theme_id),
             FOREIGN KEY(game_id) REFERENCES games(id),
             FOREIGN KEY(theme_id) REFERENCES themes(id)
+        );
+    `);
+
+    await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS game_franchises (
+            game_id INTEGER NOT NULL,
+            franchise_id INTEGER NOT NULL,
+            PRIMARY KEY(game_id, franchise_id),
+            FOREIGN KEY(game_id) REFERENCES games(id),
+            FOREIGN KEY(franchise_id) REFERENCES franchises(id)
         );
     `);
 
@@ -465,6 +482,45 @@ const seedOneGame = async (game: any) => {
                     // Insert game-theme relationship
                     await db.execAsync(
                         `INSERT OR REPLACE INTO game_themes (game_id, theme_id) VALUES (${game.id}, ${theme.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert franchises if they exist
+        if (game.franchises && Array.isArray(game.franchises)) {
+            for (const franchise of game.franchises) {
+                if (franchise && franchise.id && franchise.name) {
+                    // Insert franchise if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO franchises (id, name) VALUES (${
+                            franchise.id
+                        }, '${franchise.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-franchise relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_franchises (game_id, franchise_id) VALUES (${game.id}, ${franchise.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert websites if they exist
+        if (game.websites && Array.isArray(game.websites)) {
+            for (const website of game.websites) {
+                if (
+                    website &&
+                    website.id &&
+                    website.url &&
+                    website.category !== undefined
+                ) {
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO websites (id, game_id, category, url) VALUES (${
+                            website.id
+                        }, ${game.id}, ${
+                            website.category
+                        }, '${website.url.replace(/'/g, "''")}')`
                     );
                 }
             }
@@ -721,6 +777,7 @@ export const initializeDatabase = async () => {
             "platforms",
             "genres",
             "companies",
+            "franchises",
         ]) {
             await db.execAsync(`DROP TABLE IF EXISTS ${table}`);
         }

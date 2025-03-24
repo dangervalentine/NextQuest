@@ -132,6 +132,7 @@ export interface IGDBGameResponse extends Game {
     websites?: Omit<Website, "game_id">[];
     dlcs?: Omit<DLC, "game_id">[];
     multiplayer_modes?: Omit<MultiplayerMode, "game_id">[];
+    franchises: { id: number; name: string }[];
 }
 
 // Export individual interfaces for reuse
