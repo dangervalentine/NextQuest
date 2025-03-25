@@ -7,6 +7,7 @@ import {
     Animated,
     PanResponder,
     Dimensions,
+    TouchableOpacity,
 } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -16,6 +17,7 @@ import { ScreenNavigationProp } from "../../../utils/navigationTypes";
 import { GameStatus } from "../../../constants/gameStatus";
 import FullHeightImage from "../../shared/FullHeightImage";
 import { QuestGame } from "../../../data/models/QuestGame";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -23,27 +25,28 @@ let hasShownHintInSession = false;
 interface GameItemProps {
     questGame: QuestGame;
     reorder?: () => void;
-    onStatusChange?: (newStatus: GameStatus) => void;
+    onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
     isFirstItem?: boolean;
 }
 
-const SWIPE_THRESHOLD = -50; // How far to swipe before revealing menu
-const SCREEN_WIDTH = Dimensions.get("window").width;
+const SWIPE_THRESHOLD = 75; // Absolute value for both directions
 
 const GameItem: React.FC<GameItemProps> = memo(
     ({ questGame: QuestGame, reorder, onStatusChange, isFirstItem }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
-        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [isReordering, setIsReordering] = useState(false);
         const [hasShownHint, setHasShownHint] = useState(false);
         const pan = useRef(new Animated.Value(0)).current;
-        const chevronOpacity = useRef(new Animated.Value(0)).current;
-        const chevronPosition = useRef(new Animated.Value(0)).current;
+        const leftChevronOpacity = useRef(new Animated.Value(0)).current;
+        const rightChevronOpacity = useRef(new Animated.Value(0)).current;
+        const leftChevronPosition = useRef(new Animated.Value(0)).current;
+        const rightChevronPosition = useRef(new Animated.Value(0)).current;
 
         useFocusEffect(
             React.useCallback(() => {
                 if (isFirstItem && !hasShownHint && !hasShownHintInSession) {
+                    showHint();
                     const timer = setTimeout(() => {
-                        showHint();
                         setHasShownHint(true);
                         hasShownHintInSession = true;
                     }, 1000);
@@ -53,44 +56,106 @@ const GameItem: React.FC<GameItemProps> = memo(
         );
 
         const showHint = () => {
-            // Reset animations
+            // Initialize animation values to starting positions
             pan.setValue(0);
-            chevronOpacity.setValue(1);
-            chevronPosition.setValue(0);
+            leftChevronOpacity.setValue(0);
+            rightChevronOpacity.setValue(0);
+            leftChevronPosition.setValue(0);
+            rightChevronPosition.setValue(0);
 
-            // Start chevron movement immediately
-            Animated.timing(chevronPosition, {
-                toValue: -100,
-                duration: 800,
-                useNativeDriver: true,
-            }).start();
-
-            // Panel peek animation sequence
+            // Animation sequence to demonstrate swipe functionality on first session load
             Animated.sequence([
-                // Wait before starting
-                Animated.delay(500),
-                // Peek menu
-                Animated.timing(pan, {
-                    toValue: -30,
-                    duration: 400,
-                    useNativeDriver: false,
-                }),
-                // Hold the peek
-                Animated.delay(800),
-                // Return to original position
-                Animated.timing(pan, {
-                    toValue: 0,
-                    duration: 400,
-                    useNativeDriver: false,
-                }),
-            ]).start();
+                // Brief pause before starting the demonstration
+                Animated.delay(300),
 
-            // Fade out chevron
-            Animated.timing(chevronOpacity, {
-                toValue: 0,
-                duration: 800,
-                useNativeDriver: true,
-            }).start();
+                // Phase 1: Left swipe demonstration
+                // Move chevron and peek menu simultaneously to show left swipe gesture
+                Animated.parallel([
+                    Animated.timing(leftChevronPosition, {
+                        toValue: -120,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(leftChevronOpacity, {
+                        toValue: 0.75,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(pan, {
+                        toValue: -60,
+                        duration: 300,
+                        delay: 100,
+                        useNativeDriver: false,
+                    }),
+                ]),
+                // Pause to show the status change menu
+                Animated.delay(500),
+                // Return chevron to starting position
+                Animated.parallel([
+                    Animated.timing(leftChevronOpacity, {
+                        toValue: 0,
+                        duration: 200,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(leftChevronPosition, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    // Return card to starting position
+                    Animated.timing(pan, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: false,
+                        delay: 100,
+                    }),
+                ]),
+
+                // Phase 2: Right swipe demonstration
+                // Move chevron and peek menu simultaneously to show right swipe gesture
+                Animated.parallel([
+                    Animated.timing(rightChevronPosition, {
+                        toValue: 120,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    // Fade in right chevron to prepare for right swipe
+                    Animated.timing(rightChevronOpacity, {
+                        toValue: 0.75,
+                        duration: 200,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(pan, {
+                        toValue: 60,
+                        duration: 300,
+                        delay: 100,
+                        useNativeDriver: false,
+                    }),
+                ]),
+                // Pause to show the remove menu
+                Animated.delay(500),
+
+                Animated.parallel([
+                    // Return chevron to starting position
+                    Animated.timing(rightChevronPosition, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(rightChevronOpacity, {
+                        toValue: 0,
+                        duration: 100,
+                        useNativeDriver: true,
+                    }),
+                    // Return card to starting position
+                    Animated.timing(pan, {
+                        toValue: 0,
+                        duration: 300,
+                        delay: 100,
+                        useNativeDriver: false,
+                    }),
+                ]),
+            ]).start();
         };
 
         const getAvailableStatuses = (
@@ -100,7 +165,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                 "active",
                 "inactive",
                 "completed",
-                "undiscovered",
             ];
             return allStatuses.filter((status) => status !== currentStatus);
         };
@@ -112,9 +176,9 @@ const GameItem: React.FC<GameItemProps> = memo(
                 case "completed":
                     return colorSwatch.accent.green;
                 case "inactive":
-                    return colorSwatch.accent.pink;
-                case "undiscovered":
                     return colorSwatch.accent.purple;
+                case "undiscovered":
+                    return colorSwatch.accent.pink;
                 default:
                     return colorSwatch.accent.cyan;
             }
@@ -128,8 +192,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                     return "Complete";
                 case "inactive":
                     return "Inactive";
-                case "undiscovered":
-                    return "Undiscovered";
                 default:
                     return status;
             }
@@ -140,39 +202,41 @@ const GameItem: React.FC<GameItemProps> = memo(
                 PanResponder.create({
                     onStartShouldSetPanResponder: () => true,
                     onMoveShouldSetPanResponder: (_, gestureState) => {
-                        // Only handle horizontal swipes
                         return (
                             Math.abs(gestureState.dx) >
                             Math.abs(gestureState.dy)
                         );
                     },
                     onPanResponderGrant: () => {
-                        // Start the gesture without offset
                         pan.setValue(0);
                     },
                     onPanResponderMove: (_, gestureState) => {
-                        // Only allow left swipe and limit the swipe distance
-                        const newX = Math.min(
-                            0,
-                            Math.max(-120, gestureState.dx)
+                        // Allow both left and right swipes
+                        const newX = Math.max(
+                            -200,
+                            Math.min(100, gestureState.dx)
                         );
                         pan.setValue(newX);
                     },
                     onPanResponderRelease: (_, gestureState) => {
-                        if (gestureState.dx < SWIPE_THRESHOLD) {
-                            // Open menu
+                        if (gestureState.dx < -SWIPE_THRESHOLD) {
+                            // Left swipe
                             Animated.spring(pan, {
-                                toValue: -120,
+                                toValue: -200,
                                 useNativeDriver: false,
                             }).start();
-                            setIsMenuOpen(true);
+                        } else if (gestureState.dx > SWIPE_THRESHOLD) {
+                            // Right swipe
+                            Animated.spring(pan, {
+                                toValue: 100,
+                                useNativeDriver: false,
+                            }).start();
                         } else {
                             // Close menu
                             Animated.spring(pan, {
                                 toValue: 0,
                                 useNativeDriver: false,
                             }).start();
-                            setIsMenuOpen(false);
                         }
                     },
                 }),
@@ -184,12 +248,11 @@ const GameItem: React.FC<GameItemProps> = memo(
                 toValue: 0,
                 useNativeDriver: false,
             }).start();
-            setIsMenuOpen(false);
         };
 
         const handleStatusSelect = (status: GameStatus) => {
             if (onStatusChange) {
-                onStatusChange(status);
+                onStatusChange(status, QuestGame.gameStatus);
             }
             closeMenu();
         };
@@ -247,8 +310,68 @@ const GameItem: React.FC<GameItemProps> = memo(
             };
         };
 
+        const handleReorderStart = () => {
+            setIsReordering(true);
+            if (reorder) {
+                reorder();
+            }
+        };
+
+        const handleReorderEnd = () => {
+            setIsReordering(false);
+        };
+
         return (
             <View style={styles.container}>
+                {!isReordering && (
+                    <View style={styles.statusMenu}>
+                        {getAvailableStatuses(QuestGame.gameStatus).map(
+                            (status) => (
+                                <TouchableOpacity
+                                    key={status}
+                                    style={[
+                                        styles.statusButton,
+                                        getStatusButtonStyles(status),
+                                    ]}
+                                    onPress={() => handleStatusSelect(status)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.statusButtonText,
+                                            { color: getStatusColor(status) },
+                                        ]}
+                                    >
+                                        {getStatusLabel(status)}
+                                    </Text>
+                                </TouchableOpacity>
+                            )
+                        )}
+                    </View>
+                )}
+                {!isReordering && (
+                    <View style={styles.rightMenu}>
+                        <TouchableOpacity
+                            style={[
+                                styles.statusButton,
+                                {
+                                    borderColor: colorSwatch.accent.pink,
+                                    borderWidth: 2,
+                                },
+                            ]}
+                            activeOpacity={0.7}
+                        >
+                            <Text
+                                style={[
+                                    styles.statusButtonText,
+                                    { color: colorSwatch.accent.pink },
+                                ]}
+                            >
+                                Remove
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 <Animated.View
                     style={[
                         styles.gameContainer,
@@ -262,7 +385,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                         QuestGame.priority > 0 &&
                         QuestGame.gameStatus === "inactive" && (
                             <Pressable
-                                onTouchStart={reorder}
+                                onTouchStart={handleReorderStart}
+                                onTouchEnd={handleReorderEnd}
                                 style={styles.dragHandle}
                             >
                                 <View style={styles.dragHandleContent}>
@@ -317,72 +441,71 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 <Text style={styles.textSecondary}>
                                     Platform: {QuestGame.selectedPlatform?.name}
                                 </Text>
-                                {QuestGame.notes && (
-                                    <View style={styles.quoteContainer}>
-                                        <Text style={styles.quote}>
-                                            "{QuestGame.notes}"
+                                {QuestGame.notes &&
+                                    QuestGame.gameStatus === "completed" && (
+                                        <View style={styles.quoteContainer}>
+                                            <Text style={styles.quote}>
+                                                "{QuestGame.notes}"
+                                            </Text>
+                                        </View>
+                                    )}
+                                {QuestGame.gameStatus !== "completed" && (
+                                    <View>
+                                        {platformReleaseDate && (
+                                            <Text style={styles.textSecondary}>
+                                                Release Date:{" "}
+                                                {formatReleaseDate(
+                                                    platformReleaseDate.date
+                                                )}
+                                            </Text>
+                                        )}
+                                        <Text style={styles.textSecondary}>
+                                            Genres: {genresText}
+                                        </Text>
+                                        <Text style={styles.textSecondary}>
+                                            Date Added:{" "}
+                                            {new Date(
+                                                QuestGame.dateAdded
+                                            ).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "2-digit",
+                                            })}
                                         </Text>
                                     </View>
                                 )}
-                                {platformReleaseDate && (
-                                    <Text style={styles.textSecondary}>
-                                        Release Date:{" "}
-                                        {formatReleaseDate(
-                                            platformReleaseDate.date
-                                        )}
-                                    </Text>
-                                )}
-                                <Text style={styles.textSecondary}>
-                                    Genres: {genresText}
-                                </Text>
-                                <Text style={styles.textSecondary}>
-                                    Date Added:{" "}
-                                    {new Date(
-                                        QuestGame.dateAdded
-                                    ).toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "short",
-                                        day: "2-digit",
-                                    })}
-                                </Text>
                             </View>
                         </View>
                     </Pressable>
                 </Animated.View>
-                <View style={styles.statusMenu}>
-                    {getAvailableStatuses(QuestGame.gameStatus).map(
-                        (status) => (
-                            <Pressable
-                                key={status}
-                                style={[
-                                    styles.statusButton,
-                                    getStatusButtonStyles(status),
-                                ]}
-                                onPress={() => handleStatusSelect(status)}
-                            >
-                                <Text
-                                    style={[
-                                        styles.statusButtonText,
-                                        { color: getStatusColor(status) },
-                                    ]}
-                                >
-                                    {getStatusLabel(status)}
-                                </Text>
-                            </Pressable>
-                        )
-                    )}
-                </View>
                 <Animated.View
                     style={[
                         styles.chevronContainer,
+                        styles.leftChevron,
                         {
-                            opacity: chevronOpacity,
-                            transform: [{ translateX: chevronPosition }],
+                            opacity: leftChevronOpacity,
+                            transform: [{ translateX: leftChevronPosition }],
                         },
                     ]}
                 >
-                    <SimpleLineIcons
+                    <MaterialCommunityIcons
                         name="arrow-left"
+                        size={32}
+                        color={colorSwatch.accent.cyan}
+                    />
+                </Animated.View>
+                <Animated.View
+                    style={[
+                        styles.chevronContainer,
+                        styles.rightChevron,
+                        {
+                            opacity: rightChevronOpacity,
+                            transform: [{ translateX: rightChevronPosition }],
+                        },
+                    ]}
+                >
+                    <MaterialCommunityIcons
+                        name="arrow-right"
                         size={32}
                         color={colorSwatch.accent.cyan}
                     />
@@ -398,38 +521,46 @@ const GameItem: React.FC<GameItemProps> = memo(
 const styles = StyleSheet.create({
     container: {
         position: "relative",
+        overflow: "hidden",
+        backgroundColor: colorSwatch.background.darkest,
     },
     gameContainer: {
         flexDirection: "row",
         flex: 1,
         backgroundColor: colorSwatch.background.darkest,
         overflow: "hidden",
-        zIndex: 1,
+        zIndex: 2,
+        elevation: 2,
     },
     statusMenu: {
         position: "absolute",
         right: 0,
         top: 0,
         bottom: 0,
-        width: 120,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "center",
+        width: 200,
         backgroundColor: colorSwatch.background.darker,
-        zIndex: 0,
-        paddingVertical: 16,
-        gap: 8,
+        gap: 4,
+        zIndex: 1,
+        elevation: 1,
+        flexDirection: "row",
+        alignItems: "stretch",
+    },
+    activeItem: {
+        backgroundColor: colorSwatch.background.darker,
+        borderWidth: 2,
+        borderColor: colorSwatch.accent.cyan,
     },
     statusButton: {
-        width: "90%",
-        padding: 8,
-        borderRadius: 8,
+        flex: 1,
+        justifyContent: "center",
         alignItems: "center",
         backgroundColor: "transparent",
+        padding: 8,
     },
     statusButtonText: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "600",
+        textAlign: "center",
     },
     dragHandle: {
         justifyContent: "center",
@@ -481,7 +612,7 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         flex: 1,
-        gap: 8,
+        gap: 4,
     },
     textSecondary: {
         fontSize: 14,
@@ -501,11 +632,33 @@ const styles = StyleSheet.create({
     },
     chevronContainer: {
         position: "absolute",
-        right: -40,
         top: "40%",
         transform: [{ translateY: -16 }],
-        zIndex: 100,
+        zIndex: 10,
         elevation: 5,
+        backgroundColor: colorSwatch.background.darker,
+        padding: 4,
+        borderRadius: 100,
+    },
+
+    leftChevron: {
+        right: -50,
+    },
+    rightChevron: {
+        left: -50,
+    },
+    rightMenu: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: 100,
+        backgroundColor: colorSwatch.background.darker,
+        gap: 4,
+        zIndex: 1,
+        elevation: 1,
+        flexDirection: "row",
+        alignItems: "stretch",
     },
 });
 

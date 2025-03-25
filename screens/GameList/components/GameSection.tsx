@@ -8,16 +8,24 @@ import {
 } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
-import { getQuestGamesByStatus, updateGamePriorities } from "../../../data/db";
+import {
+    getQuestGamesByStatus,
+    updateGamePriorities,
+    updateQuestGame,
+} from "../../../data/db";
 import { GameStatus } from "../../../constants/gameStatus";
 import { colorSwatch } from "../../../utils/colorConstants";
 import { QuestGame } from "../../../data/models/QuestGame";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
+    onStatusChange?: (newStatus: GameStatus) => void;
 }
 
-const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
+const GameSection: React.FC<GameSectionProps> = ({
+    gameStatus,
+    onStatusChange,
+}) => {
     const [data, setData] = useState<QuestGame[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -29,42 +37,85 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
         try {
             setIsLoading(true);
             const games = await getQuestGamesByStatus(gameStatus);
+
             const sortedGames = [...games].sort(
                 (a, b) => (a.priority || Infinity) - (b.priority || Infinity)
             );
+
             setData(sortedGames);
         } catch (error) {
-            console.error("Error loading games:", error);
+            console.error("[GameSection] Error loading games:", error);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const renderItem = useCallback(
-        ({
-            item,
-            onDragStart,
-            isActive,
-            index,
-        }: DragListRenderItemInfo<QuestGame>) => {
-            if (!item) return null;
-            return (
-                <View
-                    style={[
-                        styles.itemContainer,
-                        isActive && styles.activeItem,
-                    ]}
-                >
-                    <GameItem
-                        questGame={item}
-                        reorder={onDragStart}
-                        isFirstItem={index === 0}
-                    />
-                </View>
+    const getUpdateData = async (
+        id: number,
+        newStatus: GameStatus,
+        currentStatus: GameStatus
+    ) => {
+        let updateData: any = { id, gameStatus: newStatus };
+
+        if (newStatus === "inactive") {
+            const inactiveGames = await getQuestGamesByStatus("inactive");
+            const highestPriority = inactiveGames.reduce(
+                (max, game) => Math.max(max, game.priority || 0),
+                0
             );
-        },
-        []
-    );
+            const newPriority = highestPriority + 1;
+
+            updateData = {
+                ...updateData,
+                priority: newPriority,
+                notes: undefined,
+            };
+        } else {
+            updateData = {
+                ...updateData,
+                priority: undefined,
+            };
+
+            // If moving out of inactive status, reorder remaining inactive games
+            if (currentStatus === "inactive") {
+                const inactiveGames = await getQuestGamesByStatus("inactive");
+                const remainingGames = inactiveGames.filter(
+                    (game) => game.id !== id
+                );
+
+                // Sort remaining games by priority
+                const sortedGames = [...remainingGames].sort(
+                    (a, b) =>
+                        (a.priority || Infinity) - (b.priority || Infinity)
+                );
+
+                // Update priorities sequentially
+                const priorityUpdates = sortedGames.map((game, index) => ({
+                    id: game.id,
+                    priority: index + 1,
+                }));
+
+                try {
+                    await updateGamePriorities(priorityUpdates);
+                    const dataWithNewPriorities = sortedGames.map(
+                        (item, index) => ({
+                            ...item,
+                            priority: index + 1,
+                        })
+                    );
+                    setData(dataWithNewPriorities);
+                } catch (error) {
+                    console.error(
+                        "[GameSection] Failed to update inactive game priorities:",
+                        error
+                    );
+                    await loadGames();
+                }
+            }
+        }
+
+        return updateData;
+    };
 
     const onReordered = useCallback(
         async (fromIndex: number, toIndex: number) => {
@@ -94,6 +145,68 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
             }
         },
         [data]
+    );
+
+    const handleStatusChange = async (
+        id: number,
+        newStatus: GameStatus,
+        currentStatus: GameStatus
+    ) => {
+        try {
+            const updateData = await getUpdateData(
+                id,
+                newStatus,
+                currentStatus
+            );
+            await updateQuestGame(updateData);
+
+            // Remove from current section's data
+            setData((currentData) =>
+                currentData.filter((game) => game.id !== id)
+            );
+
+            // Notify parent to refresh only the target tab
+            if (onStatusChange) {
+                onStatusChange(newStatus);
+            }
+        } catch (error) {
+            console.error("[GameSection] Failed to update game status:", error);
+            await loadGames();
+        }
+    };
+
+    const renderItem = useCallback(
+        ({
+            item,
+            onDragStart,
+            isActive,
+            index,
+        }: DragListRenderItemInfo<QuestGame>) => {
+            if (!item) return null;
+
+            return (
+                <View
+                    style={[
+                        styles.itemContainer,
+                        isActive && styles.activeItem,
+                    ]}
+                >
+                    <GameItem
+                        questGame={item}
+                        reorder={onDragStart}
+                        isFirstItem={index === 0}
+                        onStatusChange={(newStatus, currentStatus) =>
+                            handleStatusChange(
+                                item.id,
+                                newStatus,
+                                currentStatus
+                            )
+                        }
+                    />
+                </View>
+            );
+        },
+        []
     );
 
     if (isLoading) {

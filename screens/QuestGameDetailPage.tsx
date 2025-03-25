@@ -538,7 +538,7 @@ const QuestGameDetailPage: React.FC = () => {
                 </View>
 
                 {/* Personal Review Section */}
-                <PersonalReviewSection />
+                {game.gameStatus === "completed" && <PersonalReviewSection />}
 
                 {/* Visual Showcase */}
                 {game.screenshots && game.screenshots.length > 0 && (

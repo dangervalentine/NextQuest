@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import GameSection from "./GameList/components/GameSection";
 import {
@@ -16,6 +16,23 @@ import QuestIcon from "./shared/GameIcon";
 const Tab = createBottomTabNavigator();
 
 const MainNavigationContainer: React.FC = () => {
+    const [refreshKeys, setRefreshKeys] = useState<Record<GameStatus, number>>({
+        active: 0,
+        inactive: 0,
+        completed: 0,
+        undiscovered: 0,
+        on_hold: 0,
+        dropped: 0,
+    });
+
+    const handleStatusChange = (newStatus: GameStatus) => {
+        // Only increment refresh key for the target tab
+        setRefreshKeys((prev) => ({
+            ...prev,
+            [newStatus]: prev[newStatus] + 1,
+        }));
+    };
+
     const tabScreens: {
         name: string;
         iconName:
@@ -68,7 +85,13 @@ const MainNavigationContainer: React.FC = () => {
                         ),
                     }}
                 >
-                    {() => <GameSection gameStatus={screen.gameStatus} />}
+                    {() => (
+                        <GameSection
+                            gameStatus={screen.gameStatus}
+                            onStatusChange={handleStatusChange}
+                            key={refreshKeys[screen.gameStatus]}
+                        />
+                    )}
                 </Tab.Screen>
             ))}
         </Tab.Navigator>
