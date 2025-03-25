@@ -791,10 +791,16 @@ export const initializeDatabase = async () => {
         await seedQuestGameStatus();
         console.log("Quest game status table seeded successfully");
 
-        // Seed all games in batches to avoid overwhelming the connection
+        // Seed games in batches to avoid overwhelming the connection
         const batchSize = 5;
-        for (let i = 0; i < seedData.length; i += batchSize) {
-            const batch = seedData.slice(i, i + batchSize);
+
+        // Randomly select 40 games from the seedData array
+        const randomGames = seedData
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 40);
+
+        for (let i = 0; i < randomGames.length; i += batchSize) {
+            const batch = randomGames.slice(i, i + batchSize);
             await db.execAsync("BEGIN TRANSACTION");
             try {
                 for (const game of batch) {
@@ -809,11 +815,6 @@ export const initializeDatabase = async () => {
                     }
                 }
                 await db.execAsync("COMMIT");
-                console.log(
-                    `${Math.min(i + batchSize, seedData.length)} of ${
-                        seedData.length
-                    } games seeded`
-                );
             } catch (error) {
                 await db.execAsync("ROLLBACK");
                 console.error("Batch seeding error:", error);

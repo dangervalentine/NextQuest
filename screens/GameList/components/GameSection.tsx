@@ -45,6 +45,7 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
             item,
             onDragStart,
             isActive,
+            index,
         }: DragListRenderItemInfo<QuestGame>) => {
             if (!item) return null;
             return (
@@ -54,7 +55,11 @@ const GameSection: React.FC<GameSectionProps> = ({ gameStatus }) => {
                         isActive && styles.activeItem,
                     ]}
                 >
-                    <GameItem questGame={item} reorder={onDragStart} />
+                    <GameItem
+                        questGame={item}
+                        reorder={onDragStart}
+                        isFirstItem={index === 0}
+                    />
                 </View>
             );
         },
