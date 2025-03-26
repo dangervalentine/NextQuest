@@ -507,15 +507,13 @@ const GameItem: React.FC<GameItemProps> = memo(
                         <View style={styles.contentContainer}>
                             <Text style={styles.title}>{questGame.name}</Text>
                             {questGame.gameStatus === "completed" &&
-                                questGame.rating !== undefined && (
+                                questGame.personalRating !== undefined && (
                                     <Text style={styles.rating}>
-                                        {"⭐".repeat(
-                                            questGame.personalRating ?? 0
-                                        )}
+                                        {"⭐".repeat(questGame.personalRating)}
                                         {"☆".repeat(
-                                            10 - (questGame.personalRating ?? 0)
+                                            10 - questGame.personalRating
                                         )}{" "}
-                                        ({questGame.personalRating ?? 0}/10)
+                                        ({questGame.personalRating}/10)
                                     </Text>
                                 )}
                             <View style={styles.detailsContainer}>

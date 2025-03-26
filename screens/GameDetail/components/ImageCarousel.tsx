@@ -59,12 +59,16 @@ function ImageCarousel({ images }: ImageCarouselProps) {
                 }))}
                 size={40}
                 dotStyle={{
-                    width: 20,
+                    maxWidth: 20,
                     height: 5,
+                    flex: 1,
                 }}
                 activeDotStyle={{}}
                 containerStyle={{
                     gap: 5,
+                    maxWidth: width - 64,
+                    width: "100%",
+                    justifyContent: "center",
                     alignItems: "center",
                     height: 10,
                 }}
