@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'QuestLogger'
+rootProject.name = 'Dygat'
 
 dependencyResolutionManagement {
   versionCatalogs {

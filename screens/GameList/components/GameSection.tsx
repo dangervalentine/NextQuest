@@ -8,14 +8,15 @@ import {
 } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
+
+import { GameStatus } from "../../../constants/gameStatus";
+import { colorSwatch } from "../../../utils/colorConstants";
+import { QuestGame } from "../../../data/models/QuestGame";
 import {
     getQuestGamesByStatus,
     updateGamePriorities,
     updateQuestGame,
-} from "../../../data/db";
-import { GameStatus } from "../../../constants/gameStatus";
-import { colorSwatch } from "../../../utils/colorConstants";
-import { QuestGame } from "../../../data/models/QuestGame";
+} from "../../../data/repositories/questGames";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -84,7 +85,7 @@ const GameSection: React.FC<GameSectionProps> = ({
                 );
 
                 // Sort remaining games by priority
-                const sortedGames = [...remainingGames].sort(
+                const sortedGames = remainingGames.sort(
                     (a, b) =>
                         (a.priority || Infinity) - (b.priority || Infinity)
                 );
@@ -96,14 +97,14 @@ const GameSection: React.FC<GameSectionProps> = ({
                 }));
 
                 try {
+                    // Batch update priorities
                     await updateGamePriorities(priorityUpdates);
-                    const dataWithNewPriorities = sortedGames.map(
-                        (item, index) => ({
+                    setData(
+                        sortedGames.map((item, index) => ({
                             ...item,
                             priority: index + 1,
-                        })
+                        }))
                     );
-                    setData(dataWithNewPriorities);
                 } catch (error) {
                     console.error(
                         "[GameSection] Failed to update inactive game priorities:",
@@ -212,7 +213,7 @@ const GameSection: React.FC<GameSectionProps> = ({
     if (isLoading) {
         return (
             <ImageBackground
-                source={require("../../../assets/quest-logger.png")}
+                source={require("../../../assets/dygat.png")}
                 style={styles.pageContainer}
                 resizeMode="contain"
             >
@@ -229,7 +230,7 @@ const GameSection: React.FC<GameSectionProps> = ({
 
     return data.length === 0 ? (
         <ImageBackground
-            source={require("../../../assets/quest-logger.png")}
+            source={require("../../../assets/dygat.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -242,7 +243,7 @@ const GameSection: React.FC<GameSectionProps> = ({
         </ImageBackground>
     ) : (
         <ImageBackground
-            source={require("../../../assets/quest-logger.png")}
+            source={require("../../../assets/dygat.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >

@@ -53,10 +53,10 @@ const QuestIcon: React.FC<IconProps> = ({
     }
     return (
         <Image
-            source={require("../../assets/quest-logger.png")}
+            source={require("../../assets/dygat.png")}
             style={{ width: size, height: size }}
         />
-    ); // Fallback to quest-logger image
+    ); // Fallback to dygat image
 };
 
 export default QuestIcon;

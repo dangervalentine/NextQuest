@@ -1,14 +1,14 @@
 {
     "expo": {
-        "name": "QuestLogger",
-        "slug": "QuestLogger",
+        "name": "Dygat",
+        "slug": "dygat",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/quest-logger.png",
+        "icon": "./assets/dygat.png",
         "userInterfaceStyle": "dark",
         "newArchEnabled": true,
         "splash": {
-            "image": "./assets/quest-logger.png",
+            "image": "./assets/dygat.png",
             "resizeMode": "contain",
             "backgroundColor": "#011627"
         },
@@ -16,14 +16,14 @@
             "supportsTablet": true
         },
         "android": {
-            "package": "com.victor.questlogger",
+            "package": "com.dangervalentine.dygat",
             "adaptiveIcon": {
-                "foregroundImage": "./assets/quest-logger.png",
+                "foregroundImage": "./assets/dygat.png",
                 "backgroundColor": "#011627"
             }
         },
         "web": {
-            "favicon": "./assets/quest-logger.png"
+            "favicon": "./assets/dygat.png"
         },
         "plugins": [
             "expo-sqlite",

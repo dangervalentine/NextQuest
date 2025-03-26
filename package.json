@@ -1,5 +1,5 @@
 {
-    "name": "questlogger",
+    "name": "dygat",
     "version": "1.0.0",
     "main": "index.ts",
     "scripts": {
@@ -28,6 +28,7 @@
         "expo-linear-gradient": "^14.0.2",
         "expo-sqlite": "~15.1.2",
         "expo-status-bar": "~2.0.1",
+        "expo-system-ui": "^4.0.8",
         "react": "^18.2.0",
         "react-native": "^0.76.7",
         "react-native-dotenv": "^3.4.11",

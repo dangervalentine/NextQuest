@@ -43,21 +43,21 @@ const MainNavigationContainer: React.FC = () => {
         gameStatus: GameStatus;
     }[] = [
         {
-            name: "Active",
-            iconName: "sword-cross", // MaterialCommunityIcons
-            title: "Active Quests",
+            name: "Ongoing",
+            iconName: "gamepad-variant", // MaterialCommunityIcons
+            title: "Ongoing Quests",
             gameStatus: "active",
         },
         {
-            name: "Quest Log",
+            name: "Backlog",
             iconName: "scroll", // FontAwesome5
-            title: "Quest Log",
+            title: "Backlog",
             gameStatus: "inactive",
         },
         {
-            name: "Completed",
-            iconName: "trophy", // FontAwesome5
-            title: "Completed Quests",
+            name: "Trophies",
+            iconName: "medal", // FontAwesome5
+            title: "Trophy Room",
             gameStatus: "completed",
         },
     ];

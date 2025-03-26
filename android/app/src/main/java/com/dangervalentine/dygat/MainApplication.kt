@@ -1,4 +1,4 @@
-package com.victor.questlogger
+package com.dangervalentine.dygat
 
 import android.app.Application
 import android.content.res.Configuration

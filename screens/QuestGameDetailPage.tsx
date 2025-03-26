@@ -523,7 +523,7 @@ const QuestGameDetailPage: React.FC = () => {
 
     return (
         <ImageBackground
-            source={require("../assets/quest-logger.png")}
+            source={require("../assets/dygat.png")}
             style={styles.container}
             resizeMode="contain"
         >

@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.victor.questlogger'
+    namespace 'com.dangervalentine.dygat'
     defaultConfig {
-        applicationId 'com.victor.questlogger'
+        applicationId 'com.dangervalentine.dygat'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

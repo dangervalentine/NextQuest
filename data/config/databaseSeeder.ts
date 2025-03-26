@@ -630,8 +630,8 @@ const getSeededGame = async (gameId: number) => {
 
 const exportDatabase = async () => {
     try {
-        const dbPath = FileSystem.documentDirectory + "SQLite/QuestLogger.db";
-        const exportPath = FileSystem.documentDirectory + "QuestLogger.db";
+        const dbPath = FileSystem.documentDirectory + "SQLite/Dygat.db";
+        const exportPath = FileSystem.documentDirectory + "Dygat.db";
 
         await FileSystem.copyAsync({
             from: dbPath,
