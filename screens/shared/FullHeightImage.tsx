@@ -1,31 +1,33 @@
+import React, { useEffect } from "react";
+import { View, Image as RNImage, StyleSheet } from "react-native";
 import { Image } from "expo-image";
-import React, { useEffect, useState } from "react";
-import {
-    View,
-    StyleSheet,
-    StyleProp,
-    ViewStyle,
-    Image as RNImage,
-} from "react-native";
 
-const FullHeightImage = ({
-    source,
-    style,
-}: {
+interface FullHeightImageProps {
     source: string;
-    style: StyleProp<ViewStyle>;
-}): React.JSX.Element => {
-    const [imageWidth, setImageWidth] = useState(0);
-    const [imageHeight, setImageHeight] = useState(0);
+    style?: any;
+}
+
+const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
+    const [imageWidth, setImageWidth] = React.useState(0);
+    const [imageHeight, setImageHeight] = React.useState(0);
 
     useEffect(() => {
-        // Get the image dimensions
-        RNImage.getSize(`https:${source}`, (width, height) => {
-            const aspectRatio = width / height;
-            const fullHeight = 100; // Set this to the desired height of the container
-            setImageHeight(fullHeight);
-            setImageWidth(fullHeight * aspectRatio); // Calculate width based on height
-        });
+        if (source) {
+            // Prefetch the image
+            Image.prefetch(`https:${source}`);
+
+            // Get the image dimensions with original aspect ratio logic
+            RNImage.getSize(
+                `https:${source}`,
+                (width, height) => {
+                    const aspectRatio = width / height;
+                    const fullHeight = 100; // Set this to the desired height of the container
+                    setImageHeight(fullHeight);
+                    setImageWidth(fullHeight * aspectRatio); // Calculate width based on height
+                },
+                (error) => console.error("Error getting image size:", error)
+            );
+        }
     }, [source]);
 
     return (
@@ -42,12 +44,16 @@ const FullHeightImage = ({
                         },
                     ]}
                     contentFit="cover"
+                    priority="high"
+                    cachePolicy="memory-disk"
                     onError={() => console.error("Failed to load image")}
                 />
             ) : (
                 <Image
                     style={styles.cover}
                     source={require("../../assets/placeholder.png")}
+                    priority="high"
+                    cachePolicy="memory-disk"
                 />
             )}
         </View>

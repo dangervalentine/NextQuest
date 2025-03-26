@@ -571,61 +571,6 @@ const seedOneGame = async (game: any) => {
     }
 };
 
-const getSeededGame = async (gameId: number) => {
-    try {
-        // Get base game data
-        const games = await db.getAllAsync<GameResult>(
-            `
-            SELECT g.*, qg.personal_rating, qg.completion_date, 
-                   qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
-                   c.url as cover_url,
-                   qs.name as game_status,
-                   GROUP_CONCAT(DISTINCT gm.name) as game_modes,
-                   GROUP_CONCAT(DISTINCT pp.name) as player_perspectives,
-                   GROUP_CONCAT(DISTINCT t.name) as themes
-            FROM games g
-            LEFT JOIN quest_games qg ON g.id = qg.game_id
-            LEFT JOIN quest_game_status qs ON qg.status_id = qs.id
-            LEFT JOIN covers c ON g.id = c.game_id
-            LEFT JOIN game_modes_map gmm ON g.id = gmm.game_id
-            LEFT JOIN game_modes gm ON gmm.game_mode_id = gm.id
-            LEFT JOIN game_perspectives gp ON g.id = gp.game_id
-            LEFT JOIN player_perspectives pp ON gp.perspective_id = pp.id
-            LEFT JOIN game_themes gt ON g.id = gt.game_id
-            LEFT JOIN themes t ON gt.theme_id = t.id
-            WHERE g.id = ${gameId}
-            GROUP BY g.id
-        `
-        );
-
-        const game = games?.[0];
-        if (!game) {
-            console.log("No game found with ID:", gameId);
-            return null;
-        }
-
-        console.log("\nSeeded Game Details:");
-        console.log("====================");
-        console.log(`ID: ${game.id}`);
-        console.log(`Name: ${game.name}`);
-        console.log(`Status: ${game.game_status}`);
-        console.log(`Summary: ${game.summary || "N/A"}`);
-        console.log(`Cover URL: ${game.cover_url || "N/A"}`);
-        console.log(`Date Added: ${game.date_added}`);
-        console.log(`Priority: ${game.priority}`);
-        console.log(`Game Modes: ${game.game_modes || "N/A"}`);
-        console.log(
-            `Player Perspectives: ${game.player_perspectives || "N/A"}`
-        );
-        console.log(`Themes: ${game.themes || "N/A"}`);
-
-        return game;
-    } catch (error) {
-        console.error("Error retrieving seeded game:", error);
-        return null;
-    }
-};
-
 const exportDatabase = async () => {
     try {
         const dbPath = FileSystem.documentDirectory + "SQLite/Dygat.db";
@@ -697,7 +642,6 @@ const updateGameStatusesAndPriorities = async () => {
                 "A unique gaming experience that takes risks and mostly succeeds. The experimental mechanics add a fresh perspective to familiar gameplay elements.",
             ];
 
-            const ratings = [9.5, 8.7, 8.2, 8.8, 9.2, 8.5, 8.9];
             const randomIndex = Math.floor(Math.random() * reviews.length);
 
             await db.execAsync(`
@@ -795,9 +739,8 @@ export const initializeDatabase = async () => {
         const batchSize = 5;
 
         // Randomly select 40 games from the seedData array
-        const randomGames = seedData
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 40);
+        const randomGames = seedData.sort(() => Math.random() - 0.5);
+        // .slice(0, 40);
 
         for (let i = 0; i < randomGames.length; i += batchSize) {
             const batch = randomGames.slice(i, i + batchSize);

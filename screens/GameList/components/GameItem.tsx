@@ -42,7 +42,6 @@ const GameItem: React.FC<GameItemProps> = memo(
         const rightChevronOpacity = useRef(new Animated.Value(0)).current;
         const leftChevronPosition = useRef(new Animated.Value(0)).current;
         const rightChevronPosition = useRef(new Animated.Value(0)).current;
-        const scaleY = useRef(new Animated.Value(1)).current;
         const [containerHeight, setContainerHeight] = useState<number>(0);
         const [isInitialHeight, setIsInitialHeight] = useState(true);
         const [isAnimating, setIsAnimating] = useState(false);
@@ -333,9 +332,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         const getStatusButtonStyles = (status: GameStatus) => {
             const color = getStatusColor(status);
             return {
-                borderColor: color,
-                borderWidth: 2,
-                borderRadius: 6,
+                backgroundColor: color,
             };
         };
 
@@ -410,22 +407,25 @@ const GameItem: React.FC<GameItemProps> = memo(
                 {!isReordering && (
                     <View style={styles.statusMenu}>
                         {getAvailableStatuses(questGame.gameStatus).map(
-                            (status) => (
+                            (status, index) => (
                                 <TouchableOpacity
                                     key={status}
                                     style={[
                                         styles.statusButton,
                                         getStatusButtonStyles(status),
+                                        index ===
+                                            getAvailableStatuses(
+                                                questGame.gameStatus
+                                            ).length -
+                                                1 && {
+                                            borderTopRightRadius: 4,
+                                            borderBottomRightRadius: 4,
+                                        },
                                     ]}
                                     onPress={() => handleStatusSelect(status)}
                                     activeOpacity={0.7}
                                 >
-                                    <Text
-                                        style={[
-                                            styles.statusButtonText,
-                                            { color: getStatusColor(status) },
-                                        ]}
-                                    >
+                                    <Text style={[styles.statusButtonText]}>
                                         {getStatusLabel(status)}
                                     </Text>
                                 </TouchableOpacity>
@@ -439,19 +439,15 @@ const GameItem: React.FC<GameItemProps> = memo(
                             style={[
                                 styles.statusButton,
                                 {
-                                    borderColor: colorSwatch.accent.pink,
-                                    borderWidth: 2,
+                                    backgroundColor: colorSwatch.accent.pink,
+                                    borderTopLeftRadius: 4,
+                                    borderBottomLeftRadius: 4,
                                 },
                             ]}
                             activeOpacity={0.7}
                             onPress={handleRemove}
                         >
-                            <Text
-                                style={[
-                                    styles.statusButtonText,
-                                    { color: colorSwatch.accent.pink },
-                                ]}
-                            >
+                            <Text style={[styles.statusButtonText]}>
                                 Remove
                             </Text>
                         </TouchableOpacity>
@@ -629,16 +625,17 @@ const styles = StyleSheet.create({
     },
     statusMenu: {
         position: "absolute",
-        right: 2,
-        top: 2,
-        bottom: 2,
+        right: 0,
+        top: 0,
+        bottom: 0,
         width: 200,
         backgroundColor: colorSwatch.background.darker,
-        gap: 4,
         zIndex: 1,
         elevation: 1,
         flexDirection: "row",
         alignItems: "stretch",
+        borderLeftWidth: 1,
+        borderLeftColor: colorSwatch.neutral.darkGray,
     },
     activeItem: {
         backgroundColor: colorSwatch.background.darker,
@@ -651,12 +648,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "transparent",
         padding: 8,
-        borderRadius: 6,
+        margin: 1,
     },
     statusButtonText: {
-        fontSize: 12,
+        fontSize: 16,
         fontWeight: "600",
         textAlign: "center",
+        color: colorSwatch.text.inverse,
     },
     dragHandle: {
         justifyContent: "center",
@@ -736,7 +734,6 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: 100,
     },
-
     leftChevron: {
         right: -50,
     },
@@ -745,16 +742,14 @@ const styles = StyleSheet.create({
     },
     rightMenu: {
         position: "absolute",
-        left: 2,
-        top: 2,
-        bottom: 2,
+        left: 0,
+        top: 0,
+        bottom: 0,
         width: 100,
-        backgroundColor: colorSwatch.background.darker,
-        gap: 4,
-        zIndex: 1,
-        elevation: 1,
         flexDirection: "row",
         alignItems: "stretch",
+        borderRightWidth: 1,
+        borderRightColor: colorSwatch.neutral.darkGray,
     },
 });
 

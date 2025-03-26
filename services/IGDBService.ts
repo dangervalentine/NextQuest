@@ -1,7 +1,5 @@
 import { TWITCH_CLIENT_ID } from "@env";
 import TwitchAuthService from "./TwitchAuthService";
-import { mapToGameDetails } from "../utils/dataMappers";
-import { GameDetails } from "../data/models/GameDetails";
 import { QuestGame } from "../data/models/QuestGame";
 import { getQuestGameById } from "../data/repositories/questGames";
 

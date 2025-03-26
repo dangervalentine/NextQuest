@@ -20,184 +20,25 @@ import {
 
 interface GameSectionProps {
     gameStatus: GameStatus;
-    onStatusChange?: (newStatus: GameStatus) => void;
+    games: QuestGame[];
+    isLoading: boolean;
+    onStatusChange: (
+        id: number,
+        newStatus: GameStatus,
+        currentStatus: GameStatus
+    ) => void;
+    onRemoveItem: (id: number, status: GameStatus) => void;
+    onReorder: (fromIndex: number, toIndex: number, status: GameStatus) => void;
 }
 
 const GameSection: React.FC<GameSectionProps> = ({
     gameStatus,
+    games,
+    isLoading,
     onStatusChange,
+    onRemoveItem,
+    onReorder,
 }) => {
-    const [data, setData] = useState<QuestGame[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        loadGames();
-    }, [gameStatus]);
-
-    const loadGames = async () => {
-        try {
-            setIsLoading(true);
-            const games = await getQuestGamesByStatus(gameStatus);
-
-            const sortedGames = [...games].sort(
-                (a, b) => (a.priority || Infinity) - (b.priority || Infinity)
-            );
-
-            setData(sortedGames);
-        } catch (error) {
-            console.error("[GameSection] Error loading games:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const removeItem = async (itemId: number, status: GameStatus) => {
-        const updateData = await getUpdateData(itemId, status, gameStatus);
-        await updateQuestGame(updateData);
-        setData((currentData) =>
-            currentData.filter((game) => game.id !== itemId)
-        );
-    };
-
-    const getUpdateData = async (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => {
-        let updateData: any = { id, gameStatus: newStatus };
-
-        if (newStatus === "backlog") {
-            const backlogGames = await getQuestGamesByStatus("backlog");
-            const highestPriority = backlogGames.reduce(
-                (max, game) => Math.max(max, game.priority || 0),
-                0
-            );
-            const newPriority = highestPriority + 1;
-
-            updateData = {
-                ...updateData,
-                priority: newPriority,
-                notes: undefined,
-            };
-        } else {
-            updateData = {
-                ...updateData,
-                priority: undefined,
-            };
-
-            // If moving out of backlog status, reorder remaining backlog games
-            if (currentStatus === "backlog") {
-                // Get current data and update it immediately with new priorities
-                setData((currentData) => {
-                    const remainingGames = currentData.filter(
-                        (game) => game.id !== id
-                    );
-                    // Update priorities immediately in the UI
-                    return remainingGames.map((game, index) => ({
-                        ...game,
-                        priority: index + 1,
-                    }));
-                });
-
-                // Handle priority reordering in the background
-                (async () => {
-                    try {
-                        const backlogGames = await getQuestGamesByStatus(
-                            "backlog"
-                        );
-                        const remainingGames = backlogGames.filter(
-                            (game) => game.id !== id
-                        );
-
-                        // Sort remaining games by priority
-                        const sortedGames = remainingGames.sort(
-                            (a, b) =>
-                                (a.priority || Infinity) -
-                                (b.priority || Infinity)
-                        );
-
-                        // Update priorities sequentially
-                        const priorityUpdates = sortedGames.map(
-                            (game, index) => ({
-                                id: game.id,
-                                priority: index + 1,
-                            })
-                        );
-
-                        // Batch update priorities
-                        await updateGamePriorities(priorityUpdates);
-                    } catch (error) {
-                        console.error(
-                            "[GameSection] Failed to update backlog game priorities:",
-                            error
-                        );
-                        await loadGames();
-                    }
-                })();
-            }
-        }
-
-        return updateData;
-    };
-
-    const onReordered = useCallback(
-        async (fromIndex: number, toIndex: number) => {
-            if (!data.length) return;
-
-            const updatedData = [...data];
-            const [removed] = updatedData.splice(fromIndex, 1);
-            updatedData.splice(toIndex, 0, removed);
-
-            const priorityUpdates = updatedData.map((item, index) => ({
-                id: item.id,
-                priority: index + 1,
-            }));
-
-            try {
-                await updateGamePriorities(priorityUpdates);
-                const dataWithNewPriorities = updatedData.map(
-                    (item, index) => ({
-                        ...item,
-                        priority: index + 1,
-                    })
-                );
-                setData(dataWithNewPriorities);
-            } catch (error) {
-                console.error("Failed to update priorities:", error);
-                await loadGames();
-            }
-        },
-        [data]
-    );
-
-    const handleStatusChange = async (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => {
-        try {
-            const updateData = await getUpdateData(
-                id,
-                newStatus,
-                currentStatus
-            );
-            await updateQuestGame(updateData);
-
-            // Remove from current section's data
-            setData((currentData) =>
-                currentData.filter((game) => game.id !== id)
-            );
-
-            // Notify parent to refresh only the target tab
-            if (onStatusChange) {
-                onStatusChange(newStatus);
-            }
-        } catch (error) {
-            console.error("[GameSection] Failed to update game status:", error);
-            await loadGames();
-        }
-    };
-
     const renderItem = useCallback(
         ({
             item,
@@ -217,20 +58,16 @@ const GameSection: React.FC<GameSectionProps> = ({
                     <GameItem
                         questGame={item}
                         reorder={onDragStart}
-                        removeItem={removeItem}
+                        removeItem={(id) => onRemoveItem(id, gameStatus)}
                         isFirstItem={index === 0}
                         onStatusChange={(newStatus, currentStatus) =>
-                            handleStatusChange(
-                                item.id,
-                                newStatus,
-                                currentStatus
-                            )
+                            onStatusChange(item.id, newStatus, currentStatus)
                         }
                     />
                 </View>
             );
         },
-        []
+        [gameStatus, onRemoveItem, onStatusChange]
     );
 
     if (isLoading) {
@@ -251,7 +88,7 @@ const GameSection: React.FC<GameSectionProps> = ({
         );
     }
 
-    return data.length === 0 ? (
+    return games.length === 0 ? (
         <ImageBackground
             source={require("../../../assets/dygat.png")}
             style={styles.pageContainer}
@@ -272,22 +109,12 @@ const GameSection: React.FC<GameSectionProps> = ({
         >
             <View style={styles.overlay} />
             <DragList
-                data={data}
-                onReordered={onReordered}
-                keyExtractor={(item) => {
-                    if (!item || !item.id) {
-                        console.warn("Invalid item in keyExtractor:", item);
-                        return "";
-                    }
-                    return item.id.toString();
-                }}
-                renderItem={(props) => {
-                    if (!props.item) {
-                        console.warn("Invalid item in renderItem:", props);
-                        return null;
-                    }
-                    return renderItem(props);
-                }}
+                data={games}
+                onReordered={(fromIndex, toIndex) =>
+                    onReorder(fromIndex, toIndex, gameStatus)
+                }
+                keyExtractor={(item) => item?.id?.toString() || ""}
+                renderItem={renderItem}
                 ListEmptyComponent={() => (
                     <View style={styles.loadingContainer}>
                         <Text style={styles.emptyText}>No games available</Text>
