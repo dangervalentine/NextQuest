@@ -12,7 +12,7 @@ import { GameStatus } from "../constants/gameStatus";
 import { colorSwatch } from "../utils/colorConstants";
 import { View } from "react-native";
 import QuestIcon from "./shared/GameIcon";
-import { QuestGame } from "../data/models/QuestGame";
+import { MinimalQuestGame } from "../data/models/MinimalQuestGame";
 import {
     getQuestGamesByStatus,
     updateGamePriorities,
@@ -22,16 +22,9 @@ import {
 const Tab = createBottomTabNavigator();
 
 const MainNavigationContainer: React.FC = () => {
-    const [refreshKeys, setRefreshKeys] = useState<Record<GameStatus, number>>({
-        ongoing: 0,
-        backlog: 0,
-        completed: 0,
-        undiscovered: 0,
-        on_hold: 0,
-        dropped: 0,
-    });
-
-    const [gameData, setGameData] = useState<Record<GameStatus, QuestGame[]>>({
+    const [gameData, setGameData] = useState<
+        Record<GameStatus, MinimalQuestGame[]>
+    >({
         ongoing: [],
         backlog: [],
         completed: [],
@@ -48,13 +41,30 @@ const MainNavigationContainer: React.FC = () => {
         dropped: true,
     });
 
+    const sortGames = (games: MinimalQuestGame[], status: GameStatus) => {
+        return [...games].sort((a, b) => {
+            if (status === "backlog") {
+                // For backlog, priority is the primary sort (lowest first)
+                const priorityA = a.priority || Infinity;
+                const priorityB = b.priority || Infinity;
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
+                }
+            }
+            // For non-backlog or equal priorities, sort by updatedAt in ascending order
+            // This will make newest items appear at the bottom, which will be rendered last (top) in the list
+            return (
+                new Date(a.updatedAt).getTime() -
+                new Date(b.updatedAt).getTime()
+            );
+        });
+    };
+
     const loadGamesForStatus = useCallback(async (status: GameStatus) => {
         try {
             setIsLoading((prev) => ({ ...prev, [status]: true }));
             const games = await getQuestGamesByStatus(status);
-            const sortedGames = [...games].sort(
-                (a, b) => (a.priority || Infinity) - (b.priority || Infinity)
-            );
+            const sortedGames = sortGames(games, status);
             setGameData((prev) => ({ ...prev, [status]: sortedGames }));
         } catch (error) {
             console.error(
@@ -81,41 +91,52 @@ const MainNavigationContainer: React.FC = () => {
         newStatus: GameStatus,
         currentStatus: GameStatus
     ) => {
+        // Initialize the update data object with the game ID and new status
         let updateData: any = { id, gameStatus: newStatus };
 
+        // If the game is being moved to the backlog
         if (newStatus === "backlog") {
+            // Get the current backlog games to determine the highest priority
             const backlogGames = gameData.backlog;
             const highestPriority = backlogGames.reduce(
                 (max, game) => Math.max(max, game.priority || 0),
                 0
             );
+            // Set the new priority to be one higher than the current highest
             updateData = {
                 ...updateData,
                 priority: highestPriority + 1,
-                notes: undefined,
+                notes: undefined, // Clear notes when moving to backlog
             };
-        } else if (currentStatus === "backlog") {
-            // First set the moved game's priority to undefined
+        }
+        // If the game is being moved from the backlog
+        else if (currentStatus === "backlog") {
+            // Set the moved game's priority to undefined
             updateData = {
                 ...updateData,
                 priority: undefined,
             };
 
-            // Then update remaining backlog priorities
+            // Update the priorities of the remaining backlog games
             const remainingGames = gameData.backlog.filter(
                 (game) => game.id !== id
             );
             const priorityUpdates = remainingGames.map((game, index) => ({
                 id: game.id,
-                priority: index + 1,
+                priority: index + 1, // Reassign priorities based on new order
             }));
+            // Execute the priority updates for the remaining games
             await updateGamePriorities(priorityUpdates);
-        } else {
+        }
+        // For any other status change
+        else {
+            // Set the moved game's priority to undefined
             updateData = {
                 ...updateData,
                 priority: undefined,
             };
         }
+        // Return the constructed update data object
         return updateData;
     };
 
@@ -138,36 +159,39 @@ const MainNavigationContainer: React.FC = () => {
 
                 const updatedBacklogGames =
                     currentStatus === "backlog"
-                        ? updatedCurrentGames.map((game, index) => ({
-                              ...game,
-                              priority: index + 1,
-                          }))
+                        ? sortGames(
+                              updatedCurrentGames.map((game, index) => ({
+                                  ...game,
+                                  priority: index + 1,
+                              })),
+                              "backlog"
+                          )
                         : prev.backlog;
 
-                const updatedTargetGames =
+                const movedGame = {
+                    ...gameToMove,
+                    gameStatus: newStatus,
+                    priority:
+                        newStatus === "backlog"
+                            ? prev.backlog.length + 1
+                            : undefined,
+                    updatedAt: new Date().toISOString(),
+                };
+
+                const updatedTargetGames = sortGames(
                     newStatus === "backlog"
-                        ? [
-                              ...prev.backlog,
-                              {
-                                  ...gameToMove,
-                                  priority: prev.backlog.length + 1,
-                              },
-                          ]
-                        : [
-                              ...prev[newStatus],
-                              { ...gameToMove, priority: undefined },
-                          ];
+                        ? [...prev.backlog, movedGame]
+                        : [...prev[newStatus], movedGame],
+                    newStatus
+                );
 
                 return {
                     ...prev,
                     [currentStatus]:
                         currentStatus === "backlog"
                             ? updatedBacklogGames
-                            : updatedCurrentGames,
-                    [newStatus]:
-                        newStatus === "backlog"
-                            ? updatedTargetGames
-                            : updatedTargetGames,
+                            : sortGames(updatedCurrentGames, currentStatus),
+                    [newStatus]: updatedTargetGames,
                 };
             });
 
@@ -281,10 +305,13 @@ const MainNavigationContainer: React.FC = () => {
             await updateGamePriorities(priorityUpdates);
             setGameData((prev) => ({
                 ...prev,
-                [status]: updatedData.map((item, index) => ({
-                    ...item,
-                    priority: index + 1,
-                })),
+                [status]: sortGames(
+                    updatedData.map((item, index) => ({
+                        ...item,
+                        priority: index + 1,
+                    })),
+                    status
+                ),
             }));
         } catch (error) {
             console.error("Failed to update priorities:", error);
@@ -352,7 +379,6 @@ const MainNavigationContainer: React.FC = () => {
                             onStatusChange={handleStatusChange}
                             onRemoveItem={handleRemoveItem}
                             onReorder={handleReorder}
-                            key={refreshKeys[screen.gameStatus]}
                         />
                     )}
                 </Tab.Screen>

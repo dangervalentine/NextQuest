@@ -1,7 +1,9 @@
 import db from "../config/database";
 import { GameStatus } from "../../constants/gameStatus";
 import { QuestGame } from "../models/QuestGame";
+import { MinimalQuestGame } from "../models/MinimalQuestGame";
 import * as igdbRepo from "./igdbGames";
+import { getMinimalIGDBGameById } from "./igdbGames";
 
 const parseQuestGame = async (row: any): Promise<QuestGame> => {
     // Get the base IGDB game data
@@ -41,6 +43,8 @@ const parseQuestGame = async (row: any): Promise<QuestGame> => {
         game_modes,
         player_perspectives,
         themes,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
     };
 };
 
@@ -56,21 +60,55 @@ export const getAllQuestGames = async () => {
     }
 };
 
-export const getQuestGamesByStatus = async (status: GameStatus) => {
+export const parseMinimalQuestGame = async (
+    questGameRow: any
+): Promise<MinimalQuestGame> => {
+    const igdbGame = await getMinimalIGDBGameById(questGameRow.game_id);
+
+    if (!igdbGame) {
+        throw new Error(`No IGDB game found for id: ${questGameRow.game_id}`);
+    }
+
+    return {
+        id: questGameRow.game_id,
+        name: igdbGame.name,
+        gameStatus: questGameRow.game_status as GameStatus,
+        updatedAt: questGameRow.updatedAt,
+        createdAt: questGameRow.createdAt,
+        priority: questGameRow.priority,
+        personalRating: questGameRow.personal_rating,
+        notes: questGameRow.notes,
+        dateAdded: questGameRow.date_added,
+        cover: igdbGame.cover,
+        selectedPlatform: questGameRow.platform_name
+            ? {
+                  id: questGameRow.selected_platform_id,
+                  name: questGameRow.platform_name,
+              }
+            : undefined,
+        genres: igdbGame.genres,
+        release_dates: igdbGame.release_dates,
+    };
+};
+
+export const getQuestGamesByStatus = async (
+    status: GameStatus
+): Promise<MinimalQuestGame[]> => {
     try {
         const query = `
             SELECT qg.game_id, qg.personal_rating, qg.completion_date, 
                    qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
+                   qg.createdAt, qg.updatedAt,
                    qs.name as game_status,
                    p.name as platform_name
             FROM quest_games qg
             JOIN quest_game_status qs ON qg.status_id = qs.id
             LEFT JOIN platforms p ON qg.selected_platform_id = p.id
             WHERE qs.name = '${status}'
-            ORDER BY qg.priority DESC NULLS LAST, qg.game_id ASC
+            ORDER BY qg.priority DESC NULLS LAST, qg.updatedAt DESC
         `;
         const games = await db.getAllAsync(query);
-        return Promise.all(games.map(parseQuestGame));
+        return Promise.all(games.map(parseMinimalQuestGame));
     } catch (error) {
         console.error("Error getting quest games by status:", error);
         throw error;
@@ -92,15 +130,14 @@ export const createQuestGame = async (
         // Create the quest game entry
         const query = `
             INSERT INTO quest_games (
-                id, name, game_status, date_added,
-                platform_id, platform_name
+                game_id, status_id, selected_platform_id,
+                createdAt, updatedAt
             ) VALUES (
                 ${igdbGameId},
-                '${igdbGame.name?.replace(/'/g, "''")}',
-                'Not Started',
-                datetime('now'),
+                (SELECT id FROM quest_game_status WHERE name = 'backlog'),
                 ${platformId},
-                '${platformName.replace(/'/g, "''")}'
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
             )
         `;
         await db.execAsync(query);
@@ -116,7 +153,7 @@ export const updateQuestGame = async (
     game: Partial<QuestGame> & { id: number }
 ) => {
     try {
-        const updates = [];
+        const updates = ["updatedAt = CURRENT_TIMESTAMP"];
 
         if (game.gameStatus !== undefined) {
             updates.push(
@@ -211,6 +248,7 @@ export const getQuestGameById = async (
             `
             SELECT qg.game_id, qg.personal_rating, qg.completion_date, 
                    qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
+                   qg.createdAt, qg.updatedAt,
                    qs.name as game_status,
                    p.name as platform_name,
                    GROUP_CONCAT(DISTINCT gm.name) as game_modes,

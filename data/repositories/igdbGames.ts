@@ -59,6 +59,16 @@ interface IGDBGameRow {
     selected_platform_id: number | null;
 }
 
+// Minimal database row type for list view
+interface MinimalIGDBGameRow {
+    id: number;
+    name: string;
+    cover_id: number | null;
+    cover_url: string | null;
+    genres: string | null;
+    release_dates: string | null;
+}
+
 export const getIGDBGameById = async (
     id: number
 ): Promise<IGDBGameResponse | null> => {
@@ -316,6 +326,81 @@ export const getIGDBGameById = async (
         return response;
     } catch (error) {
         console.error(`Error fetching game:`, error);
+        throw error;
+    }
+};
+
+export const getMinimalIGDBGameById = async (id: number) => {
+    try {
+        const [game] = await db.getAllAsync<MinimalIGDBGameRow>(
+            `
+            SELECT 
+                g.id,
+                g.name,
+                cov.id as cover_id,
+                cov.url as cover_url,
+                json_group_array(DISTINCT json_object('id', gen.id, 'name', gen.name)) as genres,
+                json_group_array(DISTINCT json_object(
+                    'id', rd.id,
+                    'date', rd.date,
+                    'platform_id', rd.platform_id
+                )) as release_dates
+            FROM games g
+            LEFT JOIN covers cov ON g.id = cov.game_id
+            LEFT JOIN game_genres gg ON g.id = gg.game_id
+            LEFT JOIN genres gen ON gg.genre_id = gen.id
+            LEFT JOIN release_dates rd ON g.id = rd.game_id
+            WHERE g.id = ${id}
+            GROUP BY g.id
+            `
+        );
+
+        if (!game) {
+            console.error(`No game found with ID: ${id}`);
+            return null;
+        }
+
+        // Parse JSON arrays
+        let genres: Genre[] = [];
+        let release_dates: ReleaseDate[] = [];
+
+        try {
+            if (game.genres) {
+                const parsedGenres = JSON.parse(game.genres);
+                genres = Array.isArray(parsedGenres)
+                    ? parsedGenres.filter((g) => g && g.id && g.name)
+                    : [];
+            }
+        } catch (error) {
+            console.error(`Error parsing genres:`, error);
+        }
+
+        try {
+            if (game.release_dates) {
+                const parsedDates = JSON.parse(game.release_dates);
+                release_dates = Array.isArray(parsedDates)
+                    ? parsedDates.filter((d) => d && d.id && d.date)
+                    : [];
+            }
+        } catch (error) {
+            console.error(`Error parsing release dates:`, error);
+        }
+
+        return {
+            id: game.id,
+            name: game.name || "",
+            cover:
+                game.cover_id && game.cover_url
+                    ? {
+                          id: game.cover_id,
+                          url: game.cover_url,
+                      }
+                    : null,
+            genres,
+            release_dates,
+        };
+    } catch (error) {
+        console.error(`Error fetching minimal game data:`, error);
         throw error;
     }
 };

@@ -16,14 +16,14 @@ import { formatReleaseDate } from "../../../utils/dateFormatters";
 import { ScreenNavigationProp } from "../../../utils/navigationTypes";
 import { GameStatus } from "../../../constants/gameStatus";
 import FullHeightImage from "../../shared/FullHeightImage";
-import { QuestGame } from "../../../data/models/QuestGame";
+import { MinimalQuestGame } from "../../../data/models/MinimalQuestGame";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
 
 interface GameItemProps {
-    questGame: QuestGame;
+    questGame: MinimalQuestGame;
     reorder?: () => void;
     removeItem?: (id: number, status: GameStatus) => void;
     onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
@@ -319,7 +319,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         borderBottomColor: colorSwatch.accent.pink,
                         borderTopColor: colorSwatch.accent.green,
                         borderRightColor: colorSwatch.accent.purple,
-                        borderRadius: 3,
+                        borderRadius: 8,
                     };
                 case "ongoing":
                 case "on_hold":
@@ -418,8 +418,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                                 questGame.gameStatus
                                             ).length -
                                                 1 && {
-                                            borderTopRightRadius: 4,
-                                            borderBottomRightRadius: 4,
+                                            borderTopRightRadius: 12,
+                                            borderBottomRightRadius: 11,
                                         },
                                     ]}
                                     onPress={() => handleStatusSelect(status)}
@@ -440,8 +440,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 styles.statusButton,
                                 {
                                     backgroundColor: colorSwatch.accent.pink,
-                                    borderTopLeftRadius: 4,
-                                    borderBottomLeftRadius: 4,
+                                    borderTopLeftRadius: 12,
+                                    borderBottomLeftRadius: 12,
                                 },
                             ]}
                             activeOpacity={0.7}
@@ -605,7 +605,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         backgroundColor: colorSwatch.background.darkest,
         opacity: 1,
-        borderRadius: 6,
+        borderRadius: 12,
         marginHorizontal: 4,
         marginVertical: 8,
         shadowColor: colorSwatch.background.dark,

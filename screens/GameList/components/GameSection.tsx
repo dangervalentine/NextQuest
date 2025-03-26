@@ -11,16 +11,11 @@ import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 
 import { GameStatus } from "../../../constants/gameStatus";
 import { colorSwatch } from "../../../utils/colorConstants";
-import { QuestGame } from "../../../data/models/QuestGame";
-import {
-    getQuestGamesByStatus,
-    updateGamePriorities,
-    updateQuestGame,
-} from "../../../data/repositories/questGames";
+import { MinimalQuestGame } from "../../../data/models/MinimalQuestGame";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
-    games: QuestGame[];
+    games: MinimalQuestGame[];
     isLoading: boolean;
     onStatusChange: (
         id: number,
@@ -45,7 +40,7 @@ const GameSection: React.FC<GameSectionProps> = ({
             onDragStart,
             isActive,
             index,
-        }: DragListRenderItemInfo<QuestGame>) => {
+        }: DragListRenderItemInfo<MinimalQuestGame>) => {
             if (!item) return null;
 
             return (

@@ -41,6 +41,7 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
                             width: imageWidth,
                             height: imageHeight,
                             overflow: "hidden",
+                            borderRadius: 4,
                         },
                     ]}
                     contentFit="cover"

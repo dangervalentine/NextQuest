@@ -15,4 +15,6 @@ export interface QuestGame extends IGDBGameResponse {
     priority?: number; // User's priority level for playing this game
     selectedPlatform: { id: number; name: string }; // The platform the user chose to play the game on
     franchises: { id: number; name: string }[];
+    updatedAt: string; // Date when the game was last updated
+    createdAt: string; // Date when the game was added to the quest log
 }

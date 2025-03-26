@@ -266,6 +266,8 @@ const createTables = async () => {
             date_added TEXT NOT NULL,
             priority INTEGER DEFAULT NULL,
             selected_platform_id INTEGER,
+            createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(game_id) REFERENCES games(id),
             FOREIGN KEY(status_id) REFERENCES quest_game_status(id),
             FOREIGN KEY(selected_platform_id) REFERENCES platforms(id)

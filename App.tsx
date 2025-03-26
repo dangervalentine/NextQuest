@@ -62,19 +62,19 @@ const App = () => {
 const styles = StyleSheet.create({
     rootScreen: {
         flex: 1,
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
     },
     loadingContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
     },
     errorContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
     },
     errorText: {
         color: colorSwatch.accent.pink,
