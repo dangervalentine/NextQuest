@@ -109,10 +109,10 @@ export function getGameStatus(gameStatus: GameStatus): string {
     switch (gameStatus) {
         case "completed":
             return "Completed";
-        case "active":
-            return "Active";
-        case "inactive":
-            return "Inactive";
+        case "ongoing":
+            return "Ongoing";
+        case "backlog":
+            return "Backlog";
         case "undiscovered":
             return "Undiscovered";
         case "on_hold":

@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AppNavigator from "./screens/AppNavigator";
 import { colorSwatch } from "./utils/colorConstants";
-import { db, initializeDatabase } from "./data/db";
+import { initializeDatabase } from "./data/config/databaseSeeder";
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(true);

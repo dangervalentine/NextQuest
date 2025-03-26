@@ -17,8 +17,8 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigationContainer: React.FC = () => {
     const [refreshKeys, setRefreshKeys] = useState<Record<GameStatus, number>>({
-        active: 0,
-        inactive: 0,
+        ongoing: 0,
+        backlog: 0,
         completed: 0,
         undiscovered: 0,
         on_hold: 0,
@@ -46,13 +46,13 @@ const MainNavigationContainer: React.FC = () => {
             name: "Ongoing",
             iconName: "gamepad-variant", // MaterialCommunityIcons
             title: "Ongoing Quests",
-            gameStatus: "active",
+            gameStatus: "ongoing",
         },
         {
             name: "Backlog",
             iconName: "scroll", // FontAwesome5
             title: "Backlog",
-            gameStatus: "inactive",
+            gameStatus: "backlog",
         },
         {
             name: "Trophies",

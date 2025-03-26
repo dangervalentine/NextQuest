@@ -7,9 +7,6 @@ import {
     ActivityIndicator,
     Animated,
     ImageBackground,
-    ViewStyle,
-    TextStyle,
-    ImageStyle,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRoute } from "@react-navigation/native";
@@ -24,64 +21,12 @@ import { QuestGame } from "../data/models/QuestGame";
 import { getAgeRating } from "../utils/getAgeRating";
 import WebsitesSection from "../app/components/WebsitesSection";
 
-type Styles = {
-    container: ViewStyle;
-    overlay: ViewStyle;
-    headerSection: ViewStyle;
-    coverImage: ImageStyle;
-    headerInfo: ViewStyle;
-    gameTitle: TextStyle;
-    releaseDate: TextStyle;
-    sectionContainer: ViewStyle;
-    screenshotsContainer: ViewStyle;
-    characteristicsContainer: ViewStyle;
-    platformSection: ViewStyle;
-    platformTitle: TextStyle;
-    infoSection: ViewStyle;
-    screenshotsSection: ViewStyle;
-    mainSectionTitle: TextStyle;
-    subSectionTitle: TextStyle;
-    storylineText: TextStyle;
-    loadingContainer: ViewStyle;
-    metadataGrid: ViewStyle;
-    metadataItem: ViewStyle;
-    metadataLabel: TextStyle;
-    metadataValue: TextStyle;
-    ratingContainer: ViewStyle;
-    ratingLabel: TextStyle;
-    ratingValue: TextStyle;
-    ratingBar: ViewStyle;
-    ratingFill: ViewStyle;
-    noteContainer: ViewStyle;
-    noteText: TextStyle;
-    platformsList: ViewStyle;
-    platformItem: ViewStyle;
-    platformName: TextStyle;
-    platformDate: TextStyle;
-    bottomClearance: ViewStyle;
-    tagsFlow: ViewStyle;
-    tagItem: ViewStyle;
-    tagText: TextStyle;
-    section: ViewStyle;
-    tagsContainer: ViewStyle;
-    tag: ViewStyle;
-    characteristicSection: ViewStyle;
-    characteristicTitle: TextStyle;
-    companiesGrid: ViewStyle;
-    companyCard: ViewStyle;
-    companyRole: TextStyle;
-    companyName: TextStyle;
-    screenshotsTitle: TextStyle;
-    sectionTitle: TextStyle;
-    franchiseLinks: ViewStyle;
-    franchiseLink: TextStyle;
-};
-
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
     const { id } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
+    const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         const loadGameDetails = async () => {
@@ -143,7 +88,7 @@ const QuestGameDetailPage: React.FC = () => {
                         fontWeight: "bold" as "bold",
                         fontStyle: "normal" as "normal",
                     };
-                case "active":
+                case "ongoing":
                     return {
                         color: colorSwatch.accent.yellow,
                         fontWeight: "normal" as "normal",
@@ -444,11 +389,28 @@ const QuestGameDetailPage: React.FC = () => {
         );
     };
 
-    const StorylineSection: React.FC = () => (
-        <Text style={styles.storylineText}>
-            {game.storyline || game.summary}
-        </Text>
-    );
+    const StorylineSection: React.FC = () => {
+        return (
+            <View style={styles.storylineContainer}>
+                <Text style={styles.storylineText}>
+                    {isExpanded
+                        ? game.storyline || game.summary
+                        : `${game.storyline || game.summary}`.substring(
+                              0,
+                              400
+                          ) + "..."}
+                </Text>
+                {game.storyline || game.summary ? (
+                    <Text
+                        style={styles.seeMoreText}
+                        onPress={() => setIsExpanded(!isExpanded)}
+                    >
+                        {isExpanded ? "See less" : "See more..."}
+                    </Text>
+                ) : null}
+            </View>
+        );
+    };
 
     const CompaniesSection: React.FC = () => {
         // Group companies by role
@@ -478,32 +440,26 @@ const QuestGameDetailPage: React.FC = () => {
             return null;
         }
 
+        const allCompanies = [
+            ...groupedCompanies.developers.map((name) => ({
+                name,
+                role: "Developer",
+            })),
+            ...groupedCompanies.publishers.map((name) => ({
+                name,
+                role: "Publisher",
+            })),
+            ...groupedCompanies.others.map((name) => ({ name, role: "Other" })),
+        ];
+
         return (
-            <View style={styles.companiesGrid}>
-                {groupedCompanies.developers.length > 0 && (
-                    <View style={styles.companyCard}>
-                        <Text style={styles.companyRole}>Developer</Text>
-                        <Text style={styles.companyName}>
-                            {groupedCompanies.developers.join(", ")}
-                        </Text>
+            <View style={styles.companiesList}>
+                {allCompanies.map((company, index) => (
+                    <View key={index} style={styles.platformItem}>
+                        <Text style={styles.platformName}>{company.name}</Text>
+                        <Text style={styles.platformDate}>{company.role}</Text>
                     </View>
-                )}
-                {groupedCompanies.publishers.length > 0 && (
-                    <View style={styles.companyCard}>
-                        <Text style={styles.companyRole}>Publisher</Text>
-                        <Text style={styles.companyName}>
-                            {groupedCompanies.publishers.join(", ")}
-                        </Text>
-                    </View>
-                )}
-                {groupedCompanies.others.length > 0 && (
-                    <View style={styles.companyCard}>
-                        <Text style={styles.companyRole}>Other</Text>
-                        <Text style={styles.companyName}>
-                            {groupedCompanies.others.join(", ")}
-                        </Text>
-                    </View>
-                )}
+                ))}
             </View>
         );
     };
@@ -559,18 +515,13 @@ const QuestGameDetailPage: React.FC = () => {
 
                 {/* Essential Game Categories */}
                 <View style={styles.sectionContainer}>
-                    {/* Platforms */}
-                    {game.platforms && game.platforms.length > 0 && (
-                        <View style={styles.platformSection}>
-                            <Text style={styles.platformTitle}>Platforms</Text>
-                            <PlatformsSection />
-                        </View>
-                    )}
-
+                    <Text style={styles.mainSectionTitle}>Information</Text>
                     {/* Core Categories */}
                     <View style={styles.characteristicsContainer}>
                         <GenresSection />
                         <ThemesSection />
+                        <GameModesSection />
+                        <PerspectivesSection />
                     </View>
                 </View>
 
@@ -583,11 +534,13 @@ const QuestGameDetailPage: React.FC = () => {
                     {/* External Links */}
                     <WebsitesSection websites={game.websites || []} />
 
-                    {/* Gameplay Specifics */}
-                    <View style={styles.characteristicsContainer}>
-                        <GameModesSection />
-                        <PerspectivesSection />
-                    </View>
+                    {/* Platforms */}
+                    {game.platforms && game.platforms.length > 0 && (
+                        <View style={styles.platformSection}>
+                            <Text style={styles.platformTitle}>Platforms</Text>
+                            <PlatformsSection />
+                        </View>
+                    )}
 
                     {/* Development Info */}
                     {game.involved_companies &&
@@ -607,7 +560,7 @@ const QuestGameDetailPage: React.FC = () => {
     );
 };
 
-const styles = StyleSheet.create<Styles>({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colorSwatch.background.dark,
@@ -651,6 +604,7 @@ const styles = StyleSheet.create<Styles>({
         marginTop: 24,
         backgroundColor: colorSwatch.background.darkest,
         borderRadius: 12,
+        marginHorizontal: 16,
         padding: 0,
     },
     characteristicsContainer: {
@@ -670,7 +624,6 @@ const styles = StyleSheet.create<Styles>({
     },
     infoSection: {
         marginTop: 16,
-        backgroundColor: colorSwatch.background.dark,
         borderRadius: 8,
         padding: 16,
     },
@@ -841,6 +794,9 @@ const styles = StyleSheet.create<Styles>({
         color: colorSwatch.accent.purple,
         marginBottom: 12,
     },
+    companiesList: {
+        gap: 8,
+    },
     companiesGrid: {
         gap: 12,
     },
@@ -880,6 +836,15 @@ const styles = StyleSheet.create<Styles>({
         color: colorSwatch.accent.cyan,
         textDecorationLine: "underline",
         fontWeight: "600",
+    },
+    storylineContainer: {
+        marginTop: 16,
+    },
+    seeMoreText: {
+        color: colorSwatch.accent.cyan,
+        fontWeight: "600",
+        marginTop: 16,
+        textDecorationLine: "underline",
     },
 });
 

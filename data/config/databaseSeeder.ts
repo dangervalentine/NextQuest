@@ -275,12 +275,10 @@ const createTables = async () => {
     // Insert default status values
     await db.execAsync(`
         INSERT OR IGNORE INTO quest_game_status (name, description) VALUES
-        ('active', 'Currently playing the game'),
-        ('inactive', 'Game is not actively being played'),
+        ('ongoing', 'Game is currently being played'),
+        ('backlog', 'Game is not actively being played'),
         ('completed', 'Game has been completed'),
-        ('undiscovered', 'Game has not been discovered yet'),
-        ('on_hold', 'Game is temporarily paused'),
-        ('dropped', 'Game has been abandoned');
+        ('undiscovered', 'Game has been removed from the list');
     `);
 };
 
@@ -526,14 +524,14 @@ const seedOneGame = async (game: any) => {
             }
         }
 
-        // Get the 'inactive' status id
-        const [inactiveStatus] = await db.getAllAsync<{ id: number }>(`
-            SELECT id FROM quest_game_status WHERE name = 'inactive'
+        // Get the 'backlog' status id
+        const [backlogStatus] = await db.getAllAsync<{ id: number }>(`
+            SELECT id FROM quest_game_status WHERE name = 'backlog'
         `);
 
-        if (!inactiveStatus) {
+        if (!backlogStatus) {
             throw new Error(
-                "Could not find 'inactive' status in quest_game_status table"
+                "Could not find 'backlog' status in quest_game_status table"
             );
         }
 
@@ -545,7 +543,7 @@ const seedOneGame = async (game: any) => {
                 notes, date_added, priority, selected_platform_id
             ) VALUES (
                 ${game.id},
-                ${inactiveStatus.id},
+                ${backlogStatus.id},
                 ${
                     questData.personal_rating !== undefined
                         ? questData.personal_rating
@@ -658,31 +656,31 @@ const updateGameStatusesAndPriorities = async () => {
         const shuffledGames = [...games].sort(() => Math.random() - 0.5);
 
         // Get status IDs
-        const [activeStatus] = await db.getAllAsync<{ id: number }>(
-            "SELECT id FROM quest_game_status WHERE name = 'active'"
+        const [ongoingStatus] = await db.getAllAsync<{ id: number }>(
+            "SELECT id FROM quest_game_status WHERE name = 'ongoing'"
         );
         const [completedStatus] = await db.getAllAsync<{ id: number }>(
             "SELECT id FROM quest_game_status WHERE name = 'completed'"
         );
-        const [inactiveStatus] = await db.getAllAsync<{ id: number }>(
-            "SELECT id FROM quest_game_status WHERE name = 'inactive'"
+        const [backlogStatus] = await db.getAllAsync<{ id: number }>(
+            "SELECT id FROM quest_game_status WHERE name = 'backlog'"
         );
 
-        // Take 5 games for active status
-        const activeGames = shuffledGames.slice(0, 5);
+        // Take 5 games for ongoing status
+        const ongoingGames = shuffledGames.slice(0, 5);
         // Take 3 games for completed status
         const completedGames = shuffledGames.slice(5, 12);
-        // The rest will be inactive
-        const inactiveGames = shuffledGames.slice(12);
+        // The rest will be backlog
+        const backlogGames = shuffledGames.slice(12);
 
         // Start transaction
         await db.execAsync("BEGIN TRANSACTION");
 
-        // Update active games (no priority)
-        for (const game of activeGames) {
+        // Update ongoing games (no priority)
+        for (const game of ongoingGames) {
             await db.execAsync(`
                 UPDATE quest_games 
-                SET status_id = ${activeStatus.id}, priority = NULL
+                SET status_id = ${ongoingStatus.id}, priority = NULL
                 WHERE game_id = ${game.game_id}
             `);
         }
@@ -713,12 +711,12 @@ const updateGameStatusesAndPriorities = async () => {
             `);
         }
 
-        // Update inactive games (with priority)
-        for (let i = 0; i < inactiveGames.length; i++) {
+        // Update backlog games (with priority)
+        for (let i = 0; i < backlogGames.length; i++) {
             await db.execAsync(`
                 UPDATE quest_games 
-                SET status_id = ${inactiveStatus.id}, priority = ${i + 1}
-                WHERE game_id = ${inactiveGames[i].game_id}
+                SET status_id = ${backlogStatus.id}, priority = ${i + 1}
+                WHERE game_id = ${backlogGames[i].game_id}
             `);
         }
 
@@ -734,11 +732,13 @@ const updateGameStatusesAndPriorities = async () => {
 
 const seedQuestGameStatus = async () => {
     const statuses = [
-        { name: "Inactive", description: "Game has not been started yet" },
-        { name: "Active", description: "Currently playing the game" },
+        { name: "Backlog", description: "Game has not been started yet" },
+        { name: "Ongoing", description: "Game is currently being played" },
         { name: "Completed", description: "Game has been completed" },
-        { name: "On Hold", description: "Game is temporarily paused" },
-        { name: "Dropped", description: "Game has been abandoned" },
+        {
+            name: "Undiscovered",
+            description: "Game has been removed from the list",
+        },
     ];
 
     for (const status of statuses) {

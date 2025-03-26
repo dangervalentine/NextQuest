@@ -29,7 +29,7 @@ function ImageCarousel({ images }: ImageCarouselProps) {
         <View style={{ flex: 1, alignItems: "center" }}>
             <Carousel
                 ref={ref}
-                width={width - 10}
+                width={width - 44}
                 height={width / 1.7}
                 data={images}
                 onProgressChange={progress}

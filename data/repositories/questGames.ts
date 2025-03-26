@@ -170,18 +170,26 @@ export const updateGamePriorities = async (updates: GamePriorityUpdate[]) => {
         // Start transaction
         await db.execAsync("BEGIN TRANSACTION");
 
-        // Create a bulk update query
-        const updateQueries = updates
-            .map((update) => `(${update.id}, ${update.priority})`)
-            .join(", ");
+        // Create a CASE statement for each game_id to set its new priority
+        const priorityCases = updates
+            .map(
+                (update) =>
+                    `WHEN game_id = ${update.id} THEN ${update.priority}`
+            )
+            .join("\n                ");
 
+        // Create the list of game_ids that are being updated
+        const gameIds = updates.map((update) => update.id).join(", ");
+
+        // Single query to update all priorities
         const query = `
-            INSERT INTO quest_games (game_id, priority)
-            VALUES ${updateQueries}
-            ON CONFLICT(game_id) DO UPDATE SET priority = excluded.priority
+            UPDATE quest_games
+            SET priority = CASE
+                ${priorityCases}
+            END
+            WHERE game_id IN (${gameIds})
         `;
 
-        // Execute the bulk update
         await db.execAsync(query);
 
         // Commit transaction

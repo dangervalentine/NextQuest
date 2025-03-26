@@ -51,6 +51,14 @@ const GameSection: React.FC<GameSectionProps> = ({
         }
     };
 
+    const removeItem = async (itemId: number, status: GameStatus) => {
+        const updateData = await getUpdateData(itemId, status, gameStatus);
+        await updateQuestGame(updateData);
+        setData((currentData) =>
+            currentData.filter((game) => game.id !== itemId)
+        );
+    };
+
     const getUpdateData = async (
         id: number,
         newStatus: GameStatus,
@@ -58,9 +66,9 @@ const GameSection: React.FC<GameSectionProps> = ({
     ) => {
         let updateData: any = { id, gameStatus: newStatus };
 
-        if (newStatus === "inactive") {
-            const inactiveGames = await getQuestGamesByStatus("inactive");
-            const highestPriority = inactiveGames.reduce(
+        if (newStatus === "backlog") {
+            const backlogGames = await getQuestGamesByStatus("backlog");
+            const highestPriority = backlogGames.reduce(
                 (max, game) => Math.max(max, game.priority || 0),
                 0
             );
@@ -77,41 +85,55 @@ const GameSection: React.FC<GameSectionProps> = ({
                 priority: undefined,
             };
 
-            // If moving out of inactive status, reorder remaining inactive games
-            if (currentStatus === "inactive") {
-                const inactiveGames = await getQuestGamesByStatus("inactive");
-                const remainingGames = inactiveGames.filter(
-                    (game) => game.id !== id
-                );
-
-                // Sort remaining games by priority
-                const sortedGames = remainingGames.sort(
-                    (a, b) =>
-                        (a.priority || Infinity) - (b.priority || Infinity)
-                );
-
-                // Update priorities sequentially
-                const priorityUpdates = sortedGames.map((game, index) => ({
-                    id: game.id,
-                    priority: index + 1,
-                }));
-
-                try {
-                    // Batch update priorities
-                    await updateGamePriorities(priorityUpdates);
-                    setData(
-                        sortedGames.map((item, index) => ({
-                            ...item,
-                            priority: index + 1,
-                        }))
+            // If moving out of backlog status, reorder remaining backlog games
+            if (currentStatus === "backlog") {
+                // Get current data and update it immediately with new priorities
+                setData((currentData) => {
+                    const remainingGames = currentData.filter(
+                        (game) => game.id !== id
                     );
-                } catch (error) {
-                    console.error(
-                        "[GameSection] Failed to update inactive game priorities:",
-                        error
-                    );
-                    await loadGames();
-                }
+                    // Update priorities immediately in the UI
+                    return remainingGames.map((game, index) => ({
+                        ...game,
+                        priority: index + 1,
+                    }));
+                });
+
+                // Handle priority reordering in the background
+                (async () => {
+                    try {
+                        const backlogGames = await getQuestGamesByStatus(
+                            "backlog"
+                        );
+                        const remainingGames = backlogGames.filter(
+                            (game) => game.id !== id
+                        );
+
+                        // Sort remaining games by priority
+                        const sortedGames = remainingGames.sort(
+                            (a, b) =>
+                                (a.priority || Infinity) -
+                                (b.priority || Infinity)
+                        );
+
+                        // Update priorities sequentially
+                        const priorityUpdates = sortedGames.map(
+                            (game, index) => ({
+                                id: game.id,
+                                priority: index + 1,
+                            })
+                        );
+
+                        // Batch update priorities
+                        await updateGamePriorities(priorityUpdates);
+                    } catch (error) {
+                        console.error(
+                            "[GameSection] Failed to update backlog game priorities:",
+                            error
+                        );
+                        await loadGames();
+                    }
+                })();
             }
         }
 
@@ -195,6 +217,7 @@ const GameSection: React.FC<GameSectionProps> = ({
                     <GameItem
                         questGame={item}
                         reorder={onDragStart}
+                        removeItem={removeItem}
                         isFirstItem={index === 0}
                         onStatusChange={(newStatus, currentStatus) =>
                             handleStatusChange(
@@ -270,7 +293,6 @@ const GameSection: React.FC<GameSectionProps> = ({
                         <Text style={styles.emptyText}>No games available</Text>
                     </View>
                 )}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
                 contentContainerStyle={styles.listContainer}
                 removeClippedSubviews={true}
             />
@@ -288,16 +310,7 @@ const styles = StyleSheet.create({
         opacity: 0.99,
     },
     itemContainer: {
-        borderRadius: 12,
-        marginHorizontal: 4,
-        shadowColor: colorSwatch.background.dark,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 4,
-        borderWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
-        marginVertical: 8,
+        // Keeping only styles that might be needed for active state
     },
     activeItem: {
         opacity: 0.7,
@@ -317,7 +330,6 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         lineHeight: 24,
     },
-    separator: {},
     listContainer: {
         paddingVertical: 8,
     },

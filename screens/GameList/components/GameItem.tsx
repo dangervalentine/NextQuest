@@ -6,8 +6,8 @@ import {
     Pressable,
     Animated,
     PanResponder,
-    Dimensions,
     TouchableOpacity,
+    Easing,
 } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -25,6 +25,7 @@ let hasShownHintInSession = false;
 interface GameItemProps {
     questGame: QuestGame;
     reorder?: () => void;
+    removeItem?: (id: number, status: GameStatus) => void;
     onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
     isFirstItem?: boolean;
 }
@@ -32,7 +33,7 @@ interface GameItemProps {
 const SWIPE_THRESHOLD = 75; // Absolute value for both directions
 
 const GameItem: React.FC<GameItemProps> = memo(
-    ({ questGame: QuestGame, reorder, onStatusChange, isFirstItem }) => {
+    ({ questGame, reorder, removeItem, onStatusChange, isFirstItem }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
         const [isReordering, setIsReordering] = useState(false);
         const [hasShownHint, setHasShownHint] = useState(false);
@@ -41,6 +42,11 @@ const GameItem: React.FC<GameItemProps> = memo(
         const rightChevronOpacity = useRef(new Animated.Value(0)).current;
         const leftChevronPosition = useRef(new Animated.Value(0)).current;
         const rightChevronPosition = useRef(new Animated.Value(0)).current;
+        const scaleY = useRef(new Animated.Value(1)).current;
+        const [containerHeight, setContainerHeight] = useState<number>(0);
+        const [isInitialHeight, setIsInitialHeight] = useState(true);
+        const [isAnimating, setIsAnimating] = useState(false);
+        const heightAnim = useRef(new Animated.Value(1)).current;
 
         useFocusEffect(
             React.useCallback(() => {
@@ -52,7 +58,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     }, 1000);
                     return () => clearTimeout(timer);
                 }
-            }, [isFirstItem, hasShownHint, QuestGame.name])
+            }, [isFirstItem, hasShownHint, questGame.name])
         );
 
         const showHint = () => {
@@ -151,7 +157,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     Animated.timing(pan, {
                         toValue: 0,
                         duration: 300,
-                        delay: 100,
+                        delay: 150,
                         useNativeDriver: false,
                     }),
                 ]),
@@ -162,8 +168,8 @@ const GameItem: React.FC<GameItemProps> = memo(
             currentStatus: GameStatus | undefined
         ): GameStatus[] => {
             const allStatuses: GameStatus[] = [
-                "active",
-                "inactive",
+                "ongoing",
+                "backlog",
                 "completed",
             ];
             return allStatuses.filter((status) => status !== currentStatus);
@@ -171,11 +177,11 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const getStatusColor = (status: GameStatus): string => {
             switch (status) {
-                case "active":
+                case "ongoing":
                     return colorSwatch.accent.yellow;
                 case "completed":
                     return colorSwatch.accent.green;
-                case "inactive":
+                case "backlog":
                     return colorSwatch.accent.purple;
                 case "undiscovered":
                     return colorSwatch.accent.pink;
@@ -186,12 +192,12 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const getStatusLabel = (status: GameStatus): string => {
             switch (status) {
-                case "active":
-                    return "Active";
+                case "ongoing":
+                    return "Ongoing";
                 case "completed":
-                    return "Complete";
-                case "inactive":
-                    return "Inactive";
+                    return "Completed";
+                case "backlog":
+                    return "Backlog";
                 default:
                     return status;
             }
@@ -222,13 +228,13 @@ const GameItem: React.FC<GameItemProps> = memo(
                         if (gestureState.dx < -SWIPE_THRESHOLD) {
                             // Left swipe
                             Animated.spring(pan, {
-                                toValue: -200,
+                                toValue: -205,
                                 useNativeDriver: false,
                             }).start();
                         } else if (gestureState.dx > SWIPE_THRESHOLD) {
                             // Right swipe
                             Animated.spring(pan, {
-                                toValue: 100,
+                                toValue: 105,
                                 useNativeDriver: false,
                             }).start();
                         } else {
@@ -244,43 +250,65 @@ const GameItem: React.FC<GameItemProps> = memo(
         );
 
         const closeMenu = () => {
-            Animated.spring(pan, {
+            Animated.timing(pan, {
                 toValue: 0,
                 useNativeDriver: false,
+                duration: 200,
+                easing: Easing.out(Easing.cubic),
             }).start();
         };
 
         const handleStatusSelect = (status: GameStatus) => {
-            if (onStatusChange) {
-                onStatusChange(status, QuestGame.gameStatus);
-            }
+            if (containerHeight === 0) return;
+            setIsAnimating(true);
             closeMenu();
+
+            Animated.parallel([
+                Animated.timing(pan, {
+                    toValue: 0,
+                    useNativeDriver: false,
+                    duration: 300,
+                    easing: Easing.out(Easing.cubic),
+                }),
+
+                Animated.timing(heightAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: false,
+                    delay: 150,
+                    easing: Easing.out(Easing.cubic),
+                }),
+            ]).start(() => {
+                if (onStatusChange) {
+                    onStatusChange(status, questGame.gameStatus);
+                }
+            });
         };
 
         const platformReleaseDate = useMemo(
             () =>
-                QuestGame.release_dates?.find((date) => {
+                questGame.release_dates?.find((date) => {
                     if (!date.platform_id) {
                         return false;
                     }
 
-                    return date.platform_id === QuestGame.selectedPlatform?.id;
+                    return date.platform_id === questGame.selectedPlatform?.id;
                 }),
-            [QuestGame.release_dates, QuestGame.selectedPlatform?.id]
+            [questGame.release_dates, questGame.selectedPlatform?.id]
         );
 
         const handlePress = useMemo(
             () => () =>
                 navigation.navigate("QuestGameDetailPage", {
-                    id: QuestGame.id,
-                    name: QuestGame.name || "",
+                    id: questGame.id,
+                    name: questGame.name || "",
                 }),
-            [navigation, QuestGame.id, QuestGame.name]
+            [navigation, questGame.id, questGame.name]
         );
 
         const genresText = useMemo(
-            () => QuestGame.genres?.map((genre) => genre.name).join(", ") || "",
-            [QuestGame.genres]
+            () => questGame.genres?.map((genre) => genre.name).join(", ") || "",
+            [questGame.genres]
         );
 
         const getStatusStyles = (status: GameStatus | undefined) => {
@@ -294,7 +322,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         borderRightColor: colorSwatch.accent.purple,
                         borderRadius: 3,
                     };
-                case "active":
+                case "ongoing":
                 case "on_hold":
                 case "dropped":
                 default:
@@ -307,6 +335,7 @@ const GameItem: React.FC<GameItemProps> = memo(
             return {
                 borderColor: color,
                 borderWidth: 2,
+                borderRadius: 6,
             };
         };
 
@@ -321,11 +350,66 @@ const GameItem: React.FC<GameItemProps> = memo(
             setIsReordering(false);
         };
 
+        const handleRemove = () => {
+            if (containerHeight === 0) return;
+            setIsAnimating(true);
+            Animated.parallel([
+                Animated.timing(pan, {
+                    toValue: 0,
+                    useNativeDriver: false,
+                    duration: 300,
+                    easing: Easing.out(Easing.cubic),
+                }),
+
+                Animated.timing(heightAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    delay: 100,
+                    useNativeDriver: false,
+                    easing: Easing.out(Easing.cubic),
+                }),
+            ]).start(() => {
+                if (removeItem) {
+                    removeItem(questGame.id, "undiscovered");
+                }
+            });
+        };
+
         return (
-            <View style={styles.container}>
+            <Animated.View
+                style={[
+                    styles.container,
+                    isAnimating && {
+                        height: heightAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, containerHeight],
+                        }),
+                        marginVertical: heightAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, 8],
+                        }),
+                        borderWidth: heightAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, 1],
+                        }),
+                        shadowOpacity: heightAnim,
+                        elevation: heightAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, 4],
+                        }),
+                    },
+                ]}
+                onLayout={(event) => {
+                    const height = event.nativeEvent.layout.height;
+                    if (height > 0 && isInitialHeight) {
+                        setContainerHeight(height);
+                        setIsInitialHeight(false);
+                    }
+                }}
+            >
                 {!isReordering && (
                     <View style={styles.statusMenu}>
-                        {getAvailableStatuses(QuestGame.gameStatus).map(
+                        {getAvailableStatuses(questGame.gameStatus).map(
                             (status) => (
                                 <TouchableOpacity
                                     key={status}
@@ -360,6 +444,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 },
                             ]}
                             activeOpacity={0.7}
+                            onPress={handleRemove}
                         >
                             <Text
                                 style={[
@@ -381,9 +466,9 @@ const GameItem: React.FC<GameItemProps> = memo(
                     ]}
                     {...panResponder.panHandlers}
                 >
-                    {typeof QuestGame.priority === "number" &&
-                        QuestGame.priority > 0 &&
-                        QuestGame.gameStatus === "inactive" && (
+                    {typeof questGame.priority === "number" &&
+                        questGame.priority > 0 &&
+                        questGame.gameStatus === "backlog" && (
                             <Pressable
                                 onTouchStart={handleReorderStart}
                                 onTouchEnd={handleReorderEnd}
@@ -394,7 +479,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         style={styles.priorityText}
                                         numberOfLines={1}
                                     >
-                                        {QuestGame.priority}
+                                        {questGame.priority}
                                     </Text>
                                     <SimpleLineIcons
                                         name="menu"
@@ -411,45 +496,45 @@ const GameItem: React.FC<GameItemProps> = memo(
                             pressed && styles.pressed,
                         ]}
                     >
-                        {QuestGame.cover && QuestGame.cover.url ? (
+                        {questGame.cover && questGame.cover.url ? (
                             <FullHeightImage
-                                source={QuestGame.cover.url}
-                                style={getStatusStyles(QuestGame.gameStatus)}
+                                source={questGame.cover.url}
+                                style={getStatusStyles(questGame.gameStatus)}
                             />
                         ) : (
                             <FullHeightImage
                                 source={require("../../../assets/placeholder.png")}
-                                style={getStatusStyles(QuestGame.gameStatus)}
+                                style={getStatusStyles(questGame.gameStatus)}
                             />
                         )}
 
                         <View style={styles.contentContainer}>
-                            <Text style={styles.title}>{QuestGame.name}</Text>
-                            {QuestGame.gameStatus === "completed" &&
-                                QuestGame.rating !== undefined && (
+                            <Text style={styles.title}>{questGame.name}</Text>
+                            {questGame.gameStatus === "completed" &&
+                                questGame.rating !== undefined && (
                                     <Text style={styles.rating}>
                                         {"⭐".repeat(
-                                            QuestGame.personalRating ?? 0
+                                            questGame.personalRating ?? 0
                                         )}
                                         {"☆".repeat(
-                                            10 - (QuestGame.personalRating ?? 0)
+                                            10 - (questGame.personalRating ?? 0)
                                         )}{" "}
-                                        ({QuestGame.personalRating ?? 0}/10)
+                                        ({questGame.personalRating ?? 0}/10)
                                     </Text>
                                 )}
                             <View style={styles.detailsContainer}>
                                 <Text style={styles.textSecondary}>
-                                    Platform: {QuestGame.selectedPlatform?.name}
+                                    Platform: {questGame.selectedPlatform?.name}
                                 </Text>
-                                {QuestGame.notes &&
-                                    QuestGame.gameStatus === "completed" && (
+                                {questGame.notes &&
+                                    questGame.gameStatus === "completed" && (
                                         <View style={styles.quoteContainer}>
                                             <Text style={styles.quote}>
-                                                "{QuestGame.notes}"
+                                                "{questGame.notes}"
                                             </Text>
                                         </View>
                                     )}
-                                {QuestGame.gameStatus !== "completed" && (
+                                {questGame.gameStatus !== "completed" && (
                                     <View>
                                         {platformReleaseDate && (
                                             <Text style={styles.textSecondary}>
@@ -465,7 +550,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         <Text style={styles.textSecondary}>
                                             Date Added:{" "}
                                             {new Date(
-                                                QuestGame.dateAdded
+                                                questGame.dateAdded
                                             ).toLocaleDateString("en-US", {
                                                 year: "numeric",
                                                 month: "short",
@@ -510,7 +595,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         color={colorSwatch.accent.cyan}
                     />
                 </Animated.View>
-            </View>
+            </Animated.View>
         );
     },
     (prevProps, nextProps) => {
@@ -523,6 +608,16 @@ const styles = StyleSheet.create({
         position: "relative",
         overflow: "hidden",
         backgroundColor: colorSwatch.background.darkest,
+        opacity: 1,
+        borderRadius: 6,
+        marginHorizontal: 4,
+        marginVertical: 8,
+        shadowColor: colorSwatch.background.dark,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     gameContainer: {
         flexDirection: "row",
@@ -534,9 +629,9 @@ const styles = StyleSheet.create({
     },
     statusMenu: {
         position: "absolute",
-        right: 0,
-        top: 0,
-        bottom: 0,
+        right: 2,
+        top: 2,
+        bottom: 2,
         width: 200,
         backgroundColor: colorSwatch.background.darker,
         gap: 4,
@@ -556,6 +651,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "transparent",
         padding: 8,
+        borderRadius: 6,
     },
     statusButtonText: {
         fontSize: 12,
@@ -649,9 +745,9 @@ const styles = StyleSheet.create({
     },
     rightMenu: {
         position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
+        left: 2,
+        top: 2,
+        bottom: 2,
         width: 100,
         backgroundColor: colorSwatch.background.darker,
         gap: 4,
