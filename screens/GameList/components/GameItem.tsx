@@ -716,7 +716,7 @@ const styles = StyleSheet.create({
         gap: 12,
     },
     pressed: {
-        opacity: 0.2,
+        opacity: 0.8,
     },
     rating: {
         fontSize: 12,

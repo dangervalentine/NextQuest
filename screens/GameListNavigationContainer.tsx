@@ -217,12 +217,25 @@ const MainNavigationContainer: React.FC = () => {
             const remainingGames = gameData.backlog.filter(
                 (game) => game.id !== id
             );
-            const priorityUpdates = remainingGames.map((game, index) => ({
-                id: game.id,
-                priority: index + 1, // Reassign priorities based on new order
-            }));
-            // Execute the priority updates for the remaining games
-            await updateGamePriorities(priorityUpdates);
+
+            // Calculate which items need priority updates
+            const priorityUpdates = remainingGames
+                .map((game, index) => ({
+                    id: game.id,
+                    oldPriority: game.priority || index + 1,
+                    newPriority: index + 1,
+                }))
+                .filter((item) => item.oldPriority !== item.newPriority);
+
+            if (priorityUpdates.length > 0) {
+                // Execute the priority updates for the remaining games
+                await updateGamePriorities(
+                    priorityUpdates.map(({ id, newPriority }) => ({
+                        id,
+                        priority: newPriority,
+                    }))
+                );
+            }
         }
         // For any other status change
         else {
@@ -334,45 +347,37 @@ const MainNavigationContainer: React.FC = () => {
 
     const handleRemoveItem = async (itemId: number, status: GameStatus) => {
         try {
+            // First perform all database operations
             const updateData = await getUpdateData(itemId, "dropped", status);
             await updateQuestGame(updateData);
 
-            setGameData((prev) => ({
-                ...prev,
-                [status]: prev[status].filter((game) => game.id !== itemId),
-            }));
-
-            if (status === "backlog") {
-                const remainingGames = gameData.backlog.filter(
+            // Update UI state after successful database operations
+            setGameData((prev) => {
+                const updatedGames = prev[status].filter(
                     (game) => game.id !== itemId
                 );
-                const priorityUpdates = remainingGames.map((game, index) => ({
-                    id: game.id,
-                    priority: index + 1,
-                }));
 
-                try {
-                    await updateGamePriorities(priorityUpdates);
-                    setGameData((prev) => ({
+                if (status === "backlog") {
+                    return {
                         ...prev,
-                        backlog: remainingGames.map((game, index) => ({
+                        [status]: updatedGames.map((game, index) => ({
                             ...game,
                             priority: index + 1,
                         })),
-                    }));
-                } catch (error) {
-                    console.error(
-                        "[GameListNavigationContainer] Failed to update backlog priorities:",
-                        error
-                    );
-                    await loadGamesForStatus("backlog");
+                    };
                 }
-            }
+
+                return {
+                    ...prev,
+                    [status]: updatedGames,
+                };
+            });
         } catch (error) {
             console.error(
                 "[GameListNavigationContainer] Failed to remove item:",
                 error
             );
+            // Reload the status to ensure UI is in sync with database
             await loadGamesForStatus(status);
         }
     };
@@ -388,13 +393,25 @@ const MainNavigationContainer: React.FC = () => {
         const [removed] = updatedData.splice(fromIndex, 1);
         updatedData.splice(toIndex, 0, removed);
 
-        const priorityUpdates = updatedData.map((item, index) => ({
-            id: item.id,
-            priority: index + 1,
-        }));
+        // Calculate which items need priority updates
+        const priorityUpdates = updatedData
+            .map((item, index) => ({
+                id: item.id,
+                oldPriority: item.priority || index + 1,
+                newPriority: index + 1,
+            }))
+            .filter((item) => item.oldPriority !== item.newPriority);
+
+        if (priorityUpdates.length === 0) return;
 
         try {
-            await updateGamePriorities(priorityUpdates);
+            await updateGamePriorities(
+                priorityUpdates.map(({ id, newPriority }) => ({
+                    id,
+                    priority: newPriority,
+                }))
+            );
+
             setGameData((prev) => ({
                 ...prev,
                 [status]: sortGames(
