@@ -1,14 +1,8 @@
 import React from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    Linking,
-    TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Linking, TouchableOpacity } from "react-native";
 import { colorSwatch } from "../../utils/colorConstants";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-
+import Text from "../../components/Text";
 interface Website {
     id: number;
     category: number;
@@ -259,9 +253,9 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.darker,
         borderRadius: 12,
         padding: 16,
-        marginVertical: 8,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
+        marginTop: 16,
     },
     title: {
         fontSize: 16,
@@ -287,8 +281,6 @@ const styles = StyleSheet.create({
     },
     websiteType: {
         color: colorSwatch.neutral.lightGray,
-        fontSize: 14,
-        fontWeight: "500",
     },
 });
 export default WebsitesSection;

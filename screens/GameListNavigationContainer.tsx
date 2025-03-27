@@ -1,11 +1,8 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import GameSection from "./GameList/components/GameSection";
-import {
-    FontAwesome5,
-    MaterialCommunityIcons,
-    SimpleLineIcons,
-} from "@expo/vector-icons";
+import QuestGameDetailPage from "./QuestGameDetailPage";
 import HeaderWithIcon from "./shared/HeaderWithIcon";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { GameStatus } from "../constants/gameStatus";
@@ -20,6 +17,105 @@ import {
 } from "../data/repositories/questGames";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
+
+interface TabNavigatorProps {
+    gameData: Record<GameStatus, MinimalQuestGame[]>;
+    isLoading: Record<GameStatus, boolean>;
+    handleStatusChange: (
+        id: number,
+        newStatus: GameStatus,
+        currentStatus: GameStatus
+    ) => void;
+    handleRemoveItem: (itemId: number, status: GameStatus) => void;
+    handleReorder: (
+        fromIndex: number,
+        toIndex: number,
+        status: GameStatus
+    ) => void;
+}
+
+const TabNavigator: React.FC<TabNavigatorProps> = ({
+    gameData,
+    isLoading,
+    handleStatusChange,
+    handleRemoveItem,
+    handleReorder,
+}) => {
+    const tabScreens = [
+        {
+            name: "Ongoing",
+            iconName: "gamepad-variant" as const,
+            title: "Ongoing Quests",
+            gameStatus: "ongoing" as GameStatus,
+        },
+        {
+            name: "Backlog",
+            iconName: "scroll" as const,
+            title: "Backlog",
+            gameStatus: "backlog" as GameStatus,
+        },
+        {
+            name: "Trophies",
+            iconName: "medal" as const,
+            title: "Trophy Room",
+            gameStatus: "completed" as GameStatus,
+        },
+    ];
+
+    return (
+        <Tab.Navigator
+            screenOptions={{
+                ...screenOptions,
+                tabBarStyle: {
+                    ...tabBarStyle,
+                },
+            }}
+        >
+            {tabScreens.map((screen) => (
+                <Tab.Screen
+                    key={screen.name}
+                    name={screen.name}
+                    options={{
+                        tabBarLabel: screen.name,
+                        tabBarIcon: ({ color, size }) => (
+                            <QuestIcon
+                                name={screen.iconName}
+                                size={size}
+                                color={color}
+                            />
+                        ),
+                        headerTitle: () => (
+                            <HeaderWithIcon
+                                iconName={screen.iconName}
+                                title={screen.title}
+                            />
+                        ),
+                    }}
+                >
+                    {() => (
+                        <GameSection
+                            gameStatus={screen.gameStatus}
+                            games={gameData[screen.gameStatus]}
+                            isLoading={isLoading[screen.gameStatus]}
+                            onStatusChange={handleStatusChange}
+                            onRemoveItem={handleRemoveItem}
+                            onReorder={handleReorder}
+                        />
+                    )}
+                </Tab.Screen>
+            ))}
+        </Tab.Navigator>
+    );
+};
+
+type RootStackParamList = {
+    GameTabs: undefined;
+    QuestGameDetailPage: {
+        id: number;
+        name: string;
+    };
+};
 
 const MainNavigationContainer: React.FC = () => {
     const [gameData, setGameData] = useState<
@@ -238,11 +334,7 @@ const MainNavigationContainer: React.FC = () => {
 
     const handleRemoveItem = async (itemId: number, status: GameStatus) => {
         try {
-            const updateData = await getUpdateData(
-                itemId,
-                "undiscovered",
-                status
-            );
+            const updateData = await getUpdateData(itemId, "dropped", status);
             await updateQuestGame(updateData);
 
             setGameData((prev) => ({
@@ -319,71 +411,48 @@ const MainNavigationContainer: React.FC = () => {
         }
     };
 
-    const tabScreens: {
-        name: string;
-        iconName:
-            | keyof typeof MaterialCommunityIcons.glyphMap
-            | keyof typeof SimpleLineIcons.glyphMap
-            | keyof typeof FontAwesome5.glyphMap;
-        title: string;
-        gameStatus: GameStatus;
-    }[] = [
-        {
-            name: "Ongoing",
-            iconName: "gamepad-variant", // MaterialCommunityIcons
-            title: "Ongoing Quests",
-            gameStatus: "ongoing",
-        },
-        {
-            name: "Backlog",
-            iconName: "scroll", // FontAwesome5
-            title: "Backlog",
-            gameStatus: "backlog",
-        },
-        {
-            name: "Trophies",
-            iconName: "medal", // FontAwesome5
-            title: "Trophy Room",
-            gameStatus: "completed",
-        },
-    ];
-
     return (
-        <Tab.Navigator screenOptions={screenOptions}>
-            {tabScreens.map((screen) => (
-                <Tab.Screen
-                    key={screen.name}
-                    name={screen.name}
-                    options={{
-                        tabBarLabel: screen.name,
-                        tabBarIcon: ({ color, size }) => (
-                            <QuestIcon
-                                name={screen.iconName}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                        headerTitle: () => (
-                            <HeaderWithIcon
-                                iconName={screen.iconName}
-                                title={screen.title}
-                            />
-                        ),
-                    }}
-                >
-                    {() => (
-                        <GameSection
-                            gameStatus={screen.gameStatus}
-                            games={gameData[screen.gameStatus]}
-                            isLoading={isLoading[screen.gameStatus]}
-                            onStatusChange={handleStatusChange}
-                            onRemoveItem={handleRemoveItem}
-                            onReorder={handleReorder}
-                        />
-                    )}
-                </Tab.Screen>
-            ))}
-        </Tab.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle,
+                headerTitleStyle: {
+                    color: colorSwatch.accent.cyan,
+                    fontFamily: "Inter-Regular",
+                },
+                headerTintColor: colorSwatch.accent.cyan,
+            }}
+        >
+            <Stack.Screen name="GameTabs" options={{ headerShown: false }}>
+                {() => (
+                    <TabNavigator
+                        gameData={gameData}
+                        isLoading={isLoading}
+                        handleStatusChange={handleStatusChange}
+                        handleRemoveItem={handleRemoveItem}
+                        handleReorder={handleReorder}
+                    />
+                )}
+            </Stack.Screen>
+            <Stack.Screen
+                name="QuestGameDetailPage"
+                component={QuestGameDetailPage}
+                options={({ route }) => ({
+                    headerTransparent: true,
+                    headerTintColor: colorSwatch.accent.purple,
+                    headerTitle: route.params.name,
+                    headerTitleStyle: {
+                        fontFamily: "Inter-Regular",
+                        fontSize: 24,
+                        lineHeight: 32,
+                        fontWeight: "600",
+                    },
+                    headerBackgroundContainerStyle: {
+                        backgroundColor: colorSwatch.background.darkest,
+                    },
+                    animation: "slide_from_right",
+                })}
+            />
+        </Stack.Navigator>
     );
 };
 
@@ -412,12 +481,15 @@ const headerStyle = {
 const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
     tabBarActiveTintColor: colorSwatch.accent.cyan,
-    tabBarInactiveTintColor: colorSwatch.text.secondary,
+    tabBarInactiveTintColor: colorSwatch.text.muted,
     tabBarLabelStyle: {
         fontSize: 12,
-        fontWeight: "500",
+        fontFamily: "FiraCode-Regular",
     },
     headerStyle,
+    headerTitleStyle: {
+        fontFamily: "FiraCode-Regular",
+    },
     tabBarBackground: () => (
         <View
             style={{ backgroundColor: colorSwatch.background.darkest, flex: 1 }}

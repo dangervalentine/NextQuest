@@ -280,7 +280,9 @@ const createTables = async () => {
         ('ongoing', 'Game is currently being played'),
         ('backlog', 'Game is not actively being played'),
         ('completed', 'Game has been completed'),
-        ('undiscovered', 'Game has been removed from the list');
+        ('on_hold', 'Game is on hold'),
+        ('undiscovered', 'Game has been removed from the list'),
+        ('dropped', 'Game has been dropped');
     `);
 };
 

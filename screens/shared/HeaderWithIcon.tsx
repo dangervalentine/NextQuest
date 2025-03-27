@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import Text from "../../components/Text";
 import {
     FontAwesome5,
     MaterialCommunityIcons,
@@ -26,7 +27,9 @@ const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({ iconName, title }) => {
                     color={colorSwatch.accent.cyan}
                 />
             </View>
-            <Text style={styles.title}>{title}</Text>
+            <Text variant="title" style={styles.title}>
+                {title}
+            </Text>
         </View>
     );
 };
@@ -35,13 +38,12 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
+        gap: 8,
     },
     iconContainer: {
         marginRight: 12,
     },
     title: {
-        fontSize: 24,
-        fontWeight: "600",
         color: colorSwatch.accent.purple,
     },
 });

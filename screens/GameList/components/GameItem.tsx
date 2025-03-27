@@ -1,7 +1,6 @@
-import React, { memo, useMemo, useRef, useState, useEffect } from "react";
+import React, { memo, useMemo, useRef, useState } from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Pressable,
     Animated,
@@ -9,6 +8,7 @@ import {
     TouchableOpacity,
     Easing,
 } from "react-native";
+import Text from "../../../components/Text";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { colorSwatch } from "../../../utils/colorConstants";
@@ -51,11 +51,8 @@ const GameItem: React.FC<GameItemProps> = memo(
             React.useCallback(() => {
                 if (isFirstItem && !hasShownHint && !hasShownHintInSession) {
                     showHint();
-                    const timer = setTimeout(() => {
-                        setHasShownHint(true);
-                        hasShownHintInSession = true;
-                    }, 1000);
-                    return () => clearTimeout(timer);
+                    setHasShownHint(true);
+                    hasShownHintInSession = true;
                 }
             }, [isFirstItem, hasShownHint, questGame.name])
         );
@@ -367,7 +364,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                 }),
             ]).start(() => {
                 if (removeItem) {
-                    removeItem(questGame.id, "undiscovered");
+                    removeItem(questGame.id, "dropped");
                 }
             });
         };
@@ -419,13 +416,16 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             ).length -
                                                 1 && {
                                             borderTopRightRadius: 12,
-                                            borderBottomRightRadius: 11,
+                                            borderBottomRightRadius: 12,
                                         },
                                     ]}
                                     onPress={() => handleStatusSelect(status)}
                                     activeOpacity={0.7}
                                 >
-                                    <Text style={[styles.statusButtonText]}>
+                                    <Text
+                                        variant="button"
+                                        style={styles.statusButtonText}
+                                    >
                                         {getStatusLabel(status)}
                                     </Text>
                                 </TouchableOpacity>
@@ -447,7 +447,10 @@ const GameItem: React.FC<GameItemProps> = memo(
                             activeOpacity={0.7}
                             onPress={handleRemove}
                         >
-                            <Text style={[styles.statusButtonText]}>
+                            <Text
+                                variant="button"
+                                style={styles.statusButtonText}
+                            >
                                 Remove
                             </Text>
                         </TouchableOpacity>
@@ -505,10 +508,15 @@ const GameItem: React.FC<GameItemProps> = memo(
                         )}
 
                         <View style={styles.contentContainer}>
-                            <Text style={styles.title}>{questGame.name}</Text>
+                            <Text variant="title" style={styles.title}>
+                                {questGame.name}
+                            </Text>
                             {questGame.gameStatus === "completed" &&
                                 questGame.personalRating !== undefined && (
-                                    <Text style={styles.rating}>
+                                    <Text
+                                        variant="caption"
+                                        style={styles.rating}
+                                    >
                                         {"⭐".repeat(questGame.personalRating)}
                                         {"☆".repeat(
                                             10 - questGame.personalRating
@@ -517,39 +525,53 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     </Text>
                                 )}
                             <View style={styles.detailsContainer}>
-                                <Text style={styles.textSecondary}>
-                                    Platform: {questGame.selectedPlatform?.name}
-                                </Text>
                                 {questGame.notes &&
                                     questGame.gameStatus === "completed" && (
                                         <View style={styles.quoteContainer}>
-                                            <Text style={styles.quote}>
+                                            <Text
+                                                variant="caption"
+                                                style={styles.quote}
+                                            >
                                                 "{questGame.notes}"
                                             </Text>
                                         </View>
                                     )}
                                 {questGame.gameStatus !== "completed" && (
-                                    <View>
+                                    <View style={styles.detailsContainer}>
+                                        <Text style={styles.textSecondary}>
+                                            <Text>Platform: </Text>
+                                            <Text>
+                                                {
+                                                    questGame.selectedPlatform
+                                                        ?.name
+                                                }
+                                            </Text>
+                                        </Text>
                                         {platformReleaseDate && (
                                             <Text style={styles.textSecondary}>
-                                                Release Date:{" "}
-                                                {formatReleaseDate(
-                                                    platformReleaseDate.date
-                                                )}
+                                                <Text>Release Date: </Text>
+                                                <Text>
+                                                    {formatReleaseDate(
+                                                        platformReleaseDate.date
+                                                    )}
+                                                </Text>
                                             </Text>
                                         )}
                                         <Text style={styles.textSecondary}>
-                                            Genres: {genresText}
+                                            <Text>Genres: </Text>
+                                            <Text>{genresText}</Text>
                                         </Text>
                                         <Text style={styles.textSecondary}>
-                                            Date Added:{" "}
-                                            {new Date(
-                                                questGame.dateAdded
-                                            ).toLocaleDateString("en-US", {
-                                                year: "numeric",
-                                                month: "short",
-                                                day: "2-digit",
-                                            })}
+                                            <Text>Date Added: </Text>
+                                            <Text>
+                                                {new Date(
+                                                    questGame.dateAdded
+                                                ).toLocaleDateString("en-US", {
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "2-digit",
+                                                })}
+                                            </Text>
                                         </Text>
                                     </View>
                                 )}
@@ -635,16 +657,26 @@ const styles = StyleSheet.create({
         borderLeftWidth: 1,
         borderLeftColor: colorSwatch.neutral.darkGray,
     },
+    rightMenu: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: 100,
+        flexDirection: "row",
+        alignItems: "stretch",
+        borderRightWidth: 1,
+        borderRightColor: colorSwatch.neutral.darkGray,
+    },
     activeItem: {
-        backgroundColor: colorSwatch.background.darker,
         borderWidth: 2,
         borderColor: colorSwatch.accent.cyan,
+        borderRadius: 12,
     },
     statusButton: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "transparent",
         padding: 8,
         margin: 1,
     },
@@ -657,25 +689,21 @@ const styles = StyleSheet.create({
     dragHandle: {
         justifyContent: "center",
         alignItems: "center",
-        width: 48,
+        width: 36,
         backgroundColor: colorSwatch.background.darker,
         borderRightWidth: 1,
         borderRightColor: colorSwatch.neutral.darkGray,
     },
     dragHandleContent: {
         alignItems: "center",
-        gap: 4,
     },
     priorityText: {
         color: colorSwatch.accent.cyan,
-        fontSize: 14,
-        fontWeight: "600",
     },
     title: {
         fontSize: 18,
-        marginBottom: 8,
+        marginBottom: 4,
         color: colorSwatch.accent.purple,
-        fontWeight: "600",
         flexWrap: "wrap",
         maxWidth: "100%",
         lineHeight: 24,
@@ -688,8 +716,7 @@ const styles = StyleSheet.create({
         gap: 12,
     },
     pressed: {
-        opacity: 0.8,
-        backgroundColor: colorSwatch.background.darker,
+        opacity: 0.2,
     },
     rating: {
         fontSize: 12,
@@ -703,24 +730,20 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
     },
     detailsContainer: {
-        flex: 1,
-        gap: 4,
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
     },
     textSecondary: {
-        fontSize: 14,
-        color: colorSwatch.text.secondary,
-        lineHeight: 20,
+        color: colorSwatch.primary.dark,
     },
     quoteContainer: {
         backgroundColor: colorSwatch.background.darker,
         paddingVertical: 8,
     },
     quote: {
-        fontStyle: "italic",
         color: colorSwatch.secondary.main,
-        fontSize: 14,
         flexWrap: "wrap",
-        lineHeight: 20,
+        lineHeight: 16,
     },
     chevronContainer: {
         position: "absolute",
@@ -737,17 +760,6 @@ const styles = StyleSheet.create({
     },
     rightChevron: {
         left: -50,
-    },
-    rightMenu: {
-        position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: 100,
-        flexDirection: "row",
-        alignItems: "stretch",
-        borderRightWidth: 1,
-        borderRightColor: colorSwatch.neutral.darkGray,
     },
 });
 

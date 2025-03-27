@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
     ImageBackground,
     StyleSheet,
     View,
     ActivityIndicator,
-    Text,
 } from "react-native";
+import Text from "../../../components/Text";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 
@@ -91,7 +91,7 @@ const GameSection: React.FC<GameSectionProps> = ({
         >
             <View style={styles.overlay} />
             <View style={styles.loadingContainer}>
-                <Text style={styles.emptyText}>
+                <Text variant="subtitle" style={styles.emptyText}>
                     No games found in this category
                 </Text>
             </View>
@@ -112,7 +112,9 @@ const GameSection: React.FC<GameSectionProps> = ({
                 renderItem={renderItem}
                 ListEmptyComponent={() => (
                     <View style={styles.loadingContainer}>
-                        <Text style={styles.emptyText}>No games available</Text>
+                        <Text variant="subtitle" style={styles.emptyText}>
+                            No games available
+                        </Text>
                     </View>
                 )}
                 contentContainerStyle={styles.listContainer}

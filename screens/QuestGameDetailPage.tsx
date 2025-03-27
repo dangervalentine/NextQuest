@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import {
     ScrollView,
     StyleSheet,
-    Text,
     View,
     ActivityIndicator,
     Animated,
     ImageBackground,
+    SafeAreaView,
+    Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRoute } from "@react-navigation/native";
@@ -20,13 +21,14 @@ import { GameStatus } from "../constants/gameStatus";
 import { QuestGame } from "../data/models/QuestGame";
 import { getAgeRating } from "../utils/getAgeRating";
 import WebsitesSection from "../app/components/WebsitesSection";
+import StorylineSection from "./GameDetail/components/StorylineSection";
+import Text from "../components/Text";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
     const { id } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
-    const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         const loadGameDetails = async () => {
@@ -47,12 +49,12 @@ const QuestGameDetailPage: React.FC = () => {
 
     if (!game) {
         return (
-            <View style={styles.loadingContainer}>
+            <SafeAreaView style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
                     color={colorSwatch.accent.green}
                 />
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -71,8 +73,10 @@ const QuestGameDetailPage: React.FC = () => {
                 />
             )}
             <View style={styles.headerInfo}>
-                <Text style={styles.gameTitle}>{game.name}</Text>
-                <Text style={styles.releaseDate}>
+                <Text variant="title" style={styles.gameTitle}>
+                    {game.name}
+                </Text>
+                <Text variant="subtitle" style={styles.releaseDate}>
                     {game.release_dates?.[0]?.human || "Release date unknown"}
                 </Text>
             </View>
@@ -111,8 +115,11 @@ const QuestGameDetailPage: React.FC = () => {
         return (
             <View style={styles.metadataGrid}>
                 <View style={styles.metadataItem}>
-                    <Text style={styles.metadataLabel}>Status</Text>
+                    <Text variant="subtitle" style={styles.metadataLabel}>
+                        Status
+                    </Text>
                     <Text
+                        variant="body"
                         style={[
                             styles.metadataValue,
                             getStatusStyles(game.gameStatus),
@@ -125,8 +132,11 @@ const QuestGameDetailPage: React.FC = () => {
                 </View>
                 {game.gameStatus === "completed" && game.completionDate && (
                     <View style={styles.metadataItem}>
-                        <Text style={styles.metadataLabel}>Completed On</Text>
+                        <Text variant="subtitle" style={styles.metadataLabel}>
+                            Completed On
+                        </Text>
                         <Text
+                            variant="body"
                             style={[
                                 styles.metadataValue,
                                 { color: colorSwatch.accent.green },
@@ -137,32 +147,41 @@ const QuestGameDetailPage: React.FC = () => {
                     </View>
                 )}
                 <View style={styles.metadataItem}>
-                    <Text style={styles.metadataLabel}>Age Rating</Text>
-                    <Text style={styles.metadataValue}>
+                    <Text variant="subtitle" style={styles.metadataLabel}>
+                        Age Rating
+                    </Text>
+                    <Text variant="body" style={styles.metadataValue}>
                         {getAgeRating(game) || "N/A"}
                     </Text>
                 </View>
                 <View style={styles.metadataItem}>
-                    <Text style={styles.metadataLabel}>Date Added</Text>
-                    <Text style={styles.metadataValue}>
+                    <Text variant="subtitle" style={styles.metadataLabel}>
+                        Date Added
+                    </Text>
+                    <Text variant="body" style={styles.metadataValue}>
                         {new Date(
                             game.dateAdded?.split("T")[0]
                         ).toLocaleDateString()}
                     </Text>
                 </View>
                 <View style={styles.metadataItem}>
-                    <Text style={styles.metadataLabel}>Platform</Text>
-                    <Text style={styles.metadataValue}>
+                    <Text variant="subtitle" style={styles.metadataLabel}>
+                        Platform
+                    </Text>
+                    <Text variant="body" style={styles.metadataValue}>
                         {game.selectedPlatform?.name || "Not set"}
                     </Text>
                 </View>
                 {game.franchises && game.franchises.length > 0 && (
                     <View style={[styles.metadataItem]}>
-                        <Text style={styles.metadataLabel}>Franchises</Text>
+                        <Text variant="subtitle" style={styles.metadataLabel}>
+                            Franchises
+                        </Text>
                         <View style={styles.franchiseLinks}>
                             {game.franchises.map((franchise) => (
                                 <Text
                                     key={franchise.id}
+                                    variant="body"
                                     style={styles.franchiseLink}
                                     onPress={() =>
                                         handleFranchisePress(franchise.id)
@@ -232,11 +251,16 @@ const QuestGameDetailPage: React.FC = () => {
 
         return (
             <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Personal Review</Text>
+                <Text variant="title" style={styles.sectionTitle}>
+                    Personal Review
+                </Text>
                 {game.personalRating && (
                     <View style={styles.ratingContainer}>
-                        <Text style={styles.ratingLabel}>My Rating</Text>
+                        <Text variant="subtitle" style={styles.ratingLabel}>
+                            My Rating
+                        </Text>
                         <Text
+                            variant="body"
                             style={[
                                 styles.ratingValue,
                                 {
@@ -287,7 +311,9 @@ const QuestGameDetailPage: React.FC = () => {
                 )}
                 {game.notes && (
                     <View style={styles.noteContainer}>
-                        <Text style={styles.noteText}>"{game.notes}"</Text>
+                        <Text variant="caption" style={styles.noteText}>
+                            "{game.notes}"
+                        </Text>
                     </View>
                 )}
             </View>
@@ -310,8 +336,10 @@ const QuestGameDetailPage: React.FC = () => {
                 .sort((a, b) => a.date - b.date)
                 .map((platform, index) => (
                     <View key={index} style={styles.platformItem}>
-                        <Text style={styles.platformName}>{platform.name}</Text>
-                        <Text style={styles.platformDate}>
+                        <Text variant="body" style={styles.platformName}>
+                            {platform.name}
+                        </Text>
+                        <Text variant="body" style={styles.platformDate}>
                             {platform.human?.split("T")[0]}
                         </Text>
                     </View>
@@ -323,12 +351,16 @@ const QuestGameDetailPage: React.FC = () => {
         if (!game.genres?.length) return null;
         return (
             <View style={styles.characteristicSection}>
-                <Text style={styles.characteristicTitle}>Genres</Text>
+                <Text variant="title" style={styles.characteristicTitle}>
+                    Genres
+                </Text>
                 <View style={styles.tagsFlow}>
                     {game.genres?.map(
                         (genre: { name: string }, index: number) => (
                             <View key={index} style={styles.tagItem}>
-                                <Text style={styles.tagText}>{genre.name}</Text>
+                                <Text variant="body" style={styles.tagText}>
+                                    {genre.name}
+                                </Text>
                             </View>
                         )
                     )}
@@ -341,11 +373,15 @@ const QuestGameDetailPage: React.FC = () => {
         if (!game.themes?.length) return null;
         return (
             <View style={styles.characteristicSection}>
-                <Text style={styles.characteristicTitle}>Themes</Text>
+                <Text variant="title" style={styles.characteristicTitle}>
+                    Themes
+                </Text>
                 <View style={styles.tagsFlow}>
                     {game.themes.map((theme, index) => (
                         <View key={index} style={styles.tagItem}>
-                            <Text style={styles.tagText}>{theme.name}</Text>
+                            <Text variant="body" style={styles.tagText}>
+                                {theme.name}
+                            </Text>
                         </View>
                     ))}
                 </View>
@@ -357,11 +393,15 @@ const QuestGameDetailPage: React.FC = () => {
         if (!game.game_modes?.length) return null;
         return (
             <View style={styles.characteristicSection}>
-                <Text style={styles.characteristicTitle}>Game Modes</Text>
+                <Text variant="title" style={styles.characteristicTitle}>
+                    Game Modes
+                </Text>
                 <View style={styles.tagsFlow}>
                     {game.game_modes.map((mode, index) => (
                         <View key={index} style={styles.tagItem}>
-                            <Text style={styles.tagText}>{mode.name}</Text>
+                            <Text variant="body" style={styles.tagText}>
+                                {mode.name}
+                            </Text>
                         </View>
                     ))}
                 </View>
@@ -373,41 +413,18 @@ const QuestGameDetailPage: React.FC = () => {
         if (!game.player_perspectives?.length) return null;
         return (
             <View style={styles.characteristicSection}>
-                <Text style={styles.characteristicTitle}>
+                <Text variant="title" style={styles.characteristicTitle}>
                     Player Perspectives
                 </Text>
                 <View style={styles.tagsFlow}>
                     {game.player_perspectives.map((perspective, index) => (
                         <View key={index} style={styles.tagItem}>
-                            <Text style={styles.tagText}>
+                            <Text variant="body" style={styles.tagText}>
                                 {perspective.name}
                             </Text>
                         </View>
                     ))}
                 </View>
-            </View>
-        );
-    };
-
-    const StorylineSection: React.FC = () => {
-        return (
-            <View style={styles.storylineContainer}>
-                <Text style={styles.storylineText}>
-                    {isExpanded
-                        ? game.storyline || game.summary
-                        : `${game.storyline || game.summary}`.substring(
-                              0,
-                              400
-                          ) + "..."}
-                </Text>
-                {game.storyline || game.summary ? (
-                    <Text
-                        style={styles.seeMoreText}
-                        onPress={() => setIsExpanded(!isExpanded)}
-                    >
-                        {isExpanded ? "See less" : "See more..."}
-                    </Text>
-                ) : null}
             </View>
         );
     };
@@ -456,26 +473,17 @@ const QuestGameDetailPage: React.FC = () => {
             <View style={styles.companiesList}>
                 {allCompanies.map((company, index) => (
                     <View key={index} style={styles.platformItem}>
-                        <Text style={styles.platformName}>{company.name}</Text>
-                        <Text style={styles.platformDate}>{company.role}</Text>
+                        <Text variant="body" style={styles.platformName}>
+                            {company.name}
+                        </Text>
+                        <Text variant="body" style={styles.platformDate}>
+                            {company.role}
+                        </Text>
                     </View>
                 ))}
             </View>
         );
     };
-
-    const ScreenshotsSection: React.FC = () => (
-        <View style={styles.screenshotsSection}>
-            <Text style={styles.screenshotsTitle}>Screenshots</Text>
-            <ImageCarousel
-                images={
-                    game.screenshots?.map((s) =>
-                        s.url.replace("t_thumb", "t_720p")
-                    ) ?? []
-                }
-            />
-        </View>
-    );
 
     return (
         <ImageBackground
@@ -496,26 +504,40 @@ const QuestGameDetailPage: React.FC = () => {
                 {/* Personal Review Section */}
                 {game.gameStatus === "completed" && <PersonalReviewSection />}
 
-                {/* Visual Showcase */}
-                {game.screenshots && game.screenshots.length > 0 && (
-                    <View style={styles.screenshotsContainer}>
-                        <ScreenshotsSection />
-                    </View>
-                )}
-
                 {/* Core Game Information */}
                 {(game.storyline || game.summary) && (
                     <View style={styles.sectionContainer}>
-                        <Text style={styles.mainSectionTitle}>
+                        <Text variant="title" style={styles.mainSectionTitle}>
                             About the Game
                         </Text>
-                        <StorylineSection />
+                        <StorylineSection
+                            storyline={game.storyline}
+                            summary={game.summary}
+                        />
+                    </View>
+                )}
+
+                {/* Visual Showcase */}
+                {game.screenshots && game.screenshots.length > 0 && (
+                    <View style={styles.sectionContainer}>
+                        <Text variant="title" style={styles.mainSectionTitle}>
+                            Screenshots
+                        </Text>
+                        <ImageCarousel
+                            images={
+                                game.screenshots?.map((s) =>
+                                    s.url.replace("t_thumb", "t_720p")
+                                ) ?? []
+                            }
+                        />
                     </View>
                 )}
 
                 {/* Essential Game Categories */}
                 <View style={styles.sectionContainer}>
-                    <Text style={styles.mainSectionTitle}>Information</Text>
+                    <Text variant="title" style={styles.mainSectionTitle}>
+                        Information
+                    </Text>
                     {/* Core Categories */}
                     <View style={styles.characteristicsContainer}>
                         <GenresSection />
@@ -527,17 +549,19 @@ const QuestGameDetailPage: React.FC = () => {
 
                 {/* Additional Game Details */}
                 <View style={styles.sectionContainer}>
-                    <Text style={styles.mainSectionTitle}>
+                    <Text variant="title" style={styles.mainSectionTitle}>
                         Additional Details
                     </Text>
-
-                    {/* External Links */}
-                    <WebsitesSection websites={game.websites || []} />
 
                     {/* Platforms */}
                     {game.platforms && game.platforms.length > 0 && (
                         <View style={styles.platformSection}>
-                            <Text style={styles.platformTitle}>Platforms</Text>
+                            <Text
+                                variant="subtitle"
+                                style={styles.platformTitle}
+                            >
+                                Platforms
+                            </Text>
                             <PlatformsSection />
                         </View>
                     )}
@@ -546,12 +570,17 @@ const QuestGameDetailPage: React.FC = () => {
                     {game.involved_companies &&
                         game.involved_companies.length > 0 && (
                             <View style={styles.infoSection}>
-                                <Text style={styles.subSectionTitle}>
+                                <Text
+                                    variant="subtitle"
+                                    style={styles.subSectionTitle}
+                                >
                                     Development
                                 </Text>
                                 <CompaniesSection />
                             </View>
                         )}
+                    {/* External Links */}
+                    <WebsitesSection websites={game.websites || []} />
                 </View>
 
                 <View style={styles.bottomClearance} />
@@ -563,15 +592,27 @@ const QuestGameDetailPage: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.dark,
         opacity: 0.99,
     },
+    scrollView: {
+        flex: 1,
+    },
+    scrollViewContent: {
+        paddingTop: Platform.OS === "ios" ? 0 : 60, // Add padding for Android
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.dark,
+    },
     headerSection: {
-        borderRadius: 6,
+        marginTop: 130,
     },
     coverImage: {
         width: "100%",
@@ -611,21 +652,14 @@ const styles = StyleSheet.create({
         marginTop: 16,
         gap: 16,
     },
-    platformSection: {
-        backgroundColor: colorSwatch.background.darker,
-        padding: 16,
-        borderRadius: 12,
-    },
+    platformSection: {},
     platformTitle: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: colorSwatch.accent.purple,
         marginBottom: 8,
+        color: colorSwatch.text.primary,
     },
     infoSection: {
         marginTop: 16,
         borderRadius: 8,
-        padding: 16,
     },
     screenshotsSection: {
         paddingBottom: 30,
@@ -639,19 +673,13 @@ const styles = StyleSheet.create({
     subSectionTitle: {
         fontSize: 18,
         fontWeight: "600",
-        color: colorSwatch.accent.cyan,
+        color: colorSwatch.text.primary,
         marginBottom: 12,
     },
     storylineText: {
         fontSize: 16,
         lineHeight: 24,
         color: colorSwatch.neutral.lightGray,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
     },
     metadataGrid: {
         flexDirection: "row",
@@ -819,8 +847,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
     },
     screenshotsTitle: {
-        fontSize: 20,
-        fontWeight: "600",
         padding: 16,
         paddingBottom: 0,
         color: colorSwatch.accent.purple,

@@ -1,42 +1,60 @@
-import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import AppNavigator from "./screens/AppNavigator";
-import { colorSwatch } from "./utils/colorConstants";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
+import Text from "./components/Text";
+import { NavigationContainer } from "@react-navigation/native";
+import MainNavigationContainer from "./screens/GameListNavigationContainer";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback, useEffect, useState } from "react";
 import { initializeDatabase } from "./data/config/databaseSeeder";
+import { colorSwatch } from "./utils/colorConstants";
+import { StatusBar } from "expo-status-bar";
 
-const App = () => {
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
+export default function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [fontsLoaded] = useFonts({
+        "VictorMono-Regular": require("./assets/fonts/VictorMono-Regular.ttf"),
+        "VictorMono-Bold": require("./assets/fonts/VictorMono-Bold.ttf"),
+        "VictorMono-Italic": require("./assets/fonts/VictorMono-Italic.ttf"),
+        "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
+        "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
+        "Inter-Italic": require("./assets/fonts/Inter-Italic.ttf"),
+    });
 
     useEffect(() => {
-        const setupDatabase = async () => {
+        async function prepare() {
             try {
                 await initializeDatabase();
-                setIsLoading(false);
-            } catch (err) {
-                console.error("Database initialization failed:", err);
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to initialize database"
-                );
+            } catch (e) {
+                console.warn(e);
+                setError("Failed to initialize database");
+            } finally {
                 setIsLoading(false);
             }
-        };
+        }
 
-        setupDatabase();
+        prepare();
     }, []);
 
-    if (isLoading) {
+    const onLayoutRootView = useCallback(async () => {
+        if (fontsLoaded && !isLoading) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded, isLoading]);
+
+    if (!fontsLoaded || isLoading) {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
-                    color={colorSwatch.accent.green}
+                    color={colorSwatch.accent.cyan}
                 />
+                <Text variant="body" style={styles.loadingText}>
+                    Loading...
+                </Text>
             </View>
         );
     }
@@ -44,31 +62,37 @@ const App = () => {
     if (error) {
         return (
             <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>{error}</Text>
+                <Text variant="subtitle" style={styles.errorText}>
+                    {error}
+                </Text>
             </View>
         );
     }
 
     return (
-        <GestureHandlerRootView style={styles.rootScreen}>
-            <SafeAreaProvider>
-                <StatusBar style="light" />
-                <AppNavigator />
-            </SafeAreaProvider>
-        </GestureHandlerRootView>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+            <StatusBar style="light" />
+            <NavigationContainer>
+                <MainNavigationContainer />
+            </NavigationContainer>
+        </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
-    rootScreen: {
+    container: {
         flex: 1,
         backgroundColor: colorSwatch.background.darkest,
     },
     loadingContainer: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
         backgroundColor: colorSwatch.background.darkest,
+        alignItems: "center",
+        gap: 16,
+    },
+    loadingText: {
+        color: colorSwatch.text.primary,
     },
     errorContainer: {
         flex: 1,
@@ -78,28 +102,5 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: colorSwatch.accent.pink,
-        fontSize: 16,
-    },
-    container: {},
-    headerStyle: {
-        backgroundColor: colorSwatch.background.dark,
-        borderBottomWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
-        shadowOffset: {
-            width: 5,
-            height: 8,
-        },
-        shadowColor: colorSwatch.neutral.darkGray,
-        shadowOpacity: 1,
-        shadowRadius: 3.84,
-        elevation: 20,
-    },
-    headerTitleStyle: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: colorSwatch.secondary.main,
-        textAlign: "center",
     },
 });
-
-export default App;
