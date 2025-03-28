@@ -1,33 +1,43 @@
 {
-    "expo": {
-        "name": "Dygat",
-        "slug": "dygat",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./assets/dygat.png",
-        "userInterfaceStyle": "dark",
-        "newArchEnabled": true,
-        "splash": {
-            "image": "./assets/dygat.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#011627"
-        },
-        "ios": {
-            "supportsTablet": true
-        },
-        "android": {
-            "package": "com.dangervalentine.dygat",
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/dygat.png",
-                "backgroundColor": "#011627"
-            }
-        },
-        "web": {
-            "favicon": "./assets/dygat.png"
-        },
-        "plugins": [
-            "expo-sqlite",
-            "expo-font"
-        ]
-    }
+  "expo": {
+    "name": "NextQuest",
+    "slug": "next-quest",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nextquest.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.nextquest.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "41184c29-dcf6-4a3e-bfe2-00f45fa74fa1"
+      }
+    },
+    "owner": "dangervalentine"
+  }
 }

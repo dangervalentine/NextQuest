@@ -4,6 +4,7 @@ import {
     StyleSheet,
     View,
     ActivityIndicator,
+    Text as RNText,
     Animated,
     ImageBackground,
     SafeAreaView,
@@ -23,6 +24,7 @@ import { getAgeRating } from "../utils/getAgeRating";
 import WebsitesSection from "../app/components/WebsitesSection";
 import StorylineSection from "./GameDetail/components/StorylineSection";
 import Text from "../components/Text";
+import { AgeRatingBadge } from "../components/AgeRatingBadge";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -61,16 +63,19 @@ const QuestGameDetailPage: React.FC = () => {
     const HeaderSection: React.FC = () => (
         <View style={styles.headerSection}>
             {game.cover && (
-                <FullWidthImage
-                    source={`https:${game.cover.url.replace(
-                        "t_cover_big",
-                        "t_720p"
-                    )}`}
-                    style={{
-                        width: "100%",
-                        backgroundColor: colorSwatch.background.dark,
-                    }}
-                />
+                <View>
+                    <FullWidthImage
+                        source={`https:${game.cover.url.replace(
+                            "t_cover_big",
+                            "t_720p"
+                        )}`}
+                        style={{
+                            width: "100%",
+                            backgroundColor: colorSwatch.background.dark,
+                        }}
+                    />
+                    <AgeRatingBadge game={game} />
+                </View>
             )}
             <View style={styles.headerInfo}>
                 <Text variant="title" style={styles.gameTitle}>
@@ -100,7 +105,7 @@ const QuestGameDetailPage: React.FC = () => {
                     };
                 default:
                     return {
-                        color: colorSwatch.accent.pink,
+                        color: colorSwatch.accent.purple,
                         fontWeight: "normal" as "normal",
                         fontStyle: "normal" as "normal",
                     };
@@ -487,7 +492,7 @@ const QuestGameDetailPage: React.FC = () => {
 
     return (
         <ImageBackground
-            source={require("../assets/dygat.png")}
+            source={require("../assets/next_quest.png")}
             style={styles.container}
             resizeMode="contain"
         >
@@ -623,11 +628,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     gameTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
         color: colorSwatch.neutral.lightGray,
         marginBottom: 4,
         marginTop: 12,
+        fontSize: 24,
+        lineHeight: 32,
+        flex: 1,
+        textAlign: "center",
+        maxWidth: "80%",
+        flexWrap: "wrap",
     },
     releaseDate: {
         fontSize: 14,
@@ -665,8 +674,6 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
     mainSectionTitle: {
-        fontSize: 24,
-        fontWeight: "bold",
         color: colorSwatch.accent.purple,
         marginBottom: 20,
     },

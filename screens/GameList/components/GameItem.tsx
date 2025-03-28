@@ -508,7 +508,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         )}
 
                         <View style={styles.contentContainer}>
-                            <Text variant="title" style={styles.title}>
+                            <Text variant="subtitle" style={styles.title}>
                                 {questGame.name}
                             </Text>
                             {questGame.gameStatus === "completed" &&
@@ -525,7 +525,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     </Text>
                                 )}
                             <View style={styles.detailsContainer}>
-                                {questGame.notes &&
+                                {/* {questGame.notes &&
                                     questGame.gameStatus === "completed" && (
                                         <View style={styles.quoteContainer}>
                                             <Text
@@ -535,46 +535,31 @@ const GameItem: React.FC<GameItemProps> = memo(
                                                 "{questGame.notes}"
                                             </Text>
                                         </View>
+                                    )} */}
+                                {/* {questGame.gameStatus !== "completed" && ( */}
+                                <View style={styles.detailsContainer}>
+                                    <Text style={styles.textSecondary}>
+                                        <Text>Platform: </Text>
+                                        <Text>
+                                            {questGame.selectedPlatform?.name}
+                                        </Text>
+                                    </Text>
+                                    {platformReleaseDate && (
+                                        <Text style={styles.textSecondary}>
+                                            <Text>Release Date: </Text>
+                                            <Text>
+                                                {formatReleaseDate(
+                                                    platformReleaseDate.date
+                                                )}
+                                            </Text>
+                                        </Text>
                                     )}
-                                {questGame.gameStatus !== "completed" && (
-                                    <View style={styles.detailsContainer}>
-                                        <Text style={styles.textSecondary}>
-                                            <Text>Platform: </Text>
-                                            <Text>
-                                                {
-                                                    questGame.selectedPlatform
-                                                        ?.name
-                                                }
-                                            </Text>
-                                        </Text>
-                                        {platformReleaseDate && (
-                                            <Text style={styles.textSecondary}>
-                                                <Text>Release Date: </Text>
-                                                <Text>
-                                                    {formatReleaseDate(
-                                                        platformReleaseDate.date
-                                                    )}
-                                                </Text>
-                                            </Text>
-                                        )}
-                                        <Text style={styles.textSecondary}>
-                                            <Text>Genres: </Text>
-                                            <Text>{genresText}</Text>
-                                        </Text>
-                                        <Text style={styles.textSecondary}>
-                                            <Text>Date Added: </Text>
-                                            <Text>
-                                                {new Date(
-                                                    questGame.dateAdded
-                                                ).toLocaleDateString("en-US", {
-                                                    year: "numeric",
-                                                    month: "short",
-                                                    day: "2-digit",
-                                                })}
-                                            </Text>
-                                        </Text>
-                                    </View>
-                                )}
+                                    <Text style={styles.textSecondary}>
+                                        <Text>Genres: </Text>
+                                        <Text>{genresText}</Text>
+                                    </Text>
+                                </View>
+                                {/* )} */}
                             </View>
                         </View>
                     </Pressable>
@@ -682,8 +667,6 @@ const styles = StyleSheet.create({
     },
     statusButtonText: {
         fontSize: 16,
-        fontWeight: "600",
-        textAlign: "center",
         color: colorSwatch.text.inverse,
     },
     dragHandle: {

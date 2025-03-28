@@ -1,4 +1,4 @@
-package com.dangervalentine.dygat
+package com.dangervalentine.nextquest
 
 import android.os.Build
 import android.os.Bundle

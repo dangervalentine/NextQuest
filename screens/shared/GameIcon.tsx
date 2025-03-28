@@ -53,10 +53,10 @@ const QuestIcon: React.FC<IconProps> = ({
     }
     return (
         <Image
-            source={require("../../assets/dygat.png")}
+            source={require("../../assets/next_quest.png")}
             style={{ width: size, height: size }}
         />
-    ); // Fallback to dygat image
+    ); // Fallback to NextQuest image
 };
 
 export default QuestIcon;

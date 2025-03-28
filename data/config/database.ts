@@ -6,7 +6,7 @@ class DatabaseConnection {
     private db: ReturnType<typeof SQLite.openDatabaseSync>;
 
     private constructor() {
-        this.db = SQLite.openDatabaseSync("Dygat.db");
+        this.db = SQLite.openDatabaseSync("NextQuest.db");
     }
 
     public static getInstance(): DatabaseConnection {
@@ -18,7 +18,7 @@ class DatabaseConnection {
 
     private ensureConnection() {
         if (!this.db) {
-            this.db = SQLite.openDatabaseSync("Dygat.db");
+            this.db = SQLite.openDatabaseSync("NextQuest.db");
         }
     }
 

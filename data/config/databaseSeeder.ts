@@ -577,8 +577,8 @@ const seedOneGame = async (game: any) => {
 
 const exportDatabase = async () => {
     try {
-        const dbPath = FileSystem.documentDirectory + "SQLite/Dygat.db";
-        const exportPath = FileSystem.documentDirectory + "Dygat.db";
+        const dbPath = FileSystem.documentDirectory + "SQLite/NextQuest.db";
+        const exportPath = FileSystem.documentDirectory + "NextQuest.db";
 
         await FileSystem.copyAsync({
             from: dbPath,

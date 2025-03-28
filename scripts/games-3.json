@@ -1,0 +1,358 @@
+[
+    {
+        "title": "Dark Souls",
+        "platform": "PS3"
+    },
+    {
+        "title": "Bloodborne",
+        "platform": "PS4"
+    },
+    {
+        "title": "Sekiro: Shadows Die Twice",
+        "platform": "PS4"
+    },
+    {
+        "title": "Resident Evil 4",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Resident Evil 2 Remake",
+        "platform": "PS4"
+    },
+    {
+        "title": "The Witcher 3: Wild Hunt",
+        "platform": "PS4"
+    },
+    {
+        "title": "Cyberpunk 2077",
+        "platform": "PC"
+    },
+    {
+        "title": "Half-Life 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Deus Ex",
+        "platform": "PC"
+    },
+    {
+        "title": "System Shock 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Baldur's Gate 3",
+        "platform": "PC"
+    },
+    {
+        "title": "Persona 5",
+        "platform": "PS3"
+    },
+    {
+        "title": "Persona 3 Reload",
+        "platform": "PS5"
+    },
+    {
+        "title": "Shin Megami Tensei V",
+        "platform": "Switch"
+    },
+    {
+        "title": "Super Mario 64",
+        "platform": "N64"
+    },
+    {
+        "title": "The Legend of Zelda: Ocarina of Time",
+        "platform": "N64"
+    },
+    {
+        "title": "The Legend of Zelda: Tears of the Kingdom",
+        "platform": "Switch"
+    },
+    {
+        "title": "Metroid Prime",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Super Metroid",
+        "platform": "SNES"
+    },
+    {
+        "title": "Castlevania: Symphony of the Night",
+        "platform": "PS1"
+    },
+    {
+        "title": "Hollow Knight",
+        "platform": "PC"
+    },
+    {
+        "title": "Celeste",
+        "platform": "PC"
+    },
+    {
+        "title": "Dead Cells",
+        "platform": "PC"
+    },
+    {
+        "title": "Undertale",
+        "platform": "PC"
+    },
+    {
+        "title": "Deltarune",
+        "platform": "PC"
+    },
+    {
+        "title": "Stardew Valley",
+        "platform": "PC"
+    },
+    {
+        "title": "Terraria",
+        "platform": "PC"
+    },
+    {
+        "title": "Hades",
+        "platform": "PC"
+    },
+    {
+        "title": "The Binding of Isaac",
+        "platform": "PC"
+    },
+    {
+        "title": "Slay the Spire",
+        "platform": "PC"
+    },
+    {
+        "title": "Darkest Dungeon",
+        "platform": "PC"
+    },
+    {
+        "title": "Monster Hunter World",
+        "platform": "PS4"
+    },
+    {
+        "title": "Monster Hunter Rise",
+        "platform": "Switch"
+    },
+    {
+        "title": "Final Fantasy VII",
+        "platform": "PS1"
+    },
+    {
+        "title": "Final Fantasy XIV",
+        "platform": "PC"
+    },
+    {
+        "title": "Nier: Automata",
+        "platform": "PS4"
+    },
+    {
+        "title": "Dragon's Dogma",
+        "platform": "PS3"
+    },
+    {
+        "title": "Elden Ring",
+        "platform": "PS5"
+    },
+    {
+        "title": "Demon's Souls",
+        "platform": "PS3"
+    },
+    {
+        "title": "The Elder Scrolls III: Morrowind",
+        "platform": "Xbox"
+    },
+    {
+        "title": "The Elder Scrolls IV: Oblivion",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "The Elder Scrolls V: Skyrim",
+        "platform": "PC"
+    },
+    {
+        "title": "Fallout: New Vegas",
+        "platform": "PC"
+    },
+    {
+        "title": "Fallout 3",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Red Dead Redemption",
+        "platform": "PS3"
+    },
+    {
+        "title": "Red Dead Redemption 2",
+        "platform": "PS4"
+    },
+    {
+        "title": "Grand Theft Auto V",
+        "platform": "PS3"
+    },
+    {
+        "title": "Grand Theft Auto: San Andreas",
+        "platform": "PS2"
+    },
+    {
+        "title": "Disco Elysium",
+        "platform": "PC"
+    },
+    {
+        "title": "Xenogears",
+        "platform": "PS1"
+    },
+    {
+        "title": "Xenoblade Chronicles",
+        "platform": "Wii"
+    },
+    {
+        "title": "Xenoblade Chronicles 3",
+        "platform": "Switch"
+    },
+    {
+        "title": "Metal Gear Solid",
+        "platform": "PS1"
+    },
+    {
+        "title": "Metal Gear Solid 3: Snake Eater",
+        "platform": "PS2"
+    },
+    {
+        "title": "Metal Gear Solid V: The Phantom Pain",
+        "platform": "PS4"
+    },
+    {
+        "title": "Tunic",
+        "platform": "PC"
+    },
+    {
+        "title": "Fire Emblem: Three Houses",
+        "platform": "Switch"
+    },
+    {
+        "title": "Advance Wars",
+        "platform": "GBA"
+    },
+    {
+        "title": "Age of Empires II",
+        "platform": "PC"
+    },
+    {
+        "title": "StarCraft",
+        "platform": "PC"
+    },
+    {
+        "title": "Warcraft III",
+        "platform": "PC"
+    },
+    {
+        "title": "Halo: Combat Evolved",
+        "platform": "Xbox"
+    },
+    {
+        "title": "Halo 3",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Doom (1993)",
+        "platform": "PC"
+    },
+    {
+        "title": "Doom Eternal",
+        "platform": "PC"
+    },
+    {
+        "title": "Quake",
+        "platform": "PC"
+    },
+    {
+        "title": "System Shock",
+        "platform": "PC"
+    },
+    {
+        "title": "BioShock",
+        "platform": "Xbox 360"
+    },
+    {
+        "title": "Titanfall 2",
+        "platform": "PS4"
+    },
+    {
+        "title": "Portal",
+        "platform": "PC"
+    },
+    {
+        "title": "Portal 2",
+        "platform": "PC"
+    },
+    {
+        "title": "Left 4 Dead 2",
+        "platform": "PC"
+    },
+    {
+        "title": "The Stanley Parable",
+        "platform": "PC"
+    },
+    {
+        "title": "Shadow of the Colossus",
+        "platform": "PS2"
+    },
+    {
+        "title": "ICO",
+        "platform": "PS2"
+    },
+    {
+        "title": "Journey",
+        "platform": "PS3"
+    },
+    {
+        "title": "The Last Guardian",
+        "platform": "PS4"
+    },
+    {
+        "title": "The Last of Us",
+        "platform": "PS3"
+    },
+    {
+        "title": "The Last of Us Part II",
+        "platform": "PS4"
+    },
+    {
+        "title": "Inside",
+        "platform": "PC"
+    },
+    {
+        "title": "Limbo",
+        "platform": "PC"
+    },
+    {
+        "title": "Katamari Damacy",
+        "platform": "PS2"
+    },
+    {
+        "title": "Okami",
+        "platform": "PS2"
+    },
+    {
+        "title": "Psychonauts",
+        "platform": "Xbox"
+    },
+    {
+        "title": "Cuphead",
+        "platform": "PC"
+    },
+    {
+        "title": "Street Fighter II",
+        "platform": "SNES"
+    },
+    {
+        "title": "Tekken 3",
+        "platform": "PS1"
+    },
+    {
+        "title": "Guilty Gear Strive",
+        "platform": "PC"
+    },
+    {
+        "title": "Super Smash Bros. Melee",
+        "platform": "GameCube"
+    }
+]

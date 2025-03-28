@@ -68,7 +68,7 @@ const GameSection: React.FC<GameSectionProps> = ({
     if (isLoading) {
         return (
             <ImageBackground
-                source={require("../../../assets/dygat.png")}
+                source={require("../../../assets/next_quest.png")}
                 style={styles.pageContainer}
                 resizeMode="contain"
             >
@@ -85,7 +85,7 @@ const GameSection: React.FC<GameSectionProps> = ({
 
     return games.length === 0 ? (
         <ImageBackground
-            source={require("../../../assets/dygat.png")}
+            source={require("../../../assets/next_quest.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -98,7 +98,7 @@ const GameSection: React.FC<GameSectionProps> = ({
         </ImageBackground>
     ) : (
         <ImageBackground
-            source={require("../../../assets/dygat.png")}
+            source={require("../../../assets/next_quest.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
