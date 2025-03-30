@@ -15,19 +15,20 @@ interface HeaderWithIconProps {
         | keyof typeof SimpleLineIcons.glyphMap
         | keyof typeof FontAwesome5.glyphMap;
     title: string;
+    color?: string;
 }
 
-const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({ iconName, title }) => {
+const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({
+    iconName,
+    title,
+    color = colorSwatch.accent.cyan,
+}) => {
     return (
         <View style={styles.container}>
             <View style={styles.iconContainer}>
-                <QuestIcon
-                    name={iconName}
-                    size={24}
-                    color={colorSwatch.accent.cyan}
-                />
+                <QuestIcon name={iconName} size={24} color={color} />
             </View>
-            <Text variant="title" style={styles.title}>
+            <Text variant="title" style={[styles.title, { color }]}>
                 {title}
             </Text>
         </View>
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     title: {
-        color: colorSwatch.accent.purple,
+        fontFamily: "Inter-Regular",
     },
 });
 

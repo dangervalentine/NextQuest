@@ -121,6 +121,29 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         >
             <View style={styles.overlay} />
             <View style={styles.contentContainer}>
+                <View style={styles.searchContainer}>
+                    <View style={styles.searchInputContainer}>
+                        <TextInput
+                            style={styles.searchInput}
+                            placeholder="Search games..."
+                            placeholderTextColor={colorSwatch.text.secondary}
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
+                        />
+                        {searchQuery.length > 0 && (
+                            <TouchableOpacity
+                                style={styles.clearButton}
+                                onPress={() => setSearchQuery("")}
+                            >
+                                <QuestIcon
+                                    name="close-circle"
+                                    size={32}
+                                    color={colorSwatch.text.secondary}
+                                />
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                </View>
                 {filteredGames.length === 0 ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.emptyText}>
@@ -140,29 +163,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                         )}
                     </ScrollView>
                 )}
-                <View style={styles.searchContainer}>
-                    <View style={styles.searchInputContainer}>
-                        <TextInput
-                            style={styles.searchInput}
-                            placeholder="Search games..."
-                            placeholderTextColor={colorSwatch.text.secondary}
-                            value={searchQuery}
-                            onChangeText={setSearchQuery}
-                        />
-                        {searchQuery.length > 0 && (
-                            <TouchableOpacity
-                                style={styles.clearButton}
-                                onPress={() => setSearchQuery("")}
-                            >
-                                <QuestIcon
-                                    name="close-circle"
-                                    size={24}
-                                    color={colorSwatch.text.secondary}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                </View>
             </View>
         </ImageBackground>
     );
@@ -184,30 +184,29 @@ const styles = StyleSheet.create({
         opacity: 0.99,
     },
     searchContainer: {
-        padding: 16,
+        paddingVertical: 8,
         width: "100%",
         backgroundColor: colorSwatch.background.darker,
-        borderTopWidth: 1,
-        borderTopColor: colorSwatch.neutral.darkGray,
+        borderBottomWidth: 1,
+        borderBottomColor: colorSwatch.neutral.darkGray,
         zIndex: 1,
     },
     searchInputContainer: {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: colorSwatch.background.dark,
-        borderRadius: 8,
+        borderRadius: 12,
         borderWidth: 1,
-        borderColor: colorSwatch.accent.yellow,
+        borderColor: colorSwatch.accent.cyan,
     },
     searchInput: {
         flex: 1,
         padding: 12,
         color: colorSwatch.text.primary,
-        fontSize: 16,
+        fontSize: 24,
     },
     clearButton: {
         padding: 8,
-        marginRight: 4,
     },
     scrollContainer: {
         flex: 1,

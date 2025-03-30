@@ -36,6 +36,22 @@ interface TabNavigatorProps {
     ) => void;
 }
 
+// Add getStatusColor function at the top level
+const getStatusColor = (status: GameStatus): string => {
+    switch (status) {
+        case "ongoing":
+            return colorSwatch.accent.yellow;
+        case "completed":
+            return colorSwatch.accent.green;
+        case "backlog":
+            return colorSwatch.accent.purple;
+        case "undiscovered":
+            return colorSwatch.accent.cyan;
+        default:
+            return colorSwatch.accent.cyan;
+    }
+};
+
 const TabNavigator: React.FC<TabNavigatorProps> = ({
     gameData,
     isLoading,
@@ -66,12 +82,21 @@ const TabNavigator: React.FC<TabNavigatorProps> = ({
 
     return (
         <Tab.Navigator
-            screenOptions={{
+            screenOptions={({ route }) => ({
                 ...screenOptions,
                 tabBarStyle: {
                     ...tabBarStyle,
                 },
-            }}
+                tabBarActiveTintColor:
+                    route.name === "Discover"
+                        ? getStatusColor("undiscovered")
+                        : getStatusColor(
+                              tabScreens.find(
+                                  (screen) => screen.name === route.name
+                              )?.gameStatus || "ongoing"
+                          ),
+                tabBarInactiveTintColor: colorSwatch.text.muted,
+            })}
         >
             {tabScreens.map((screen) => (
                 <Tab.Screen
@@ -90,6 +115,7 @@ const TabNavigator: React.FC<TabNavigatorProps> = ({
                             <HeaderWithIcon
                                 iconName={screen.iconName}
                                 title={screen.title}
+                                color={getStatusColor(screen.gameStatus)}
                             />
                         ),
                     }}
@@ -107,21 +133,22 @@ const TabNavigator: React.FC<TabNavigatorProps> = ({
                 </Tab.Screen>
             ))}
             <Tab.Screen
-                key={"Search"}
-                name={"Search"}
+                key={"Discover"}
+                name={"Discover"}
                 options={{
-                    tabBarLabel: "Search",
+                    tabBarLabel: "Discover",
                     tabBarIcon: ({ color, size }) => (
                         <QuestIcon
-                            name={"toy-brick-search"}
+                            name={"telescope"}
                             size={size}
                             color={color}
                         />
                     ),
                     headerTitle: () => (
                         <HeaderWithIcon
-                            iconName={"toy-brick-search"}
-                            title={"Search"}
+                            iconName={"telescope"}
+                            title={"Discover"}
+                            color={getStatusColor("undiscovered")}
                         />
                     ),
                 }}

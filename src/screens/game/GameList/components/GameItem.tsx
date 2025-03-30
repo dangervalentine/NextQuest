@@ -181,7 +181,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                 case "backlog":
                     return colorSwatch.accent.purple;
                 case "undiscovered":
-                    return colorSwatch.secondary.main;
+                    return colorSwatch.accent.cyan;
                 default:
                     return colorSwatch.accent.cyan;
             }
@@ -325,18 +325,18 @@ const GameItem: React.FC<GameItemProps> = memo(
                         borderRightColor: colorSwatch.accent.purple,
                         borderRadius: 8,
                     };
-                case "ongoing":
-                    return {
-                        borderWidth: 1,
-                        borderColor: colorSwatch.accent.yellow,
-                        borderRadius: 8,
-                    };
+                // return {
+                //     borderWidth: 1,
+                //     borderColor: colorSwatch.accent.yellow,
+                //     borderRadius: 8,
+                // };
+                // return {
+                //     borderWidth: 1,
+                //     borderColor: colorSwatch.accent.purple,
+                //     borderRadius: 8,
+                // };
                 case "backlog":
-                    return {
-                        borderWidth: 1,
-                        borderColor: colorSwatch.accent.purple,
-                        borderRadius: 8,
-                    };
+                case "ongoing":
                 case "undiscovered":
                 case "on_hold":
                 case "dropped":
