@@ -21,12 +21,16 @@ interface HeaderWithIconProps {
 const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({
     iconName,
     title,
-    color = colorSwatch.accent.cyan,
+    color,
 }) => {
     return (
         <View style={styles.container}>
             <View style={styles.iconContainer}>
-                <QuestIcon name={iconName} size={24} color={color} />
+                <QuestIcon
+                    name={iconName}
+                    size={24}
+                    color={color || colorSwatch.accent.cyan}
+                />
             </View>
             <Text variant="title" style={[styles.title, { color }]}>
                 {title}
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
     title: {
-        fontFamily: "Inter-Regular",
+        color: colorSwatch.accent.purple,
     },
 });
 

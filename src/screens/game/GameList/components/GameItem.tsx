@@ -18,6 +18,7 @@ import { colorSwatch } from "src/utils/colorConstants";
 import { formatReleaseDate } from "src/utils/dateFormatters";
 import { ScreenNavigationProp } from "src/utils/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
+import { getStatusStyles } from "src/utils/gameStatusUtils";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -167,7 +168,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                 "ongoing",
                 "backlog",
                 "completed",
-                "undiscovered",
+                // "undiscovered",
             ];
             return allStatuses.filter((status) => status !== currentStatus);
         };
@@ -220,22 +221,36 @@ const GameItem: React.FC<GameItemProps> = memo(
                         pan.setValue(0);
                     },
                     onPanResponderMove: (_, gestureState) => {
-                        // Allow both left and right swipes
+                        // Only allow right swipe if not undiscovered
+                        const maxRight =
+                            questGame.gameStatus === "undiscovered" ? 0 : 100;
+                        // Make left swipe wider for undiscovered games
+                        const maxLeft =
+                            questGame.gameStatus === "undiscovered"
+                                ? -300
+                                : -200;
                         const newX = Math.max(
-                            -200,
-                            Math.min(100, gestureState.dx)
+                            maxLeft,
+                            Math.min(maxRight, gestureState.dx)
                         );
                         pan.setValue(newX);
                     },
                     onPanResponderRelease: (_, gestureState) => {
                         if (gestureState.dx < -SWIPE_THRESHOLD) {
-                            // Left swipe
+                            // Left swipe - wider for undiscovered
+                            const leftPosition =
+                                questGame.gameStatus === "undiscovered"
+                                    ? -305
+                                    : -205;
                             Animated.spring(pan, {
-                                toValue: -205,
+                                toValue: leftPosition,
                                 useNativeDriver: false,
                             }).start();
-                        } else if (gestureState.dx > SWIPE_THRESHOLD) {
-                            // Right swipe
+                        } else if (
+                            gestureState.dx > SWIPE_THRESHOLD &&
+                            questGame.gameStatus !== "undiscovered"
+                        ) {
+                            // Right swipe - only if not undiscovered
                             Animated.spring(pan, {
                                 toValue: 105,
                                 useNativeDriver: false,
@@ -249,7 +264,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         }
                     },
                 }),
-            []
+            [questGame.gameStatus]
         );
 
         const closeMenu = () => {
@@ -313,41 +328,6 @@ const GameItem: React.FC<GameItemProps> = memo(
             () => questGame.genres?.map((genre) => genre.name).join(", ") || "",
             [questGame.genres]
         );
-
-        const getStatusStyles = (status: GameStatus | undefined) => {
-            switch (status) {
-                case "completed":
-                    return {
-                        borderWidth: 3,
-                        borderLeftColor: colorSwatch.accent.yellow,
-                        borderBottomColor: colorSwatch.accent.pink,
-                        borderTopColor: colorSwatch.accent.green,
-                        borderRightColor: colorSwatch.accent.purple,
-                        borderRadius: 8,
-                    };
-                // return {
-                //     borderWidth: 1,
-                //     borderColor: colorSwatch.accent.yellow,
-                //     borderRadius: 8,
-                // };
-                // return {
-                //     borderWidth: 1,
-                //     borderColor: colorSwatch.accent.purple,
-                //     borderRadius: 8,
-                // };
-                case "backlog":
-                case "ongoing":
-                case "undiscovered":
-                case "on_hold":
-                case "dropped":
-                default:
-                    return {
-                        borderWidth: 1,
-                        borderColor: colorSwatch.neutral.darkGray,
-                        borderRadius: 8,
-                    };
-            }
-        };
 
         const getStatusButtonStyles = (status: GameStatus) => {
             const color = getStatusColor(status);
@@ -425,7 +405,14 @@ const GameItem: React.FC<GameItemProps> = memo(
                 }}
             >
                 {!isReordering && (
-                    <View style={styles.statusMenu}>
+                    <View
+                        style={[
+                            styles.statusMenu,
+                            questGame.gameStatus === "undiscovered" && {
+                                width: 300,
+                            },
+                        ]}
+                    >
                         {getAvailableStatuses(questGame.gameStatus).map(
                             (status, index) => (
                                 <TouchableOpacity
@@ -456,7 +443,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         )}
                     </View>
                 )}
-                {!isReordering && (
+                {!isReordering && questGame.gameStatus !== "undiscovered" && (
                     <View style={styles.rightMenu}>
                         <TouchableOpacity
                             style={[

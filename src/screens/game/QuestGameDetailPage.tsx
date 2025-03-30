@@ -25,6 +25,7 @@ import WebsitesSection from "src/app/components/WebsitesSection";
 import StorylineSection from "./GameDetail/components/StorylineSection";
 import Text from "src/components/common/Text";
 import { AgeRatingBadge } from "src/components/common/AgeRatingBadge";
+import { getStatusStyles } from "src/utils/gameStatusUtils";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -89,29 +90,6 @@ const QuestGameDetailPage: React.FC = () => {
     );
 
     const MetadataGrid: React.FC = () => {
-        const getStatusStyles = (status: GameStatus | undefined) => {
-            switch (status) {
-                case "completed":
-                    return {
-                        color: colorSwatch.accent.green,
-                        fontWeight: "bold" as "bold",
-                        fontStyle: "normal" as "normal",
-                    };
-                case "ongoing":
-                    return {
-                        color: colorSwatch.accent.yellow,
-                        fontWeight: "normal" as "normal",
-                        fontStyle: "italic" as "italic",
-                    };
-                default:
-                    return {
-                        color: colorSwatch.accent.purple,
-                        fontWeight: "normal" as "normal",
-                        fontStyle: "normal" as "normal",
-                    };
-            }
-        };
-
         const handleFranchisePress = (franchiseId: number) => {
             // TODO: Implement franchise navigation
             console.log(`Navigate to franchise: ${franchiseId}`);

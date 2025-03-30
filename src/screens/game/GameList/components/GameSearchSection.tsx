@@ -14,6 +14,7 @@ import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
+import { getStatusStyles } from "src/utils/gameStatusUtils";
 
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
@@ -70,9 +71,13 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     // Memoize filtered games to prevent unnecessary recalculations
     const filteredGames = useMemo(
         () =>
-            games.filter((game) =>
-                game.name.toLowerCase().includes(searchQuery.toLowerCase())
-            ),
+            searchQuery.length >= 2
+                ? games.filter((game) =>
+                      game.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                  )
+                : [],
         [games, searchQuery]
     );
 
@@ -125,7 +130,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     <View style={styles.searchInputContainer}>
                         <TextInput
                             style={styles.searchInput}
-                            placeholder="Search games..."
+                            placeholder="Type 2+ characters to search games..."
                             placeholderTextColor={colorSwatch.text.secondary}
                             value={searchQuery}
                             onChangeText={setSearchQuery}
@@ -138,18 +143,22 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                                 <QuestIcon
                                     name="close-circle"
                                     size={32}
-                                    color={colorSwatch.text.secondary}
+                                    color={getStatusStyles(gameStatus).color}
                                 />
                             </TouchableOpacity>
                         )}
                     </View>
                 </View>
-                {filteredGames.length === 0 ? (
+                {searchQuery.length < 2 ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.emptyText}>
-                            {searchQuery
-                                ? "No games found matching your search"
-                                : "No games available"}
+                            Type 2 or more characters to search
+                        </Text>
+                    </View>
+                ) : filteredGames.length === 0 ? (
+                    <View style={styles.loadingContainer}>
+                        <Text variant="subtitle" style={styles.emptyText}>
+                            No games found matching your search
                         </Text>
                     </View>
                 ) : (
@@ -175,8 +184,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: "100%",
-        justifyContent: "space-between",
-        paddingVertical: 8,
+        justifyContent: "flex-start",
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -184,7 +192,6 @@ const styles = StyleSheet.create({
         opacity: 0.99,
     },
     searchContainer: {
-        paddingVertical: 8,
         width: "100%",
         backgroundColor: colorSwatch.background.darker,
         borderBottomWidth: 1,
@@ -195,18 +202,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: colorSwatch.background.dark,
-        borderRadius: 12,
-        borderWidth: 1,
+        borderWidth: 0,
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
         borderColor: colorSwatch.accent.cyan,
     },
     searchInput: {
         flex: 1,
-        padding: 12,
+        paddingHorizontal: 12,
         color: colorSwatch.text.primary,
         fontSize: 24,
     },
     clearButton: {
         padding: 8,
+        paddingHorizontal: 12,
+        borderWidth: 0,
+        borderRadius: 0,
     },
     scrollContainer: {
         flex: 1,
