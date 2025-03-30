@@ -1,7 +1,7 @@
 {
-    "name": "nextquest",
+    "name": "next-quest",
     "version": "1.0.0",
-    "main": "index.ts",
+    "main": "src/index.ts",
     "scripts": {
         "start": "expo start",
         "android": "expo run:android",
@@ -9,7 +9,7 @@
         "web": "expo start --web",
         "build:android": "expo run:android",
         "build:ios": "expo run:ios",
-        "seed:games": "node scripts/getGameInformation.js ./games-2.json"
+        "seed:games": "node scripts/getGameInformation.js ./games.json"
     },
     "dependencies": {
         "@expo/vector-icons": "^14.0.2",

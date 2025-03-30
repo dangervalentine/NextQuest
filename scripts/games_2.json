@@ -1,0 +1,614 @@
+[
+    {
+        "title": "Pokémon Yellow",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Pokémon Gold",
+        "platform": "Game Boy Color"
+    },
+    {
+        "title": "Pokémon Silver",
+        "platform": "Game Boy Color"
+    },
+    {
+        "title": "Pokémon Crystal",
+        "platform": "Game Boy Color"
+    },
+    {
+        "title": "Pokémon Ruby and Sapphire",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Pokémon FireRed and LeafGreen",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Pokémon Emerald",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "The Legend of Zelda",
+        "platform": "NES"
+    },
+    {
+        "title": "Zelda II: The Adventure of Link",
+        "platform": "NES"
+    },
+    {
+        "title": "The Legend of Zelda: A Link to the Past",
+        "platform": "SNES"
+    },
+    {
+        "title": "The Legend of Zelda: Link's Awakening",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "The Legend of Zelda: Ocarina of Time",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "The Legend of Zelda: Majora's Mask",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "The Legend of Zelda: The Wind Waker",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Super Mario Bros.",
+        "platform": "NES"
+    },
+    {
+        "title": "Super Mario Bros. 2",
+        "platform": "NES"
+    },
+    {
+        "title": "Super Mario Bros. 3",
+        "platform": "NES"
+    },
+    {
+        "title": "Super Mario World",
+        "platform": "SNES"
+    },
+    {
+        "title": "Super Mario 64",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Super Mario Sunshine",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Donkey Kong",
+        "platform": "Arcade"
+    },
+    {
+        "title": "Donkey Kong Country",
+        "platform": "SNES"
+    },
+    {
+        "title": "Metroid",
+        "platform": "NES"
+    },
+    {
+        "title": "Metroid II: Return of Samus",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Super Metroid",
+        "platform": "SNES"
+    },
+    {
+        "title": "Metroid Fusion",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Metroid Prime",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Kirby's Dream Land",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Kirby's Adventure",
+        "platform": "NES"
+    },
+    {
+        "title": "Kirby Super Star",
+        "platform": "SNES"
+    },
+    {
+        "title": "Star Fox",
+        "platform": "SNES"
+    },
+    {
+        "title": "Star Fox 64",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Yoshi's Island",
+        "platform": "SNES"
+    },
+    {
+        "title": "EarthBound",
+        "platform": "SNES"
+    },
+    {
+        "title": "F-Zero",
+        "platform": "SNES"
+    },
+    {
+        "title": "Fire Emblem",
+        "platform": "Famicom"
+    },
+    {
+        "title": "Fire Emblem: The Binding Blade",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Fire Emblem: The Blazing Blade",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Animal Crossing",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Luigi's Mansion",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Pikmin",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Wario Land: Super Mario Land 3",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "WarioWare, Inc.: Mega Microgames!",
+        "platform": "Game Boy Advance"
+    },
+    {
+        "title": "Kid Icarus",
+        "platform": "NES"
+    },
+    {
+        "title": "Ice Climber",
+        "platform": "NES"
+    },
+    {
+        "title": "Balloon Fight",
+        "platform": "NES"
+    },
+    {
+        "title": "Excitebike",
+        "platform": "NES"
+    },
+    {
+        "title": "Punch-Out!!",
+        "platform": "NES"
+    },
+    {
+        "title": "Tetris",
+        "platform": "Game Boy"
+    },
+    {
+        "title": "Dr. Mario",
+        "platform": "NES"
+    },
+    {
+        "title": "Duck Hunt",
+        "platform": "NES"
+    },
+    {
+        "title": "Mario Kart 64",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Mario Party",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Paper Mario",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Super Smash Bros.",
+        "platform": "Nintendo 64"
+    },
+    {
+        "title": "Dragon Quest",
+        "platform": "NES"
+    },
+    {
+        "title": "Dragon Quest II",
+        "platform": "NES"
+    },
+    {
+        "title": "Dragon Quest III",
+        "platform": "NES"
+    },
+    {
+        "title": "Final Fantasy",
+        "platform": "NES"
+    },
+    {
+        "title": "Final Fantasy II",
+        "platform": "Famicom"
+    },
+    {
+        "title": "Final Fantasy III",
+        "platform": "Famicom"
+    },
+    {
+        "title": "Phantasy Star",
+        "platform": "Sega Master System"
+    },
+    {
+        "title": "Final Fantasy IV",
+        "platform": "SNES"
+    },
+    {
+        "title": "Final Fantasy V",
+        "platform": "SNES"
+    },
+    {
+        "title": "Final Fantasy VI",
+        "platform": "SNES"
+    },
+    {
+        "title": "Chrono Trigger",
+        "platform": "SNES"
+    },
+    {
+        "title": "Secret of Mana",
+        "platform": "SNES"
+    },
+    {
+        "title": "Illusion of Gaia",
+        "platform": "SNES"
+    },
+    {
+        "title": "Lufia II: Rise of the Sinistrals",
+        "platform": "SNES"
+    },
+    {
+        "title": "EarthBound",
+        "platform": "SNES"
+    },
+    {
+        "title": "Super Mario RPG: Legend of the Seven Stars",
+        "platform": "SNES"
+    },
+    {
+        "title": "Dragon Quest V",
+        "platform": "SNES"
+    },
+    {
+        "title": "Dragon Quest VI",
+        "platform": "SNES"
+    },
+    {
+        "title": "Tales of Phantasia",
+        "platform": "SNES"
+    },
+    {
+        "title": "Persona",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Final Fantasy VII",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Final Fantasy VIII",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Final Fantasy IX",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Chrono Cross",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Xenogears",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Legend of Legaia",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "The Legend of Dragoon",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Wild Arms",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Suikoden",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Suikoden II",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Tales of Destiny",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Persona 2: Innocent Sin",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Persona 2: Eternal Punishment",
+        "platform": "PlayStation"
+    },
+    {
+        "title": "Final Fantasy X",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Final Fantasy XII",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Persona 3",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Persona 4",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Xenosaga Episode I",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Tales of Symphonia",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Dragon Quest VIII",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Shin Megami Tensei III: Nocturne",
+        "platform": "PlayStation 2"
+    },
+    {
+        "title": "Final Fantasy XIII",
+        "platform": "PlayStation 3"
+    },
+    {
+        "title": "Final Fantasy XV",
+        "platform": "PlayStation 4"
+    },
+    {
+        "title": "Persona 5",
+        "platform": "PlayStation 4"
+    },
+    {
+        "title": "Tales of Arise",
+        "platform": "PlayStation 5"
+    },
+    {
+        "title": "Xenoblade Chronicles",
+        "platform": "Wii"
+    },
+    {
+        "title": "Xenoblade Chronicles X",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Xenoblade Chronicles 2",
+        "platform": "Nintendo Switch"
+    },
+    {
+        "title": "Octopath Traveler",
+        "platform": "Nintendo Switch"
+    },
+    {
+        "title": "Live A Live",
+        "platform": "Nintendo Switch"
+    },
+    {
+        "title": "Bravely Default",
+        "platform": "Nintendo 3DS"
+    },
+    {
+        "title": "Bravely Default II",
+        "platform": "Nintendo Switch"
+    },
+    {
+        "title": "Triangle Strategy",
+        "platform": "Nintendo Switch"
+    },
+    {
+        "title": "Super Smash Bros. Melee",
+        "platform": "GameCube"
+    },
+    {
+        "title": "The Legend of Zelda: The Wind Waker",
+        "platform": "GameCube"
+    },
+    {
+        "title": "The Legend of Zelda: Twilight Princess",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Metroid Prime",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Metroid Prime 2: Echoes",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Super Mario Sunshine",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Paper Mario: The Thousand-Year Door",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Fire Emblem: Path of Radiance",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Luigi's Mansion",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Pikmin",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Pikmin 2",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Resident Evil 4",
+        "platform": "GameCube"
+    },
+    {
+        "title": "F-Zero GX",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Animal Crossing",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Mario Kart: Double Dash!!",
+        "platform": "GameCube"
+    },
+    {
+        "title": "Super Smash Bros. Brawl",
+        "platform": "Wii"
+    },
+    {
+        "title": "The Legend of Zelda: Twilight Princess",
+        "platform": "Wii"
+    },
+    {
+        "title": "The Legend of Zelda: Skyward Sword",
+        "platform": "Wii"
+    },
+    {
+        "title": "Metroid Prime 3: Corruption",
+        "platform": "Wii"
+    },
+    {
+        "title": "Super Mario Galaxy",
+        "platform": "Wii"
+    },
+    {
+        "title": "Super Mario Galaxy 2",
+        "platform": "Wii"
+    },
+    {
+        "title": "Xenoblade Chronicles",
+        "platform": "Wii"
+    },
+    {
+        "title": "Fire Emblem: Radiant Dawn",
+        "platform": "Wii"
+    },
+    {
+        "title": "Punch-Out!!",
+        "platform": "Wii"
+    },
+    {
+        "title": "Wii Sports",
+        "platform": "Wii"
+    },
+    {
+        "title": "Wii Sports Resort",
+        "platform": "Wii"
+    },
+    {
+        "title": "Wii Fit",
+        "platform": "Wii"
+    },
+    {
+        "title": "Mario Kart Wii",
+        "platform": "Wii"
+    },
+    {
+        "title": "Donkey Kong Country Returns",
+        "platform": "Wii"
+    },
+    {
+        "title": "The Last Story",
+        "platform": "Wii"
+    },
+    {
+        "title": "Pandora’s Tower",
+        "platform": "Wii"
+    },
+    {
+        "title": "Super Mario 3D World",
+        "platform": "Wii U"
+    },
+    {
+        "title": "The Legend of Zelda: The Wind Waker HD",
+        "platform": "Wii U"
+    },
+    {
+        "title": "The Legend of Zelda: Twilight Princess HD",
+        "platform": "Wii U"
+    },
+    {
+        "title": "The Legend of Zelda: Breath of the Wild",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Super Smash Bros. for Wii U",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Mario Kart 8",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Donkey Kong Country: Tropical Freeze",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Splatoon",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Bayonetta 2",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Xenoblade Chronicles X",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Tokyo Mirage Sessions #FE",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Pikmin 3",
+        "platform": "Wii U"
+    },
+    {
+        "title": "New Super Mario Bros. U",
+        "platform": "Wii U"
+    },
+    {
+        "title": "Yoshi’s Woolly World",
+        "platform": "Wii U"
+    }
+]

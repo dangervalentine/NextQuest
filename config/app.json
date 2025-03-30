@@ -1,0 +1,46 @@
+{
+    "newArchEnabled": true,
+    "expo": {
+        "name": "NextQuest",
+        "slug": "next-quest",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/nextquest.png",
+        "userInterfaceStyle": "dark",
+        "splash": {
+            "image": "./assets/nextquest.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#01111d"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.nextquest.app"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/nextquest.png",
+                "backgroundColor": "#01111d"
+            },
+            "package": "com.nextquest.app"
+        },
+        "web": {
+            "favicon": "./assets/nextquest.png"
+        },
+        "plugins": [
+            "expo-sqlite",
+            "expo-font"
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "41184c29-dcf6-4a3e-bfe2-00f45fa74fa1"
+            }
+        },
+        "owner": "dangervalentine",
+        "cli": {
+            "appVersionSource": "remote"
+        }
+    }
+}

@@ -318,14 +318,11 @@ try {
 
         // Write results
         try {
-            writeFileSync(
-                "data/seed_data.json",
-                JSON.stringify(results, null, 2)
-            );
+            writeFileSync("seed_data.json", JSON.stringify(results, null, 2));
             console.log("\nProcessing complete:");
             console.log(green(`Successfully processed: ${successCount} games`));
             console.log(red(`Failed to process: ${failureCount} games`));
-            console.log(green("Data written to data/seed_data.json"));
+            console.log(green("Data written to seed_data.json"));
         } catch (error) {
             throw new Error(`Failed to write output file: ${error.message}`);
         }
