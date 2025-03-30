@@ -220,8 +220,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: colorSwatch.background.dark,
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
     },
     searchInput: {
         flex: 1,

@@ -203,8 +203,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: colorSwatch.background.dark,
         borderWidth: 0,
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
         borderColor: colorSwatch.accent.cyan,
     },
     searchInput: {
