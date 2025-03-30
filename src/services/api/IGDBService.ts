@@ -2,9 +2,79 @@ import { TWITCH_CLIENT_ID } from "@env";
 import TwitchAuthService from "./TwitchAuthService";
 import { QuestGame } from "src/data/models/QuestGame";
 import { getQuestGameById } from "src/data/repositories/questGames";
+import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 
 class IGDBService {
-    private static API_URL = "https://api.igdb.com/v4/games";
+    private static API_URL = "https://api.igdb.com/v4";
+
+    public static async searchGames(
+        query: string
+    ): Promise<MinimalQuestGame[]> {
+        const token = await TwitchAuthService.getValidToken();
+
+        const bodyQuery = `
+  fields id, name, 
+        cover.id, cover.url,
+        genres.id, genres.name,
+        release_dates.id, release_dates.date,
+        platforms.id, platforms.name, platforms.platform_family,
+        rating;
+where name ~ *"${query}"*;
+sort release_dates.date asc;
+            `;
+
+        const fixedQuery = bodyQuery.replace(/['']/g, "'");
+
+        const response = await fetch(this.API_URL + "/games", {
+            method: "POST",
+            headers: {
+                "Client-ID": TWITCH_CLIENT_ID,
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+            },
+            body: fixedQuery,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || !Array.isArray(data) || data.length === 0) {
+            console.error("Invalid or empty data received from API.");
+        }
+        if (!token) {
+            throw new Error("No access token found.");
+        }
+        const gameData: MinimalQuestGame[] = data.map((game: any) => {
+            const mappedPlatforms = Array.isArray(game.platforms)
+                ? game.platforms.map((platform: any) => ({
+                      id: platform.id,
+                      name: platform.name,
+                  }))
+                : [];
+
+            game.cover.url = game.cover.url.replace("t_thumb", "t_cover_big");
+            return {
+                ...game,
+                gameStatus: "undiscovered",
+                dateAdded: new Date().toISOString(),
+                priority: 0,
+                genres: Array.isArray(game.genres) ? game.genres : [],
+                platforms: mappedPlatforms,
+                selectedPlatform: mappedPlatforms[0] || {
+                    id: 0,
+                    name: "Unknown Platform",
+                },
+                personalRating: undefined,
+                completionDate: undefined,
+                notes: undefined,
+            };
+        });
+
+        return gameData;
+    }
 
     public static async fetchGameDetails(
         id: number
@@ -57,7 +127,7 @@ sort release_dates.date asc;
 
             const fixedQuery = query.replace(/['']/g, "'");
 
-            const response = await fetch(this.API_URL, {
+            const response = await fetch(this.API_URL + "/games", {
                 method: "POST",
                 headers: {
                     "Client-ID": TWITCH_CLIENT_ID,

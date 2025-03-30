@@ -61,15 +61,19 @@ const QuestGameDetailPage: React.FC = () => {
         );
     }
 
+    console.log(
+        "cover",
+        `https:${game.cover?.url.replace("t_cover_big", "t_720p")}`
+    );
+
     const HeaderSection: React.FC = () => (
         <View style={styles.headerSection}>
             {game.cover && (
                 <View>
                     <FullWidthImage
-                        source={`https:${game.cover.url.replace(
-                            "t_cover_big",
-                            "t_720p"
-                        )}`}
+                        source={`https:${game.cover.url
+                            .replace("t_cover_big", "t_720p")
+                            .replace("t_thumb", "t_720p")}`}
                         style={{
                             width: "100%",
                             backgroundColor: colorSwatch.background.dark,

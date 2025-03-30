@@ -5,8 +5,8 @@ import {
     createQuestGame,
 } from "../questGames";
 import db from "../../config/database";
-import { GameStatus } from "../../../constants/gameStatus";
 import { QuestGame } from "../../models/QuestGame";
+import { GameStatus } from "src/constants/config/gameStatus";
 
 jest.mock("../../config/database", () => ({
     getAllAsync: jest.fn(),
@@ -143,11 +143,3 @@ describe("questGames repository", () => {
         });
     });
 });
-
-
-
-
-
-
-
-

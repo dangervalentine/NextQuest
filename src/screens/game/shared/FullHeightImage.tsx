@@ -10,22 +10,43 @@ interface FullHeightImageProps {
 const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
     const [imageWidth, setImageWidth] = React.useState(0);
     const [imageHeight, setImageHeight] = React.useState(0);
+    const [hasError, setHasError] = React.useState(false);
 
     useEffect(() => {
         if (source) {
+            // Reset error state when source changes
+            setHasError(false);
+
+            // Check if source is a local image (require statement)
+            if (typeof source === "number") {
+                setImageHeight(100);
+                setImageWidth(56);
+                return;
+            }
+
+            // Ensure the URL is properly formatted
+            const imageUrl = source.startsWith("http")
+                ? source
+                : `https:${source}`;
+
             // Prefetch the image
-            Image.prefetch(`https:${source}`);
+            Image.prefetch(imageUrl);
 
             // Get the image dimensions with original aspect ratio logic
             RNImage.getSize(
-                `https:${source}`,
+                imageUrl,
                 (width, height) => {
                     const aspectRatio = width / height;
                     const fullHeight = 100; // Set this to the desired height of the container
                     setImageHeight(fullHeight);
                     setImageWidth(fullHeight * aspectRatio); // Calculate width based on height
                 },
-                (error) => console.error("Error getting image size:", error)
+                (error) => {
+                    console.error("Error getting image size:", error);
+                    setHasError(true);
+                    setImageHeight(100);
+                    setImageWidth(56);
+                }
             );
         }
     }, [source]);
@@ -34,7 +55,15 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
         <View style={[styles.container, style]}>
             {imageHeight > 0 && imageWidth > 0 ? (
                 <Image
-                    source={{ uri: `https:${source}` }}
+                    source={
+                        typeof source === "number"
+                            ? source
+                            : {
+                                  uri: source.startsWith("http")
+                                      ? source
+                                      : `https:${source}`,
+                              }
+                    }
                     style={[
                         styles.cover,
                         {
@@ -47,7 +76,10 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
                     contentFit="cover"
                     priority="high"
                     cachePolicy="memory-disk"
-                    onError={() => console.error("Failed to load image")}
+                    onError={() => {
+                        console.error("Failed to load image");
+                        setHasError(true);
+                    }}
                 />
             ) : (
                 <Image

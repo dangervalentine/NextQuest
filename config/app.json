@@ -6,6 +6,7 @@
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/nextquest.png",
+        "jsEngine": "hermes",
         "userInterfaceStyle": "dark",
         "splash": {
             "image": "./assets/nextquest.png",

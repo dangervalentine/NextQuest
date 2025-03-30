@@ -1,4 +1,4 @@
-import { GameStatus } from "../../constants/gameStatus";
+import { GameStatus } from "src/constants/config/gameStatus";
 
 export interface MinimalQuestGame {
     id: number;
@@ -19,6 +19,10 @@ export interface MinimalQuestGame {
         id: number;
         name: string;
     };
+    platforms: Array<{
+        id: number;
+        name: string;
+    }>;
     genres: Array<{
         id: number;
         name: string;
@@ -29,11 +33,3 @@ export interface MinimalQuestGame {
         platform_id: number;
     }>;
 }
-
-
-
-
-
-
-
-

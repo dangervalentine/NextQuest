@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, {
+    useCallback,
+    useState,
+    useMemo,
+    useEffect,
+    useRef,
+} from "react";
 import {
     ImageBackground,
     StyleSheet,
@@ -15,6 +21,7 @@ import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
+import IGDBService from "src/services/api/IGDBService";
 
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
@@ -41,7 +48,7 @@ const GameItemWrapper = React.memo(
             currentStatus: GameStatus
         ) => void;
     }) => (
-        <View style={styles.itemContainer}>
+        <View style={styles.itemContainer} key={game.id + index}>
             <GameItem
                 questGame={game}
                 isFirstItem={index === 0}
@@ -67,19 +74,53 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const debounceTimeoutRef = useRef<NodeJS.Timeout>();
 
-    // Memoize filtered games to prevent unnecessary recalculations
-    const filteredGames = useMemo(
-        () =>
-            searchQuery.length >= 2
-                ? games.filter((game) =>
-                      game.name
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
-                  )
-                : [],
-        [games, searchQuery]
-    );
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    // Debounced search function
+    const debouncedSearch = useCallback(async (query: string) => {
+        if (query.length < 2) {
+            setSearchResults([]);
+            return;
+        }
+
+        setIsLoading(true);
+        setError(null);
+        try {
+            const results = await IGDBService.searchGames(query);
+            setSearchResults(results);
+        } catch (err) {
+            setError("Failed to search games. Please try again.");
+            console.error("Search error:", err);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    // Handle search input changes with debounce
+    const handleSearchChange = (text: string) => {
+        setSearchQuery(text);
+
+        // Clear any existing timeout
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+        }
+
+        // Set new timeout
+        debounceTimeoutRef.current = setTimeout(() => {
+            debouncedSearch(text);
+        }, 1000); // 400ms debounce
+    };
 
     // Memoize the render function
     const renderItem = useCallback(
@@ -90,7 +131,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
             return (
                 <GameItemWrapper
-                    key={item.id}
+                    key={item.id + Math.floor(Math.random() * 1000000)}
                     game={item}
                     index={index}
                     onStatusChange={onStatusChange}
@@ -111,7 +152,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
                         size="large"
-                        color={colorSwatch.accent.cyan}
+                        color={getStatusStyles(gameStatus).color}
                     />
                 </View>
             </ImageBackground>
@@ -133,17 +174,20 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                             placeholder="Type 2+ characters to search games..."
                             placeholderTextColor={colorSwatch.text.secondary}
                             value={searchQuery}
-                            onChangeText={setSearchQuery}
+                            onChangeText={handleSearchChange}
                         />
                         {searchQuery.length > 0 && (
                             <TouchableOpacity
                                 style={styles.clearButton}
-                                onPress={() => setSearchQuery("")}
+                                onPress={() => {
+                                    setSearchQuery("");
+                                    setSearchResults([]);
+                                }}
                             >
                                 <QuestIcon
                                     name="close-circle"
                                     size={32}
-                                    color={getStatusStyles(gameStatus).color}
+                                    color={colorSwatch.accent.cyan}
                                 />
                             </TouchableOpacity>
                         )}
@@ -155,7 +199,20 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                             Type 2 or more characters to search
                         </Text>
                     </View>
-                ) : filteredGames.length === 0 ? (
+                ) : isLoading ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator
+                            size="large"
+                            color={colorSwatch.accent.cyan}
+                        />
+                    </View>
+                ) : error ? (
+                    <View style={styles.loadingContainer}>
+                        <Text variant="subtitle" style={styles.errorText}>
+                            {error}
+                        </Text>
+                    </View>
+                ) : searchResults.length === 0 ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.emptyText}>
                             No games found matching your search
@@ -167,7 +224,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                         contentContainerStyle={styles.listContainer}
                         removeClippedSubviews={true}
                     >
-                        {filteredGames.map((game, index) =>
+                        {searchResults.map((game, index) =>
                             renderItem(game, index)
                         )}
                     </ScrollView>
@@ -237,6 +294,13 @@ const styles = StyleSheet.create({
         lineHeight: 24,
     },
     itemContainer: {},
+    errorText: {
+        color: colorSwatch.text.secondary,
+        fontSize: 16,
+        textAlign: "center",
+        fontStyle: "italic",
+        lineHeight: 24,
+    },
 });
 
 export default GameSearchSection;

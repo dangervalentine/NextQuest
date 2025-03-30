@@ -367,7 +367,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                 }),
             ]).start(() => {
                 if (removeItem) {
-                    removeItem(questGame.id, "dropped");
+                    removeItem(questGame.id, "undiscovered");
                 }
             });
         };
