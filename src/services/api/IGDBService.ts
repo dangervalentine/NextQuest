@@ -55,7 +55,15 @@ sort release_dates.date asc;
                   }))
                 : [];
 
-            game.cover.url = game.cover.url.replace("t_thumb", "t_cover_big");
+            if (game.cover && game.cover.url) {
+                game.cover.url = game.cover.url.replace(
+                    "t_thumb",
+                    "t_cover_big"
+                );
+            } else {
+                game.cover = {};
+            }
+
             return {
                 ...game,
                 gameStatus: "undiscovered",

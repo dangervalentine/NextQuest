@@ -20,6 +20,7 @@ interface TabNavigatorProps {
         newStatus: GameStatus,
         currentStatus: GameStatus
     ) => void;
+    handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
     handleRemoveItem: (itemId: number, status: GameStatus) => void;
     handleReorder: (
         fromIndex: number,
@@ -112,6 +113,7 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
     gameData,
     isLoading,
     handleStatusChange,
+    handleDiscover,
     handleRemoveItem,
     handleReorder,
 }) => {
@@ -192,7 +194,7 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
                     <GameSearchSection
                         gameStatus={"undiscovered"}
                         games={gameData["undiscovered"]}
-                        onStatusChange={handleStatusChange}
+                        handleDiscover={handleDiscover}
                     />
                 )}
             </Tab.Screen>

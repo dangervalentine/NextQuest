@@ -1,4 +1,4 @@
-import { GameStatus } from "../../constants/gameStatus";
+import { GameStatus } from "src/constants/config/gameStatus";
 import { IGDBGameResponse } from "./IGDBGameResponse";
 
 /**
@@ -18,11 +18,3 @@ export interface QuestGame extends IGDBGameResponse {
     updatedAt: string; // Date when the game was last updated
     createdAt: string; // Date when the game was added to the quest log
 }
-
-
-
-
-
-
-
-

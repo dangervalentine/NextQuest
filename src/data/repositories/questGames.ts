@@ -80,6 +80,14 @@ export const parseMinimalQuestGame = async (
         notes: questGameRow.notes,
         dateAdded: questGameRow.date_added,
         cover: igdbGame.cover,
+        platforms: questGameRow.platform_name
+            ? [
+                  {
+                      id: questGameRow.selected_platform_id,
+                      name: questGameRow.platform_name,
+                  },
+              ]
+            : [],
         selectedPlatform: questGameRow.platform_name
             ? {
                   id: questGameRow.selected_platform_id,
@@ -270,6 +278,31 @@ export const getQuestGameById = async (
         return game ? await parseQuestGame(game) : null;
     } catch (error) {
         console.error("Error getting quest game by id:", error);
+        throw error;
+    }
+};
+
+export const doesGameExist = async (id: number): Promise<QuestGame | null> => {
+    try {
+        // First check if the game exists in the games table
+        const [gameExists] = await db.getAllAsync(
+            `SELECT 1 FROM games WHERE id = ${id} LIMIT 1`
+        );
+
+        if (!gameExists) {
+            console.log(
+                `[doesGameExistInBothTables] Game ${id} not found in games table`
+            );
+            return null;
+        }
+
+        // Then check if it exists in quest_games and get the full quest game data
+        return await getQuestGameById(id);
+    } catch (error) {
+        console.error(
+            "[doesGameExistInBothTables] Error checking game existence:",
+            error
+        );
         throw error;
     }
 };

@@ -1,10 +1,4 @@
-import React, {
-    useCallback,
-    useState,
-    useMemo,
-    useEffect,
-    useRef,
-} from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import {
     ImageBackground,
     StyleSheet,
@@ -26,11 +20,7 @@ import IGDBService from "src/services/api/IGDBService";
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
-    onStatusChange: (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => void;
+    handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
 }
 
 // Memoize the individual game item wrapper
@@ -38,23 +28,20 @@ const GameItemWrapper = React.memo(
     ({
         game,
         index,
-        onStatusChange,
+        handleDiscover,
     }: {
         game: MinimalQuestGame;
         index: number;
-        onStatusChange: (
-            id: number,
-            newStatus: GameStatus,
-            currentStatus: GameStatus
+        handleDiscover: (
+            game: MinimalQuestGame,
+            gameStatus: GameStatus
         ) => void;
     }) => (
         <View style={styles.itemContainer} key={game.id + index}>
             <GameItem
                 questGame={game}
                 isFirstItem={index === 0}
-                onStatusChange={(newStatus, currentStatus) =>
-                    onStatusChange(game.id, newStatus, currentStatus)
-                }
+                onStatusChange={(newStatus) => handleDiscover(game, newStatus)}
             />
         </View>
     ),
@@ -69,8 +56,7 @@ const GameItemWrapper = React.memo(
 
 const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     gameStatus,
-    games,
-    onStatusChange,
+    handleDiscover,
 }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -134,11 +120,11 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     key={item.id + Math.floor(Math.random() * 1000000)}
                     game={item}
                     index={index}
-                    onStatusChange={onStatusChange}
+                    handleDiscover={handleDiscover}
                 />
             );
         },
-        [onStatusChange]
+        [handleDiscover]
     );
 
     if (isLoading) {

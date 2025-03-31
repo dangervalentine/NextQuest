@@ -1,5 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import { SQLiteBindParams, SQLiteRunResult } from "expo-sqlite";
+import * as FileSystem from "expo-file-system";
 
 class DatabaseConnection {
     private static instance: DatabaseConnection;
@@ -7,6 +8,18 @@ class DatabaseConnection {
 
     private constructor() {
         this.db = SQLite.openDatabaseSync("NextQuest.db");
+        this.logDatabaseLocation();
+    }
+
+    private async logDatabaseLocation() {
+        const dbPath = FileSystem.documentDirectory + "SQLite/NextQuest.db";
+        console.log("[Database] Location:", dbPath);
+        try {
+            const info = await FileSystem.getInfoAsync(dbPath);
+            console.log("[Database] File info:", info);
+        } catch (error) {
+            console.error("[Database] Error getting file info:", error);
+        }
     }
 
     public static getInstance(): DatabaseConnection {
@@ -22,7 +35,7 @@ class DatabaseConnection {
         }
     }
 
-    public async execAsync(sql: string): Promise<void> {
+    public async execAsync(sql: string): Promise<any> {
         this.ensureConnection();
         return this.db.execAsync(sql);
     }
@@ -49,11 +62,3 @@ class DatabaseConnection {
 
 export const db = DatabaseConnection.getInstance();
 export default db;
-
-
-
-
-
-
-
-

@@ -4,10 +4,14 @@ import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import {
+    doesGameExist,
     getQuestGamesByStatus,
     updateGamePriorities,
     updateQuestGame,
+    createQuestGame,
 } from "src/data/repositories/questGames";
+import { createIGDBGame } from "src/data/repositories/igdbGames";
+import IGDBService from "src/services/api/IGDBService";
 import { colorSwatch } from "src/utils/colorConstants";
 import GameTabNavigator, {
     headerStyle,
@@ -158,6 +162,39 @@ const MainNavigationContainer: React.FC = () => {
         }
         // Return the constructed update data object
         return updateData;
+    };
+
+    const handleDiscover = async (
+        game: MinimalQuestGame,
+        newStatus: GameStatus
+    ) => {
+        console.log("[handleDiscover] Processing game:", game.id);
+
+        const dbQuestGame = await doesGameExist(game.id);
+
+        if (dbQuestGame) {
+            console.log(
+                `[handleDiscover] Game exists, updating status to ${newStatus}`
+            );
+            try {
+                console.log("dbQuestGame", dbQuestGame);
+
+                await handleStatusChange(
+                    dbQuestGame.id,
+                    newStatus,
+                    dbQuestGame.gameStatus
+                );
+            } catch (error) {
+                console.error(
+                    "[handleDiscover] Failed to update game status:",
+                    error
+                );
+            }
+        } else {
+            console.log(
+                "[handleDiscover] Game does not exist, fetching details"
+            );
+        }
     };
 
     const handleStatusChange = async (
@@ -339,6 +376,40 @@ const MainNavigationContainer: React.FC = () => {
         }
     };
 
+    const fetchAndSaveGameDetails = async (game: MinimalQuestGame) => {
+        console.log(
+            "[fetchAndSaveGameDetails] Fetching details for game:",
+            game.id
+        );
+        try {
+            // Fetch full game details from IGDB
+            const gameDetails = await IGDBService.fetchGameDetails(game.id);
+            if (!gameDetails) {
+                throw new Error(
+                    `Failed to fetch game details for ID: ${game.id}`
+                );
+            }
+
+            // Save the IGDB game data first
+            await createIGDBGame(gameDetails);
+
+            // Use the first platform from the game's platforms array if selectedPlatform is undefined
+            const platform = game.selectedPlatform ||
+                game.platforms[0] || { id: 0, name: "Unknown Platform" };
+
+            // Create the quest game entry with the selected platform
+            await createQuestGame(game.id, platform.id, platform.name);
+
+            console.log(
+                "[fetchAndSaveGameDetails] Successfully saved game:",
+                game.id
+            );
+        } catch (error) {
+            console.error("[fetchAndSaveGameDetails] Error:", error);
+            throw error;
+        }
+    };
+
     return (
         <Stack.Navigator
             screenOptions={{
@@ -358,6 +429,7 @@ const MainNavigationContainer: React.FC = () => {
                         handleStatusChange={handleStatusChange}
                         handleRemoveItem={handleRemoveItem}
                         handleReorder={handleReorder}
+                        handleDiscover={handleDiscover}
                     />
                 )}
             </Stack.Screen>

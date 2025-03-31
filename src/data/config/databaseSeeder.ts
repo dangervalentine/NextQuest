@@ -785,6 +785,15 @@ export const initializeDatabase = async () => {
         await updateGameStatusesAndPriorities();
         console.log("Game statuses and priorities updated successfully");
 
+        // Verify seeding
+        const [result] = await db.getAllAsync<{ count: number }>(
+            "SELECT COUNT(*) as count FROM games"
+        );
+        console.log(
+            "[Database] Games in database after seeding:",
+            result?.count || 0
+        );
+
         return true;
     } catch (error) {
         console.error("Database initialization error:", error);
