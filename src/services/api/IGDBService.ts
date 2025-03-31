@@ -17,10 +17,9 @@ class IGDBService {
         cover.id, cover.url,
         genres.id, genres.name,
         release_dates.id, release_dates.date,
-        platforms.id, platforms.name, platforms.platform_family,
-        rating;
-where name ~ *"${query}"*;
-sort release_dates.date asc;
+        platforms.id, platforms.name, platforms.platform_family;
+  where name ~ *"${query}"*;
+  sort release_dates.date asc;
             `;
 
         const fixedQuery = bodyQuery.replace(/['']/g, "'");
@@ -47,43 +46,71 @@ sort release_dates.date asc;
         if (!token) {
             throw new Error("No access token found.");
         }
-        const gameData: MinimalQuestGame[] = data.map((game: any) => {
-            const mappedPlatforms = Array.isArray(game.platforms)
-                ? game.platforms.map((platform: any) => ({
-                      id: platform.id,
-                      name: platform.name,
-                  }))
-                : [];
 
-            if (game.cover && game.cover.url) {
-                game.cover.url = game.cover.url.replace(
-                    "t_thumb",
-                    "t_cover_big"
-                );
-            } else {
-                game.cover = {};
+        // **1. Use a Map to group games by their ID**
+        const gameMap = new Map<number, MinimalQuestGame>();
+
+        data.forEach((game: any) => {
+            if (!gameMap.has(game.id)) {
+                // **First occurrence: Store the game**
+                gameMap.set(game.id, {
+                    id: game.id,
+                    name: game.name,
+                    cover: game.cover
+                        ? {
+                              id: game.cover.id,
+                              url: game.cover.url.replace(
+                                  "t_thumb",
+                                  "t_cover_big"
+                              ),
+                          }
+                        : null,
+                    genres: Array.isArray(game.genres) ? game.genres : [],
+                    platforms: [],
+                    selectedPlatform: { id: 0, name: "Unknown Platform" }, // Default placeholder
+                    rating: game.rating || null,
+                    gameStatus: "undiscovered",
+                    dateAdded: new Date().toISOString(),
+                    priority: 0,
+                    personalRating: undefined,
+                    notes: undefined,
+                    updatedAt: new Date().toISOString(),
+                    createdAt: new Date().toISOString(),
+                    release_dates: Array.isArray(game.release_dates)
+                        ? game.release_dates
+                        : [],
+                });
             }
 
-            return {
-                ...game,
-                gameStatus: "undiscovered",
-                dateAdded: new Date().toISOString(),
-                priority: 0,
-                genres: Array.isArray(game.genres) ? game.genres : [],
-                platforms: mappedPlatforms,
-                selectedPlatform: mappedPlatforms[0] || {
-                    id: 0,
-                    name: "Unknown Platform",
-                },
-                personalRating: undefined,
-                completionDate: undefined,
-                notes: undefined,
-            };
+            // **2. Add platforms to the existing game entry**
+            const existingGame = gameMap.get(game.id);
+            if (existingGame && game.platforms) {
+                const newPlatforms = game.platforms.map((platform: any) => ({
+                    id: platform.id,
+                    name: platform.name,
+                }));
+
+                // **Avoid duplicates in the platform list**
+                existingGame.platforms = [
+                    ...existingGame.platforms,
+                    ...newPlatforms.filter(
+                        (p: { id: number }) =>
+                            !existingGame.platforms.some((ep) => ep.id === p.id)
+                    ),
+                ];
+
+                // **3. Set the first platform as selected (earliest release date)**
+                if (existingGame.platforms.length > 0) {
+                    existingGame.selectedPlatform = {
+                        id: existingGame.platforms[0].id,
+                        name: existingGame.platforms[0].name,
+                    };
+                }
+            }
         });
 
-        return gameData;
+        return Array.from(gameMap.values()); // Convert Map back to an array
     }
-
     public static async fetchGameDetails(
         id: number
     ): Promise<QuestGame | null> {
@@ -179,7 +206,6 @@ sort release_dates.date asc;
                 priority: 0,
                 selectedPlatform: { id: 0, name: "" },
                 personalRating: undefined,
-                completionDate: undefined,
                 notes: undefined,
             };
         } catch (error) {
