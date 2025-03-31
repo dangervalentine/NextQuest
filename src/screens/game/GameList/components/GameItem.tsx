@@ -277,9 +277,8 @@ const GameItem: React.FC<GameItemProps> = memo(
         };
 
         const handleStatusSelect = (status: GameStatus) => {
-            if (containerHeight === 0) return;
-            setIsAnimating(true);
-            closeMenu();
+            // if (containerHeight === 0) return;
+            // setIsAnimating(true);
 
             const animations = [
                 Animated.timing(pan, {
@@ -307,7 +306,14 @@ const GameItem: React.FC<GameItemProps> = memo(
                 if (onStatusChange) {
                     onStatusChange(status, questGame.gameStatus);
                 }
+                // setIsAnimating(true);
             });
+
+            closeMenu();
+
+            if (onStatusChange) {
+                onStatusChange(status, questGame.gameStatus);
+            }
         };
 
         const platformReleaseDate = useMemo(

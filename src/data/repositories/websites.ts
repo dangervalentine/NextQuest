@@ -86,21 +86,22 @@ export const getOrCreateWebsite = async (website: Website) => {
     try {
         let existingWebsite = await getWebsiteById(website.id);
         if (!existingWebsite) {
-            const query = `INSERT OR IGNORE INTO websites (id, game_id, category, url) VALUES (${website.id}, ${website.game_id}, ${website.category}, '${website.url}')`;
+            const query = `
+                INSERT OR IGNORE INTO websites (id, game_id, category, url) 
+                VALUES (
+                    ${website.id}, 
+                    ${website.game_id}, 
+                    ${website.category}, 
+                    '${website.url.replace(/'/g, "''")}'
+                )`;
             await db.execAsync(query);
             existingWebsite = website;
         }
         return existingWebsite;
     } catch (error) {
-        console.error("Error getting or creating website:", error);
+        console.error("Error getting or creating website:", error, {
+            websiteData: website,
+        });
         throw error;
     }
 };
-
-
-
-
-
-
-
-

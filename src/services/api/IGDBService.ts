@@ -14,13 +14,15 @@ class IGDBService {
         const token = await TwitchAuthService.getValidToken();
 
         const bodyQuery = `
-  fields id, name, 
-        cover.id, cover.url,
-        genres.id, genres.name,
-        release_dates.id, release_dates.date,
-        platforms.id, platforms.name, platforms.platform_family;
-  where name ~ *"${query}"*;
-  sort release_dates.date asc;
+fields id, name, 
+       cover.id, cover.url,
+       genres.id, genres.name,
+       release_dates.id, release_dates.date,
+       platforms.id, platforms.name, platforms.platform_family;
+where name ~ *"${query}"* 
+      & category = (0,3) 
+      & platforms.id != (39,38);
+sort release_dates.date asc;
             `;
 
         const fixedQuery = bodyQuery.replace(/['']/g, "'");
@@ -48,12 +50,10 @@ class IGDBService {
             throw new Error("No access token found.");
         }
 
-        // **1. Use a Map to group games by their ID**
         const gameMap = new Map<number, MinimalQuestGame>();
 
         data.forEach((game: any) => {
             if (!gameMap.has(game.id)) {
-                // **First occurrence: Store the game**
                 gameMap.set(game.id, {
                     id: game.id,
                     name: game.name,
@@ -83,7 +83,6 @@ class IGDBService {
                 });
             }
 
-            // **2. Add platforms to the existing game entry**
             const existingGame = gameMap.get(game.id);
             if (existingGame && game.platforms) {
                 const newPlatforms = game.platforms.map((platform: any) => ({
@@ -91,7 +90,6 @@ class IGDBService {
                     name: platform.name,
                 }));
 
-                // **Avoid duplicates in the platform list**
                 existingGame.platforms = [
                     ...existingGame.platforms,
                     ...newPlatforms.filter(
@@ -100,12 +98,19 @@ class IGDBService {
                     ),
                 ];
 
-                // **3. Set the first platform as selected (earliest release date)**
-                if (existingGame.platforms.length > 0) {
-                    existingGame.selectedPlatform = {
-                        id: existingGame.platforms[0].id,
-                        name: existingGame.platforms[0].name,
-                    };
+                if (
+                    existingGame.platforms &&
+                    existingGame.platforms.length > 0
+                ) {
+                    existingGame.selectedPlatform =
+                        existingGame.platforms.length === 1
+                            ? existingGame.platforms[0]
+                            : {
+                                  id: 0,
+                                  name: `${existingGame.platforms
+                                      .map((p) => p.name)
+                                      .join(", ")}`,
+                              };
                 }
             }
         });

@@ -458,8 +458,24 @@ export const createIGDBGame = async (
 
             if (gameData.genres) {
                 for (const genre of gameData.genres) {
-                    await genreRepo.getOrCreateGenre(genre);
-                    await genreRepo.addGenreToGame(genre.id, gameData.id);
+                    try {
+                        await genreRepo.getOrCreateGenre(genre);
+                        await genreRepo.addGenreToGame(genre.id, gameData.id);
+
+                        // Verify the genre was saved
+                        const verifyQuery = `
+                SELECT g.* 
+                FROM genres g
+                JOIN game_genres gg ON g.id = gg.genre_id
+                WHERE gg.game_id = ${gameData.id}
+            `;
+                        const savedGenres = await db.getAllAsync(verifyQuery);
+                    } catch (error) {
+                        console.error(
+                            `[createIGDBGame] Error processing genre:`,
+                            error
+                        );
+                    }
                 }
             }
 
@@ -560,10 +576,19 @@ export const createIGDBGame = async (
 
             if (gameData.websites) {
                 for (const website of gameData.websites) {
-                    await websiteRepo.getOrCreateWebsite({
-                        ...website,
-                        game_id: gameData.id,
-                    });
+                    try {
+                        const websiteWithGameId = {
+                            ...website,
+                            game_id: gameData.id,
+                        };
+                        await websiteRepo.getOrCreateWebsite(websiteWithGameId);
+                    } catch (error) {
+                        console.error(
+                            `Error creating website for game ${gameData.id}:`,
+                            error
+                        );
+                        // Continue with other websites even if one fails
+                    }
                 }
             }
 

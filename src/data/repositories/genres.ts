@@ -57,17 +57,38 @@ export const deleteGenre = async (id: number) => {
     }
 };
 
-export const getOrCreateGenre = async (genre: Genre) => {
+export const getOrCreateGenre = async (genre: { id: number; name: string }) => {
     try {
-        let existingGenre = await getGenreById(genre.id);
-        if (!existingGenre) {
-            const query = `INSERT OR IGNORE INTO genres (id, name) VALUES (${genre.id}, '${genre.name}')`;
-            await db.execAsync(query);
-            existingGenre = genre;
-        }
-        return existingGenre;
+        const query = `
+            INSERT OR IGNORE INTO genres (id, name) 
+            VALUES (${genre.id}, '${genre.name.replace(/'/g, "''")}')
+        `;
+
+        await db.execAsync(query);
+
+        return genre;
     } catch (error) {
-        console.error("Error getting or creating genre:", error);
+        console.error("[getOrCreateGenre] Error:", error);
+        throw error;
+    }
+};
+
+export const addGenreToGame = async (genreId: number, gameId: number) => {
+    try {
+        const query = `
+            INSERT OR IGNORE INTO game_genres (game_id, genre_id) 
+            VALUES (${gameId}, ${genreId})
+        `;
+        await db.execAsync(query);
+
+        // Verify the insertion
+        const verifyQuery = `
+            SELECT * FROM game_genres 
+            WHERE game_id = ${gameId} AND genre_id = ${genreId}
+        `;
+        const result = await db.getAllAsync(verifyQuery);
+    } catch (error) {
+        console.error("[addGenreToGame] Error:", error);
         throw error;
     }
 };
@@ -88,16 +109,6 @@ export const getGenresForGame = async (gameId: number) => {
     }
 };
 
-export const addGenreToGame = async (gameId: number, genreId: number) => {
-    try {
-        const query = `INSERT OR IGNORE INTO game_genres (game_id, genre_id) VALUES (${gameId}, ${genreId})`;
-        await db.execAsync(query);
-    } catch (error) {
-        console.error("Error adding genre to game:", error);
-        throw error;
-    }
-};
-
 export const removeGenreFromGame = async (gameId: number, genreId: number) => {
     try {
         const query = `DELETE FROM game_genres WHERE game_id = ${gameId} AND genre_id = ${genreId}`;
@@ -107,11 +118,3 @@ export const removeGenreFromGame = async (gameId: number, genreId: number) => {
         throw error;
     }
 };
-
-
-
-
-
-
-
-

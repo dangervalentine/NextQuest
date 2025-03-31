@@ -69,10 +69,6 @@ export const createQuestGameData = async (
         await db.execAsync(query);
 
         await db.execAsync("COMMIT");
-
-        console.log(
-            `[createQuestGameData] Successfully created quest game data for game ${gameId}`
-        );
     } catch (error) {
         await db.execAsync("ROLLBACK");
         console.error(
@@ -172,7 +168,9 @@ export const parseMinimalQuestGame = async (
                   name: questGameRow.platform_name,
               }
             : undefined,
-        genres: igdbGame.genres,
+        genres: questGameRow.genres
+            ? questGameRow.genres.split(",").map((x: string) => ({ name: x }))
+            : [],
         release_dates: igdbGame.release_dates,
     };
 };
@@ -182,21 +180,36 @@ export const getQuestGamesByStatus = async (
 ): Promise<MinimalQuestGame[]> => {
     try {
         const query = `
-            SELECT qg.game_id, qg.personal_rating, qg.completion_date, 
-                   qg.notes, qg.date_added, qg.priority, qg.selected_platform_id,
-                   qg.createdAt, qg.updatedAt,
-                   qs.name as game_status,
-                   p.name as platform_name
+            SELECT 
+                qg.game_id, 
+                qg.personal_rating, 
+                qg.completion_date, 
+                qg.notes, 
+                qg.date_added, 
+                qg.priority, 
+                qg.selected_platform_id,
+                qg.createdAt, 
+                qg.updatedAt,
+                qs.name as game_status,
+                p.name as platform_name,
+                (
+                    SELECT GROUP_CONCAT(g.name)
+                    FROM game_genres gg 
+                    JOIN genres g ON gg.genre_id = g.id
+                    WHERE gg.game_id = qg.game_id
+                ) as genres
             FROM quest_games qg
             JOIN quest_game_status qs ON qg.status_id = qs.id
             LEFT JOIN platforms p ON qg.selected_platform_id = p.id
             WHERE qs.name = '${status}'
             ORDER BY qg.priority DESC NULLS LAST, qg.updatedAt DESC
         `;
+
         const games = await db.getAllAsync(query);
+
         return Promise.all(games.map(parseMinimalQuestGame));
     } catch (error) {
-        console.error("Error getting quest games by status:", error);
+        console.error("[getQuestGamesByStatus] Error:", error);
         throw error;
     }
 };

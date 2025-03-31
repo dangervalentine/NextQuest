@@ -3,6 +3,7 @@ import { QuestGame } from "../models/QuestGame";
 import seedData from "../seed_data.json";
 import * as FileSystem from "expo-file-system";
 import { GameStatus } from "src/constants/config/gameStatus";
+import platforms from "../platforms.json";
 
 interface GameResult {
     id: number;
@@ -709,6 +710,26 @@ const seedQuestGameStatus = async () => {
     }
 };
 
+const seedPlatforms = async () => {
+    try {
+        await db.execAsync("BEGIN TRANSACTION");
+
+        for (const platform of platforms) {
+            await db.execAsync(`
+                INSERT OR IGNORE INTO platforms (id, name)
+                VALUES (${platform.id}, '${platform.name.replace(/'/g, "''")}')
+            `);
+        }
+
+        await db.execAsync("COMMIT");
+        console.log("Platforms seeded successfully");
+    } catch (error) {
+        await db.execAsync("ROLLBACK");
+        console.error("Error seeding platforms:", error);
+        throw error;
+    }
+};
+
 export const initializeDatabase = async () => {
     try {
         // Drop existing tables in correct order
@@ -747,53 +768,56 @@ export const initializeDatabase = async () => {
         await createTables();
         console.log("New tables created successfully");
 
+        // Seed platforms
+        await seedPlatforms();
+
         // Seed quest game status table
         await seedQuestGameStatus();
         console.log("Quest game status table seeded successfully");
 
-        // Seed games in batches to avoid overwhelming the connection
-        const batchSize = 5;
+        // // Seed games in batches to avoid overwhelming the connection
+        // const batchSize = 5;
 
-        // Randomly select 40 games from the seedData array
-        const randomGames = seedData.sort(() => Math.random() - 0.5);
+        // // Randomly select 40 games from the seedData array
+        // const randomGames = seedData.sort(() => Math.random() - 0.5);
 
-        for (let i = 0; i < randomGames.length; i += batchSize) {
-            const batch = randomGames.slice(i, i + batchSize);
-            await db.execAsync("BEGIN TRANSACTION");
-            try {
-                for (const game of batch) {
-                    try {
-                        await seedOneGame(game);
-                    } catch (error) {
-                        console.error(
-                            `Failed to seed game ${
-                                game.name || game.id
-                            }: ${error}`
-                        );
-                    }
-                }
-                await db.execAsync("COMMIT");
-            } catch (error) {
-                await db.execAsync("ROLLBACK");
-                console.error("Batch seeding error:", error);
-            }
-        }
-        console.log("All games seeded successfully");
+        // for (let i = 0; i < randomGames.length; i += batchSize) {
+        //     const batch = randomGames.slice(i, i + batchSize);
+        //     await db.execAsync("BEGIN TRANSACTION");
+        //     try {
+        //         for (const game of batch) {
+        //             try {
+        //                 await seedOneGame(game);
+        //             } catch (error) {
+        //                 console.error(
+        //                     `Failed to seed game ${
+        //                         game.name || game.id
+        //                     }: ${error}`
+        //                 );
+        //             }
+        //         }
+        //         await db.execAsync("COMMIT");
+        //     } catch (error) {
+        //         await db.execAsync("ROLLBACK");
+        //         console.error("Batch seeding error:", error);
+        //     }
+        // }
+        // console.log("All games seeded successfully");
 
-        // Update game statuses and priorities
-        await updateGameStatusesAndPriorities();
-        console.log("Game statuses and priorities updated successfully");
+        // // Update game statuses and priorities
+        // await updateGameStatusesAndPriorities();
+        // console.log("Game statuses and priorities updated successfully");
 
-        // Verify seeding
-        const [result] = await db.getAllAsync<{ count: number }>(
-            "SELECT COUNT(*) as count FROM games"
-        );
-        console.log(
-            "[Database] Games in database after seeding:",
-            result?.count || 0
-        );
+        // // Verify seeding
+        // const [result] = await db.getAllAsync<{ count: number }>(
+        //     "SELECT COUNT(*) as count FROM games"
+        // );
+        // console.log(
+        //     "[Database] Games in database after seeding:",
+        //     result?.count || 0
+        // );
 
-        await exportDatabase();
+        // await exportDatabase();
 
         return true;
     } catch (error) {

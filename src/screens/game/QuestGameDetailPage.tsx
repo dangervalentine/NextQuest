@@ -146,14 +146,16 @@ const QuestGameDetailPage: React.FC = () => {
                         ).toLocaleDateString()}
                     </Text>
                 </View>
-                <View style={styles.metadataItem}>
-                    <Text variant="subtitle" style={styles.metadataLabel}>
-                        Platform
-                    </Text>
-                    <Text variant="body" style={styles.metadataValue}>
-                        {game.selectedPlatform?.name || "Not set"}
-                    </Text>
-                </View>
+                {game.selectedPlatform && game.selectedPlatform.id !== 0 && (
+                    <View style={styles.metadataItem}>
+                        <Text variant="subtitle" style={styles.metadataLabel}>
+                            Platform
+                        </Text>
+                        <Text variant="body" style={styles.metadataValue}>
+                            {game.selectedPlatform?.name || "Not set"}
+                        </Text>
+                    </View>
+                )}
                 {game.franchises && game.franchises.length > 0 && (
                     <View style={[styles.metadataItem]}>
                         <Text variant="subtitle" style={styles.metadataLabel}>
