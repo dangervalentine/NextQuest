@@ -4,6 +4,7 @@ import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import {
+    createQuestGameData,
     doesGameExist,
     getQuestGamesByStatus,
     updateGamePriorities,
@@ -15,6 +16,9 @@ import GameTabNavigator, {
     headerStyle,
 } from "./GameList/components/GameTabNavigator";
 import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
+import { createIGDBGame } from "src/data/repositories/igdbGames";
+import db from "src/data/config/database";
+import { Alert } from "react-native";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -170,29 +174,47 @@ const MainNavigationContainer: React.FC = () => {
         game: MinimalQuestGame,
         newStatus: GameStatus
     ) => {
-        const dbQuestGame = await doesGameExist(game.id);
+        try {
+            const dbQuestGame = await doesGameExist(game.id);
 
-        if (dbQuestGame && dbQuestGame.gameStatus !== newStatus) {
-            try {
-                await handleStatusChange(
-                    dbQuestGame.id,
-                    newStatus,
-                    dbQuestGame.gameStatus
-                );
-            } catch (error) {
-                console.error(
-                    "[handleDiscover] Failed to update game status:",
-                    error
-                );
-            }
-        } else if (dbQuestGame && dbQuestGame.gameStatus === newStatus) {
-            console.log(
-                "[handleDiscover] Game already exists in status:",
-                newStatus
-            );
-        } else {
-            try {
-                const fetchedIGDBGame: IGDBGameResponse | null = await IGDBService.getIGDBGameById(
+            if (dbQuestGame) {
+                let selectedPlatform = game.platforms?.[0];
+
+                // Game exists, show platform selection with current platform pre-selected
+                if (game.platforms?.length > 1) {
+                    selectedPlatform =
+                        (await showPlatformSelectionModal(
+                            game.platforms || []
+                        )) || selectedPlatform;
+                }
+
+                if (selectedPlatform?.id === dbQuestGame.selectedPlatform?.id) {
+                    // Same platform selected, only update status if needed
+                    if (dbQuestGame.gameStatus !== newStatus) {
+                        await handleStatusChange(
+                            dbQuestGame.id,
+                            newStatus,
+                            dbQuestGame.gameStatus
+                        );
+                    }
+                } else {
+                    // Different platform selected, update both platform and status
+                    try {
+                        await createQuestGameData(game.id, {
+                            game_status: newStatus,
+                            selected_platform_id: selectedPlatform?.id || null,
+                            priority:
+                                newStatus === "backlog"
+                                    ? gameData.backlog.length + 1
+                                    : 0,
+                        });
+                    } catch (error) {
+                        throw error;
+                    }
+                }
+            } else {
+                // Game doesn't exist, create new IGDB game and quest game
+                const fetchedIGDBGame = await IGDBService.getIGDBGameById(
                     game.id
                 );
                 if (!fetchedIGDBGame) {
@@ -201,33 +223,60 @@ const MainNavigationContainer: React.FC = () => {
                     );
                 }
 
-                console.log("fetchedIGDBGame", fetchedIGDBGame.platforms);
+                let selectedPlatform = game.platforms?.[0];
 
-                // // First create the base IGDB game data
-                // await createIGDBGame(createdGame);
+                // Show platform selection for new game
+                if (game.platforms?.length > 1) {
+                    selectedPlatform =
+                        (await showPlatformSelectionModal(
+                            game.platforms || []
+                        )) || selectedPlatform;
+                }
 
-                // await db.execAsync("BEGIN TRANSACTION");
-                // try {
-                //     // Then create the quest-specific data
-                //     await createQuestGameData(createdGame.id, {
-                //         game_status: newStatus,
-                //         date_added: new Date().toISOString(),
-                //         priority: 0,
-                //     });
-
-                //     await db.execAsync("COMMIT");
-                //     await loadGamesForStatus(newStatus);
-                // } catch (error) {
-                //     await db.execAsync("ROLLBACK");
-                //     throw error; // Re-throw to be caught by outer catch block
-                // }
-            } catch (error) {
-                console.error(
-                    "[handleDiscover] Failed to fetch and save game details:",
-                    error
-                );
+                try {
+                    await createIGDBGame(fetchedIGDBGame);
+                    await createQuestGameData(game.id, {
+                        game_status: newStatus,
+                        date_added: new Date().toISOString(),
+                        priority:
+                            newStatus === "backlog"
+                                ? gameData.backlog.length + 1
+                                : 0,
+                        selected_platform_id: selectedPlatform?.id || null,
+                    });
+                } catch (error) {
+                    throw error;
+                }
             }
+
+            // Refresh the game list after any changes
+            await loadGamesForStatus(newStatus);
+        } catch (error) {
+            console.error("[handleDiscover] Error:", error);
         }
+    };
+
+    // Add this new function to handle platform selection
+    const showPlatformSelectionModal = async (
+        platforms: Array<{ id: number; name: string }>
+    ): Promise<{ id: number; name: string } | null> => {
+        return new Promise((resolve) => {
+            Alert.alert(
+                "Select Platform",
+                "Choose the platform you want to play this game on:",
+                [
+                    ...platforms.map((platform) => ({
+                        text: platform.name,
+                        onPress: () => resolve(platform),
+                    })),
+                    {
+                        text: "Cancel",
+                        style: "cancel",
+                        onPress: () => resolve(null),
+                    },
+                ]
+            );
+        });
     };
 
     const handleStatusChange = async (

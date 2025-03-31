@@ -576,21 +576,20 @@ export const seedOneGame = async (game: QuestGame | any) => {
 };
 
 const exportDatabase = async () => {
-    try {
-        const dbPath = FileSystem.documentDirectory + "SQLite/NextQuest.db";
-        const exportPath = FileSystem.documentDirectory + "NextQuest.db";
-
-        await FileSystem.copyAsync({
-            from: dbPath,
-            to: exportPath,
-        });
-
-        console.log("Database exported to:", exportPath);
-        return exportPath;
-    } catch (error) {
-        console.error("Error exporting database:", error);
-        return null;
-    }
+    // try {
+    //     const dbPath = FileSystem.documentDirectory + "SQLite/NextQuest.db";
+    //     // Use the downloads directory which is publicly accessible
+    //     const exportPath = FileSystem.bundleDirectory + "NextQuest.db";
+    //     await FileSystem.copyAsync({
+    //         from: dbPath,
+    //         to: exportPath,
+    //     });
+    //     console.log("Database exported to:", exportPath);
+    //     return exportPath;
+    // } catch (error) {
+    //     console.error("Error exporting database:", error);
+    //     return null;
+    // }
 };
 
 const updateGameStatusesAndPriorities = async () => {
@@ -793,6 +792,8 @@ export const initializeDatabase = async () => {
             "[Database] Games in database after seeding:",
             result?.count || 0
         );
+
+        await exportDatabase();
 
         return true;
     } catch (error) {

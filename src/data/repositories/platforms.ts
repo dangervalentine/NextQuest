@@ -14,8 +14,7 @@ export const getAllPlatforms = async () => {
 export const getPlatformById = async (id: number) => {
     try {
         const result = await db.getAllAsync<{ id: number; name: string }>(
-            "SELECT id, name FROM platforms WHERE id = ?",
-            [id]
+            `SELECT id, name FROM platforms WHERE id = ${id}`
         );
         return result[0];
     } catch (error) {
@@ -27,8 +26,7 @@ export const getPlatformById = async (id: number) => {
 export const getPlatformByName = async (name: string) => {
     try {
         const result = await db.getAllAsync<{ id: number; name: string }>(
-            "SELECT id, name FROM platforms WHERE name = ?",
-            [name]
+            `SELECT id, name FROM platforms WHERE name = ${name}`
         );
         return result[0];
     } catch (error) {
@@ -36,11 +34,3 @@ export const getPlatformByName = async (name: string) => {
         throw error;
     }
 };
-
-
-
-
-
-
-
-

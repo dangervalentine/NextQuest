@@ -33,7 +33,7 @@ export default function App() {
     useEffect(() => {
         async function prepare() {
             try {
-                // await initializeDatabase();
+                await initializeDatabase();
             } catch (e) {
                 console.warn(e);
                 setError("Failed to initialize database");

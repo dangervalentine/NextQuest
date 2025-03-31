@@ -17,6 +17,8 @@ export const createQuestGameData = async (
         selected_platform_id?: number | null;
     }
 ) => {
+    await db.execAsync("BEGIN TRANSACTION");
+
     try {
         // Get the status id from the status name
         const [status] = await db.getAllAsync<{ id: number }>(
@@ -66,10 +68,13 @@ export const createQuestGameData = async (
 
         await db.execAsync(query);
 
+        await db.execAsync("COMMIT");
+
         console.log(
             `[createQuestGameData] Successfully created quest game data for game ${gameId}`
         );
     } catch (error) {
+        await db.execAsync("ROLLBACK");
         console.error(
             "[createQuestGameData] Error creating quest game data:",
             error

@@ -61,7 +61,7 @@ export const getOrCreateReleaseDate = async (
             ) VALUES (
                 ${releaseDate.id},
                 ${releaseDate.game_id},
-                ${releaseDate.date},
+                ${releaseDate.date || "NULL"},
                 '${releaseDate.human.replace(/'/g, "''")}',
                 ${releaseDate.platform_id}
             )
@@ -85,11 +85,3 @@ export const deleteReleaseDatesForGame = async (
         throw error;
     }
 };
-
-
-
-
-
-
-
-

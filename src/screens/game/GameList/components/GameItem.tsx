@@ -281,22 +281,29 @@ const GameItem: React.FC<GameItemProps> = memo(
             setIsAnimating(true);
             closeMenu();
 
-            Animated.parallel([
+            const animations = [
                 Animated.timing(pan, {
                     toValue: 0,
                     useNativeDriver: false,
                     duration: 300,
                     easing: Easing.out(Easing.cubic),
                 }),
+            ];
 
-                Animated.timing(heightAnim, {
-                    toValue: 0,
-                    duration: 300,
-                    useNativeDriver: false,
-                    delay: 150,
-                    easing: Easing.out(Easing.cubic),
-                }),
-            ]).start(() => {
+            // Only add height animation if not moving to undiscovered
+            if (questGame.gameStatus !== "undiscovered") {
+                animations.push(
+                    Animated.timing(heightAnim, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: false,
+                        delay: 150,
+                        easing: Easing.out(Easing.cubic),
+                    })
+                );
+            }
+
+            Animated.parallel(animations).start(() => {
                 if (onStatusChange) {
                     onStatusChange(status, questGame.gameStatus);
                 }

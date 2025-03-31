@@ -61,11 +61,6 @@ const QuestGameDetailPage: React.FC = () => {
         );
     }
 
-    console.log(
-        "cover",
-        `https:${game.cover?.url.replace("t_cover_big", "t_720p")}`
-    );
-
     const HeaderSection: React.FC = () => (
         <View style={styles.headerSection}>
             {game.cover && (

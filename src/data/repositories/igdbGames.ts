@@ -531,10 +531,18 @@ export const createIGDBGame = async (
 
             if (gameData.release_dates) {
                 for (const releaseDate of gameData.release_dates) {
+                    if (
+                        !releaseDate.id ||
+                        !releaseDate.human ||
+                        !releaseDate.platform_id
+                    ) {
+                        continue;
+                    }
+
                     await releaseDateRepo.getOrCreateReleaseDate({
                         id: releaseDate.id,
                         game_id: gameData.id,
-                        date: releaseDate.date,
+                        date: releaseDate.date || 0,
                         human: releaseDate.human,
                         platform_id: releaseDate.platform_id || 0,
                     });
