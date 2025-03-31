@@ -32,6 +32,8 @@ import * as perspectiveRepo from "./playerPerspectives";
 import * as themeRepo from "./themes";
 import * as coverRepo from "./covers";
 import * as companyRepo from "./companies";
+import { QuestGame } from "../models/QuestGame";
+import { GameStatus } from "src/constants/config/gameStatus";
 
 // Database row type
 interface IGDBGameRow {
@@ -405,28 +407,39 @@ export const getMinimalIGDBGameById = async (id: number) => {
     }
 };
 
-export const createIGDBGame = async (gameData: IGDBGameResponse) => {
+export const createIGDBGame = async (
+    gameData: IGDBGameResponse
+): Promise<IGDBGameResponse | null> => {
     try {
-        // Start a transaction
         await db.execAsync("BEGIN TRANSACTION");
 
         try {
-            // Create base game record
             const gameQuery = `
-                INSERT INTO games (
-                    id, name, summary, storyline, rating, aggregated_rating
-                ) VALUES (
-                    ${gameData.id},
-                    '${gameData.name.replace(/'/g, "''")}',
-                    '${(gameData.summary || "").replace(/'/g, "''")}',
-                    '${(gameData.storyline || "").replace(/'/g, "''")}',
-                    ${gameData.rating || 0},
-                    ${gameData.aggregated_rating || 0}
-                )
-            `;
+    INSERT INTO games (
+        id, name, summary, storyline, rating, aggregated_rating
+    ) VALUES (
+        ${gameData.id},
+        '${gameData.name.replace(/'/g, "''")}',
+        ${
+            gameData.summary
+                ? `'${gameData.summary.replace(/'/g, "''")}'`
+                : "NULL"
+        },
+        ${
+            gameData.storyline
+                ? `'${gameData.storyline.replace(/'/g, "''")}'`
+                : "NULL"
+        },
+        ${gameData.rating !== undefined ? gameData.rating : "NULL"},
+        ${
+            gameData.aggregated_rating !== undefined
+                ? gameData.aggregated_rating
+                : "NULL"
+        }
+    )
+`;
             await db.execAsync(gameQuery);
 
-            // Create or update related entities
             if (gameData.cover) {
                 await coverRepo.getOrCreateCover({
                     ...gameData.cover,
@@ -508,7 +521,7 @@ export const createIGDBGame = async (gameData: IGDBGameResponse) => {
                             game_id, company_id, developer, publisher
                         ) VALUES (
                             ${gameData.id}, 
-                            ${involvedCompany.company_id}, 
+                            ${involvedCompany.company.id}, 
                             ${involvedCompany.developer ? 1 : 0}, 
                             ${involvedCompany.publisher ? 1 : 0}
                         )
@@ -576,12 +589,10 @@ export const createIGDBGame = async (gameData: IGDBGameResponse) => {
                 }
             }
 
-            // Commit the transaction
             await db.execAsync("COMMIT");
 
             return await getIGDBGameById(gameData.id);
         } catch (error) {
-            // Rollback the transaction on error
             await db.execAsync("ROLLBACK");
             throw error;
         }
@@ -591,10 +602,293 @@ export const createIGDBGame = async (gameData: IGDBGameResponse) => {
     }
 };
 
+export const createGame = async (
+    game: QuestGame | any,
+    gameStatus: GameStatus = "backlog"
+) => {
+    try {
+        // Insert base game data
+        await db.execAsync(
+            `INSERT OR REPLACE INTO games (id, name, summary, storyline, rating, aggregated_rating)
+            VALUES (
+                ${game.id},
+                '${(game.name || "").replace(/'/g, "''")}',
+                ${
+                    game.summary
+                        ? `'${game.summary.replace(/'/g, "''")}'`
+                        : "NULL"
+                },
+                ${
+                    game.storyline
+                        ? `'${game.storyline.replace(/'/g, "''")}'`
+                        : "NULL"
+                },
+                ${game.rating || "NULL"},
+                ${game.aggregated_rating || "NULL"}
+            )`
+        );
 
+        // Insert platforms if they don't exist
+        if (game.platforms && Array.isArray(game.platforms)) {
+            for (const platform of game.platforms) {
+                if (platform && platform.id && platform.name) {
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO platforms (id, name) VALUES (${
+                            platform.id
+                        }, '${platform.name.replace(/'/g, "''")}')`
+                    );
 
+                    // Insert game-platform relationships
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_platforms (game_id, platform_id) VALUES (${game.id}, ${platform.id})`
+                    );
+                }
+            }
+        }
 
+        // Insert cover if exists
+        if (game.cover && game.cover.id && game.cover.url) {
+            await db.execAsync(
+                `INSERT OR REPLACE INTO covers (id, game_id, url) VALUES (${
+                    game.cover.id
+                }, ${game.id}, '${game.cover.url.replace(/'/g, "''")}')`
+            );
+        }
 
+        // Insert screenshots if they exist
+        if (game.screenshots && Array.isArray(game.screenshots)) {
+            for (const screenshot of game.screenshots) {
+                if (screenshot && screenshot.id && screenshot.url) {
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO screenshots (id, game_id, url) VALUES (${
+                            screenshot.id
+                        }, ${game.id}, '${screenshot.url.replace(/'/g, "''")}')`
+                    );
+                }
+            }
+        }
 
+        // Insert age ratings if they exist
+        if (game.age_ratings && Array.isArray(game.age_ratings)) {
+            for (const rating of game.age_ratings) {
+                if (
+                    rating &&
+                    rating.id &&
+                    rating.category !== undefined &&
+                    rating.rating !== undefined
+                ) {
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO age_ratings (id, game_id, category, rating) VALUES (${rating.id}, ${game.id}, ${rating.category}, ${rating.rating})`
+                    );
+                }
+            }
+        }
 
+        // Insert release dates if they exist
+        if (game.release_dates && Array.isArray(game.release_dates)) {
+            for (const date of game.release_dates) {
+                if (
+                    date &&
+                    date.id &&
+                    date.date &&
+                    date.human &&
+                    date.platform_id
+                ) {
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO release_dates (id, game_id, date, human, platform_id) VALUES (${
+                            date.id
+                        }, ${game.id}, ${date.date}, '${date.human.replace(
+                            /'/g,
+                            "''"
+                        )}', ${date.platform_id})`
+                    );
+                }
+            }
+        }
 
+        // Insert involved companies and companies if they exist
+        if (game.involved_companies && Array.isArray(game.involved_companies)) {
+            for (const ic of game.involved_companies) {
+                if (ic && ic.company && ic.company.id && ic.company.name) {
+                    // Insert company if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO companies (id, name) VALUES (${
+                            ic.company.id
+                        }, '${ic.company.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert involved company relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO involved_companies (game_id, company_id, developer, publisher) VALUES (${
+                            game.id
+                        }, ${ic.company.id}, ${ic.developer ? 1 : 0}, ${
+                            ic.publisher ? 1 : 0
+                        })`
+                    );
+                }
+            }
+        }
+
+        // Insert genres if they exist
+        if (game.genres && Array.isArray(game.genres)) {
+            for (const genre of game.genres) {
+                if (genre && genre.id && genre.name) {
+                    // Insert genre if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO genres (id, name) VALUES (${
+                            genre.id
+                        }, '${genre.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-genre relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_genres (game_id, genre_id) VALUES (${game.id}, ${genre.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert game modes if they exist
+        if (game.game_modes && Array.isArray(game.game_modes)) {
+            for (const mode of game.game_modes) {
+                if (mode && mode.id && mode.name) {
+                    // Insert game mode if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO game_modes (id, name) VALUES (${
+                            mode.id
+                        }, '${mode.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-mode relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_modes_map (game_id, game_mode_id) VALUES (${game.id}, ${mode.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert player perspectives if they exist
+        if (
+            game.player_perspectives &&
+            Array.isArray(game.player_perspectives)
+        ) {
+            for (const perspective of game.player_perspectives) {
+                if (perspective && perspective.id && perspective.name) {
+                    // Insert perspective if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO player_perspectives (id, name) VALUES (${
+                            perspective.id
+                        }, '${perspective.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-perspective relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_perspectives (game_id, perspective_id) VALUES (${game.id}, ${perspective.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert themes if they exist
+        if (game.themes && Array.isArray(game.themes)) {
+            for (const theme of game.themes) {
+                if (theme && theme.id && theme.name) {
+                    // Insert theme if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO themes (id, name) VALUES (${
+                            theme.id
+                        }, '${theme.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-theme relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_themes (game_id, theme_id) VALUES (${game.id}, ${theme.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert franchises if they exist
+        if (game.franchises && Array.isArray(game.franchises)) {
+            for (const franchise of game.franchises) {
+                if (franchise && franchise.id && franchise.name) {
+                    // Insert franchise if it doesn't exist
+                    await db.execAsync(
+                        `INSERT OR IGNORE INTO franchises (id, name) VALUES (${
+                            franchise.id
+                        }, '${franchise.name.replace(/'/g, "''")}')`
+                    );
+
+                    // Insert game-franchise relationship
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO game_franchises (game_id, franchise_id) VALUES (${game.id}, ${franchise.id})`
+                    );
+                }
+            }
+        }
+
+        // Insert websites if they exist
+        if (game.websites && Array.isArray(game.websites)) {
+            for (const website of game.websites) {
+                if (
+                    website &&
+                    website.id &&
+                    website.url &&
+                    website.category !== undefined
+                ) {
+                    await db.execAsync(
+                        `INSERT OR REPLACE INTO websites (id, game_id, category, url) VALUES (${
+                            website.id
+                        }, ${game.id}, ${
+                            website.category
+                        }, '${website.url.replace(/'/g, "''")}')`
+                    );
+                }
+            }
+        }
+
+        // Get the status id
+        const [status] = await db.getAllAsync<{ id: number }>(`
+            SELECT id FROM quest_game_status WHERE name = '${gameStatus}'
+        `);
+
+        if (!status) {
+            throw new Error(
+                `Could not find '${gameStatus}' status in quest_game_status table`
+            );
+        }
+
+        // Insert quest game data with status_id
+        const questData = game.quest_data || {};
+        await db.execAsync(
+            `INSERT OR REPLACE INTO quest_games (
+                game_id, status_id, personal_rating, completion_date,
+                notes, date_added, priority, selected_platform_id
+            ) VALUES (
+                ${game.id},
+                ${status.id},
+                ${
+                    questData.personal_rating !== undefined
+                        ? questData.personal_rating
+                        : "NULL"
+                },
+                ${
+                    questData.completion_date
+                        ? `'${questData.completion_date}'`
+                        : "NULL"
+                },
+                ${
+                    questData.notes
+                        ? `'${questData.notes.replace(/'/g, "''")}'`
+                        : "NULL"
+                },
+                '${questData.date_added || new Date().toISOString()}',
+                ${questData.priority || 0},
+                ${questData.selected_platform_id || "NULL"}
+            )`
+        );
+    } catch (error) {
+        console.error("Error seeding game:", error);
+        throw error;
+    }
+};

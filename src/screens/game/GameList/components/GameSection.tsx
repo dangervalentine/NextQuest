@@ -4,8 +4,6 @@ import {
     StyleSheet,
     View,
     ActivityIndicator,
-    TextInput,
-    TouchableOpacity,
 } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
@@ -13,8 +11,7 @@ import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
-import QuestIcon from "../../shared/GameIcon";
-import { getStatusStyles } from "src/utils/gameStatusUtils";
+import GameSearchInput from "./GameSearchInput";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -118,53 +115,23 @@ const GameSection: React.FC<GameSectionProps> = ({
         >
             <View style={styles.overlay} />
             <View style={styles.contentContainer}>
-                <View style={styles.searchContainer}>
-                    <View
-                        style={[
-                            styles.searchInputContainer,
-                            getStatusStyles(gameStatus),
-                        ]}
-                    >
-                        <TextInput
-                            style={[styles.searchInput]}
-                            placeholder="Search games..."
-                            placeholderTextColor={colorSwatch.text.secondary}
-                            value={searchQuery}
-                            onChangeText={setSearchQuery}
-                        />
-                        {searchQuery.length > 0 && (
-                            <TouchableOpacity
-                                style={styles.clearButton}
-                                onPress={() => setSearchQuery("")}
-                            >
-                                <QuestIcon
-                                    name="close-circle"
-                                    size={24}
-                                    color={getStatusStyles(gameStatus).color}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                </View>
-                <DragList
-                    data={filteredGames}
-                    onReordered={(fromIndex, toIndex) =>
-                        onReorder(fromIndex, toIndex, gameStatus)
-                    }
-                    keyExtractor={(item) => item?.id?.toString() || ""}
-                    renderItem={renderItem}
-                    ListEmptyComponent={() => (
-                        <View style={styles.loadingContainer}>
-                            <Text variant="subtitle" style={styles.emptyText}>
-                                {searchQuery
-                                    ? "No games found matching your search"
-                                    : "No games available"}
-                            </Text>
-                        </View>
-                    )}
-                    contentContainerStyle={styles.listContainer}
-                    removeClippedSubviews={true}
+                <GameSearchInput
+                    gameStatus={gameStatus}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
                 />
+                <View style={styles.listWrapper}>
+                    <DragList
+                        data={filteredGames}
+                        onReordered={(fromIndex, toIndex) =>
+                            onReorder(fromIndex, toIndex, gameStatus)
+                        }
+                        keyExtractor={(item) => item?.id?.toString() || ""}
+                        renderItem={renderItem}
+                        contentContainerStyle={styles.listContainer}
+                        removeClippedSubviews={true}
+                    />
+                </View>
             </View>
         </ImageBackground>
     );
@@ -177,7 +144,6 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: "100%",
-        justifyContent: "flex-start",
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -204,34 +170,12 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontStyle: "italic",
         lineHeight: 24,
-        borderWidth: 0,
+    },
+    listWrapper: {
+        flex: 1,
     },
     listContainer: {
-        paddingVertical: 8,
-    },
-    searchContainer: {
-        width: "100%",
-        backgroundColor: colorSwatch.background.darker,
-        borderBottomWidth: 1,
-        borderBottomColor: colorSwatch.neutral.darkGray,
-        zIndex: 1,
-    },
-    searchInputContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
-    },
-    searchInput: {
-        flex: 1,
-        paddingHorizontal: 12,
-        color: colorSwatch.text.primary,
-        fontSize: 24,
-    },
-    clearButton: {
-        padding: 8,
-        paddingHorizontal: 12,
-        borderWidth: 0,
-        borderRadius: 0,
+        paddingBottom: 0,
     },
 });
 

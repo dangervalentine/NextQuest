@@ -372,6 +372,13 @@ const GameItem: React.FC<GameItemProps> = memo(
             });
         };
 
+        let coverUrl;
+        if (questGame.cover && questGame.cover.url) {
+            coverUrl = questGame.cover.url.replace("t_thumb", "t_cover_big");
+        } else {
+            coverUrl = require("../../../../assets/placeholder.png");
+        }
+
         return (
             <Animated.View
                 style={[
@@ -507,7 +514,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     >
                         {questGame.cover && questGame.cover.url ? (
                             <FullHeightImage
-                                source={questGame.cover.url}
+                                source={coverUrl}
                                 style={getStatusStyles(questGame.gameStatus)}
                             />
                         ) : (

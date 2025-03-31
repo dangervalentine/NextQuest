@@ -2,7 +2,6 @@ import {
     getQuestGamesByStatus,
     updateQuestGame,
     updateGamePriorities,
-    createQuestGame,
 } from "../questGames";
 import db from "../../config/database";
 import { QuestGame } from "../../models/QuestGame";
@@ -114,32 +113,6 @@ describe("questGames repository", () => {
             );
 
             expect(db.execAsync).toHaveBeenCalledWith("ROLLBACK");
-        });
-    });
-
-    describe("createQuestGame", () => {
-        it("creates a new game with correct initial values", async () => {
-            await createQuestGame(1, 1, "PS5");
-
-            expect(db.execAsync).toHaveBeenCalledWith(
-                expect.stringContaining("INSERT INTO quest_games")
-            );
-            expect(db.execAsync).toHaveBeenCalledWith(
-                expect.stringContaining("createdAt = CURRENT_TIMESTAMP")
-            );
-            expect(db.execAsync).toHaveBeenCalledWith(
-                expect.stringContaining("updatedAt = CURRENT_TIMESTAMP")
-            );
-        });
-
-        it("handles database errors during creation", async () => {
-            (db.execAsync as jest.Mock).mockRejectedValue(
-                new Error("DB Error")
-            );
-
-            await expect(createQuestGame(1, 1, "PS5")).rejects.toThrow(
-                "DB Error"
-            );
         });
     });
 });

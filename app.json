@@ -1,9 +1,14 @@
 {
-  "expo": {
-    "extra": {
-      "eas": {
-        "projectId": "3af2aa1e-3dd2-494b-b367-e0cf43aeffbc"
-      }
+    "expo": {
+        "name": "NextQuest",
+        "displayName": "NextQuest",
+        "extra": {
+            "eas": {
+                "projectId": "3af2aa1e-3dd2-494b-b367-e0cf43aeffbc"
+            }
+        },
+        "android": {
+            "package": "com.dangervalentine.nextquest"
+        }
     }
-  }
 }

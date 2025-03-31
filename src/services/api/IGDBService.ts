@@ -3,6 +3,7 @@ import TwitchAuthService from "./TwitchAuthService";
 import { QuestGame } from "src/data/models/QuestGame";
 import { getQuestGameById } from "src/data/repositories/questGames";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
+import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4";
@@ -207,6 +208,94 @@ sort release_dates.date asc;
                 selectedPlatform: { id: 0, name: "" },
                 personalRating: undefined,
                 notes: undefined,
+            };
+        } catch (error) {
+            console.error("Error fetching game details:", error);
+            return null;
+        }
+    }
+
+    public static async getIGDBGameById(
+        id: number
+    ): Promise<IGDBGameResponse | null> {
+        try {
+            const token = await TwitchAuthService.getValidToken();
+            if (!token) {
+                throw new Error("No access token found.");
+            }
+
+            const query = `
+fields id, name, summary, 
+       genres.id, genres.name, 
+       platforms.id, platforms.name, 
+       release_dates.id, release_dates.human, release_dates.platform, release_dates.date,
+       cover.id, cover.url, 
+       age_ratings.id, age_ratings.rating, age_ratings.category, 
+       involved_companies.company.id, involved_companies.company.name, 
+       involved_companies.developer, involved_companies.publisher, 
+       screenshots.id, screenshots.url, 
+       videos.id, videos.video_id,
+       game_modes.id, game_modes.name,
+       player_perspectives.id, player_perspectives.name,
+       themes.id, themes.name,
+       rating, aggregated_rating, storyline,
+       websites.category, websites.url,
+       franchises.id, franchises.name;
+where id = ${id};
+sort release_dates.date asc;
+        `;
+
+            const fixedQuery = query.replace(/['']/g, "'");
+
+            const response = await fetch("https://api.igdb.com/v4/games", {
+                method: "POST",
+                headers: {
+                    "Client-ID": TWITCH_CLIENT_ID,
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/json",
+                },
+                body: fixedQuery,
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    `Error: ${response.status} ${response.statusText}`
+                );
+            }
+
+            const data = await response.json();
+
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                console.error("Invalid or empty data received from API.");
+                return null;
+            }
+
+            const gameData = data[0];
+            if (!gameData.id || !gameData.name) {
+                console.error(
+                    "Missing required fields in game data:",
+                    gameData
+                );
+                return null;
+            }
+
+            // Return the IGDB game response with default empty arrays for optional fields
+            return {
+                ...gameData,
+                alternative_names: gameData.alternative_names || [],
+                game_modes: gameData.game_modes || [],
+                player_perspectives: gameData.player_perspectives || [],
+                themes: gameData.themes || [],
+                platforms: gameData.platforms || [],
+                release_dates: gameData.release_dates || [],
+                screenshots: gameData.screenshots || [],
+                videos: gameData.videos || [],
+                age_ratings: gameData.age_ratings || [],
+                involved_companies: gameData.involved_companies || [],
+                genres: gameData.genres || [],
+                websites: gameData.websites || [],
+                franchises: gameData.franchises || [],
+                cover: gameData.cover || null,
             };
         } catch (error) {
             console.error("Error fetching game details:", error);

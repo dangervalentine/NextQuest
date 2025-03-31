@@ -5,6 +5,79 @@ import * as igdbRepo from "./igdbGames";
 import { getMinimalIGDBGameById } from "./igdbGames";
 import { GameStatus } from "src/constants/config/gameStatus";
 
+export const createQuestGameData = async (
+    gameId: number,
+    questData: {
+        game_status?: GameStatus;
+        personal_rating?: number | null;
+        completion_date?: string | null;
+        notes?: string | null;
+        date_added?: string;
+        priority?: number;
+        selected_platform_id?: number | null;
+    }
+) => {
+    try {
+        // Get the status id from the status name
+        const [status] = await db.getAllAsync<{ id: number }>(
+            `SELECT id FROM quest_game_status WHERE name = '${
+                questData.game_status || "undiscovered"
+            }'`
+        );
+
+        if (!status) {
+            throw new Error(`Could not find status in quest_game_status table`);
+        }
+
+        // Insert quest game data
+        const query = `
+            INSERT OR REPLACE INTO quest_games (
+                game_id,
+                status_id,
+                personal_rating,
+                completion_date,
+                notes,
+                date_added,
+                priority,
+                selected_platform_id
+            ) VALUES (
+                ${gameId},
+                ${status.id},
+                ${
+                    questData.personal_rating !== undefined
+                        ? questData.personal_rating
+                        : "NULL"
+                },
+                ${
+                    questData.completion_date
+                        ? `'${questData.completion_date}'`
+                        : "NULL"
+                },
+                ${
+                    questData.notes
+                        ? `'${questData.notes.replace(/'/g, "''")}'`
+                        : "NULL"
+                },
+                '${questData.date_added || new Date().toISOString()}',
+                ${questData.priority || 0},
+                ${questData.selected_platform_id || "NULL"}
+            )
+        `;
+
+        await db.execAsync(query);
+
+        console.log(
+            `[createQuestGameData] Successfully created quest game data for game ${gameId}`
+        );
+    } catch (error) {
+        console.error(
+            "[createQuestGameData] Error creating quest game data:",
+            error
+        );
+        throw error;
+    }
+};
+
 const parseQuestGame = async (row: any): Promise<QuestGame> => {
     // Get the base IGDB game data
     const igdbGame = await igdbRepo.getIGDBGameById(row.game_id);
@@ -119,40 +192,6 @@ export const getQuestGamesByStatus = async (
         return Promise.all(games.map(parseMinimalQuestGame));
     } catch (error) {
         console.error("Error getting quest games by status:", error);
-        throw error;
-    }
-};
-
-export const createQuestGame = async (
-    igdbGameId: number,
-    platformId: number,
-    platformName: string
-) => {
-    try {
-        // First, ensure the IGDB game exists in our database
-        const igdbGame = await igdbRepo.getIGDBGameById(igdbGameId);
-        if (!igdbGame) {
-            throw new Error(`IGDB game not found with id: ${igdbGameId}`);
-        }
-
-        // Create the quest game entry
-        const query = `
-            INSERT INTO quest_games (
-                game_id, status_id, selected_platform_id,
-                createdAt, updatedAt
-            ) VALUES (
-                ${igdbGameId},
-                (SELECT id FROM quest_game_status WHERE name = 'backlog'),
-                ${platformId},
-                CURRENT_TIMESTAMP,
-                CURRENT_TIMESTAMP
-            )
-        `;
-        await db.execAsync(query);
-
-        return await getQuestGameById(igdbGameId);
-    } catch (error) {
-        console.error("Error creating quest game:", error);
         throw error;
     }
 };
@@ -290,9 +329,6 @@ export const doesGameExist = async (id: number): Promise<QuestGame | null> => {
         );
 
         if (!gameExists) {
-            console.log(
-                `[doesGameExistInBothTables] Game ${id} not found in games table`
-            );
             return null;
         }
 

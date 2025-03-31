@@ -2,6 +2,7 @@ import db from "./database";
 import { QuestGame } from "../models/QuestGame";
 import seedData from "../seed_data.json";
 import * as FileSystem from "expo-file-system";
+import { GameStatus } from "src/constants/config/gameStatus";
 
 interface GameResult {
     id: number;
@@ -286,7 +287,7 @@ const createTables = async () => {
     `);
 };
 
-const seedOneGame = async (game: any) => {
+export const seedOneGame = async (game: QuestGame | any) => {
     try {
         // Insert base game data
         await db.execAsync(
@@ -528,14 +529,14 @@ const seedOneGame = async (game: any) => {
             }
         }
 
-        // Get the 'backlog' status id
-        const [backlogStatus] = await db.getAllAsync<{ id: number }>(`
+        // Get the status id
+        const [status] = await db.getAllAsync<{ id: number }>(`
             SELECT id FROM quest_game_status WHERE name = 'backlog'
         `);
 
-        if (!backlogStatus) {
+        if (!status) {
             throw new Error(
-                "Could not find 'backlog' status in quest_game_status table"
+                `Could not find 'backlog' status in quest_game_status table`
             );
         }
 
@@ -547,7 +548,7 @@ const seedOneGame = async (game: any) => {
                 notes, date_added, priority, selected_platform_id
             ) VALUES (
                 ${game.id},
-                ${backlogStatus.id},
+                ${status.id},
                 ${
                     questData.personal_rating !== undefined
                         ? questData.personal_rating
@@ -568,7 +569,6 @@ const seedOneGame = async (game: any) => {
                 ${questData.selected_platform_id || "NULL"}
             )`
         );
-        console.log(`Successfully seeded game: ${game.name}`);
     } catch (error) {
         console.error("Error seeding game:", error);
         throw error;
@@ -698,7 +698,7 @@ const seedQuestGameStatus = async () => {
         { name: "Completed", description: "Game has been completed" },
         {
             name: "Undiscovered",
-            description: "Game has been removed from the list",
+            description: "Game has not been discovered yet",
         },
     ];
 

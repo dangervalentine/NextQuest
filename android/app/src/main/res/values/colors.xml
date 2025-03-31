@@ -2,5 +2,5 @@
   <color name="splashscreen_background">#011627</color>
   <color name="iconBackground">#011627</color>
   <color name="colorPrimary">#023c69</color>
-  <color name="colorPrimaryDark">#011627</color>
+  <color name="colorPrimaryDark">#ffffff</color>
 </resources>

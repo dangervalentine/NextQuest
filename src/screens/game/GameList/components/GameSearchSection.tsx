@@ -4,18 +4,16 @@ import {
     StyleSheet,
     View,
     ActivityIndicator,
-    TextInput,
     ScrollView,
-    TouchableOpacity,
 } from "react-native";
 import GameItem from "./GameItem";
 import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
-import QuestIcon from "../../shared/GameIcon";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
 import IGDBService from "src/services/api/IGDBService";
+import GameSearchInput from "./GameSearchInput";
 
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
@@ -37,7 +35,7 @@ const GameItemWrapper = React.memo(
             gameStatus: GameStatus
         ) => void;
     }) => (
-        <View style={styles.itemContainer} key={game.id + index}>
+        <View style={styles.itemContainer}>
             <GameItem
                 questGame={game}
                 isFirstItem={index === 0}
@@ -105,7 +103,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         // Set new timeout
         debounceTimeoutRef.current = setTimeout(() => {
             debouncedSearch(text);
-        }, 1000); // 400ms debounce
+        }, 1000); // 1000ms debounce
     };
 
     // Memoize the render function
@@ -153,32 +151,12 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         >
             <View style={styles.overlay} />
             <View style={styles.contentContainer}>
-                <View style={styles.searchContainer}>
-                    <View style={styles.searchInputContainer}>
-                        <TextInput
-                            style={styles.searchInput}
-                            placeholder="Type 2+ characters to search games..."
-                            placeholderTextColor={colorSwatch.text.secondary}
-                            value={searchQuery}
-                            onChangeText={handleSearchChange}
-                        />
-                        {searchQuery.length > 0 && (
-                            <TouchableOpacity
-                                style={styles.clearButton}
-                                onPress={() => {
-                                    setSearchQuery("");
-                                    setSearchResults([]);
-                                }}
-                            >
-                                <QuestIcon
-                                    name="close-circle"
-                                    size={32}
-                                    color={colorSwatch.accent.cyan}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                </View>
+                <GameSearchInput
+                    gameStatus={gameStatus}
+                    searchQuery={searchQuery}
+                    onSearchChange={handleSearchChange}
+                    placeholder="Type 2+ characters to search games..."
+                />
                 {searchQuery.length < 2 ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.emptyText}>
@@ -233,32 +211,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.darker,
         opacity: 0.99,
-    },
-    searchContainer: {
-        width: "100%",
-        backgroundColor: colorSwatch.background.darker,
-        borderBottomWidth: 1,
-        borderBottomColor: colorSwatch.neutral.darkGray,
-        zIndex: 1,
-    },
-    searchInputContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
-        borderWidth: 0,
-        borderColor: colorSwatch.accent.cyan,
-    },
-    searchInput: {
-        flex: 1,
-        paddingHorizontal: 12,
-        color: colorSwatch.text.primary,
-        fontSize: 24,
-    },
-    clearButton: {
-        padding: 8,
-        paddingHorizontal: 12,
-        borderWidth: 0,
-        borderRadius: 0,
     },
     scrollContainer: {
         flex: 1,
