@@ -26,6 +26,7 @@ import StorylineSection from "./GameDetail/components/StorylineSection";
 import Text from "src/components/common/Text";
 import { AgeRatingBadge } from "src/components/common/AgeRatingBadge";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
+import { PlatformLogoBadge } from "src/components/common/PlatformLogoBadge";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -151,9 +152,11 @@ const QuestGameDetailPage: React.FC = () => {
                         <Text variant="subtitle" style={styles.metadataLabel}>
                             Platform
                         </Text>
-                        <Text variant="body" style={styles.metadataValue}>
-                            {game.selectedPlatform?.name || "Not set"}
-                        </Text>
+                        <PlatformLogoBadge
+                            platform={game.selectedPlatform.name}
+                            size={82}
+                            style={{ marginRight: 12 }}
+                        />
                     </View>
                 )}
                 {game.franchises && game.franchises.length > 0 && (
@@ -320,9 +323,32 @@ const QuestGameDetailPage: React.FC = () => {
                 .sort((a, b) => a.date - b.date)
                 .map((platform, index) => (
                     <View key={index} style={styles.platformItem}>
-                        <Text variant="body" style={styles.platformName}>
-                            {platform.name}
-                        </Text>
+                        <View style={styles.platformInfo}>
+                            {(() => {
+                                try {
+                                    return (
+                                        <PlatformLogoBadge
+                                            platform={platform.name}
+                                            size={72}
+                                            style={{ marginRight: 12 }}
+                                        />
+                                    );
+                                } catch (error) {
+                                    console.warn(
+                                        `Error rendering logo for ${platform.name}:`,
+                                        error
+                                    );
+                                    return (
+                                        <Text
+                                            variant="body"
+                                            style={styles.platformName}
+                                        >
+                                            {platform.name}
+                                        </Text>
+                                    );
+                                }
+                            })()}
+                        </View>
                         <Text variant="body" style={styles.platformDate}>
                             {platform.human?.split("T")[0]}
                         </Text>
@@ -748,6 +774,12 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
+    },
+    platformInfo: {
+        flexDirection: "row",
+        alignItems: "center",
+        height: "100%",
+        flex: 1,
     },
     platformName: {
         color: colorSwatch.neutral.lightGray,
