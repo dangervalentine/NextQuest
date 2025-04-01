@@ -276,9 +276,35 @@ const GameItem: React.FC<GameItemProps> = memo(
             }).start();
         };
 
+        const handleRemove = () => {
+            if (containerHeight === 0) return;
+            setIsAnimating(true);
+
+            Animated.parallel([
+                Animated.timing(pan, {
+                    toValue: 0,
+                    useNativeDriver: false,
+                    duration: 300,
+                    easing: Easing.out(Easing.cubic),
+                }),
+
+                Animated.timing(heightAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    delay: 100,
+                    useNativeDriver: false,
+                    easing: Easing.out(Easing.cubic),
+                }),
+            ]).start(() => {
+                if (removeItem) {
+                    removeItem(questGame.id, "undiscovered");
+                }
+            });
+        };
+
         const handleStatusSelect = (status: GameStatus) => {
-            // if (containerHeight === 0) return;
-            // setIsAnimating(true);
+            if (containerHeight === 0) return;
+            setIsAnimating(true);
 
             const animations = [
                 Animated.timing(pan, {
@@ -287,33 +313,24 @@ const GameItem: React.FC<GameItemProps> = memo(
                     duration: 300,
                     easing: Easing.out(Easing.cubic),
                 }),
+                Animated.timing(heightAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    delay: 100,
+                    useNativeDriver: false,
+                    easing: Easing.out(Easing.cubic),
+                }),
             ];
 
-            // Only add height animation if not moving to undiscovered
-            if (questGame.gameStatus !== "undiscovered") {
-                animations.push(
-                    Animated.timing(heightAnim, {
-                        toValue: 0,
-                        duration: 300,
-                        useNativeDriver: false,
-                        delay: 150,
-                        easing: Easing.out(Easing.cubic),
-                    })
-                );
+            if (questGame.gameStatus === "undiscovered") {
+                animations.pop();
             }
 
             Animated.parallel(animations).start(() => {
                 if (onStatusChange) {
                     onStatusChange(status, questGame.gameStatus);
                 }
-                // setIsAnimating(true);
             });
-
-            closeMenu();
-
-            if (onStatusChange) {
-                onStatusChange(status, questGame.gameStatus);
-            }
         };
 
         const platformReleaseDate = useMemo(
@@ -358,31 +375,6 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const handleReorderEnd = () => {
             setIsReordering(false);
-        };
-
-        const handleRemove = () => {
-            if (containerHeight === 0) return;
-            setIsAnimating(true);
-            Animated.parallel([
-                Animated.timing(pan, {
-                    toValue: 0,
-                    useNativeDriver: false,
-                    duration: 300,
-                    easing: Easing.out(Easing.cubic),
-                }),
-
-                Animated.timing(heightAnim, {
-                    toValue: 0,
-                    duration: 300,
-                    delay: 100,
-                    useNativeDriver: false,
-                    easing: Easing.out(Easing.cubic),
-                }),
-            ]).start(() => {
-                if (removeItem) {
-                    removeItem(questGame.id, "undiscovered");
-                }
-            });
         };
 
         let coverUrl;

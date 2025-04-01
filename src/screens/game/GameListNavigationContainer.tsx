@@ -90,12 +90,7 @@ const MainNavigationContainer: React.FC = () => {
 
     useEffect(() => {
         const loadInitialData = async () => {
-            const statuses: GameStatus[] = [
-                "ongoing",
-                "backlog",
-                "completed",
-                "undiscovered",
-            ];
+            const statuses: GameStatus[] = ["ongoing", "backlog", "completed"];
             for (const status of statuses) {
                 await loadGamesForStatus(status);
             }

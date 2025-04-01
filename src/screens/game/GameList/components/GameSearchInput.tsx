@@ -18,6 +18,12 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     onSearchChange,
     placeholder = "Search games...",
 }) => {
+    const [inputValue, setInputValue] = React.useState(searchQuery);
+
+    const handleSearch = () => {
+        onSearchChange(inputValue);
+    };
+
     return (
         <View style={styles.searchContainer}>
             <View
@@ -30,13 +36,28 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                     style={styles.searchInput}
                     placeholder={placeholder}
                     placeholderTextColor={getStatusStyles(gameStatus).color}
-                    value={searchQuery}
-                    onChangeText={onSearchChange}
+                    value={inputValue}
+                    onChangeText={setInputValue}
+                    onSubmitEditing={handleSearch}
+                    returnKeyType="search"
                 />
-                {searchQuery.length > 0 && (
+                <TouchableOpacity
+                    style={styles.searchButton}
+                    onPress={handleSearch}
+                >
+                    <QuestIcon
+                        name="magnify"
+                        size={24}
+                        color={getStatusStyles(gameStatus).color}
+                    />
+                </TouchableOpacity>
+                {inputValue.length > 0 && (
                     <TouchableOpacity
                         style={styles.clearButton}
-                        onPress={() => onSearchChange("")}
+                        onPress={() => {
+                            setInputValue("");
+                            onSearchChange("");
+                        }}
                     >
                         <QuestIcon
                             name="close-circle"
@@ -68,6 +89,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         color: colorSwatch.text.primary,
         fontSize: 16,
+    },
+    searchButton: {
+        padding: 8,
+        paddingHorizontal: 12,
+        borderWidth: 0,
+        borderRadius: 0,
     },
     clearButton: {
         padding: 8,

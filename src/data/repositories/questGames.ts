@@ -269,35 +269,40 @@ export interface GamePriorityUpdate {
 
 export const updateGamePriorities = async (updates: GamePriorityUpdate[]) => {
     try {
-        // Start transaction
+        if (updates.length === 0) return;
+
         await db.execAsync("BEGIN TRANSACTION");
 
-        // Create a CASE statement for each game_id to set its new priority
-        const priorityCases = updates
-            .map(
-                (update) =>
-                    `WHEN game_id = ${update.id} THEN ${update.priority}`
-            )
-            .join("\n                ");
+        if (updates.length === 1) {
+            // Simple single update
+            const update = updates[0];
+            await db.execAsync(`
+                UPDATE quest_games
+                SET priority = ${update.priority}
+                WHERE game_id = ${update.id}
+            `);
+        } else {
+            // Multiple updates using CASE
+            const priorityCases = updates
+                .map(
+                    (update) =>
+                        `WHEN game_id = ${update.id} THEN ${update.priority}`
+                )
+                .join("\n                ");
 
-        // Create the list of game_ids that are being updated
-        const gameIds = updates.map((update) => update.id).join(", ");
+            const gameIds = updates.map((update) => update.id).join(", ");
 
-        // Single query to update all priorities
-        const query = `
-            UPDATE quest_games
-            SET priority = CASE
-                ${priorityCases}
-            END
-            WHERE game_id IN (${gameIds})
-        `;
+            await db.execAsync(`
+                UPDATE quest_games
+                SET priority = CASE
+                    ${priorityCases}
+                END
+                WHERE game_id IN (${gameIds})
+            `);
+        }
 
-        await db.execAsync(query);
-
-        // Commit transaction
         await db.execAsync("COMMIT");
     } catch (error) {
-        // Rollback on error
         await db.execAsync("ROLLBACK");
         console.error("Error updating game priorities:", error);
         throw error;

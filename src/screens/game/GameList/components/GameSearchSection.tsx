@@ -1,17 +1,10 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
-import {
-    ImageBackground,
-    StyleSheet,
-    View,
-    ActivityIndicator,
-    ScrollView,
-} from "react-native";
+import React, { useCallback, useState } from "react";
+import { ImageBackground, StyleSheet, View, ScrollView } from "react-native";
 import GameItem from "./GameItem";
 import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
-import { getStatusStyles } from "src/utils/gameStatusUtils";
 import IGDBService from "src/services/api/IGDBService";
 import GameSearchInput from "./GameSearchInput";
 
@@ -57,28 +50,15 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     handleDiscover,
 }) => {
     const [searchQuery, setSearchQuery] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const debounceTimeoutRef = useRef<NodeJS.Timeout>();
 
-    // Cleanup timeout on unmount
-    useEffect(() => {
-        return () => {
-            if (debounceTimeoutRef.current) {
-                clearTimeout(debounceTimeoutRef.current);
-            }
-        };
-    }, []);
-
-    // Debounced search function
-    const debouncedSearch = useCallback(async (query: string) => {
+    const searchGames = useCallback(async (query: string) => {
         if (query.length < 2) {
             setSearchResults([]);
             return;
         }
 
-        setIsLoading(true);
         setError(null);
         try {
             const results = await IGDBService.searchGames(query);
@@ -86,24 +66,13 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         } catch (err) {
             setError("Failed to search games. Please try again.");
             console.error("Search error:", err);
-        } finally {
-            setIsLoading(false);
         }
     }, []);
 
-    // Handle search input changes with debounce
+    // Simplify this to just call searchGames directly
     const handleSearchChange = (text: string) => {
         setSearchQuery(text);
-
-        // Clear any existing timeout
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current);
-        }
-
-        // Set new timeout
-        debounceTimeoutRef.current = setTimeout(() => {
-            debouncedSearch(text);
-        }, 1000); // 1000ms debounce
+        searchGames(text);
     };
 
     // Memoize the render function
@@ -125,24 +94,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         [handleDiscover]
     );
 
-    if (isLoading) {
-        return (
-            <ImageBackground
-                source={require("../../../../assets/next_quest.png")}
-                style={styles.pageContainer}
-                resizeMode="contain"
-            >
-                <View style={styles.overlay} />
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                        size="large"
-                        color={getStatusStyles(gameStatus).color}
-                    />
-                </View>
-            </ImageBackground>
-        );
-    }
-
     return (
         <ImageBackground
             source={require("../../../../assets/next_quest.png")}
@@ -157,20 +108,8 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     onSearchChange={handleSearchChange}
                     placeholder="Type 2+ characters to search games..."
                 />
-                {searchQuery.length < 2 ? (
-                    <View style={styles.loadingContainer}>
-                        <Text variant="subtitle" style={styles.emptyText}>
-                            Type 2 or more characters to search
-                        </Text>
-                    </View>
-                ) : isLoading ? (
-                    <View style={styles.loadingContainer}>
-                        <ActivityIndicator
-                            size="large"
-                            color={colorSwatch.accent.cyan}
-                        />
-                    </View>
-                ) : error ? (
+
+                {error ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.errorText}>
                             {error}
@@ -186,7 +125,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     <ScrollView
                         style={styles.scrollContainer}
                         contentContainerStyle={styles.listContainer}
-                        removeClippedSubviews={true}
                     >
                         {searchResults.map((game, index) =>
                             renderItem(game, index)
