@@ -105,7 +105,6 @@ export const PlatformLogoBadge: React.FC<PlatformLogoBadgeProps> = ({
             case "PlayStation-cyan":
                 return PlayStationCyan;
             default:
-                console.warn(`No logo found for ${key}`);
                 return null;
         }
     };
