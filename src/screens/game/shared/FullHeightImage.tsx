@@ -97,7 +97,9 @@ const styles = StyleSheet.create({
     container: {
         marginRight: 12,
     },
-    cover: {},
+    cover: {
+        maxWidth: 75,
+    },
 });
 
 export default FullHeightImage;

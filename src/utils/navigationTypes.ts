@@ -12,11 +12,3 @@ export type QuestGameDetailRouteProp = RouteProp<
     RootStackParamList,
     "QuestGameDetailPage"
 >;
-
-
-
-
-
-
-
-

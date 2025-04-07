@@ -1,5 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { ImageBackground, StyleSheet, View, ScrollView } from "react-native";
+import {
+    ImageBackground,
+    StyleSheet,
+    View,
+    ScrollView,
+    ActivityIndicator,
+} from "react-native";
 import GameItem from "./GameItem";
 import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
@@ -52,6 +58,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isSearching, setIsSearching] = useState(false);
 
     const searchGames = useCallback(async (query: string) => {
         if (query.length < 2) {
@@ -60,12 +67,15 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         }
 
         setError(null);
+        setIsSearching(true);
         try {
             const results = await IGDBService.searchGames(query);
             setSearchResults(results);
         } catch (err) {
             setError("Failed to search games. Please try again.");
             console.error("Search error:", err);
+        } finally {
+            setIsSearching(false);
         }
     }, []);
 
@@ -84,7 +94,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
             return (
                 <GameItemWrapper
-                    key={item.id + Math.floor(Math.random() * 1000000)}
+                    key={item.id}
                     game={item}
                     index={index}
                     handleDiscover={handleDiscover}
@@ -115,10 +125,25 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                             {error}
                         </Text>
                     </View>
+                ) : isSearching ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator
+                            size="large"
+                            color={colorSwatch.accent.cyan}
+                        />
+                        <Text
+                            variant="subtitle"
+                            style={[styles.emptyText, { marginTop: 16 }]}
+                        >
+                            Searching for games...
+                        </Text>
+                    </View>
                 ) : searchResults.length === 0 ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.emptyText}>
-                            No games found matching your search
+                            {searchQuery.length > 0
+                                ? "No games found matching your search"
+                                : "Type to search for games"}
                         </Text>
                     </View>
                 ) : (

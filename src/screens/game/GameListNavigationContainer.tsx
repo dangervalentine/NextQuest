@@ -15,10 +15,8 @@ import { colorSwatch } from "src/utils/colorConstants";
 import GameTabNavigator, {
     headerStyle,
 } from "./GameList/components/GameTabNavigator";
-import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
 import { createIGDBGame } from "src/data/repositories/igdbGames";
-import db from "src/data/config/database";
-import { Alert } from "react-native";
+import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -49,6 +47,15 @@ const MainNavigationContainer: React.FC = () => {
         on_hold: true,
         dropped: true,
     });
+
+    // Add this state for the modal
+    const [isPlatformModalVisible, setIsPlatformModalVisible] = useState(false);
+    const [platformModalResolve, setPlatformModalResolve] = useState<
+        ((platform: { id: number; name: string } | null) => void) | null
+    >(null);
+    const [platformModalPlatforms, setPlatformModalPlatforms] = useState<
+        Array<{ id: number; name: string }>
+    >([]);
 
     const sortGames = (games: MinimalQuestGame[], status: GameStatus) => {
         return [...games].sort((a, b) => {
@@ -251,27 +258,29 @@ const MainNavigationContainer: React.FC = () => {
         }
     };
 
-    // Add this new function to handle platform selection
+    // Update the showPlatformSelectionModal function
     const showPlatformSelectionModal = async (
         platforms: Array<{ id: number; name: string }>
     ): Promise<{ id: number; name: string } | null> => {
         return new Promise((resolve) => {
-            Alert.alert(
-                "Select Platform",
-                "Choose the platform you want to play this game on:",
-                [
-                    ...platforms.map((platform) => ({
-                        text: platform.name,
-                        onPress: () => resolve(platform),
-                    })),
-                    {
-                        text: "Cancel",
-                        style: "cancel",
-                        onPress: () => resolve(null),
-                    },
-                ]
-            );
+            setPlatformModalPlatforms(platforms);
+            setPlatformModalResolve(() => resolve);
+            setIsPlatformModalVisible(true);
         });
+    };
+
+    const handlePlatformSelect = (platform: { id: number; name: string }) => {
+        if (platformModalResolve) {
+            platformModalResolve(platform);
+        }
+        setIsPlatformModalVisible(false);
+    };
+
+    const handlePlatformModalClose = () => {
+        if (platformModalResolve) {
+            platformModalResolve(null);
+        }
+        setIsPlatformModalVisible(false);
     };
 
     const handleStatusChange = async (
@@ -458,48 +467,56 @@ const MainNavigationContainer: React.FC = () => {
     };
 
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerStyle,
-                headerTitleStyle: {
-                    color: colorSwatch.accent.cyan,
-                    fontFamily: "Inter-Regular",
-                },
-                headerTintColor: colorSwatch.accent.cyan,
-            }}
-        >
-            <Stack.Screen name="GameTabs" options={{ headerShown: false }}>
-                {() => (
-                    <GameTabNavigator
-                        gameData={gameData}
-                        isLoading={isLoading}
-                        handleStatusChange={handleStatusChange}
-                        handleRemoveItem={handleRemoveItem}
-                        handleReorder={handleReorder}
-                        handleDiscover={handleDiscover}
-                    />
-                )}
-            </Stack.Screen>
-            <Stack.Screen
-                name="QuestGameDetailPage"
-                component={QuestGameDetailPage}
-                options={({ route }) => ({
-                    headerTransparent: true,
-                    headerTintColor: colorSwatch.accent.purple,
-                    headerTitle: route.params.name,
+        <>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle,
                     headerTitleStyle: {
+                        color: colorSwatch.accent.cyan,
                         fontFamily: "Inter-Regular",
-                        fontSize: 24,
-                        lineHeight: 32,
-                        fontWeight: "600",
                     },
-                    headerBackgroundContainerStyle: {
-                        backgroundColor: colorSwatch.background.darkest,
-                    },
-                    animation: "slide_from_right",
-                })}
+                    headerTintColor: colorSwatch.accent.cyan,
+                }}
+            >
+                <Stack.Screen name="GameTabs" options={{ headerShown: false }}>
+                    {() => (
+                        <GameTabNavigator
+                            gameData={gameData}
+                            isLoading={isLoading}
+                            handleStatusChange={handleStatusChange}
+                            handleRemoveItem={handleRemoveItem}
+                            handleReorder={handleReorder}
+                            handleDiscover={handleDiscover}
+                        />
+                    )}
+                </Stack.Screen>
+                <Stack.Screen
+                    name="QuestGameDetailPage"
+                    component={QuestGameDetailPage}
+                    options={({ route }) => ({
+                        headerTransparent: true,
+                        headerTintColor: colorSwatch.accent.purple,
+                        headerTitle: route.params.name,
+                        headerTitleStyle: {
+                            fontFamily: "Inter-Regular",
+                            fontSize: 24,
+                            lineHeight: 32,
+                            fontWeight: "600",
+                        },
+                        headerBackgroundContainerStyle: {
+                            backgroundColor: colorSwatch.background.darkest,
+                        },
+                        animation: "slide_from_right",
+                    })}
+                />
+            </Stack.Navigator>
+            <PlatformSelectionModal
+                visible={isPlatformModalVisible}
+                onClose={handlePlatformModalClose}
+                onSelect={handlePlatformSelect}
+                platforms={platformModalPlatforms}
             />
-        </Stack.Navigator>
+        </>
     );
 };
 

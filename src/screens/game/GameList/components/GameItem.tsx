@@ -267,15 +267,6 @@ const GameItem: React.FC<GameItemProps> = memo(
             [questGame.gameStatus]
         );
 
-        const closeMenu = () => {
-            Animated.timing(pan, {
-                toValue: 0,
-                useNativeDriver: false,
-                duration: 200,
-                easing: Easing.out(Easing.cubic),
-            }).start();
-        };
-
         const handleRemove = () => {
             if (containerHeight === 0) return;
             setIsAnimating(true);
@@ -654,6 +645,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
+        minHeight: 140,
     },
     gameContainer: {
         flexDirection: "row",

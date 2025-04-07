@@ -13,17 +13,21 @@ class IGDBService {
     ): Promise<MinimalQuestGame[]> {
         const token = await TwitchAuthService.getValidToken();
 
-        const bodyQuery = `
-fields id, name, 
+        const bodyQuery = `fields id, name, 
        cover.id, cover.url,
        genres.id, genres.name,
        release_dates.id, release_dates.date,
        platforms.id, platforms.name, platforms.platform_family;
-where name ~ *"${query}"* 
-      & category = (0,3) 
-      & platforms.id != (39,38);
-sort release_dates.date asc;
-            `;
+where name ~ *"${query}"*
+      & category = (0,8)
+      & version_parent = null
+      & category != 16
+      & platforms.id = (3,4,5,6,7,8,9,11,12,14,
+                        18,19,20,21,22,24,33,34,37,38,39,
+                        41,46,48,49,130,167,169,170,211,
+                        282,283);
+sort release_dates.date desc;
+limit 100;`;
 
         const fixedQuery = bodyQuery.replace(/['']/g, "'");
 
@@ -44,8 +48,9 @@ sort release_dates.date asc;
         const data = await response.json();
 
         if (!data || !Array.isArray(data) || data.length === 0) {
-            console.error("Invalid or empty data received from API.");
+            return [];
         }
+
         if (!token) {
             throw new Error("No access token found.");
         }
