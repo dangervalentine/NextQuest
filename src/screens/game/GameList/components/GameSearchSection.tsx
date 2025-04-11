@@ -73,7 +73,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
             setError(null);
             setIsSearching(true);
             try {
-                let results;
+                let results: MinimalQuestGame[];
                 if (franchiseId) {
                     results = await IGDBService.searchGamesByFranchise(
                         franchiseId
@@ -99,7 +99,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         }
     }, [route.params, searchGames]);
 
-    // Simplify this to just call searchGames directly
     const handleSearchChange = (text: string) => {
         setSearchQuery(text);
         searchGames(text);

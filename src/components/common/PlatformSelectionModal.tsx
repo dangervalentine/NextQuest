@@ -22,7 +22,6 @@ interface PlatformSelectionModalProps {
     onClose: () => void;
     onSelect: (platform: Platform) => void;
     platforms: Platform[];
-    selectedPlatformId?: number;
 }
 
 export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
@@ -30,7 +29,6 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
     onClose,
     onSelect,
     platforms,
-    selectedPlatformId,
 }) => {
     return (
         <Modal
@@ -61,11 +59,7 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
                             .map((platform) => (
                                 <TouchableOpacity
                                     key={platform.id}
-                                    style={[
-                                        styles.platformItem,
-                                        platform.id === selectedPlatformId &&
-                                            styles.selectedPlatform,
-                                    ]}
+                                    style={[styles.platformItem]}
                                     onPress={() => onSelect(platform)}
                                 >
                                     <View style={styles.platformContent}>

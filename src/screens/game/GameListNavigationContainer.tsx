@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
@@ -16,7 +16,6 @@ import { headerStyle } from "./GameList/components/GameTabNavigator";
 import { createIGDBGame } from "src/data/repositories/igdbGames";
 import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";
 import Toast from "react-native-toast-message";
-import Home from "../Home";
 import GameTabs from "./GameTabs";
 import { RootStackParamList } from "src/utils/navigationTypes";
 
@@ -47,11 +46,7 @@ const MainNavigationContainer: React.FC = () => {
     const [platformModalPlatforms, setPlatformModalPlatforms] = useState<
         Array<{ id: number; name: string }>
     >([]);
-    const [
-        selectedGameForPlatform,
-        setSelectedGameForPlatform,
-    ] = useState<MinimalQuestGame | null>(null);
-    const [platformModalResolve, setPlatformModalResolve] = useState<
+    const platformModalResolveRef = useRef<
         ((platform: { id: number; name: string } | null) => void) | null
     >(null);
 
@@ -184,7 +179,6 @@ const MainNavigationContainer: React.FC = () => {
                 if (game.platforms?.length > 1) {
                     selectedPlatform =
                         (await showPlatformSelectionModal(
-                            game,
                             game.platforms || []
                         )) || selectedPlatform;
                 }
@@ -255,7 +249,6 @@ const MainNavigationContainer: React.FC = () => {
                 if (game.platforms?.length > 1) {
                     selectedPlatform =
                         (await showPlatformSelectionModal(
-                            game,
                             game.platforms || []
                         )) || selectedPlatform;
                 }
@@ -309,29 +302,32 @@ const MainNavigationContainer: React.FC = () => {
         }
     };
 
-    // Update the showPlatformSelectionModal function
     const showPlatformSelectionModal = (
-        game: MinimalQuestGame,
         platforms: Array<{ id: number; name: string }>
     ): Promise<{ id: number; name: string } | null> => {
         return new Promise((resolve) => {
             setPlatformModalPlatforms(platforms);
-            setSelectedGameForPlatform(game);
-            setPlatformModalResolve(() => resolve);
+            platformModalResolveRef.current = resolve;
             setIsPlatformModalVisible(true);
         });
     };
 
     const handlePlatformSelect = (platform: { id: number; name: string }) => {
-        if (platformModalResolve) {
-            platformModalResolve(platform);
+        if (platformModalResolveRef.current) {
+            platformModalResolveRef.current(platform);
+            platformModalResolveRef.current = null;
+            setIsPlatformModalVisible(false);
+        } else {
+            console.warn(
+                "[handlePlatformSelect] No resolve function available"
+            );
         }
-        setIsPlatformModalVisible(false);
     };
 
     const handlePlatformModalClose = () => {
-        if (platformModalResolve) {
-            platformModalResolve(null);
+        if (platformModalResolveRef.current) {
+            platformModalResolveRef.current(null);
+            platformModalResolveRef.current = null;
         }
         setIsPlatformModalVisible(false);
     };
@@ -538,14 +534,22 @@ const MainNavigationContainer: React.FC = () => {
                 /> */}
                 <Stack.Screen name="GameTabs" options={{ headerShown: false }}>
                     {() => (
-                        <GameTabs
-                            gameData={gameData}
-                            isLoading={isLoading}
-                            handleStatusChange={handleStatusChange}
-                            handleRemoveItem={handleRemoveItem}
-                            handleReorder={handleReorder}
-                            handleDiscover={handleDiscover}
-                        />
+                        <>
+                            <GameTabs
+                                gameData={gameData}
+                                isLoading={isLoading}
+                                handleStatusChange={handleStatusChange}
+                                handleRemoveItem={handleRemoveItem}
+                                handleReorder={handleReorder}
+                                handleDiscover={handleDiscover}
+                            />
+                            <PlatformSelectionModal
+                                visible={isPlatformModalVisible}
+                                onClose={handlePlatformModalClose}
+                                onSelect={handlePlatformSelect}
+                                platforms={platformModalPlatforms}
+                            />
+                        </>
                     )}
                 </Stack.Screen>
                 <Stack.Screen
@@ -568,15 +572,6 @@ const MainNavigationContainer: React.FC = () => {
                     })}
                 />
             </Stack.Navigator>
-            <PlatformSelectionModal
-                visible={isPlatformModalVisible}
-                onClose={handlePlatformModalClose}
-                onSelect={handlePlatformSelect}
-                platforms={platformModalPlatforms}
-                selectedPlatformId={
-                    selectedGameForPlatform?.selectedPlatform?.id
-                }
-            />
         </>
     );
 };

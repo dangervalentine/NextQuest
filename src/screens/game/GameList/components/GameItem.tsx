@@ -19,6 +19,8 @@ import { formatReleaseDate } from "src/utils/dateFormatters";
 import { ScreenNavigationProp } from "src/utils/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
+import QuestIcon from "../../shared/GameIcon";
+import { getRatingColor } from "src/utils/colors";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -524,19 +526,53 @@ const GameItem: React.FC<GameItemProps> = memo(
                             <Text variant="subtitle" style={styles.title}>
                                 {questGame.name}
                             </Text>
-                            {questGame.gameStatus === "completed" &&
-                                questGame.personalRating !== undefined && (
+                            {questGame.personalRating && (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    {Array.from({
+                                        length: questGame.personalRating || 0,
+                                    }).map((_, index) => (
+                                        <QuestIcon
+                                            key={index}
+                                            name="star"
+                                            size={12}
+                                            color={getRatingColor(
+                                                questGame.personalRating || 0
+                                            )}
+                                        />
+                                    ))}
+                                    {Array.from({
+                                        length:
+                                            10 -
+                                            (questGame.personalRating || 0),
+                                    }).map((_, index) => (
+                                        <QuestIcon
+                                            key={index}
+                                            name="star-outline"
+                                            size={12}
+                                            color={colorSwatch.primary.dark}
+                                        />
+                                    ))}
                                     <Text
                                         variant="caption"
-                                        style={styles.rating}
+                                        style={[
+                                            styles.rating,
+                                            {
+                                                color: getRatingColor(
+                                                    questGame.personalRating ||
+                                                        0
+                                                ),
+                                            },
+                                        ]}
                                     >
-                                        {"⭐".repeat(questGame.personalRating)}
-                                        {"☆".repeat(
-                                            10 - questGame.personalRating
-                                        )}{" "}
                                         ({questGame.personalRating}/10)
                                     </Text>
-                                )}
+                                </View>
+                            )}
                             <View style={styles.detailsContainer}>
                                 {/* {questGame.notes &&
                                     questGame.gameStatus === "completed" && (
@@ -554,7 +590,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <Text style={styles.textSecondary}>
                                         <Text>Platform: </Text>
                                         <Text>
-                                            {questGame.selectedPlatform?.name}
+                                            {questGame.selectedPlatform?.name ||
+                                                `${questGame.platforms.length} Platforms`}
                                         </Text>
                                     </Text>
                                     {platformReleaseDate && (
@@ -729,10 +766,10 @@ const styles = StyleSheet.create({
         opacity: 0.8,
     },
     rating: {
-        fontSize: 12,
-        marginBottom: 8,
         color: colorSwatch.accent.yellow,
         letterSpacing: 1,
+        marginLeft: 4,
+        fontSize: 10,
     },
     contentContainer: {
         flex: 1,

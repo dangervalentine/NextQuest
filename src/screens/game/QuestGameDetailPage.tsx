@@ -27,6 +27,7 @@ import Text from "src/components/common/Text";
 import { AgeRatingBadge } from "src/components/common/AgeRatingBadge";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
 import { PlatformLogoBadge } from "src/components/common/PlatformLogoBadge";
+import { getRatingColor } from "src/utils/colors";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -192,50 +193,6 @@ const QuestGameDetailPage: React.FC = () => {
         );
     };
 
-    const getRatingColor = (rating: number) => {
-        // Normal rating color logic for non-10 ratings
-        const normalizedRating = rating / 10;
-
-        if (normalizedRating <= 0.4) {
-            // Pink to Yellow gradient (0-4)
-            const t = normalizedRating * 2.5; // 0-1 for 0-0.4 range
-            const pinkRGB = hexToRGB(colorSwatch.accent.pink);
-            const yellowRGB = hexToRGB(colorSwatch.accent.yellow);
-            return interpolateColors(t, pinkRGB, yellowRGB);
-        } else if (normalizedRating <= 0.7) {
-            // Pure yellow (4-7)
-            return colorSwatch.accent.yellow;
-        } else if (rating < 10) {
-            // Yellow to Green gradient (7-10)
-            const t = (normalizedRating - 0.7) * (1 / 0.3); // 0-1 for 0.7-1.0 range
-            const yellowRGB = hexToRGB(colorSwatch.accent.yellow);
-            const greenRGB = hexToRGB(colorSwatch.accent.green);
-            return interpolateColors(t, yellowRGB, greenRGB);
-        }
-        // Rating 10 case is handled separately with LinearGradient
-        return colorSwatch.accent.yellow;
-    };
-
-    // Helper function to convert hex to RGB
-    const hexToRGB = (hex: string) => {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        return { r, g, b };
-    };
-
-    // Helper function to interpolate between two RGB colors
-    const interpolateColors = (
-        t: number,
-        color1: { r: number; g: number; b: number },
-        color2: { r: number; g: number; b: number }
-    ) => {
-        const r = Math.round(color1.r + (color2.r - color1.r) * t);
-        const g = Math.round(color1.g + (color2.g - color1.g) * t);
-        const b = Math.round(color1.b + (color2.b - color1.b) * t);
-        return `rgb(${r}, ${g}, ${b})`;
-    };
-
     const PersonalReviewSection: React.FC = () => {
         if (!game.notes && !game.personalRating) return null;
 
@@ -263,7 +220,7 @@ const QuestGameDetailPage: React.FC = () => {
                                 },
                             ]}
                         >
-                            {game.personalRating.toFixed()}/10
+                            {game.personalRating.toFixed()} / 10
                         </Text>
                         <View style={styles.ratingBar}>
                             {game.personalRating >= 10 ? (
@@ -302,7 +259,17 @@ const QuestGameDetailPage: React.FC = () => {
                 )}
                 {game.notes && (
                     <View style={styles.noteContainer}>
-                        <Text variant="caption" style={styles.noteText}>
+                        <Text
+                            variant="caption"
+                            style={[
+                                styles.noteText,
+                                {
+                                    color: getRatingColor(
+                                        game.personalRating || 0
+                                    ),
+                                },
+                            ]}
+                        >
                             "{game.notes}"
                         </Text>
                     </View>
@@ -510,14 +477,10 @@ const QuestGameDetailPage: React.FC = () => {
                 {/* Hero Section */}
                 <HeaderSection />
 
-                {game.gameStatus !== "undiscovered" && (
-                    <>
-                        {/* Progress Tracking */}
-                        <View style={styles.sectionContainer}>
-                            <MetadataGrid />
-                        </View>
-                    </>
-                )}
+                {/* Progress Tracking */}
+                <View style={styles.sectionContainer}>
+                    <MetadataGrid />
+                </View>
 
                 {/* Personal Review Section */}
                 {game.gameStatus === "completed" && <PersonalReviewSection />}

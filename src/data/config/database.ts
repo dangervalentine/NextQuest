@@ -8,18 +8,6 @@ class DatabaseConnection {
 
     private constructor() {
         this.db = SQLite.openDatabaseSync("NextQuest.db");
-        this.logDatabaseLocation();
-    }
-
-    private async logDatabaseLocation() {
-        const dbPath = FileSystem.documentDirectory + "SQLite/NextQuest.db";
-        console.log("[Database] Location:", dbPath);
-        try {
-            const info = await FileSystem.getInfoAsync(dbPath);
-            console.log("[Database] File info:", info);
-        } catch (error) {
-            console.error("[Database] Error getting file info:", error);
-        }
     }
 
     public static getInstance(): DatabaseConnection {

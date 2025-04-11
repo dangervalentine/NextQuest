@@ -72,8 +72,7 @@ limit 100;`;
                           }
                         : null,
                     genres: Array.isArray(game.genres) ? game.genres : [],
-                    platforms: [],
-                    selectedPlatform: { id: 0, name: "Unknown Platform" }, // Default placeholder
+                    platforms: game.platforms || [],
                     rating: game.rating || null,
                     gameStatus: "undiscovered",
                     dateAdded: new Date().toISOString(),
@@ -102,21 +101,6 @@ limit 100;`;
                             !existingGame.platforms.some((ep) => ep.id === p.id)
                     ),
                 ];
-
-                if (
-                    existingGame.platforms &&
-                    existingGame.platforms.length > 0
-                ) {
-                    existingGame.selectedPlatform =
-                        existingGame.platforms.length === 1
-                            ? existingGame.platforms[0]
-                            : {
-                                  id: 0,
-                                  name: `${existingGame.platforms
-                                      .map((p) => p.name)
-                                      .join(", ")}`,
-                              };
-                }
             }
         });
 
@@ -166,7 +150,9 @@ fields id, name, summary,
        game_modes.id, game_modes.name,
        player_perspectives.id, player_perspectives.name,
        themes.id, themes.name,
-       rating, aggregated_rating, storyline;
+       rating, aggregated_rating, storyline,
+       websites.category, websites.url,
+       franchises.id, franchises.name;
 where id = ${id};
 sort release_dates.date asc;
             `;
@@ -215,6 +201,7 @@ sort release_dates.date asc;
                 gameStatus: "undiscovered",
                 dateAdded: new Date().toISOString(),
                 priority: 0,
+                franchises: gameData.franchises || [],
                 selectedPlatform: { id: 0, name: "" },
                 personalRating: undefined,
                 notes: undefined,
@@ -398,13 +385,6 @@ limit 100;`;
                             date: release.date,
                             platform_id: release.platform,
                         })) || [],
-                    selectedPlatform:
-                        game.platforms && game.platforms.length > 0
-                            ? {
-                                  id: game.platforms[0].id,
-                                  name: game.platforms[0].name,
-                              }
-                            : { id: 0, name: "Unknown Platform" },
                 };
             });
 
