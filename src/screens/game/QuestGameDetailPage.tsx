@@ -4,21 +4,21 @@ import {
     StyleSheet,
     View,
     ActivityIndicator,
-    Text as RNText,
     Animated,
     ImageBackground,
     SafeAreaView,
     Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { QuestGameDetailRouteProp } from "src/utils/navigationTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "src/utils/navigationTypes";
 import { getGameStatus } from "src/utils/dataMappers";
 import ImageCarousel from "./GameDetail/components/ImageCarousel";
 import { colorSwatch } from "src/utils/colorConstants";
 import IGDBService from "src/services/api/IGDBService";
 import FullWidthImage from "./shared/FullWidthImage";
-import { GameStatus } from "src/constants/config/gameStatus";
 import { QuestGame } from "src/data/models/QuestGame";
 import { getAgeRating } from "src/utils/getAgeRating";
 import WebsitesSection from "src/app/components/WebsitesSection";
@@ -30,6 +30,7 @@ import { PlatformLogoBadge } from "src/components/common/PlatformLogoBadge";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const { id } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -91,8 +92,10 @@ const QuestGameDetailPage: React.FC = () => {
 
     const MetadataGrid: React.FC = () => {
         const handleFranchisePress = (franchiseId: number) => {
-            // TODO: Implement franchise navigation
-            console.log(`Navigate to franchise: ${franchiseId}`);
+            navigation.navigate("GameTabs", {
+                screen: "Discover",
+                params: { franchiseId },
+            });
         };
 
         return (
@@ -266,9 +269,10 @@ const QuestGameDetailPage: React.FC = () => {
                             {game.personalRating >= 10 ? (
                                 <LinearGradient
                                     colors={[
-                                        colorSwatch.accent.pink,
+                                        colorSwatch.primary.main,
+                                        colorSwatch.accent.purple,
                                         colorSwatch.accent.yellow,
-                                        colorSwatch.accent.green,
+                                        colorSwatch.primary.light,
                                         colorSwatch.accent.cyan,
                                     ]}
                                     start={{ x: 0, y: 0 }}
@@ -506,10 +510,14 @@ const QuestGameDetailPage: React.FC = () => {
                 {/* Hero Section */}
                 <HeaderSection />
 
-                {/* Progress Tracking */}
-                <View style={styles.sectionContainer}>
-                    <MetadataGrid />
-                </View>
+                {game.gameStatus !== "undiscovered" && (
+                    <>
+                        {/* Progress Tracking */}
+                        <View style={styles.sectionContainer}>
+                            <MetadataGrid />
+                        </View>
+                    </>
+                )}
 
                 {/* Personal Review Section */}
                 {game.gameStatus === "completed" && <PersonalReviewSection />}

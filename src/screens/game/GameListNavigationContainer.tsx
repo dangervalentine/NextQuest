@@ -12,21 +12,15 @@ import {
 } from "src/data/repositories/questGames";
 import IGDBService from "src/services/api/IGDBService";
 import { colorSwatch } from "src/utils/colorConstants";
-import GameTabNavigator, {
-    headerStyle,
-} from "./GameList/components/GameTabNavigator";
+import { headerStyle } from "./GameList/components/GameTabNavigator";
 import { createIGDBGame } from "src/data/repositories/igdbGames";
 import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";
+import Toast from "react-native-toast-message";
+import Home from "../Home";
+import GameTabs from "./GameTabs";
+import { RootStackParamList } from "src/utils/navigationTypes";
 
 const Stack = createStackNavigator<RootStackParamList>();
-
-type RootStackParamList = {
-    GameTabs: undefined;
-    QuestGameDetailPage: {
-        id: number;
-        name: string;
-    };
-};
 
 const MainNavigationContainer: React.FC = () => {
     const [gameData, setGameData] = useState<
@@ -43,19 +37,23 @@ const MainNavigationContainer: React.FC = () => {
         ongoing: true,
         backlog: true,
         completed: true,
-        undiscovered: true,
-        on_hold: true,
-        dropped: true,
+        undiscovered: false,
+        on_hold: false,
+        dropped: false,
     });
 
     // Add this state for the modal
     const [isPlatformModalVisible, setIsPlatformModalVisible] = useState(false);
-    const [platformModalResolve, setPlatformModalResolve] = useState<
-        ((platform: { id: number; name: string } | null) => void) | null
-    >(null);
     const [platformModalPlatforms, setPlatformModalPlatforms] = useState<
         Array<{ id: number; name: string }>
     >([]);
+    const [
+        selectedGameForPlatform,
+        setSelectedGameForPlatform,
+    ] = useState<MinimalQuestGame | null>(null);
+    const [platformModalResolve, setPlatformModalResolve] = useState<
+        ((platform: { id: number; name: string } | null) => void) | null
+    >(null);
 
     const sortGames = (games: MinimalQuestGame[], status: GameStatus) => {
         return [...games].sort((a, b) => {
@@ -186,6 +184,7 @@ const MainNavigationContainer: React.FC = () => {
                 if (game.platforms?.length > 1) {
                     selectedPlatform =
                         (await showPlatformSelectionModal(
+                            game,
                             game.platforms || []
                         )) || selectedPlatform;
                 }
@@ -198,6 +197,15 @@ const MainNavigationContainer: React.FC = () => {
                             newStatus,
                             dbQuestGame.gameStatus
                         );
+                        Toast.show({
+                            type: "success",
+                            text1: "Game Status Updated",
+                            text2: `${game.name} moved to ${getStatusLabel(
+                                newStatus
+                            )}`,
+                            position: "bottom",
+                            visibilityTime: 2000,
+                        });
                     }
                 } else {
                     // Different platform selected, update both platform and status
@@ -210,6 +218,15 @@ const MainNavigationContainer: React.FC = () => {
                                     ? gameData.backlog.length + 1
                                     : 0,
                         });
+                        Toast.show({
+                            type: "success",
+                            text1: "Game Updated",
+                            text2: `${game.name} added to ${getStatusLabel(
+                                newStatus
+                            )} for ${selectedPlatform?.name}`,
+                            position: "bottom",
+                            visibilityTime: 2000,
+                        });
                     } catch (error) {
                         throw error;
                     }
@@ -220,6 +237,13 @@ const MainNavigationContainer: React.FC = () => {
                     game.id
                 );
                 if (!fetchedIGDBGame) {
+                    Toast.show({
+                        type: "error",
+                        text1: "Error Adding Game",
+                        text2: `Failed to fetch game details for ${game.name}`,
+                        position: "bottom",
+                        visibilityTime: 3000,
+                    });
                     throw new Error(
                         `Failed to fetch game details for ID: ${game.id}`
                     );
@@ -231,6 +255,7 @@ const MainNavigationContainer: React.FC = () => {
                 if (game.platforms?.length > 1) {
                     selectedPlatform =
                         (await showPlatformSelectionModal(
+                            game,
                             game.platforms || []
                         )) || selectedPlatform;
                 }
@@ -246,6 +271,15 @@ const MainNavigationContainer: React.FC = () => {
                                 : 0,
                         selected_platform_id: selectedPlatform?.id || null,
                     });
+                    Toast.show({
+                        type: "success",
+                        text1: "Game Added",
+                        text2: `${game.name} added to ${getStatusLabel(
+                            newStatus
+                        )}`,
+                        position: "bottom",
+                        visibilityTime: 2000,
+                    });
                 } catch (error) {
                     throw error;
                 }
@@ -258,12 +292,31 @@ const MainNavigationContainer: React.FC = () => {
         }
     };
 
+    const getStatusLabel = (status: GameStatus) => {
+        switch (status) {
+            case "ongoing":
+                return "Ongoing";
+            case "backlog":
+                return "Backlog";
+            case "completed":
+                return "Completed";
+            case "undiscovered":
+                return "Undiscovered";
+            case "on_hold":
+                return "On Hold";
+            case "dropped":
+                return "Dropped";
+        }
+    };
+
     // Update the showPlatformSelectionModal function
-    const showPlatformSelectionModal = async (
+    const showPlatformSelectionModal = (
+        game: MinimalQuestGame,
         platforms: Array<{ id: number; name: string }>
     ): Promise<{ id: number; name: string } | null> => {
         return new Promise((resolve) => {
             setPlatformModalPlatforms(platforms);
+            setSelectedGameForPlatform(game);
             setPlatformModalResolve(() => resolve);
             setIsPlatformModalVisible(true);
         });
@@ -478,9 +531,14 @@ const MainNavigationContainer: React.FC = () => {
                     headerTintColor: colorSwatch.accent.cyan,
                 }}
             >
+                {/* <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{ headerShown: false }}
+                /> */}
                 <Stack.Screen name="GameTabs" options={{ headerShown: false }}>
                     {() => (
-                        <GameTabNavigator
+                        <GameTabs
                             gameData={gameData}
                             isLoading={isLoading}
                             handleStatusChange={handleStatusChange}
@@ -515,6 +573,9 @@ const MainNavigationContainer: React.FC = () => {
                 onClose={handlePlatformModalClose}
                 onSelect={handlePlatformSelect}
                 platforms={platformModalPlatforms}
+                selectedPlatformId={
+                    selectedGameForPlatform?.selectedPlatform?.id
+                }
             />
         </>
     );

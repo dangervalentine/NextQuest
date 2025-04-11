@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
     ImageBackground,
     StyleSheet,
@@ -6,6 +6,7 @@ import {
     ScrollView,
     ActivityIndicator,
 } from "react-native";
+import { useRoute } from "@react-navigation/native";
 import GameItem from "./GameItem";
 import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
@@ -13,6 +14,7 @@ import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
 import IGDBService from "src/services/api/IGDBService";
 import GameSearchInput from "./GameSearchInput";
+import { DiscoverTabRouteProp } from "src/utils/navigationTypes";
 
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
@@ -55,29 +57,47 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     gameStatus,
     handleDiscover,
 }) => {
+    const route = useRoute<DiscoverTabRouteProp>();
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [isSearching, setIsSearching] = useState(false);
 
-    const searchGames = useCallback(async (query: string) => {
-        if (query.length < 2) {
-            setSearchResults([]);
-            return;
-        }
+    const searchGames = useCallback(
+        async (query: string, franchiseId?: number) => {
+            if (query.length < 2 && !franchiseId) {
+                setSearchResults([]);
+                return;
+            }
 
-        setError(null);
-        setIsSearching(true);
-        try {
-            const results = await IGDBService.searchGames(query);
-            setSearchResults(results);
-        } catch (err) {
-            setError("Failed to search games. Please try again.");
-            console.error("Search error:", err);
-        } finally {
-            setIsSearching(false);
+            setError(null);
+            setIsSearching(true);
+            try {
+                let results;
+                if (franchiseId) {
+                    results = await IGDBService.searchGamesByFranchise(
+                        franchiseId
+                    );
+                } else {
+                    results = await IGDBService.searchGames(query);
+                }
+                setSearchResults(results);
+            } catch (err) {
+                setError("Failed to search games. Please try again.");
+                console.error("Search error:", err);
+            } finally {
+                setIsSearching(false);
+            }
+        },
+        []
+    );
+
+    useEffect(() => {
+        const params = route.params as { franchiseId?: number };
+        if (params?.franchiseId) {
+            searchGames("", params.franchiseId);
         }
-    }, []);
+    }, [route.params, searchGames]);
 
     // Simplify this to just call searchGames directly
     const handleSearchChange = (text: string) => {

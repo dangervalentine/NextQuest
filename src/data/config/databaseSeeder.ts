@@ -731,12 +731,12 @@ const seedPlatforms = async () => {
 };
 
 export const initializeDatabase = async () => {
-    const [dbExists] = await db.getAllAsync(`SELECT 1 FROM games`);
+    // const [dbExists] = await db.getAllAsync(`SELECT 1 FROM games`);
 
-    if (dbExists) {
-        console.log("Database already exists");
-        return null;
-    }
+    // if (dbExists) {
+    //     console.log("Database already exists");
+    //     return null;
+    // }
 
     try {
         // Drop existing tables in correct order

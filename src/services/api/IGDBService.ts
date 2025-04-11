@@ -4,6 +4,7 @@ import { QuestGame } from "src/data/models/QuestGame";
 import { getQuestGameById } from "src/data/repositories/questGames";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
+import { GameStatus } from "src/constants/config/gameStatus";
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4";
@@ -21,7 +22,6 @@ class IGDBService {
 where name ~ *"${query}"*
       & category = (0,8)
       & version_parent = null
-      & category != 16
       & platforms.id = (3,4,5,6,7,8,9,11,12,14,
                         18,19,20,21,22,24,33,34,37,38,39,
                         41,46,48,49,130,167,169,170,211,
@@ -310,6 +310,108 @@ sort release_dates.date asc;
         } catch (error) {
             console.error("Error fetching game details:", error);
             return null;
+        }
+    }
+
+    public static async searchGamesByFranchise(
+        franchiseId: number
+    ): Promise<MinimalQuestGame[]> {
+        const token = await TwitchAuthService.getValidToken();
+
+        const bodyQuery = `fields id, name, 
+       cover.id, cover.url,
+       genres.id, genres.name,
+       release_dates.id, release_dates.date,
+       platforms.id, platforms.name;
+where franchises = ${franchiseId}
+      & category = (0,8)
+      & version_parent = null
+      & platforms.id = (3,4,5,6,7,8,9,11,12,14,
+                        18,19,20,21,22,24,33,34,37,38,39,
+                        41,46,48,49,130,167,169,170,211,
+                        282,283);
+sort release_dates.date desc;
+limit 100;`;
+
+        try {
+            const response = await fetch(this.API_URL + "/games", {
+                method: "POST",
+                headers: {
+                    "Client-ID": TWITCH_CLIENT_ID,
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/json",
+                },
+                body: bodyQuery,
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(
+                    "[searchGamesByFranchise] Error response:",
+                    errorText
+                );
+                throw new Error(
+                    `Error: ${response.status} ${response.statusText}`
+                );
+            }
+
+            const data = await response.json();
+            if (!data || !Array.isArray(data)) {
+                return [];
+            }
+
+            if (data.length === 0) {
+                return [];
+            }
+
+            const now = new Date().toISOString();
+            const mappedGames = data.map((game: any) => {
+                return {
+                    id: game.id,
+                    name: game.name,
+                    gameStatus: "undiscovered" as GameStatus,
+                    updatedAt: now,
+                    createdAt: now,
+                    dateAdded: now,
+                    cover: game.cover
+                        ? {
+                              id: game.cover.id,
+                              url: game.cover.url.replace(
+                                  "t_thumb",
+                                  "t_cover_big"
+                              ),
+                          }
+                        : null,
+                    platforms:
+                        game.platforms?.map((platform: any) => ({
+                            id: platform.id,
+                            name: platform.name,
+                        })) || [],
+                    genres:
+                        game.genres?.map((genre: any) => ({
+                            id: genre.id,
+                            name: genre.name,
+                        })) || [],
+                    release_dates:
+                        game.release_dates?.map((release: any) => ({
+                            id: release.id,
+                            date: release.date,
+                            platform_id: release.platform,
+                        })) || [],
+                    selectedPlatform:
+                        game.platforms && game.platforms.length > 0
+                            ? {
+                                  id: game.platforms[0].id,
+                                  name: game.platforms[0].name,
+                              }
+                            : { id: 0, name: "Unknown Platform" },
+                };
+            });
+
+            return mappedGames;
+        } catch (error) {
+            console.error("[searchGamesByFranchise] Error:", error);
+            throw error;
         }
     }
 }
