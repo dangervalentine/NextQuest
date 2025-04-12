@@ -590,8 +590,20 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <Text style={styles.textSecondary}>
                                         <Text>Platform: </Text>
                                         <Text>
+                                            {/* Display the selected platform name if available. 
+                                            If not, check the number of platforms:
+                                            - Show "No Platforms" if there are none.
+                                            - Show the platform name if there is exactly one.
+                                            - Show the number of platforms if there are multiple. */}
                                             {questGame.selectedPlatform?.name ||
-                                                `${questGame.platforms.length} Platforms`}
+                                                (questGame.platforms.length ===
+                                                0
+                                                    ? "No Platforms"
+                                                    : questGame.platforms
+                                                          .length > 1
+                                                    ? `${questGame.platforms.length} Platforms`
+                                                    : questGame.platforms[0]
+                                                          .name)}
                                         </Text>
                                     </Text>
                                     {platformReleaseDate && (

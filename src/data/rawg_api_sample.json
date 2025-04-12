@@ -1,0 +1,205 @@
+{
+    "id": 25924,
+    "slug": "the-legend-of-zelda-majoras-mask",
+    "name": "The Legend of Zelda: Majora's Mask",
+    "name_original": "The Legend of Zelda: Majora's Mask",
+    "description": "<p>Link must save the world! This time, he finds himself trapped in<br />\nTermina, an alternate version of Hyrule that is doomed to destruction in<br />\njust three short days. Link must race to recover the Ocarina of Time<br />\n(which allows him to manipulate time in multiple ways), defeat<br />\nchallenging bosses in dungeons spread across Termina, and discover the<br />\nkey to the mystery of Majora’s Mask. Along the way he’ll obtain new<br />\nweapons and items and help other characters (some strangely familiar) in<br />\ntheir everyday lives. In addition, Link must utilize a wide assortment<br />\nof masks scattered throughout Termina, each with its own specific use or<br />\npower. Never before has three days offered so much in the way of action,<br />\nmind-boggling puzzles, and depth—The Legend of Zelda: Majora’s Mask is<br />\nan adventure unlike any other!<br />\nThis classic game is part of the Virtual Console service, which brings you great games created for consoles such as NES™, Super NES™ and Game Boy™ Advance. See more Virtual Console games for Wii.</p>",
+    "metacritic": 95,
+    "metacritic_platforms": [
+        {
+            "metascore": 95,
+            "url": "https://www.metacritic.com/game/nintendo-64/the-legend-of-zelda-majoras-mask",
+            "platform": {
+                "platform": 83,
+                "name": "Nintendo 64",
+                "slug": "nintendo-64"
+            }
+        }
+    ],
+    "released": "2000-04-27",
+    "tba": false,
+    "updated": "2025-02-16T21:10:12",
+    "background_image": "https://media.rawg.io/media/games/b3c/b3c209cd49aae8a469a59b79b54dc599.jpg",
+    "background_image_additional": "https://media.rawg.io/media/screenshots/848/848105cd6ec515093ddce188fb587ddb.jpg",
+    "website": "",
+    "rating": 4.36,
+    "rating_top": 5,
+    "ratings": [
+        {
+            "id": 5,
+            "title": "exceptional",
+            "count": 259,
+            "percent": 62.86
+        },
+        {
+            "id": 4,
+            "title": "recommended",
+            "count": 101,
+            "percent": 24.51
+        },
+        {
+            "id": 1,
+            "title": "skip",
+            "count": 30,
+            "percent": 7.28
+        },
+        {
+            "id": 3,
+            "title": "meh",
+            "count": 22,
+            "percent": 5.34
+        }
+    ],
+    "reactions": {
+        "1": 3,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 1,
+        "9": 3,
+        "10": 1,
+        "11": 3,
+        "12": 2
+    },
+    "added": 1063,
+    "added_by_status": {
+        "yet": 126,
+        "owned": 255,
+        "beaten": 384,
+        "toplay": 162,
+        "dropped": 110,
+        "playing": 26
+    },
+    "playtime": 23,
+    "screenshots_count": 25,
+    "movies_count": 0,
+    "creators_count": 7,
+    "achievements_count": 0,
+    "parent_achievements_count": 0,
+    "reddit_url": "",
+    "reddit_name": "",
+    "reddit_description": "",
+    "reddit_logo": "",
+    "reddit_count": 0,
+    "twitch_count": 160,
+    "youtube_count": 1000000,
+    "reviews_text_count": 4,
+    "ratings_count": 408,
+    "suggestions_count": 405,
+    "alternative_names": [
+        "Majora’s Mask",
+        "majoras mask"
+    ],
+    "metacritic_url": "https://www.metacritic.com/game/nintendo-64/the-legend-of-zelda-majoras-mask",
+    "parents_count": 0,
+    "additions_count": 1,
+    "game_series_count": 28,
+    "user_game": null,
+    "reviews_count": 412,
+    "saturated_color": "0f0f0f",
+    "dominant_color": "0f0f0f",
+    "parent_platforms": [
+        {
+            "platform": {
+                "id": 7,
+                "name": "Nintendo",
+                "slug": "nintendo"
+            }
+        }
+    ],
+    "platforms": [
+        {
+            "platform": {
+                "id": 7,
+                "name": "Nintendo Switch",
+                "slug": "nintendo-switch",
+                "image": null,
+                "year_end": null,
+                "year_start": null,
+                "games_count": 5618,
+                "image_background": "https://media.rawg.io/media/games/7c4/7c448374df84b607f67ce9182a3a3ca7.jpg"
+            },
+            "released_at": "2000-04-27",
+            "requirements": {}
+        },
+        {
+            "platform": {
+                "id": 83,
+                "name": "Nintendo 64",
+                "slug": "nintendo-64",
+                "image": null,
+                "year_end": null,
+                "year_start": null,
+                "games_count": 363,
+                "image_background": "https://media.rawg.io/media/screenshots/c1f/c1fd8b15793743563367688b3dd5faa6.jpg"
+            },
+            "released_at": "2000-04-27",
+            "requirements": {}
+        }
+    ],
+    "stores": [
+        {
+            "id": 30397,
+            "url": "",
+            "store": {
+                "id": 6,
+                "name": "Nintendo Store",
+                "slug": "nintendo",
+                "domain": "nintendo.com",
+                "games_count": 9124,
+                "image_background": "https://media.rawg.io/media/games/849/849414b978db37d4563ff9e4b0d3a787.jpg"
+            }
+        }
+    ],
+    "developers": [
+        {
+            "id": 16257,
+            "name": "Nintendo",
+            "slug": "nintendo",
+            "games_count": 426,
+            "image_background": "https://media.rawg.io/media/games/d9c/d9c8b7edc78391619566adfeb52b5a9a.jpg"
+        }
+    ],
+    "genres": [
+        {
+            "id": 4,
+            "name": "Action",
+            "slug": "action",
+            "games_count": 186462,
+            "image_background": "https://media.rawg.io/media/games/73e/73eecb8909e0c39fb246f457b5d6cbbe.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Adventure",
+            "slug": "adventure",
+            "games_count": 146328,
+            "image_background": "https://media.rawg.io/media/games/7f6/7f6cd70ba2ad57053b4847c13569f2d8.jpg"
+        }
+    ],
+    "tags": [
+        {
+            "id": 31,
+            "name": "Singleplayer",
+            "slug": "singleplayer",
+            "language": "eng",
+            "games_count": 238040,
+            "image_background": "https://media.rawg.io/media/games/490/49016e06ae2103881ff6373248843069.jpg"
+        }
+    ],
+    "publishers": [
+        {
+            "id": 10681,
+            "name": "Nintendo",
+            "slug": "nintendo",
+            "games_count": 1235,
+            "image_background": "https://media.rawg.io/media/games/dd1/dd167cf8753db3748a975d61cc926e54.jpg"
+        }
+    ],
+    "esrb_rating": {
+        "id": 2,
+        "name": "Everyone 10+",
+        "slug": "everyone-10-plus"
+    },
+    "clip": null,
+    "description_raw": "Link must save the world! This time, he finds himself trapped in\nTermina, an alternate version of Hyrule that is doomed to destruction in\njust three short days. Link must race to recover the Ocarina of Time\n(which allows him to manipulate time in multiple ways), defeat\nchallenging bosses in dungeons spread across Termina, and discover the\nkey to the mystery of Majora’s Mask. Along the way he’ll obtain new\nweapons and items and help other characters (some strangely familiar) in\ntheir everyday lives. In addition, Link must utilize a wide assortment\nof masks scattered throughout Termina, each with its own specific use or\npower. Never before has three days offered so much in the way of action,\nmind-boggling puzzles, and depth—The Legend of Zelda: Majora’s Mask is\nan adventure unlike any other!\nThis classic game is part of the Virtual Console service, which brings you great games created for consoles such as NES™, Super NES™ and Game Boy™ Advance. See more Virtual Console games for Wii."
+}

@@ -28,12 +28,15 @@ import { AgeRatingBadge } from "src/components/common/AgeRatingBadge";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
 import { PlatformLogoBadge } from "src/components/common/PlatformLogoBadge";
 import { getRatingColor } from "src/utils/colors";
+import RAWRService from "src/services/api/RAWRService";
+import { MetacriticBadge } from "src/components/common/MetaCriticBadge";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const { id } = route.params;
     const [game, setGameDetails] = useState<QuestGame | null>(null);
+    const [metacriticScore, setMetacriticScore] = useState<number | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -43,6 +46,14 @@ const QuestGameDetailPage: React.FC = () => {
             );
 
             setGameDetails(game);
+
+            if (game) {
+                const metacriticScore = await RAWRService.getMetacriticScore(
+                    game.name
+                );
+
+                setMetacriticScore(metacriticScore);
+            }
 
             Animated.timing(fadeAnim, {
                 toValue: 1,
@@ -141,7 +152,7 @@ const QuestGameDetailPage: React.FC = () => {
                         {getAgeRating(game) || "N/A"}
                     </Text>
                 </View>
-                <View style={styles.metadataItem}>
+                {/* <View style={styles.metadataItem}>
                     <Text variant="subtitle" style={styles.metadataLabel}>
                         Date Added
                     </Text>
@@ -150,7 +161,7 @@ const QuestGameDetailPage: React.FC = () => {
                             game.dateAdded?.split("T")[0]
                         ).toLocaleDateString()}
                     </Text>
-                </View>
+                </View> */}
                 {game.selectedPlatform && game.selectedPlatform.id !== 0 && (
                     <View style={styles.metadataItem}>
                         <Text variant="subtitle" style={styles.metadataLabel}>
@@ -187,6 +198,14 @@ const QuestGameDetailPage: React.FC = () => {
                                 </Text>
                             ))}
                         </View>
+                    </View>
+                )}
+                {metacriticScore && (
+                    <View style={styles.metadataItem}>
+                        <Text variant="subtitle" style={styles.metadataLabel}>
+                            Metacritic Score
+                        </Text>
+                        <MetacriticBadge score={metacriticScore} />
                     </View>
                 )}
             </View>
