@@ -17,4 +17,5 @@ export interface QuestGame extends IGDBGameResponse {
     franchises: { id: number; name: string }[];
     updatedAt: string; // Date when the game was last updated
     createdAt: string; // Date when the game was added to the quest log
+    metacriticScore?: number; // Metacritic score of the game
 }

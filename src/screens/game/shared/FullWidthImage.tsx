@@ -1,7 +1,13 @@
 import { Image } from "expo-image";
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleProp, ViewStyle } from "react-native";
+import {
+    Dimensions,
+    StyleProp,
+    ViewStyle,
+    ActivityIndicator,
+} from "react-native";
 import { View, StyleSheet, Image as RNImage } from "react-native";
+import { colorSwatch } from "src/utils/colorConstants";
 
 const FullWidthImage = ({
     source,
@@ -12,6 +18,7 @@ const FullWidthImage = ({
 }): React.JSX.Element => {
     const [imageHeight, setImageHeight] = useState(0);
     const [hasError, setHasError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // Get the image dimensions
@@ -25,18 +32,30 @@ const FullWidthImage = ({
 
     return (
         <View style={[styles.imageContainer, style]}>
+            {isLoading && (
+                <View style={[styles.skeleton]}>
+                    <ActivityIndicator
+                        size="large"
+                        color={colorSwatch.accent.green}
+                    />
+                </View>
+            )}
             {!hasError ? (
                 <Image
                     source={{ uri: source }}
                     style={[styles.image, { height: imageHeight }]}
                     contentFit="cover"
-                    transition={200}
-                    onError={() => setHasError(true)}
+                    transition={300}
+                    onLoadEnd={() => setIsLoading(false)}
+                    onError={() => {
+                        setHasError(true);
+                        setIsLoading(false);
+                    }}
                 />
             ) : (
                 <Image
                     source={require("../../../assets/placeholder.png")}
-                    style={[styles.image, { height: imageHeight || 200 }]}
+                    style={[styles.image, { height: 560 }]}
                     contentFit="cover"
                 />
             )}
@@ -52,6 +71,13 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: undefined,
+    },
+    skeleton: {
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.medium,
+        width: "100%",
+        height: 560,
     },
 });
 

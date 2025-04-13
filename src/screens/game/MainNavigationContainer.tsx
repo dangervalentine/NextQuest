@@ -18,6 +18,7 @@ import { PlatformSelectionModal } from "../../components/common/PlatformSelectio
 import Toast from "react-native-toast-message";
 import GameTabs from "./GameTabs";
 import { RootStackParamList } from "src/utils/navigationTypes";
+import { getStatusColor } from "src/utils/colors";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,9 @@ const MainNavigationContainer: React.FC = () => {
         on_hold: false,
         dropped: false,
     });
+    const [activeTabColor, setActiveTabColor] = useState<string>(
+        getStatusColor("ongoing")
+    );
 
     // Add this state for the modal
     const [isPlatformModalVisible, setIsPlatformModalVisible] = useState(false);
@@ -87,6 +91,10 @@ const MainNavigationContainer: React.FC = () => {
             setIsLoading((prev) => ({ ...prev, [status]: false }));
         }
     }, []);
+
+    const handleTabChange = (tabName: string) => {
+        setActiveTabColor(getStatusColor(tabName.toLowerCase() as GameStatus));
+    };
 
     useEffect(() => {
         const loadInitialData = async () => {
@@ -542,6 +550,7 @@ const MainNavigationContainer: React.FC = () => {
                                 handleRemoveItem={handleRemoveItem}
                                 handleReorder={handleReorder}
                                 handleDiscover={handleDiscover}
+                                onTabChange={handleTabChange}
                             />
                             <PlatformSelectionModal
                                 visible={isPlatformModalVisible}
@@ -557,7 +566,7 @@ const MainNavigationContainer: React.FC = () => {
                     component={QuestGameDetailPage}
                     options={({ route }) => ({
                         headerTransparent: true,
-                        headerTintColor: colorSwatch.accent.purple,
+                        headerTintColor: activeTabColor,
                         headerTitle: route.params.name,
                         headerTitleStyle: {
                             fontFamily: "Inter-Regular",

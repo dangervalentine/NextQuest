@@ -9,6 +9,7 @@ import QuestIcon from "../../shared/GameIcon";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
+import { getStatusColor } from "src/utils/colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,30 +28,15 @@ interface TabNavigatorProps {
         toIndex: number,
         status: GameStatus
     ) => void;
+    onTabChange: (tabName: string) => void;
 }
-
-// Status color mapping
-const getStatusColor = (status: GameStatus): string => {
-    switch (status) {
-        case "ongoing":
-            return colorSwatch.accent.yellow;
-        case "completed":
-            return colorSwatch.accent.green;
-        case "backlog":
-            return colorSwatch.accent.purple;
-        case "undiscovered":
-            return colorSwatch.accent.cyan;
-        default:
-            return colorSwatch.accent.cyan;
-    }
-};
 
 // Tab screen configurations
 const tabScreens = [
     {
         name: "Ongoing",
         iconName: "gamepad-variant" as const,
-        title: "Ongoing Quests",
+        title: "Ongoing",
         gameStatus: "ongoing" as GameStatus,
     },
     {
@@ -60,9 +46,9 @@ const tabScreens = [
         gameStatus: "backlog" as GameStatus,
     },
     {
-        name: "Trophies",
+        name: "Completed",
         iconName: "medal" as const,
-        title: "Trophy Room",
+        title: "Completed",
         gameStatus: "completed" as GameStatus,
     },
 ];
@@ -116,6 +102,7 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
     handleDiscover,
     handleRemoveItem,
     handleReorder,
+    onTabChange,
 }) => {
     return (
         <Tab.Navigator
@@ -134,6 +121,13 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
                           ),
                 tabBarInactiveTintColor: colorSwatch.text.muted,
             })}
+            screenListeners={{
+                state: (e) => {
+                    const currentRoute =
+                        e.data.state.routes[e.data.state.index];
+                    onTabChange?.(currentRoute.name);
+                },
+            }}
         >
             {tabScreens.map((screen) => (
                 <Tab.Screen

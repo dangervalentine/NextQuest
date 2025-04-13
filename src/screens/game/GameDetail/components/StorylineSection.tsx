@@ -1,5 +1,11 @@
 import React, { memo, useState, useRef, useEffect } from "react";
-import { View, StyleSheet, Animated, Pressable } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Animated,
+    Pressable,
+    LayoutChangeEvent,
+} from "react-native";
 import Text from "../../../../components/common/Text";
 import { colorSwatch } from "../../../../utils/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
@@ -12,23 +18,30 @@ interface StorylineSectionProps {
 const StorylineSection: React.FC<StorylineSectionProps> = memo(
     ({ storyline, summary }) => {
         const [isExpanded, setIsExpanded] = useState(false);
+        const [contentHeight, setContentHeight] = useState(0);
         const rotateAnim = useRef(new Animated.Value(0)).current;
+        const heightAnim = useRef(new Animated.Value(0)).current;
         const content = storyline || summary;
 
         if (!content) return null;
 
-        let truncatedContent = content;
-        if (content.length > 400) {
-            truncatedContent = `${content}`.substring(0, 400) + "...";
-        }
-        const displayContent = isExpanded ? content : truncatedContent;
+        const displayContent = content;
 
         const toggleExpansion = () => {
+            // Run height animation (JS-driven)
+            Animated.timing(heightAnim, {
+                toValue: isExpanded ? 0 : 1,
+                duration: 300,
+                useNativeDriver: false,
+            }).start();
+
+            // Run rotation animation (native-driven)
             Animated.timing(rotateAnim, {
                 toValue: isExpanded ? 0 : 1,
                 duration: 300,
                 useNativeDriver: true,
             }).start();
+
             setIsExpanded(!isExpanded);
         };
 
@@ -37,13 +50,34 @@ const StorylineSection: React.FC<StorylineSectionProps> = memo(
             outputRange: ["0deg", "180deg"],
         });
 
+        const onTextLayout = (event: LayoutChangeEvent) => {
+            const height = event.nativeEvent.layout.height;
+            setContentHeight(height);
+        };
+
+        const shouldShowButton = contentHeight >= 100;
+
         return (
             <View style={styles.storylineContainer}>
-                <View style={styles.measureContainer}>
-                    <Text variant="body" style={styles.storylineText}>
-                        {displayContent}
-                    </Text>
-                    {content.length > 400 && (
+                <View>
+                    <Animated.View
+                        style={{
+                            maxHeight: heightAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [100, 1000],
+                            }),
+                            overflow: "hidden",
+                        }}
+                    >
+                        <Text
+                            variant="body"
+                            style={styles.storylineText}
+                            onLayout={onTextLayout}
+                        >
+                            {displayContent}
+                        </Text>
+                    </Animated.View>
+                    {shouldShowButton && (
                         <Pressable
                             style={styles.seeMoreButton}
                             onPress={toggleExpansion}
@@ -56,7 +90,7 @@ const StorylineSection: React.FC<StorylineSectionProps> = memo(
                             >
                                 <QuestIcon
                                     name="chevron-down"
-                                    size={32}
+                                    size={12}
                                     color={colorSwatch.accent.cyan}
                                 />
                             </Animated.View>
@@ -72,26 +106,27 @@ const styles = StyleSheet.create({
     storylineContainer: {
         backgroundColor: colorSwatch.background.darker,
         borderRadius: 8,
-        marginBottom: 16,
-        overflow: "hidden",
-    },
-    measureContainer: {
-        padding: 16,
     },
     storylineText: {
         color: colorSwatch.text.primary,
-        fontSize: 16,
+        fontSize: 12,
         lineHeight: 24,
     },
     seeMoreButton: {
         flexDirection: "row",
         alignItems: "center",
-        marginTop: 8,
+        marginTop: 12,
         gap: 4,
+        borderWidth: 1,
+        borderColor: colorSwatch.accent.cyan,
+        borderRadius: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        alignSelf: "flex-start",
     },
     seeMoreText: {
-        color: colorSwatch.accent.purple,
-        fontSize: 18,
+        color: colorSwatch.accent.cyan,
+        fontSize: 12,
         fontWeight: "600",
     },
 });

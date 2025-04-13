@@ -2,7 +2,14 @@ import React from "react";
 import { Text as RNText, TextProps, StyleSheet, TextStyle } from "react-native";
 
 interface CustomTextProps extends TextProps {
-    variant?: "body" | "title" | "subtitle" | "button" | "caption" | "pixel";
+    variant?:
+        | "body"
+        | "title"
+        | "subtitle"
+        | "button"
+        | "caption"
+        | "pixel"
+        | "small";
 }
 
 const fonts = {
@@ -12,6 +19,7 @@ const fonts = {
     caption: "FiraCode-Italic",
     button: "FiraCode-Bold",
     pixel: "PressStart2P-Regular",
+    small: "FiraCode-Regular",
 } as const;
 // const fonts = {
 //     title: "Inter-Regular",
@@ -46,6 +54,10 @@ const baseStyles: Record<NonNullable<CustomTextProps["variant"]>, TextStyle> = {
         lineHeight: 20,
         fontStyle: "italic",
     },
+    small: {
+        fontSize: 10,
+        lineHeight: 14,
+    },
     pixel: {},
 };
 
@@ -70,11 +82,3 @@ const Text: React.FC<CustomTextProps> = ({
 };
 
 export default Text;
-
-
-
-
-
-
-
-

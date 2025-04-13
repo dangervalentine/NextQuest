@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import MainNavigationContainer from "../GameListNavigationContainer";
+import MainNavigationContainer from "../MainNavigationContainer";
 import {
     getQuestGamesByStatus,
     updateQuestGame,
@@ -148,11 +148,3 @@ describe("MainNavigationContainer", () => {
         consoleError.mockRestore();
     });
 });
-
-
-
-
-
-
-
-

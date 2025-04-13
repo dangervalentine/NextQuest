@@ -18,6 +18,7 @@ interface GameTabsProps {
         toIndex: number,
         status: GameStatus
     ) => void;
+    onTabChange: (tabName: string) => void;
 }
 
 const GameTabs: React.FC<GameTabsProps> = ({
@@ -27,6 +28,7 @@ const GameTabs: React.FC<GameTabsProps> = ({
     handleDiscover,
     handleRemoveItem,
     handleReorder,
+    onTabChange,
 }) => {
     return (
         <GameTabNavigator
@@ -36,6 +38,7 @@ const GameTabs: React.FC<GameTabsProps> = ({
             handleDiscover={handleDiscover}
             handleRemoveItem={handleRemoveItem}
             handleReorder={handleReorder}
+            onTabChange={onTabChange}
         />
     );
 };

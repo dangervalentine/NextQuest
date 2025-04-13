@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { initializeDatabase } from "./data/config/databaseSeeder";
 import { colorSwatch } from "./utils/colorConstants";
 import { StatusBar } from "expo-status-bar";
-import MainNavigationContainer from "./screens/game/GameListNavigationContainer";
+import MainNavigationContainer from "./screens/game/MainNavigationContainer";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();

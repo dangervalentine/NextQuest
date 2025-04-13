@@ -109,15 +109,15 @@ export const PlatformLogoBadge: React.FC<PlatformLogoBadgeProps> = ({
         }
     };
 
-    const Logo = getPlatformLogo();
+    const logo = getPlatformLogo();
 
     return (
         <View
             style={[styles.container, { width: size, height: size / 4 }, style]}
         >
-            {Logo ? (
+            {logo ? (
                 <Image
-                    source={Logo}
+                    source={logo}
                     style={styles.image}
                     contentFit="contain"
                 />

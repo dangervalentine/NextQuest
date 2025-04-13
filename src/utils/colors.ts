@@ -1,3 +1,4 @@
+import { GameStatus } from "src/constants/config/gameStatus";
 import { COLOR_ARRAY, colorSwatch } from "./colorConstants";
 
 export const generateRandomColorSequence = (length: number): string[] => {
@@ -23,35 +24,34 @@ export const generateRandomColorSequence = (length: number): string[] => {
 export const getRatingColor = (rating: number) => {
     // Normal rating color logic for non-10 ratings
     const normalizedRating = rating / 10;
+
     if (rating === 1) {
         return colorSwatch.accent.pink;
     }
 
-    if (normalizedRating <= 0.3) {
-        // Pink to Yellow gradient (0-4)
-        const t = normalizedRating * 2.5; // 0-1 for 0-0.4 range
+    if (rating === 10) {
+        return colorSwatch.accent.green;
+    }
+
+    if (normalizedRating <= 0.4) {
+        // Pink to Orange gradient (1-4)
+        const t = (normalizedRating - 0.1) * (1 / 0.3); // 0-1 for 0.1-0.4 range
         const pinkRGB = hexToRGB(colorSwatch.accent.pink);
         const orangeRGB = hexToRGB(colorSwatch.secondary.main);
         return interpolateColors(t, pinkRGB, orangeRGB);
-    } else if (normalizedRating <= 0.5) {
-        const t = (normalizedRating - 0.5) * (1 / 0.5); // 0-1 for 0.7-1.0 range
+    } else if (normalizedRating <= 0.7) {
+        // Orange to Yellow gradient (4-7)
+        const t = (normalizedRating - 0.4) * (1 / 0.3); // 0-1 for 0.4-0.7 range
         const orangeRGB = hexToRGB(colorSwatch.secondary.main);
         const yellowRGB = hexToRGB(colorSwatch.accent.yellow);
         return interpolateColors(t, orangeRGB, yellowRGB);
-    } else if (rating <= 7) {
+    } else if (normalizedRating < 1) {
+        // Yellow to Green gradient (7-9)
         const t = (normalizedRating - 0.7) * (1 / 0.3); // 0-1 for 0.7-1.0 range
         const yellowRGB = hexToRGB(colorSwatch.accent.yellow);
         const greenRGB = hexToRGB(colorSwatch.accent.green);
         return interpolateColors(t, yellowRGB, greenRGB);
-    } else if (rating < 10) {
-        // Yellow to Green gradient (7-10)
-        const t = normalizedRating - 1; // 0-1 for 0.7-1.0 range
-        const yellowRGB = hexToRGB(colorSwatch.accent.yellow);
-        const greenRGB = hexToRGB(colorSwatch.accent.green);
-        return interpolateColors(t, yellowRGB, greenRGB);
     }
-    // Rating 10 case is handled separately with LinearGradient
-    return colorSwatch.accent.green;
 };
 
 // Helper function to convert hex to RGB
@@ -72,4 +72,19 @@ const interpolateColors = (
     const g = Math.round(color1.g + (color2.g - color1.g) * t);
     const b = Math.round(color1.b + (color2.b - color1.b) * t);
     return `rgb(${r}, ${g}, ${b})`;
+};
+
+export const getStatusColor = (status: GameStatus): string => {
+    switch (status) {
+        case "ongoing":
+            return colorSwatch.accent.yellow;
+        case "completed":
+            return colorSwatch.accent.green;
+        case "backlog":
+            return colorSwatch.accent.purple;
+        case "undiscovered":
+            return colorSwatch.accent.cyan;
+        default:
+            return colorSwatch.accent.cyan;
+    }
 };

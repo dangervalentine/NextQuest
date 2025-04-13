@@ -1,14 +1,25 @@
 import { RAWG_API_KEY } from "@env";
+import { rawgPlatformIds } from "src/utils/rawgPlatformIds";
 
 class RAWRService {
     private static API_URL = "https://api.rawg.io/api/";
 
-    public static async getMetacriticScore(query: string) {
-        const encodedQuery = encodeURIComponent(query);
+    public static async getMetacriticScore(
+        name: string,
+        platform?: string | undefined
+    ) {
+        const encodedName = encodeURIComponent(name);
 
         try {
-            const url = `${this.API_URL}games?key=${RAWG_API_KEY}&search_exact=true&search=${encodedQuery}`;
+            let url = `${this.API_URL}games?key=${RAWG_API_KEY}&search=${encodedName}`;
 
+            if (platform) {
+                const platformId =
+                    rawgPlatformIds[platform as keyof typeof rawgPlatformIds];
+                if (platformId) {
+                    url += `&platforms=${platformId}`;
+                }
+            }
             const response = await fetch(url);
 
             if (!response.ok) {
@@ -28,16 +39,12 @@ class RAWRService {
                 return null;
             }
 
-            const match = data.results.find(
-                (game: any) => game.name.toLowerCase() === query.toLowerCase()
+            let match = data.results.find(
+                (game: any) => game.name.toLowerCase() === name.toLowerCase()
             );
 
             if (!match || !match.id || !match.name) {
-                console.error(
-                    "No matching game found or missing required fields:",
-                    match
-                );
-                return null;
+                match = data.results[0];
             }
 
             return match.metacritic;

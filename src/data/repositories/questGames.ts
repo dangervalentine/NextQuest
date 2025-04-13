@@ -309,6 +309,16 @@ export const updateGamePriorities = async (updates: GamePriorityUpdate[]) => {
     }
 };
 
+export const updateGameRating = async (gameId: number, rating: number) => {
+    try {
+        await db.execAsync(
+            `UPDATE quest_games SET personal_rating = ${rating} WHERE game_id = ${gameId}`
+        );
+    } catch (error) {
+        console.error("Error updating game rating:", error);
+    }
+};
+
 export const getQuestGameById = async (
     id: number
 ): Promise<QuestGame | null> => {

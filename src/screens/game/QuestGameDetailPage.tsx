@@ -7,57 +7,43 @@ import {
     Animated,
     ImageBackground,
     SafeAreaView,
-    Platform,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { QuestGameDetailRouteProp } from "src/utils/navigationTypes";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "src/utils/navigationTypes";
-import { getGameStatus } from "src/utils/dataMappers";
 import ImageCarousel from "./GameDetail/components/ImageCarousel";
 import { colorSwatch } from "src/utils/colorConstants";
 import IGDBService from "src/services/api/IGDBService";
-import FullWidthImage from "./shared/FullWidthImage";
 import { QuestGame } from "src/data/models/QuestGame";
-import { getAgeRating } from "src/utils/getAgeRating";
 import WebsitesSection from "src/app/components/WebsitesSection";
 import StorylineSection from "./GameDetail/components/StorylineSection";
 import Text from "src/components/common/Text";
-import { AgeRatingBadge } from "src/components/common/AgeRatingBadge";
-import { getStatusStyles } from "src/utils/gameStatusUtils";
-import { PlatformLogoBadge } from "src/components/common/PlatformLogoBadge";
-import { getRatingColor } from "src/utils/colors";
-import RAWRService from "src/services/api/RAWRService";
-import { MetacriticBadge } from "src/components/common/MetaCriticBadge";
+import { PersonalRatingSection } from "./GameDetail/components/PersonalRatingSection";
+import { GenresSection } from "./GameDetail/components/GenresSection";
+import { ThemesSection } from "./GameDetail/components/ThemesSection";
+import { GameModesSection } from "./GameDetail/components/GameModesSection";
+import { PerspectivesSection } from "./GameDetail/components/PerspectivesSection";
+import { PlatformsSection } from "./GameDetail/components/PlatformsSection";
+import { HeaderSection } from "./GameDetail/components/HeaderSection";
+import MetadataGrid from "./GameDetail/components/MetadataGrid";
+import CompaniesSection from "./GameDetail/components/CompaniesSection";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const { id } = route.params;
-    const [game, setGameDetails] = useState<QuestGame | null>(null);
-    const [metacriticScore, setMetacriticScore] = useState<number | null>(null);
+    const [game, setGame] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         const loadGameDetails = async () => {
-            const game: QuestGame | null = await IGDBService.fetchGameDetails(
+            const igdbGame: QuestGame | null = await IGDBService.fetchGameDetails(
                 id
             );
 
-            setGameDetails(game);
-
-            if (game) {
-                const metacriticScore = await RAWRService.getMetacriticScore(
-                    game.name
-                );
-
-                setMetacriticScore(metacriticScore);
-            }
+            setGame(igdbGame);
 
             Animated.timing(fadeAnim, {
                 toValue: 1,
-                duration: 500,
+                duration: 300,
                 useNativeDriver: true,
             }).start();
         };
@@ -67,423 +53,22 @@ const QuestGameDetailPage: React.FC = () => {
     if (!game) {
         return (
             <SafeAreaView style={styles.loadingContainer}>
-                <ActivityIndicator
-                    size="large"
-                    color={colorSwatch.accent.green}
-                />
+                <ImageBackground
+                    source={require("../../assets/next_quest.png")}
+                    style={styles.container}
+                    resizeMode="contain"
+                >
+                    <View style={styles.overlay} />
+                    <View style={[styles.skeleton]}>
+                        <ActivityIndicator
+                            size="large"
+                            color={colorSwatch.accent.green}
+                        />
+                    </View>
+                </ImageBackground>
             </SafeAreaView>
         );
     }
-
-    const HeaderSection: React.FC = () => (
-        <View style={styles.headerSection}>
-            {game.cover && (
-                <View>
-                    <FullWidthImage
-                        source={`https:${game.cover.url
-                            .replace("t_cover_big", "t_720p")
-                            .replace("t_thumb", "t_720p")}`}
-                        style={{
-                            width: "100%",
-                            backgroundColor: colorSwatch.background.dark,
-                        }}
-                    />
-                    <AgeRatingBadge game={game} />
-                </View>
-            )}
-            <View style={styles.headerInfo}>
-                <Text variant="title" style={styles.gameTitle}>
-                    {game.name}
-                </Text>
-                <Text variant="subtitle" style={styles.releaseDate}>
-                    {game.release_dates?.[0]?.human || "Release date unknown"}
-                </Text>
-            </View>
-        </View>
-    );
-
-    const MetadataGrid: React.FC = () => {
-        const handleFranchisePress = (franchiseId: number) => {
-            navigation.navigate("GameTabs", {
-                screen: "Discover",
-                params: { franchiseId },
-            });
-        };
-
-        return (
-            <View style={styles.metadataGrid}>
-                <View style={styles.metadataItem}>
-                    <Text variant="subtitle" style={styles.metadataLabel}>
-                        Status
-                    </Text>
-                    <Text
-                        variant="body"
-                        style={[
-                            styles.metadataValue,
-                            getStatusStyles(game.gameStatus),
-                        ]}
-                    >
-                        {game.gameStatus
-                            ? getGameStatus(game.gameStatus)
-                            : "Not set"}
-                    </Text>
-                </View>
-                {game.gameStatus === "completed" && game.completionDate && (
-                    <View style={styles.metadataItem}>
-                        <Text variant="subtitle" style={styles.metadataLabel}>
-                            Completed On
-                        </Text>
-                        <Text
-                            variant="body"
-                            style={[
-                                styles.metadataValue,
-                                { color: colorSwatch.accent.green },
-                            ]}
-                        >
-                            {new Date(game.completionDate).toLocaleDateString()}
-                        </Text>
-                    </View>
-                )}
-                <View style={styles.metadataItem}>
-                    <Text variant="subtitle" style={styles.metadataLabel}>
-                        Age Rating
-                    </Text>
-                    <Text variant="body" style={styles.metadataValue}>
-                        {getAgeRating(game) || "N/A"}
-                    </Text>
-                </View>
-                {/* <View style={styles.metadataItem}>
-                    <Text variant="subtitle" style={styles.metadataLabel}>
-                        Date Added
-                    </Text>
-                    <Text variant="body" style={styles.metadataValue}>
-                        {new Date(
-                            game.dateAdded?.split("T")[0]
-                        ).toLocaleDateString()}
-                    </Text>
-                </View> */}
-                {game.selectedPlatform && game.selectedPlatform.id !== 0 && (
-                    <View style={styles.metadataItem}>
-                        <Text variant="subtitle" style={styles.metadataLabel}>
-                            Platform
-                        </Text>
-                        <PlatformLogoBadge
-                            platform={game.selectedPlatform.name}
-                            size={82}
-                            style={{ marginRight: 12 }}
-                        />
-                    </View>
-                )}
-                {game.franchises && game.franchises.length > 0 && (
-                    <View style={[styles.metadataItem]}>
-                        <Text variant="subtitle" style={styles.metadataLabel}>
-                            Franchises
-                        </Text>
-                        <View style={styles.franchiseLinks}>
-                            {game.franchises.map((franchise) => (
-                                <Text
-                                    key={franchise.id}
-                                    variant="body"
-                                    style={styles.franchiseLink}
-                                    onPress={() =>
-                                        handleFranchisePress(franchise.id)
-                                    }
-                                >
-                                    {franchise.name}
-                                    {franchise.id !==
-                                    game.franchises[game.franchises.length - 1]
-                                        .id
-                                        ? ", "
-                                        : ""}
-                                </Text>
-                            ))}
-                        </View>
-                    </View>
-                )}
-                {metacriticScore && (
-                    <View style={styles.metadataItem}>
-                        <Text variant="subtitle" style={styles.metadataLabel}>
-                            Metacritic Score
-                        </Text>
-                        <MetacriticBadge score={metacriticScore} />
-                    </View>
-                )}
-            </View>
-        );
-    };
-
-    const PersonalReviewSection: React.FC = () => {
-        if (!game.notes && !game.personalRating) return null;
-
-        return (
-            <View style={styles.sectionContainer}>
-                <Text variant="title" style={styles.sectionTitle}>
-                    Personal Review
-                </Text>
-                {game.personalRating && (
-                    <View style={styles.ratingContainer}>
-                        <Text variant="subtitle" style={styles.ratingLabel}>
-                            My Rating
-                        </Text>
-                        <Text
-                            variant="body"
-                            style={[
-                                styles.ratingValue,
-                                {
-                                    color:
-                                        game.personalRating === 10
-                                            ? colorSwatch.text.primary
-                                            : getRatingColor(
-                                                  game.personalRating
-                                              ),
-                                },
-                            ]}
-                        >
-                            {game.personalRating.toFixed()} / 10
-                        </Text>
-                        <View style={styles.ratingBar}>
-                            {game.personalRating >= 10 ? (
-                                <LinearGradient
-                                    colors={[
-                                        colorSwatch.primary.main,
-                                        colorSwatch.accent.purple,
-                                        colorSwatch.accent.yellow,
-                                        colorSwatch.primary.light,
-                                        colorSwatch.accent.cyan,
-                                    ]}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 0 }}
-                                    style={[
-                                        styles.ratingFill,
-                                        { width: "100%" },
-                                    ]}
-                                />
-                            ) : (
-                                <View
-                                    style={[
-                                        styles.ratingFill,
-                                        {
-                                            width: `${
-                                                (game.personalRating / 10) * 100
-                                            }%`,
-                                            backgroundColor: getRatingColor(
-                                                game.personalRating
-                                            ),
-                                        },
-                                    ]}
-                                />
-                            )}
-                        </View>
-                    </View>
-                )}
-                {game.notes && (
-                    <View style={styles.noteContainer}>
-                        <Text
-                            variant="caption"
-                            style={[
-                                styles.noteText,
-                                {
-                                    color: getRatingColor(
-                                        game.personalRating || 0
-                                    ),
-                                },
-                            ]}
-                        >
-                            "{game.notes}"
-                        </Text>
-                    </View>
-                )}
-            </View>
-        );
-    };
-
-    const PlatformsSection: React.FC = () => (
-        <View style={styles.platformsList}>
-            {game.platforms
-                ?.map((platform) => {
-                    const releaseDate = game.release_dates?.find(
-                        (rd) => rd.platform_id === platform.id
-                    );
-                    return {
-                        date: releaseDate?.date || Infinity,
-                        name: platform.name,
-                        human: releaseDate?.human || "",
-                    };
-                })
-                .sort((a, b) => a.date - b.date)
-                .map((platform, index) => (
-                    <View key={index} style={styles.platformItem}>
-                        <View style={styles.platformInfo}>
-                            {(() => {
-                                try {
-                                    return (
-                                        <PlatformLogoBadge
-                                            platform={platform.name}
-                                            size={72}
-                                            style={{ marginRight: 12 }}
-                                        />
-                                    );
-                                } catch (error) {
-                                    console.warn(
-                                        `Error rendering logo for ${platform.name}:`,
-                                        error
-                                    );
-                                    return (
-                                        <Text
-                                            variant="body"
-                                            style={styles.platformName}
-                                        >
-                                            {platform.name}
-                                        </Text>
-                                    );
-                                }
-                            })()}
-                        </View>
-                        <Text variant="body" style={styles.platformDate}>
-                            {platform.human?.split("T")[0]}
-                        </Text>
-                    </View>
-                ))}
-        </View>
-    );
-
-    const GenresSection: React.FC = () => {
-        if (!game.genres?.length) return null;
-        return (
-            <View style={styles.characteristicSection}>
-                <Text variant="title" style={styles.characteristicTitle}>
-                    Genres
-                </Text>
-                <View style={styles.tagsFlow}>
-                    {game.genres?.map(
-                        (genre: { name: string }, index: number) => (
-                            <View key={index} style={styles.tagItem}>
-                                <Text variant="body" style={styles.tagText}>
-                                    {genre.name}
-                                </Text>
-                            </View>
-                        )
-                    )}
-                </View>
-            </View>
-        );
-    };
-
-    const ThemesSection: React.FC = () => {
-        if (!game.themes?.length) return null;
-        return (
-            <View style={styles.characteristicSection}>
-                <Text variant="title" style={styles.characteristicTitle}>
-                    Themes
-                </Text>
-                <View style={styles.tagsFlow}>
-                    {game.themes.map((theme, index) => (
-                        <View key={index} style={styles.tagItem}>
-                            <Text variant="body" style={styles.tagText}>
-                                {theme.name}
-                            </Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
-        );
-    };
-
-    const GameModesSection: React.FC = () => {
-        if (!game.game_modes?.length) return null;
-        return (
-            <View style={styles.characteristicSection}>
-                <Text variant="title" style={styles.characteristicTitle}>
-                    Game Modes
-                </Text>
-                <View style={styles.tagsFlow}>
-                    {game.game_modes.map((mode, index) => (
-                        <View key={index} style={styles.tagItem}>
-                            <Text variant="body" style={styles.tagText}>
-                                {mode.name}
-                            </Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
-        );
-    };
-
-    const PerspectivesSection: React.FC = () => {
-        if (!game.player_perspectives?.length) return null;
-        return (
-            <View style={styles.characteristicSection}>
-                <Text variant="title" style={styles.characteristicTitle}>
-                    Player Perspectives
-                </Text>
-                <View style={styles.tagsFlow}>
-                    {game.player_perspectives.map((perspective, index) => (
-                        <View key={index} style={styles.tagItem}>
-                            <Text variant="body" style={styles.tagText}>
-                                {perspective.name}
-                            </Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
-        );
-    };
-
-    const CompaniesSection: React.FC = () => {
-        // Group companies by role
-        const groupedCompanies = {
-            developers:
-                game.involved_companies
-                    ?.filter((c) => c.developer)
-                    .map((c) => c.company?.name || "")
-                    .filter(Boolean) || [],
-            publishers:
-                game.involved_companies
-                    ?.filter((c) => c.publisher)
-                    .map((c) => c.company?.name || "")
-                    .filter(Boolean) || [],
-            others:
-                game.involved_companies
-                    ?.filter((c) => !c.developer && !c.publisher)
-                    .map((c) => c.company?.name || "")
-                    .filter(Boolean) || [],
-        };
-
-        if (
-            !groupedCompanies.developers.length &&
-            !groupedCompanies.publishers.length &&
-            !groupedCompanies.others.length
-        ) {
-            return null;
-        }
-
-        const allCompanies = [
-            ...groupedCompanies.developers.map((name) => ({
-                name,
-                role: "Developer",
-            })),
-            ...groupedCompanies.publishers.map((name) => ({
-                name,
-                role: "Publisher",
-            })),
-            ...groupedCompanies.others.map((name) => ({ name, role: "Other" })),
-        ];
-
-        return (
-            <View style={styles.companiesList}>
-                {allCompanies.map((company, index) => (
-                    <View key={index} style={styles.platformItem}>
-                        <Text variant="body" style={styles.platformName}>
-                            {company.name}
-                        </Text>
-                        <Text variant="body" style={styles.platformDate}>
-                            {company.role}
-                        </Text>
-                    </View>
-                ))}
-            </View>
-        );
-    };
 
     return (
         <ImageBackground
@@ -494,15 +79,21 @@ const QuestGameDetailPage: React.FC = () => {
             <View style={styles.overlay} />
             <ScrollView style={{ flex: 1 }}>
                 {/* Hero Section */}
-                <HeaderSection />
+                <HeaderSection game={game} />
 
                 {/* Progress Tracking */}
                 <View style={styles.sectionContainer}>
-                    <MetadataGrid />
+                    <MetadataGrid game={game} />
                 </View>
 
                 {/* Personal Review Section */}
-                {game.gameStatus === "completed" && <PersonalReviewSection />}
+                {game.gameStatus === "completed" && (
+                    <PersonalRatingSection
+                        gameId={game.id}
+                        initialRating={game.personalRating ?? null}
+                        notes={game.notes}
+                    />
+                )}
 
                 {/* Core Game Information */}
                 {(game.storyline || game.summary) && (
@@ -540,10 +131,10 @@ const QuestGameDetailPage: React.FC = () => {
                     </Text>
                     {/* Core Categories */}
                     <View style={styles.characteristicsContainer}>
-                        <GenresSection />
-                        <ThemesSection />
-                        <GameModesSection />
-                        <PerspectivesSection />
+                        <GenresSection game={game} />
+                        <ThemesSection game={game} />
+                        <GameModesSection game={game} />
+                        <PerspectivesSection game={game} />
                     </View>
                 </View>
 
@@ -555,14 +146,14 @@ const QuestGameDetailPage: React.FC = () => {
 
                     {/* Platforms */}
                     {game.platforms && game.platforms.length > 0 && (
-                        <View style={styles.platformSection}>
+                        <View>
                             <Text
                                 variant="subtitle"
                                 style={styles.platformTitle}
                             >
                                 Platforms
                             </Text>
-                            <PlatformsSection />
+                            <PlatformsSection game={game} />
                         </View>
                     )}
 
@@ -576,7 +167,7 @@ const QuestGameDetailPage: React.FC = () => {
                                 >
                                     Development
                                 </Text>
-                                <CompaniesSection />
+                                <CompaniesSection game={game} />
                             </View>
                         )}
                     {/* External Links */}
@@ -592,6 +183,7 @@ const QuestGameDetailPage: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: "100%",
         backgroundColor: colorSwatch.background.darkest,
     },
     overlay: {
@@ -599,64 +191,33 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.dark,
         opacity: 0.99,
     },
-    scrollView: {
-        flex: 1,
-    },
-    scrollViewContent: {
-        paddingTop: Platform.OS === "ios" ? 0 : 60, // Add padding for Android
+    skeleton: {
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.medium,
+        width: "100%",
+        height: 580,
     },
     loadingContainer: {
         flex: 1,
+        width: "100%",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colorSwatch.background.dark,
-    },
-    headerSection: {
-        marginTop: 130,
-    },
-    coverImage: {
-        width: "100%",
-        backgroundColor: colorSwatch.background.dark,
-        resizeMode: "contain",
-    },
-    headerInfo: {
-        alignItems: "center",
-    },
-    gameTitle: {
-        color: colorSwatch.neutral.lightGray,
-        marginBottom: 4,
-        marginTop: 12,
-        fontSize: 24,
-        lineHeight: 32,
-        flex: 1,
-        textAlign: "center",
-        maxWidth: "80%",
-        flexWrap: "wrap",
-    },
-    releaseDate: {
-        fontSize: 14,
-        color: colorSwatch.text.secondary,
+        paddingTop: 130,
     },
     sectionContainer: {
-        marginHorizontal: 16,
-        marginTop: 24,
+        marginHorizontal: 12,
+        marginTop: 16,
         backgroundColor: colorSwatch.background.darkest,
         borderRadius: 12,
         padding: 16,
         elevation: 4,
     },
-    screenshotsContainer: {
-        marginTop: 24,
-        backgroundColor: colorSwatch.background.darkest,
-        borderRadius: 12,
-        marginHorizontal: 16,
-        padding: 0,
-    },
     characteristicsContainer: {
         marginTop: 16,
         gap: 16,
     },
-    platformSection: {},
     platformTitle: {
         marginBottom: 8,
         color: colorSwatch.text.primary,
@@ -664,9 +225,6 @@ const styles = StyleSheet.create({
     infoSection: {
         marginTop: 16,
         borderRadius: 8,
-    },
-    screenshotsSection: {
-        paddingBottom: 30,
     },
     mainSectionTitle: {
         color: colorSwatch.accent.purple,
@@ -678,107 +236,16 @@ const styles = StyleSheet.create({
         color: colorSwatch.text.primary,
         marginBottom: 12,
     },
-    storylineText: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: colorSwatch.neutral.lightGray,
-    },
-    metadataGrid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginHorizontal: 4,
-        marginTop: 16,
-        backgroundColor: colorSwatch.background.darker,
-        borderRadius: 12,
-        padding: 12,
-    },
-    metadataItem: {
-        width: "50%",
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-    },
-    metadataLabel: {
-        fontSize: 12,
-        color: colorSwatch.text.secondary,
-        marginBottom: 4,
-    },
-    metadataValue: {
-        fontSize: 16,
-        color: colorSwatch.neutral.lightGray,
-        fontWeight: "600",
-    },
     sectionTitle: {
         fontSize: 20,
         fontWeight: "600",
         color: colorSwatch.accent.green,
         marginBottom: 12,
     },
-    ratingContainer: {
-        marginBottom: 16,
-        backgroundColor: colorSwatch.background.dark,
-        padding: 12,
-        borderRadius: 8,
-    },
-    ratingLabel: {
-        fontSize: 14,
-        color: colorSwatch.text.secondary,
-        marginBottom: 4,
-    },
-    ratingValue: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: colorSwatch.accent.yellow,
-        marginBottom: 8,
-    },
-    ratingBar: {
-        height: 8,
-        backgroundColor: colorSwatch.background.medium,
-        borderRadius: 4,
-        overflow: "hidden",
-    },
-    ratingFill: {
-        height: "100%",
-        backgroundColor: colorSwatch.accent.yellow,
-        borderRadius: 4,
-    },
     noteContainer: {
         backgroundColor: colorSwatch.background.dark,
         padding: 16,
         borderRadius: 8,
-    },
-    noteText: {
-        fontSize: 16,
-        lineHeight: 24,
-        fontStyle: "italic",
-        color: colorSwatch.secondary.main,
-    },
-    platformsList: {
-        gap: 8,
-    },
-    platformItem: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.darkest,
-        padding: 12,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
-    },
-    platformInfo: {
-        flexDirection: "row",
-        alignItems: "center",
-        height: "100%",
-        flex: 1,
-    },
-    platformName: {
-        color: colorSwatch.neutral.lightGray,
-        fontSize: 14,
-        fontWeight: "500",
-    },
-    platformDate: {
-        color: colorSwatch.text.secondary,
-        fontSize: 12,
     },
     bottomClearance: {
         height: 60,
@@ -787,98 +254,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         alignSelf: "center",
         marginBottom: 20,
-    },
-    tagsFlow: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 8,
-    },
-    tagItem: {
-        backgroundColor: colorSwatch.background.darkest,
-        paddingHorizontal: 12,
-        paddingVertical: 8,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
-    },
-    tagText: {
-        color: colorSwatch.neutral.lightGray,
-        fontSize: 14,
-    },
-    section: {
-        marginTop: 16,
-        backgroundColor: colorSwatch.background.dark,
-        padding: 16,
-        borderRadius: 8,
-    },
-    tagsContainer: {
-        gap: 8,
-    },
-    tag: {
-        backgroundColor: colorSwatch.background.medium,
-        padding: 12,
-        borderRadius: 16,
-    },
-    characteristicSection: {
-        backgroundColor: colorSwatch.background.darker,
-        padding: 16,
-        borderRadius: 12,
-    },
-    characteristicTitle: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: colorSwatch.accent.purple,
-        marginBottom: 12,
-    },
-    companiesList: {
-        gap: 8,
-    },
-    companiesGrid: {
-        gap: 12,
-    },
-    companyCard: {
-        backgroundColor: colorSwatch.background.darkest,
-        padding: 12,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
-    },
-    companyRole: {
-        fontSize: 12,
-        color: colorSwatch.accent.purple,
-        marginBottom: 4,
-    },
-    companyName: {
-        fontSize: 16,
-        color: colorSwatch.neutral.lightGray,
-        fontWeight: "500",
-        flexWrap: "wrap",
-    },
-    screenshotsTitle: {
-        padding: 16,
-        paddingBottom: 0,
-        color: colorSwatch.accent.purple,
-        marginBottom: 12,
-    },
-    franchiseLinks: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 4,
-    },
-    franchiseLink: {
-        fontSize: 16,
-        color: colorSwatch.accent.cyan,
-        textDecorationLine: "underline",
-        fontWeight: "600",
-    },
-    storylineContainer: {
-        marginTop: 16,
-    },
-    seeMoreText: {
-        color: colorSwatch.accent.cyan,
-        fontWeight: "600",
-        marginTop: 16,
-        textDecorationLine: "underline",
     },
 });
 

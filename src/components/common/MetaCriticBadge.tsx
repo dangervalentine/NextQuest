@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { colorSwatch } from "src/utils/colorConstants";
+import { Image } from "expo-image";
+import MetacriticLogo from "../../assets/Metacritic_logo.svg";
 
 type Props = {
     score: number;
@@ -16,25 +18,50 @@ export const MetacriticBadge: React.FC<Props> = ({ score }) => {
     const backgroundColor = getColor(score);
 
     return (
-        <View style={[styles.badge, { backgroundColor }]}>
-            <Text style={styles.text}>{score}</Text>
+        <View style={styles.container}>
+            <View style={[styles.badge, { backgroundColor }]}>
+                <Text style={styles.text}>{score}</Text>
+            </View>
+            <View style={styles.metacriticLogoContainer}>
+                <Image
+                    source={MetacriticLogo}
+                    style={styles.metacriticLogo}
+                    contentFit="contain"
+                />
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        flex: 1,
+    },
     badge: {
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: 8,
-        minWidth: 40,
+        width: 50,
+        height: 50,
+        lineHeight: 50,
         alignItems: "center",
         justifyContent: "center",
         marginVertical: 4,
+        borderRadius: 3,
     },
     text: {
-        color: colorSwatch.background.darkest,
-        fontWeight: "bold",
-        fontSize: 16,
+        color: colorSwatch.text.inverse,
+        fontSize: 24,
+    },
+    metacriticLogo: {
+        width: "80%",
+        height: "80%",
+        margin: 4,
+    },
+    metacriticLogoContainer: {
+        flex: 1,
+        height: "100%",
+        alignItems: "flex-start",
+        justifyContent: "center",
     },
 });

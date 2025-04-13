@@ -5,6 +5,7 @@ import { getQuestGameById } from "src/data/repositories/questGames";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
 import { GameStatus } from "src/constants/config/gameStatus";
+import RAWRService from "./RAWRService";
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4";
@@ -112,7 +113,12 @@ limit 100;`;
         try {
             // Try to get the game from the database first
             const savedGame = await getQuestGameById(id);
+
             if (savedGame) {
+                const savedGameMetacriticScore = await RAWRService.getMetacriticScore(
+                    savedGame.name,
+                    savedGame.selectedPlatform?.name
+                );
                 return {
                     ...savedGame,
                     alternative_names: savedGame.alternative_names || [],
@@ -127,6 +133,7 @@ limit 100;`;
                     gameStatus: savedGame.gameStatus || "undiscovered",
                     personalRating: savedGame.personalRating,
                     notes: savedGame.notes,
+                    metacriticScore: savedGameMetacriticScore,
                 };
             }
 
@@ -191,6 +198,12 @@ sort release_dates.date asc;
                 return null;
             }
 
+            const metacriticScore = await RAWRService.getMetacriticScore(
+                gameData.name
+            );
+
+            gameData.metacriticScore = metacriticScore;
+
             // Return new game with default quest properties
             return {
                 ...gameData,
@@ -205,6 +218,7 @@ sort release_dates.date asc;
                 selectedPlatform: { id: 0, name: "" },
                 personalRating: undefined,
                 notes: undefined,
+                metacriticScore,
             };
         } catch (error) {
             console.error("Error fetching game details:", error);

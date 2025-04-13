@@ -20,7 +20,7 @@ import { ScreenNavigationProp } from "src/utils/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
 import { getStatusStyles } from "src/utils/gameStatusUtils";
 import QuestIcon from "../../shared/GameIcon";
-import { getRatingColor } from "src/utils/colors";
+import { getRatingColor, getStatusColor } from "src/utils/colors";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -173,21 +173,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                 // "undiscovered",
             ];
             return allStatuses.filter((status) => status !== currentStatus);
-        };
-
-        const getStatusColor = (status: GameStatus): string => {
-            switch (status) {
-                case "ongoing":
-                    return colorSwatch.accent.yellow;
-                case "completed":
-                    return colorSwatch.accent.green;
-                case "backlog":
-                    return colorSwatch.accent.purple;
-                case "undiscovered":
-                    return colorSwatch.accent.cyan;
-                default:
-                    return colorSwatch.accent.cyan;
-            }
         };
 
         const getStatusLabel = (status: GameStatus): string => {
@@ -386,10 +371,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                             inputRange: [0, 1],
                             outputRange: [0, containerHeight],
                         }),
-                        marginVertical: heightAnim.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, 8],
-                        }),
                         borderWidth: heightAnim.interpolate({
                             inputRange: [0, 1],
                             outputRange: [0, 1],
@@ -573,8 +554,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     </Text>
                                 </View>
                             )}
-                            <View style={styles.detailsContainer}>
-                                {/* {questGame.notes &&
+                            {/* {questGame.notes &&
                                     questGame.gameStatus === "completed" && (
                                         <View style={styles.quoteContainer}>
                                             <Text
@@ -585,44 +565,51 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             </Text>
                                         </View>
                                     )} */}
-                                {/* {questGame.gameStatus !== "completed" && ( */}
-                                <View style={styles.detailsContainer}>
-                                    <Text style={styles.textSecondary}>
-                                        <Text>Platform: </Text>
-                                        <Text>
-                                            {/* Display the selected platform name if available. 
+                            {/* {questGame.gameStatus !== "completed" && ( */}
+                            <View style={styles.detailsContainer}>
+                                <Text
+                                    variant="small"
+                                    style={styles.textSecondary}
+                                >
+                                    <Text variant="small">Platform: </Text>
+                                    <Text variant="small">
+                                        {/* Display the selected platform name if available. 
                                             If not, check the number of platforms:
                                             - Show "No Platforms" if there are none.
                                             - Show the platform name if there is exactly one.
                                             - Show the number of platforms if there are multiple. */}
-                                            {questGame.selectedPlatform?.name ||
-                                                (questGame.platforms.length ===
-                                                0
-                                                    ? "No Platforms"
-                                                    : questGame.platforms
-                                                          .length > 1
-                                                    ? `${questGame.platforms.length} Platforms`
-                                                    : questGame.platforms[0]
-                                                          .name)}
+                                        {questGame.selectedPlatform?.name ||
+                                            (questGame.platforms.length === 0
+                                                ? "No Platforms"
+                                                : questGame.platforms.length > 1
+                                                ? `${questGame.platforms.length} Platforms`
+                                                : questGame.platforms[0].name)}
+                                    </Text>
+                                </Text>
+                                {platformReleaseDate && (
+                                    <Text
+                                        variant="small"
+                                        style={styles.textSecondary}
+                                    >
+                                        <Text variant="small">
+                                            Release Date:{" "}
+                                        </Text>
+                                        <Text variant="small">
+                                            {formatReleaseDate(
+                                                platformReleaseDate.date
+                                            )}
                                         </Text>
                                     </Text>
-                                    {platformReleaseDate && (
-                                        <Text style={styles.textSecondary}>
-                                            <Text>Release Date: </Text>
-                                            <Text>
-                                                {formatReleaseDate(
-                                                    platformReleaseDate.date
-                                                )}
-                                            </Text>
-                                        </Text>
-                                    )}
-                                    <Text style={styles.textSecondary}>
-                                        <Text>Genres: </Text>
-                                        <Text>{genresText}</Text>
-                                    </Text>
-                                </View>
-                                {/* )} */}
+                                )}
+                                <Text
+                                    variant="small"
+                                    style={styles.textSecondary}
+                                >
+                                    <Text variant="small">Genres: </Text>
+                                    <Text variant="small">{genresText}</Text>
+                                </Text>
                             </View>
+                            {/* )} */}
                         </View>
                     </Pressable>
                 </Animated.View>
@@ -694,7 +681,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
-        minHeight: 140,
+        minHeight: 120,
     },
     gameContainer: {
         flexDirection: "row",
@@ -742,7 +729,7 @@ const styles = StyleSheet.create({
         margin: 1,
     },
     statusButtonText: {
-        fontSize: 16,
+        fontSize: 14,
         color: colorSwatch.text.inverse,
     },
     dragHandle: {
@@ -760,12 +747,12 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.cyan,
     },
     title: {
-        fontSize: 18,
-        marginBottom: 4,
-        color: colorSwatch.accent.purple,
+        fontSize: 14,
+        color: colorSwatch.text.primary,
+        fontFamily: "Inter-Regular",
         flexWrap: "wrap",
         maxWidth: "100%",
-        lineHeight: 24,
+        lineHeight: 18,
     },
     pressableNavigation: {
         flexDirection: "row",
@@ -778,19 +765,21 @@ const styles = StyleSheet.create({
         opacity: 0.8,
     },
     rating: {
-        color: colorSwatch.accent.yellow,
-        letterSpacing: 1,
         marginLeft: 4,
         fontSize: 10,
+        marginBottom: 4,
     },
     contentContainer: {
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
+        gap: 4,
     },
     detailsContainer: {
         justifyContent: "flex-start",
         alignItems: "flex-start",
+        gap: 4,
+        flex: 1,
     },
     textSecondary: {
         color: colorSwatch.primary.dark,
