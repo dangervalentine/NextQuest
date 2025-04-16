@@ -18,7 +18,7 @@ import { colorSwatch } from "src/utils/colorConstants";
 import { formatReleaseDate } from "src/utils/dateFormatters";
 import { ScreenNavigationProp } from "src/utils/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
-import { getStatusStyles } from "src/utils/gameStatusUtils";
+import { getStatusLabel, getStatusStyles } from "src/utils/gameStatusUtils";
 import QuestIcon from "../../shared/GameIcon";
 import { getRatingColor, getStatusColor } from "src/utils/colors";
 
@@ -173,25 +173,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                 // "undiscovered",
             ];
             return allStatuses.filter((status) => status !== currentStatus);
-        };
-
-        const getStatusLabel = (status: GameStatus): string => {
-            switch (status) {
-                case "ongoing":
-                    return "Ongoing";
-                case "completed":
-                    return "Completed";
-                case "backlog":
-                    return "Backlog";
-                case "undiscovered":
-                    return "Undiscovered";
-                case "on_hold":
-                    return "On Hold";
-                case "dropped":
-                    return "Dropped";
-                default:
-                    return status;
-            }
         };
 
         const panResponder = useMemo(
@@ -535,7 +516,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             key={index}
                                             name="star-outline"
                                             size={12}
-                                            color={colorSwatch.primary.dark}
+                                            color={colorSwatch.text.muted}
                                         />
                                     ))}
                                     <Text
@@ -606,7 +587,12 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     style={styles.textSecondary}
                                 >
                                     <Text variant="small">Genres: </Text>
-                                    <Text variant="small">{genresText}</Text>
+                                    <Text
+                                        variant="small"
+                                        style={styles.textSecondary}
+                                    >
+                                        {genresText}
+                                    </Text>
                                 </Text>
                             </View>
                             {/* )} */}
@@ -747,12 +733,13 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.cyan,
     },
     title: {
-        fontSize: 14,
+        fontSize: 16,
         color: colorSwatch.text.primary,
         fontFamily: "Inter-Regular",
         flexWrap: "wrap",
         maxWidth: "100%",
         lineHeight: 18,
+        marginBottom: 4,
     },
     pressableNavigation: {
         flexDirection: "row",
@@ -767,7 +754,6 @@ const styles = StyleSheet.create({
     rating: {
         marginLeft: 4,
         fontSize: 10,
-        marginBottom: 4,
     },
     contentContainer: {
         flex: 1,
@@ -782,7 +768,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     textSecondary: {
-        color: colorSwatch.primary.dark,
+        color: colorSwatch.text.muted,
+        lineHeight: 18,
     },
     quoteContainer: {
         backgroundColor: colorSwatch.background.darker,

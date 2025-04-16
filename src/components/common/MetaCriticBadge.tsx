@@ -1,11 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Linking,
+} from "react-native";
 import { colorSwatch } from "src/utils/colorConstants";
 import { Image } from "expo-image";
 import MetacriticLogo from "../../assets/Metacritic_logo.svg";
 
 type Props = {
     score: number;
+    url?: string;
 };
 
 const getColor = (score: number) => {
@@ -14,54 +21,50 @@ const getColor = (score: number) => {
     return colorSwatch.accent.pink;
 };
 
-export const MetacriticBadge: React.FC<Props> = ({ score }) => {
+export const MetacriticBadge: React.FC<Props> = ({ score, url }) => {
     const backgroundColor = getColor(score);
 
     return (
-        <View style={styles.container}>
+        <View style={styles.metacriticLogoContainer}>
             <View style={[styles.badge, { backgroundColor }]}>
                 <Text style={styles.text}>{score}</Text>
             </View>
-            <View style={styles.metacriticLogoContainer}>
-                <Image
-                    source={MetacriticLogo}
-                    style={styles.metacriticLogo}
-                    contentFit="contain"
-                />
-            </View>
+            <Image
+                source={MetacriticLogo}
+                style={styles.metacriticLogo}
+                contentFit="contain"
+            />
+            {url && (
+                <TouchableOpacity onPress={() => Linking.openURL(url)}>
+                    <Text style={styles.text}>{score}</Text>
+                </TouchableOpacity>
+            )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        flex: 1,
-    },
     badge: {
-        width: 50,
-        height: 50,
-        lineHeight: 50,
+        height: 25,
+        width: 25,
+        lineHeight: 25,
         alignItems: "center",
         justifyContent: "center",
-        marginVertical: 4,
-        borderRadius: 3,
+        marginRight: 4,
     },
     text: {
         color: colorSwatch.text.inverse,
-        fontSize: 24,
+        fontSize: 12,
     },
     metacriticLogo: {
-        width: "80%",
+        width: 100,
         height: "80%",
-        margin: 4,
     },
     metacriticLogoContainer: {
-        flex: 1,
+        justifyContent: "flex-end",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 4,
         height: "100%",
-        alignItems: "flex-start",
-        justifyContent: "center",
     },
 });

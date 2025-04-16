@@ -1,6 +1,12 @@
-import React, { useEffect } from "react";
-import { View, Image as RNImage, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+    View,
+    Image as RNImage,
+    StyleSheet,
+    ActivityIndicator,
+} from "react-native";
 import { Image } from "expo-image";
+import { colorSwatch } from "src/utils/colorConstants";
 
 interface FullHeightImageProps {
     source: string;
@@ -8,9 +14,10 @@ interface FullHeightImageProps {
 }
 
 const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
-    const [imageWidth, setImageWidth] = React.useState(0);
-    const [imageHeight, setImageHeight] = React.useState(0);
-    const [hasError, setHasError] = React.useState(false);
+    const [imageWidth, setImageWidth] = useState(0);
+    const [imageHeight, setImageHeight] = useState(0);
+    const [hasError, setHasError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (source) {
@@ -53,7 +60,15 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
 
     return (
         <View style={[styles.container, style]}>
-            {imageHeight > 0 && imageWidth > 0 ? (
+            {isLoading && (
+                <View style={[styles.skeleton]}>
+                    <ActivityIndicator
+                        size="large"
+                        color={colorSwatch.accent.green}
+                    />
+                </View>
+            )}
+            {!hasError && imageHeight > 0 && imageWidth > 0 ? (
                 <Image
                     source={
                         typeof source === "number"
@@ -76,10 +91,13 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
                     contentFit="cover"
                     priority="high"
                     cachePolicy="memory-disk"
+                    transition={300}
                     onError={() => {
                         console.error("Failed to load image");
                         setHasError(true);
+                        setIsLoading(false);
                     }}
+                    onLoadEnd={() => setIsLoading(false)}
                 />
             ) : (
                 <Image
@@ -99,6 +117,13 @@ const styles = StyleSheet.create({
     },
     cover: {
         maxWidth: 75,
+    },
+    skeleton: {
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.dark,
+        width: 75,
+        height: 100,
     },
 });
 

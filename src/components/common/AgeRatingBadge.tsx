@@ -47,7 +47,7 @@ export const AgeRatingBadge: React.FC<AgeRatingBadgeProps> = ({
     if (!RatingImage) return null;
 
     return (
-        <View style={[styles.container, style]}>
+        <View style={[style]}>
             <Image
                 source={RatingImage}
                 style={styles.image}
@@ -58,14 +58,6 @@ export const AgeRatingBadge: React.FC<AgeRatingBadgeProps> = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        position: "absolute",
-        bottom: 12,
-        right: 12,
-        borderRadius: 2,
-        padding: 4,
-        zIndex: 1,
-    },
     image: {
         height: 32,
         width: "auto",

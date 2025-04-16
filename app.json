@@ -1,5 +1,6 @@
 {
     "expo": {
+        "newArchEnabled": true,
         "name": "NextQuest",
         "displayName": "NextQuest",
         "extra": {

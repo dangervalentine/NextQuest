@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        width: "100%",
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -174,9 +173,7 @@ const styles = StyleSheet.create({
     listWrapper: {
         flex: 1,
     },
-    listContainer: {
-        paddingBottom: 0,
-    },
+    listContainer: {},
 });
 
 export default React.memo(GameSection);

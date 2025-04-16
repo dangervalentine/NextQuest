@@ -88,3 +88,12 @@ export const getStatusColor = (status: GameStatus): string => {
             return colorSwatch.accent.cyan;
     }
 };
+
+export const hexToRgba = (hex: string, alpha: number = 1): string => {
+    const normalizedHex = hex.replace("#", "");
+    const bigint = parseInt(normalizedHex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};

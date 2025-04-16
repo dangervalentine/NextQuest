@@ -24,15 +24,15 @@ import { GameModesSection } from "./GameDetail/components/GameModesSection";
 import { PerspectivesSection } from "./GameDetail/components/PerspectivesSection";
 import { PlatformsSection } from "./GameDetail/components/PlatformsSection";
 import { HeaderSection } from "./GameDetail/components/HeaderSection";
-import MetadataGrid from "./GameDetail/components/MetadataGrid";
-import CompaniesSection from "./GameDetail/components/CompaniesSection";
+import FranchiseSection from "./GameDetail/components/MetadataGrid";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
     const { id } = route.params;
     const [game, setGame] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
-
+    const headerHeight = useHeaderHeight();
     useEffect(() => {
         const loadGameDetails = async () => {
             const igdbGame: QuestGame | null = await IGDBService.fetchGameDetails(
@@ -73,18 +73,13 @@ const QuestGameDetailPage: React.FC = () => {
     return (
         <ImageBackground
             source={require("../../assets/next_quest.png")}
-            style={styles.container}
+            style={[styles.container, { marginTop: headerHeight }]}
             resizeMode="contain"
         >
             <View style={styles.overlay} />
             <ScrollView style={{ flex: 1 }}>
                 {/* Hero Section */}
                 <HeaderSection game={game} />
-
-                {/* Progress Tracking */}
-                <View style={styles.sectionContainer}>
-                    <MetadataGrid game={game} />
-                </View>
 
                 {/* Personal Review Section */}
                 {game.gameStatus === "completed" && (
@@ -131,6 +126,9 @@ const QuestGameDetailPage: React.FC = () => {
                     </Text>
                     {/* Core Categories */}
                     <View style={styles.characteristicsContainer}>
+                        {game.franchises && game.franchises.length > 0 && (
+                            <FranchiseSection game={game} />
+                        )}
                         <GenresSection game={game} />
                         <ThemesSection game={game} />
                         <GameModesSection game={game} />
@@ -147,29 +145,13 @@ const QuestGameDetailPage: React.FC = () => {
                     {/* Platforms */}
                     {game.platforms && game.platforms.length > 0 && (
                         <View>
-                            <Text
-                                variant="subtitle"
-                                style={styles.platformTitle}
-                            >
+                            <Text variant="title" style={styles.platformTitle}>
                                 Platforms
                             </Text>
                             <PlatformsSection game={game} />
                         </View>
                     )}
 
-                    {/* Development Info */}
-                    {game.involved_companies &&
-                        game.involved_companies.length > 0 && (
-                            <View style={styles.infoSection}>
-                                <Text
-                                    variant="subtitle"
-                                    style={styles.subSectionTitle}
-                                >
-                                    Development
-                                </Text>
-                                <CompaniesSection game={game} />
-                            </View>
-                        )}
                     {/* External Links */}
                     <WebsitesSection websites={game.websites || []} />
                 </View>
@@ -194,7 +176,7 @@ const styles = StyleSheet.create({
     skeleton: {
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.medium,
+        backgroundColor: colorSwatch.background.darker,
         width: "100%",
         height: 580,
     },
@@ -219,8 +201,10 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     platformTitle: {
-        marginBottom: 8,
-        color: colorSwatch.text.primary,
+        fontSize: 16,
+        fontWeight: "600",
+        color: colorSwatch.primary.dark,
+        marginBottom: 12,
     },
     infoSection: {
         marginTop: 16,
@@ -231,9 +215,9 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     subSectionTitle: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.text.primary,
+        color: colorSwatch.primary.dark,
         marginBottom: 12,
     },
     sectionTitle: {

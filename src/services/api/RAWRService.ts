@@ -7,7 +7,7 @@ class RAWRService {
     public static async getMetacriticScore(
         name: string,
         platform?: string | undefined
-    ) {
+    ): Promise<{ score: number; url: string } | null> {
         const encodedName = encodeURIComponent(name);
 
         try {
@@ -23,9 +23,7 @@ class RAWRService {
             const response = await fetch(url);
 
             if (!response.ok) {
-                throw new Error(
-                    `Error fetching game details: ${response.statusText}`
-                );
+                return null;
             }
 
             const data = await response.json();
@@ -46,8 +44,13 @@ class RAWRService {
             if (!match || !match.id || !match.name) {
                 match = data.results[0];
             }
+            console.log("score", match.metacritic);
+            console.log("url", match.metacritic_url);
 
-            return match.metacritic;
+            return {
+                score: match.metacritic,
+                url: match.metacritic_url,
+            };
         } catch (error) {
             console.error(
                 "[getGameDetails] Error fetching game details:",

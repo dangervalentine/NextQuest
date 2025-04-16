@@ -18,7 +18,6 @@ const FullWidthImage = ({
 }): React.JSX.Element => {
     const [imageHeight, setImageHeight] = useState(0);
     const [hasError, setHasError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // Get the image dimensions
@@ -32,24 +31,14 @@ const FullWidthImage = ({
 
     return (
         <View style={[styles.imageContainer, style]}>
-            {isLoading && (
-                <View style={[styles.skeleton]}>
-                    <ActivityIndicator
-                        size="large"
-                        color={colorSwatch.accent.green}
-                    />
-                </View>
-            )}
             {!hasError ? (
                 <Image
                     source={{ uri: source }}
                     style={[styles.image, { height: imageHeight }]}
                     contentFit="cover"
                     transition={300}
-                    onLoadEnd={() => setIsLoading(false)}
                     onError={() => {
                         setHasError(true);
-                        setIsLoading(false);
                     }}
                 />
             ) : (
@@ -70,12 +59,13 @@ const styles = StyleSheet.create({
     },
     image: {
         width: "100%",
+        minHeight: 560,
         height: undefined,
     },
     skeleton: {
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.medium,
+        backgroundColor: colorSwatch.background.darkest,
         width: "100%",
         height: 560,
     },

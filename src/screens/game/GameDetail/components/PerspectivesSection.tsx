@@ -35,13 +35,11 @@ export const PerspectivesSection: React.FC<PerspectivesSectionProps> = ({
 const styles = StyleSheet.create({
     characteristicSection: {
         backgroundColor: colorSwatch.background.darker,
-        padding: 16,
-        borderRadius: 12,
     },
     characteristicTitle: {
         fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.accent.purple,
+        color: colorSwatch.primary.dark,
         marginBottom: 12,
     },
     tagsFlow: {
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.darkest,
         paddingHorizontal: 12,
         paddingVertical: 8,
-        borderRadius: 20,
+        borderRadius: 8,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
     },

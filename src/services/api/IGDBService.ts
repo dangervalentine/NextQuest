@@ -6,6 +6,7 @@ import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
 import { GameStatus } from "src/constants/config/gameStatus";
 import RAWRService from "./RAWRService";
+import { sortGamesByReleaseDate } from "src/utils/sortingUtils";
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4";
@@ -105,7 +106,11 @@ limit 100;`;
             }
         });
 
-        return Array.from(gameMap.values()); // Convert Map back to an array
+        const sortedGames = sortGamesByReleaseDate(
+            Array.from(gameMap.values())
+        );
+
+        return sortedGames;
     }
     public static async fetchGameDetails(
         id: number
@@ -133,7 +138,8 @@ limit 100;`;
                     gameStatus: savedGame.gameStatus || "undiscovered",
                     personalRating: savedGame.personalRating,
                     notes: savedGame.notes,
-                    metacriticScore: savedGameMetacriticScore,
+                    metacriticScore: savedGameMetacriticScore?.score,
+                    metacriticUrl: savedGameMetacriticScore?.url,
                 };
             }
 
@@ -202,8 +208,6 @@ sort release_dates.date asc;
                 gameData.name
             );
 
-            gameData.metacriticScore = metacriticScore;
-
             // Return new game with default quest properties
             return {
                 ...gameData,
@@ -218,7 +222,8 @@ sort release_dates.date asc;
                 selectedPlatform: { id: 0, name: "" },
                 personalRating: undefined,
                 notes: undefined,
-                metacriticScore,
+                metacriticScore: metacriticScore?.score,
+                metacriticUrl: metacriticScore?.url,
             };
         } catch (error) {
             console.error("Error fetching game details:", error);
@@ -402,7 +407,9 @@ limit 100;`;
                 };
             });
 
-            return mappedGames;
+            const sortedGames = sortGamesByReleaseDate(mappedGames);
+
+            return sortedGames;
         } catch (error) {
             console.error("[searchGamesByFranchise] Error:", error);
             throw error;

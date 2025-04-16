@@ -1,6 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View } from "react-native";
+import {
+    Platform,
+    Pressable,
+    TouchableNativeFeedback,
+    View,
+} from "react-native";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import GameSection from "./GameSection";
 import GameSearchSection from "./GameSearchSection";
@@ -41,13 +46,13 @@ const tabScreens = [
     },
     {
         name: "Backlog",
-        iconName: "scroll" as const,
+        iconName: "list" as const,
         title: "Backlog",
         gameStatus: "backlog" as GameStatus,
     },
     {
         name: "Completed",
-        iconName: "medal" as const,
+        iconName: "check-circle" as const,
         title: "Completed",
         gameStatus: "completed" as GameStatus,
     },
@@ -64,7 +69,6 @@ export const tabBarStyle = {
 
 export const headerStyle = {
     backgroundColor: colorSwatch.background.darkest,
-    borderBottomWidth: 1,
     borderColor: colorSwatch.neutral.darkGray,
     shadowOffset: {
         width: 0,
@@ -134,6 +138,7 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
                     key={screen.name}
                     name={screen.name}
                     options={{
+                        headerShown: false,
                         tabBarLabel: screen.name,
                         tabBarIcon: ({ color, size }) => (
                             <QuestIcon
@@ -164,21 +169,18 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
                 </Tab.Screen>
             ))}
             <Tab.Screen
-                key={"Discover"}
-                name={"Discover"}
+                key={"Search"}
+                name={"Search"}
                 options={{
-                    tabBarLabel: "Discover",
+                    headerShown: false,
+                    tabBarLabel: "Search",
                     tabBarIcon: ({ color, size }) => (
-                        <QuestIcon
-                            name={"telescope"}
-                            size={size}
-                            color={color}
-                        />
+                        <QuestIcon name={"magnify"} size={size} color={color} />
                     ),
                     headerTitle: () => (
                         <HeaderWithIcon
-                            iconName={"telescope"}
-                            title={"Discover"}
+                            iconName={"magnify"}
+                            title={"Search"}
                             color={getStatusColor("undiscovered")}
                         />
                     ),

@@ -25,8 +25,8 @@ export const colorSwatch = {
     },
     background: {
         light: "#D6DEEB", // Light mode text / dark mode background text
-        dark: "#011627", // Night Owl's Main Background
         medium: "#1D3B53", // Night Owl's Selection Background
+        dark: "#011627", // Night Owl's Main Background
         darker: "#020f1d", // Nested Background (Even darker than dark)
         darkest: "#01111d", // Deepest Background (For maximum contrast)
     },
@@ -46,11 +46,3 @@ export const COLOR_ARRAY = [
     colorSwatch.accent.pink, // Soft Red-Pink
     colorSwatch.accent.yellow, // Warm Yellow
 ];
-
-
-
-
-
-
-
-

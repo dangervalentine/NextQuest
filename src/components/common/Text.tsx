@@ -55,8 +55,7 @@ const baseStyles: Record<NonNullable<CustomTextProps["variant"]>, TextStyle> = {
         fontStyle: "italic",
     },
     small: {
-        fontSize: 10,
-        lineHeight: 14,
+        fontSize: 14,
     },
     pixel: {},
 };

@@ -14,7 +14,7 @@ import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
 import IGDBService from "src/services/api/IGDBService";
 import GameSearchInput from "./GameSearchInput";
-import { DiscoverTabRouteProp } from "src/utils/navigationTypes";
+import { SearchTabRouteProp } from "src/utils/navigationTypes";
 
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
@@ -57,7 +57,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     gameStatus,
     handleDiscover,
 }) => {
-    const route = useRoute<DiscoverTabRouteProp>();
+    const route = useRoute<SearchTabRouteProp>();
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -135,7 +135,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     gameStatus={gameStatus}
                     searchQuery={searchQuery}
                     onSearchChange={handleSearchChange}
-                    placeholder="Type 2+ characters to search games..."
+                    placeholder="Search to discover new games..."
                 />
 
                 {error ? (
@@ -162,7 +162,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                         <Text variant="subtitle" style={styles.emptyText}>
                             {searchQuery.length > 0
                                 ? "No games found matching your search"
-                                : "Type to search for games"}
+                                : "Type 2+ characters to search"}
                         </Text>
                     </View>
                 ) : (

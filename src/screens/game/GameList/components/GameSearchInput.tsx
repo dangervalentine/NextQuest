@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { colorSwatch } from "src/utils/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
-import { getStatusStyles } from "src/utils/gameStatusUtils";
+import { getStatusLabel, getStatusStyles } from "src/utils/gameStatusUtils";
 
 interface GameSearchInputProps {
     gameStatus: GameStatus;
@@ -16,7 +16,7 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     gameStatus,
     searchQuery,
     onSearchChange,
-    placeholder = "Search games...",
+    placeholder = `Search ${getStatusLabel(gameStatus)} games...`,
 }) => {
     const [inputValue, setInputValue] = React.useState(searchQuery);
 
@@ -73,16 +73,18 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
 
 const styles = StyleSheet.create({
     searchContainer: {
-        width: "100%",
-        backgroundColor: colorSwatch.background.darker,
-        borderBottomWidth: 1,
+        marginTop: 80,
+        marginBottom: 8,
         borderBottomColor: colorSwatch.neutral.darkGray,
         zIndex: 1,
+        marginHorizontal: 4,
+        borderWidth: 1,
+        borderRadius: 8,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     searchInputContainer: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
     },
     searchInput: {
         flex: 1,

@@ -19,7 +19,7 @@ const WebsitesSection: React.FC<WebsitesSectionProps> = ({ websites }) => {
     const getWebsiteInfo = (
         category: number
     ): { label: string; icon: JSX.Element } => {
-        const iconSize = 16;
+        const iconSize = 12;
         const iconColor = colorSwatch.accent.cyan;
 
         const types = {
@@ -251,16 +251,12 @@ const WebsitesSection: React.FC<WebsitesSectionProps> = ({ websites }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colorSwatch.background.darker,
-        borderRadius: 12,
-        padding: 16,
-        borderWidth: 1,
-        borderColor: colorSwatch.neutral.darkGray,
         marginTop: 16,
     },
     title: {
         fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.accent.purple,
+        color: colorSwatch.primary.dark,
         marginBottom: 12,
     },
     websitesContainer: {
@@ -270,7 +266,7 @@ const styles = StyleSheet.create({
     },
     websiteButton: {
         backgroundColor: colorSwatch.background.darkest,
-        borderRadius: 20,
+        borderRadius: 8,
         paddingVertical: 8,
         paddingHorizontal: 16,
         flexDirection: "row",

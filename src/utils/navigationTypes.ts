@@ -5,8 +5,8 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 export type TabParamList = {
     Ongoing: undefined;
     Backlog: undefined;
-    Trophies: undefined;
-    Discover: {
+    Completed: undefined;
+    Search: {
         franchiseId?: number;
     };
 };
@@ -37,4 +37,4 @@ export type GameTabsScreenNavigationProp = StackNavigationProp<
     "GameTabs"
 >;
 
-export type DiscoverTabRouteProp = RouteProp<TabParamList, "Discover">;
+export type SearchTabRouteProp = RouteProp<TabParamList, "Search">;
