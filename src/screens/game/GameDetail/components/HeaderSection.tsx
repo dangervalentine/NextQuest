@@ -170,5 +170,7 @@ const styles = StyleSheet.create({
     },
     headerSection: {
         flex: 1,
+        minHeight: 560,
+        backgroundColor: colorSwatch.background.darkest,
     },
 });

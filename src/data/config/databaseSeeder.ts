@@ -1,26 +1,7 @@
 import db from "./database";
 import { QuestGame } from "../models/QuestGame";
 import seedData from "../seed_data.json";
-import * as FileSystem from "expo-file-system";
-import { GameStatus } from "src/constants/config/gameStatus";
 import platforms from "../platforms.json";
-
-interface GameResult {
-    id: number;
-    name: string;
-    summary?: string;
-    cover_url?: string;
-    game_status?: string;
-    personal_rating?: number;
-    completion_date?: string;
-    notes?: string;
-    date_added?: string;
-    priority?: number;
-    selected_platform_id?: number;
-    game_modes?: string;
-    player_perspectives?: string;
-    themes?: string;
-}
 
 const createTables = async () => {
     // Base tables that don't depend on games

@@ -1,6 +1,3 @@
-import { QuestGame } from "src/data/models/QuestGame";
-import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
-
 export const sortGamesByReleaseDate = <
     T extends { release_dates?: { date: number }[] }
 >(
@@ -25,9 +22,10 @@ export const sortGamesByReleaseDate = <
 
         // Handle cases where dates might be missing
         if (earliestDateA === null && earliestDateB === null) return 0;
-        if (earliestDateA === null) return 1; // Push items without dates to the end
+        if (earliestDateA === null) return 1; // Push null dates to the end
         if (earliestDateB === null) return -1;
 
-        return earliestDateA - earliestDateB;
+        // Sort by newest first (larger timestamp = more recent)
+        return earliestDateB - earliestDateA;
     });
 };

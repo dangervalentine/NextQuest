@@ -7,40 +7,27 @@ import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
 import { GameStatus } from "src/constants/config/gameStatus";
 import RAWRService from "./RAWRService";
 import { sortGamesByReleaseDate } from "src/utils/sortingUtils";
+import popularityTypes from "src/data/igdb_popularity_types.json";
 
 class IGDBService {
     private static API_URL = "https://api.igdb.com/v4";
+    private static SUPPORTED_PLATFORMS =
+        "(3,4,5,6,7,8,9,11,12,14,18,19,20,21,22,24,33,34,37,38,39,41,46,48,49,130,167,169,170,211,282,283)";
 
-    public static async searchGames(
+    private static async executeQuery(
+        endpoint: string,
         query: string
-    ): Promise<MinimalQuestGame[]> {
+    ): Promise<any[]> {
         const token = await TwitchAuthService.getValidToken();
 
-        const bodyQuery = `fields id, name, 
-       cover.id, cover.url,
-       genres.id, genres.name,
-       release_dates.id, release_dates.date,
-       platforms.id, platforms.name, platforms.platform_family;
-where name ~ *"${query}"*
-      & category = (0,8)
-      & version_parent = null
-      & platforms.id = (3,4,5,6,7,8,9,11,12,14,
-                        18,19,20,21,22,24,33,34,37,38,39,
-                        41,46,48,49,130,167,169,170,211,
-                        282,283);
-sort release_dates.date desc;
-limit 100;`;
-
-        const fixedQuery = bodyQuery.replace(/['']/g, "'");
-
-        const response = await fetch(this.API_URL + "/games", {
+        const response = await fetch(this.API_URL + endpoint, {
             method: "POST",
             headers: {
                 "Client-ID": TWITCH_CLIENT_ID,
                 Authorization: `Bearer ${token}`,
                 Accept: "application/json",
             },
-            body: fixedQuery,
+            body: query,
         });
 
         if (!response.ok) {
@@ -49,69 +36,140 @@ limit 100;`;
 
         const data = await response.json();
 
-        if (!data || !Array.isArray(data) || data.length === 0) {
+        if (!data || !Array.isArray(data)) {
             return [];
         }
 
-        if (!token) {
-            throw new Error("No access token found.");
-        }
+        return data;
+    }
 
-        const gameMap = new Map<number, MinimalQuestGame>();
-
-        data.forEach((game: any) => {
-            if (!gameMap.has(game.id)) {
-                gameMap.set(game.id, {
-                    id: game.id,
-                    name: game.name,
-                    cover: game.cover
-                        ? {
-                              id: game.cover.id,
-                              url: game.cover.url.replace(
-                                  "t_thumb",
-                                  "t_cover_big"
-                              ),
-                          }
-                        : null,
-                    genres: Array.isArray(game.genres) ? game.genres : [],
-                    platforms: game.platforms || [],
-                    rating: game.rating || null,
-                    gameStatus: "undiscovered",
-                    dateAdded: new Date().toISOString(),
-                    priority: 0,
-                    personalRating: undefined,
-                    notes: undefined,
-                    updatedAt: new Date().toISOString(),
-                    createdAt: new Date().toISOString(),
-                    release_dates: Array.isArray(game.release_dates)
-                        ? game.release_dates
-                        : [],
-                });
-            }
-
-            const existingGame = gameMap.get(game.id);
-            if (existingGame && game.platforms) {
-                const newPlatforms = game.platforms.map((platform: any) => ({
+    private static mapToMinimalQuestGame(game: any): MinimalQuestGame {
+        const now = new Date().toISOString();
+        return {
+            id: game.id,
+            name: game.name,
+            gameStatus: "undiscovered" as GameStatus,
+            updatedAt: now,
+            createdAt: now,
+            dateAdded: now,
+            cover: game.cover
+                ? {
+                      id: game.cover.id,
+                      url: game.cover.url.replace("t_thumb", "t_cover_big"),
+                  }
+                : null,
+            platforms:
+                game.platforms?.map((platform: any) => ({
                     id: platform.id,
                     name: platform.name,
-                }));
+                })) || [],
+            genres:
+                game.genres?.map((genre: any) => ({
+                    id: genre.id,
+                    name: genre.name,
+                })) || [],
+            release_dates:
+                game.release_dates?.map((release: any) => ({
+                    id: release.id,
+                    date: release.date,
+                    platform_id: release.platform,
+                })) || [],
+        };
+    }
 
-                existingGame.platforms = [
-                    ...existingGame.platforms,
-                    ...newPlatforms.filter(
-                        (p: { id: number }) =>
-                            !existingGame.platforms.some((ep) => ep.id === p.id)
-                    ),
-                ];
-            }
-        });
+    private static getBaseGameFields(): string {
+        return `fields id, name, 
+       cover.id, cover.url,
+       genres.id, genres.name,
+       release_dates.id, release_dates.date,
+       platforms.id, platforms.name, platforms.platform_family,
+       status, hypes, summary;`;
+    }
 
-        const sortedGames = sortGamesByReleaseDate(
-            Array.from(gameMap.values())
+    private static async searchGamesBy(
+        whereClause: string,
+        includePlatformFilter: boolean = true
+    ): Promise<MinimalQuestGame[]> {
+        const platformFilter = includePlatformFilter
+            ? `& platforms.id = ${this.SUPPORTED_PLATFORMS}`
+            : "";
+
+        const query = `${this.getBaseGameFields()}
+where ${whereClause}
+      & category = (0,8)
+      ${platformFilter}
+      & (status = null | status = 0);
+sort release_dates.date desc;
+limit 100;`;
+
+        const data = await this.executeQuery("/games", query);
+        const mappedGames = data.map((game) =>
+            this.mapToMinimalQuestGame(game)
+        );
+        return sortGamesByReleaseDate(mappedGames);
+    }
+
+    public static async searchGames(
+        query: string
+    ): Promise<MinimalQuestGame[]> {
+        return this.searchGamesBy(`name ~ *"${query}"*`);
+    }
+
+    public static async searchGamesByPlatform(
+        platformId: number
+    ): Promise<MinimalQuestGame[]> {
+        return this.searchGamesBy(`platforms = ${platformId}`, false);
+    }
+
+    public static async searchGamesByGenre(
+        genreId: number
+    ): Promise<MinimalQuestGame[]> {
+        return this.searchGamesBy(`genres = ${genreId}`);
+    }
+
+    public static async searchGamesByTheme(
+        themeId: number
+    ): Promise<MinimalQuestGame[]> {
+        return this.searchGamesBy(`themes = ${themeId}`);
+    }
+
+    public static async searchGamesByCompany(
+        companyId: number
+    ): Promise<MinimalQuestGame[]> {
+        return this.searchGamesBy(`involved_companies.company = ${companyId}`);
+    }
+
+    public static async searchGamesByFranchise(
+        franchiseId: number
+    ): Promise<MinimalQuestGame[]> {
+        return this.searchGamesBy(`franchises = ${franchiseId}`);
+    }
+
+    public static async getPopularGames(): Promise<MinimalQuestGame[]> {
+        const chosenPopularityType = popularityTypes.find(
+            (type) => type.name === "Played"
         );
 
-        return sortedGames;
+        if (!chosenPopularityType) {
+            throw new Error("IGDB Popular popularity type not found");
+        }
+        // First get popular game IDs
+        const popularityQuery = `fields game_id,value,popularity_type;
+sort value desc;
+limit 10;
+offset ${Math.floor(Math.random() * 100)};
+where popularity_type = ${chosenPopularityType.id};`;
+
+        const popularGames = await this.executeQuery(
+            "/popularity_primitives",
+            popularityQuery
+        );
+        if (popularGames.length === 0) return [];
+
+        const gameIds = popularGames.map((item) => item.game_id);
+        return this.searchGamesBy(`id = (${gameIds.join(",")})`);
     }
+
     public static async fetchGameDetails(
         id: number
     ): Promise<QuestGame | null> {
@@ -316,103 +374,6 @@ sort release_dates.date asc;
         } catch (error) {
             console.error("Error fetching game details:", error);
             return null;
-        }
-    }
-
-    public static async searchGamesByFranchise(
-        franchiseId: number
-    ): Promise<MinimalQuestGame[]> {
-        const token = await TwitchAuthService.getValidToken();
-
-        const bodyQuery = `fields id, name, 
-       cover.id, cover.url,
-       genres.id, genres.name,
-       release_dates.id, release_dates.date,
-       platforms.id, platforms.name;
-where franchises = ${franchiseId}
-      & category = (0,8)
-      & version_parent = null
-      & platforms.id = (3,4,5,6,7,8,9,11,12,14,
-                        18,19,20,21,22,24,33,34,37,38,39,
-                        41,46,48,49,130,167,169,170,211,
-                        282,283);
-sort release_dates.date desc;
-limit 100;`;
-
-        try {
-            const response = await fetch(this.API_URL + "/games", {
-                method: "POST",
-                headers: {
-                    "Client-ID": TWITCH_CLIENT_ID,
-                    Authorization: `Bearer ${token}`,
-                    Accept: "application/json",
-                },
-                body: bodyQuery,
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error(
-                    "[searchGamesByFranchise] Error response:",
-                    errorText
-                );
-                throw new Error(
-                    `Error: ${response.status} ${response.statusText}`
-                );
-            }
-
-            const data = await response.json();
-            if (!data || !Array.isArray(data)) {
-                return [];
-            }
-
-            if (data.length === 0) {
-                return [];
-            }
-
-            const now = new Date().toISOString();
-            const mappedGames = data.map((game: any) => {
-                return {
-                    id: game.id,
-                    name: game.name,
-                    gameStatus: "undiscovered" as GameStatus,
-                    updatedAt: now,
-                    createdAt: now,
-                    dateAdded: now,
-                    cover: game.cover
-                        ? {
-                              id: game.cover.id,
-                              url: game.cover.url.replace(
-                                  "t_thumb",
-                                  "t_cover_big"
-                              ),
-                          }
-                        : null,
-                    platforms:
-                        game.platforms?.map((platform: any) => ({
-                            id: platform.id,
-                            name: platform.name,
-                        })) || [],
-                    genres:
-                        game.genres?.map((genre: any) => ({
-                            id: genre.id,
-                            name: genre.name,
-                        })) || [],
-                    release_dates:
-                        game.release_dates?.map((release: any) => ({
-                            id: release.id,
-                            date: release.date,
-                            platform_id: release.platform,
-                        })) || [],
-                };
-            });
-
-            const sortedGames = sortGamesByReleaseDate(mappedGames);
-
-            return sortedGames;
-        } catch (error) {
-            console.error("[searchGamesByFranchise] Error:", error);
-            throw error;
         }
     }
 }

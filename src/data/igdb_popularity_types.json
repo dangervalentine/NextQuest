@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "popularity_source": 121,
+        "name": "Visits"
+    },
+    {
+        "id": 2,
+        "popularity_source": 121,
+        "name": "Want to Play"
+    },
+    {
+        "id": 3,
+        "popularity_source": 121,
+        "name": "Playing"
+    },
+    {
+        "id": 4,
+        "popularity_source": 121,
+        "name": "Played"
+    },
+    {
+        "id": 5,
+        "popularity_source": 1,
+        "name": "24hr Peak Players"
+    },
+    {
+        "id": 6,
+        "popularity_source": 1,
+        "name": "Postitive Reviews"
+    },
+    {
+        "id": 7,
+        "popularity_source": 1,
+        "name": "Negative Reviews"
+    },
+    {
+        "id": 8,
+        "popularity_source": 1,
+        "name": "Total Reviews"
+    }
+]

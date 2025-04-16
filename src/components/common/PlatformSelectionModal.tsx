@@ -57,21 +57,24 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
                         {platforms
                             ?.sort((a, b) => a.name.localeCompare(b.name))
                             .map((platform) => (
-                                <TouchableOpacity
-                                    key={platform.id}
-                                    style={[styles.platformItem]}
-                                    onPress={() => onSelect(platform)}
-                                >
-                                    <View style={styles.platformContent}>
-                                        <PlatformLogoBadge
-                                            platform={platform.name}
-                                            size={72}
-                                        />
-                                        <Text style={styles.platformName}>
-                                            - {platform.name}
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
+                                <>
+                                    <TouchableOpacity
+                                        key={platform.id}
+                                        style={[styles.platformItem]}
+                                        onPress={() => onSelect(platform)}
+                                    >
+                                        <View style={styles.platformContent}>
+                                            <PlatformLogoBadge
+                                                platform={platform.name}
+                                                size={72}
+                                            />
+                                            <Text style={styles.platformName}>
+                                                - {platform.name}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <View style={styles.divider} />
+                                </>
                             ))}
                     </ScrollView>
 
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 16,
         borderBottomWidth: 1,
-        borderBottomColor: colorSwatch.neutral.gray,
+        borderBottomColor: colorSwatch.text.muted,
     },
     title: {
         fontSize: 20,
@@ -125,8 +128,6 @@ const styles = StyleSheet.create({
     },
     platformItem: {
         padding: 24,
-        borderBottomWidth: 1,
-        borderBottomColor: colorSwatch.neutral.gray,
     },
     platformContent: {
         flexDirection: "row",
@@ -138,18 +139,23 @@ const styles = StyleSheet.create({
     },
     platformName: {
         marginLeft: 12,
-        fontSize: 16,
+        fontSize: 12,
         color: colorSwatch.text.primary,
     },
     cancelButton: {
         padding: 16,
         borderTopWidth: 1,
-        borderTopColor: colorSwatch.neutral.gray,
+        borderTopColor: colorSwatch.text.muted,
         alignItems: "center",
     },
     cancelText: {
         fontSize: 16,
         color: colorSwatch.accent.cyan,
         fontWeight: "bold",
+    },
+    divider: {
+        height: 1,
+        backgroundColor: colorSwatch.text.muted,
+        marginHorizontal: 16,
     },
 });

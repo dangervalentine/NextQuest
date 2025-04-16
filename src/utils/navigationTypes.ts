@@ -1,6 +1,5 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
 export type TabParamList = {
     Ongoing: undefined;
@@ -8,6 +7,10 @@ export type TabParamList = {
     Completed: undefined;
     Search: {
         franchiseId?: number;
+        platformId?: number;
+        genreId?: number;
+        themeId?: number;
+        companyId?: number;
     };
 };
 

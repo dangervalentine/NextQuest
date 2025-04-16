@@ -16,6 +16,15 @@ import IGDBService from "src/services/api/IGDBService";
 import GameSearchInput from "./GameSearchInput";
 import { SearchTabRouteProp } from "src/utils/navigationTypes";
 
+interface SearchParams {
+    searchQuery?: string;
+    franchiseId?: number;
+    platformId?: number;
+    genreId?: number;
+    themeId?: number;
+    companyId?: number;
+}
+
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
@@ -62,46 +71,115 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [isSearching, setIsSearching] = useState(false);
+    const [searchContext, setSearchContext] = useState<string>("popular");
 
-    const searchGames = useCallback(
-        async (query: string, franchiseId?: number) => {
-            if (query.length < 2 && !franchiseId) {
-                setSearchResults([]);
-                return;
-            }
-
+    const executeSearch = useCallback(
+        async (params: SearchParams | undefined, query: string = "") => {
             setError(null);
             setIsSearching(true);
+            setSearchResults([]); // Reset results before starting new search
+
             try {
-                let results: MinimalQuestGame[];
-                if (franchiseId) {
+                let results: MinimalQuestGame[] = [];
+                const isActiveSearch = query.length > 0;
+
+                if (isActiveSearch) {
+                    setSearchContext("search");
+                    if (query.length >= 2) {
+                        results = await IGDBService.searchGames(query);
+                    }
+                } else if (params?.franchiseId) {
+                    setSearchContext("franchise");
                     results = await IGDBService.searchGamesByFranchise(
-                        franchiseId
+                        params.franchiseId
                     );
-                } else {
-                    results = await IGDBService.searchGames(query);
+                } else if (params?.platformId) {
+                    setSearchContext("platform");
+                    results = await IGDBService.searchGamesByPlatform(
+                        params.platformId
+                    );
+                } else if (params?.genreId) {
+                    setSearchContext("genre");
+                    results = await IGDBService.searchGamesByGenre(
+                        params.genreId
+                    );
+                } else if (params?.themeId) {
+                    setSearchContext("theme");
+                    results = await IGDBService.searchGamesByTheme(
+                        params.themeId
+                    );
+                } else if (params?.companyId) {
+                    setSearchContext("company");
+                    results = await IGDBService.searchGamesByCompany(
+                        params.companyId
+                    );
+                } else if (!isActiveSearch) {
+                    setSearchContext("popular");
+                    results = await IGDBService.getPopularGames();
                 }
+
                 setSearchResults(results);
             } catch (err) {
-                setError("Failed to search games. Please try again.");
-                console.error("Search error:", err);
+                const errorMsg = `Failed to load ${searchContext} games. Please try again.`;
+                console.error(
+                    `[Search] Error during ${searchContext} search:`,
+                    err
+                );
+                setError(errorMsg);
             } finally {
                 setIsSearching(false);
             }
         },
-        []
+        [searchContext]
     );
 
+    // Handle route parameter changes
     useEffect(() => {
-        const params = route.params as { franchiseId?: number };
-        if (params?.franchiseId) {
-            searchGames("", params.franchiseId);
-        }
-    }, [route.params, searchGames]);
+        const params = route.params as SearchParams;
+        executeSearch(params, searchQuery);
+    }, [route.params, executeSearch, searchQuery]);
 
     const handleSearchChange = (text: string) => {
         setSearchQuery(text);
-        searchGames(text);
+        executeSearch(undefined, text);
+    };
+
+    const getLoadingMessage = () => {
+        switch (searchContext) {
+            case "franchise":
+                return "Loading franchise games...";
+            case "platform":
+                return "Loading platform games...";
+            case "genre":
+                return "Loading genre games...";
+            case "theme":
+                return "Loading games by theme...";
+            case "company":
+                return "Loading games by company...";
+            case "search":
+                return "Searching for games...";
+            default:
+                return "Loading popular games...";
+        }
+    };
+
+    const getEmptyMessage = () => {
+        switch (searchContext) {
+            case "franchise":
+                return "No games found in this franchise";
+            case "platform":
+                return "No games found for this platform";
+            case "genre":
+                return "No games found in this genre";
+            case "theme":
+                return "No games found with this theme";
+            case "company":
+                return "No games found from this company";
+            case "search":
+                return "No games found matching your search";
+            default:
+                return "No popular games found";
+        }
     };
 
     // Memoize the render function
@@ -154,15 +232,13 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                             variant="subtitle"
                             style={[styles.emptyText, { marginTop: 16 }]}
                         >
-                            Searching for games...
+                            {getLoadingMessage()}
                         </Text>
                     </View>
                 ) : searchResults.length === 0 ? (
                     <View style={styles.loadingContainer}>
                         <Text variant="subtitle" style={styles.emptyText}>
-                            {searchQuery.length > 0
-                                ? "No games found matching your search"
-                                : "Type 2+ characters to search"}
+                            {getEmptyMessage()}
                         </Text>
                     </View>
                 ) : (

@@ -77,87 +77,98 @@ const QuestGameDetailPage: React.FC = () => {
             resizeMode="contain"
         >
             <View style={styles.overlay} />
-            <ScrollView style={{ flex: 1 }}>
-                {/* Hero Section */}
-                <HeaderSection game={game} />
+            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+                <ScrollView style={{ flex: 1 }}>
+                    {/* Hero Section */}
+                    <HeaderSection game={game} />
 
-                {/* Personal Review Section */}
-                {game.gameStatus === "completed" && (
-                    <PersonalRatingSection
-                        gameId={game.id}
-                        initialRating={game.personalRating ?? null}
-                        notes={game.notes}
-                    />
-                )}
-
-                {/* Core Game Information */}
-                {(game.storyline || game.summary) && (
-                    <View style={styles.sectionContainer}>
-                        <Text variant="title" style={styles.mainSectionTitle}>
-                            About the Game
-                        </Text>
-                        <StorylineSection
-                            storyline={game.storyline}
-                            summary={game.summary}
+                    {/* Personal Review Section */}
+                    {game.gameStatus === "completed" && (
+                        <PersonalRatingSection
+                            gameId={game.id}
+                            initialRating={game.personalRating ?? null}
+                            notes={game.notes}
                         />
-                    </View>
-                )}
+                    )}
 
-                {/* Visual Showcase */}
-                {game.screenshots && game.screenshots.length > 0 && (
-                    <View style={styles.sectionContainer}>
-                        <Text variant="title" style={styles.mainSectionTitle}>
-                            Screenshots
-                        </Text>
-                        <ImageCarousel
-                            images={
-                                game.screenshots?.map((s) =>
-                                    s.url.replace("t_thumb", "t_720p")
-                                ) ?? []
-                            }
-                        />
-                    </View>
-                )}
-
-                {/* Essential Game Categories */}
-                <View style={styles.sectionContainer}>
-                    <Text variant="title" style={styles.mainSectionTitle}>
-                        Information
-                    </Text>
-                    {/* Core Categories */}
-                    <View style={styles.characteristicsContainer}>
-                        {game.franchises && game.franchises.length > 0 && (
-                            <FranchiseSection game={game} />
-                        )}
-                        <GenresSection game={game} />
-                        <ThemesSection game={game} />
-                        <GameModesSection game={game} />
-                        <PerspectivesSection game={game} />
-                    </View>
-                </View>
-
-                {/* Additional Game Details */}
-                <View style={styles.sectionContainer}>
-                    <Text variant="title" style={styles.mainSectionTitle}>
-                        Additional Details
-                    </Text>
-
-                    {/* Platforms */}
-                    {game.platforms && game.platforms.length > 0 && (
-                        <View>
-                            <Text variant="title" style={styles.platformTitle}>
-                                Platforms
+                    {/* Core Game Information */}
+                    {(game.storyline || game.summary) && (
+                        <View style={styles.sectionContainer}>
+                            <Text
+                                variant="title"
+                                style={styles.mainSectionTitle}
+                            >
+                                About the Game
                             </Text>
-                            <PlatformsSection game={game} />
+                            <StorylineSection
+                                storyline={game.storyline}
+                                summary={game.summary}
+                            />
                         </View>
                     )}
 
-                    {/* External Links */}
-                    <WebsitesSection websites={game.websites || []} />
-                </View>
+                    {/* Visual Showcase */}
+                    {game.screenshots && game.screenshots.length > 0 && (
+                        <View style={styles.sectionContainer}>
+                            <Text
+                                variant="title"
+                                style={styles.mainSectionTitle}
+                            >
+                                Screenshots
+                            </Text>
+                            <ImageCarousel
+                                images={
+                                    game.screenshots?.map((s) =>
+                                        s.url.replace("t_thumb", "t_720p")
+                                    ) ?? []
+                                }
+                            />
+                        </View>
+                    )}
 
-                <View style={styles.bottomClearance} />
-            </ScrollView>
+                    {/* Essential Game Categories */}
+                    <View style={styles.sectionContainer}>
+                        <Text variant="title" style={styles.mainSectionTitle}>
+                            Information
+                        </Text>
+                        {/* Core Categories */}
+                        <View style={styles.characteristicsContainer}>
+                            {game.franchises && game.franchises.length > 0 && (
+                                <FranchiseSection game={game} />
+                            )}
+                            <GenresSection game={game} />
+                            <ThemesSection game={game} />
+                            <GameModesSection game={game} />
+                            <PerspectivesSection game={game} />
+                        </View>
+                    </View>
+
+                    {/* Additional Game Details */}
+                    <View style={styles.sectionContainer}>
+                        <Text variant="title" style={styles.mainSectionTitle}>
+                            Additional Details
+                        </Text>
+
+                        {/* Platforms */}
+                        {game.platforms && game.platforms.length > 0 && (
+                            <View>
+                                <Text
+                                    variant="title"
+                                    style={styles.platformTitle}
+                                >
+                                    Platforms
+                                </Text>
+                                <PlatformsSection game={game} />
+                            </View>
+                        )}
+
+                        {/* External Links */}
+                        <WebsitesSection websites={game.websites || []} />
+                    </View>
+
+                    <View style={styles.bottomClearance} />
+                </ScrollView>
+            </Animated.View>
         </ImageBackground>
     );
 };
