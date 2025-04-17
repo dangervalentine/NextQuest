@@ -8,6 +8,7 @@ import { initializeDatabase } from "./data/config/databaseSeeder";
 import { colorSwatch } from "./utils/colorConstants";
 import { StatusBar } from "expo-status-bar";
 import MainNavigationContainer from "./screens/game/MainNavigationContainer";
+import { QuestToast } from "./components/common/QuestToast";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();

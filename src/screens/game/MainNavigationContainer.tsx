@@ -3,6 +3,7 @@ import {
     createStackNavigator,
     StackNavigationOptions,
 } from "@react-navigation/stack";
+import { StyleSheet } from "react-native";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
@@ -19,17 +20,22 @@ import { colorSwatch } from "src/utils/colorConstants";
 import { headerStyle } from "./GameList/components/GameTabNavigator";
 import { createIGDBGame } from "src/data/repositories/igdbGames";
 import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";
-import Toast from "react-native-toast-message";
+import { QuestToast, showToast } from "src/components/common/QuestToast";
 import GameTabs from "./GameTabs";
-import { RootStackParamList } from "src/utils/navigationTypes";
+import { RootStackParamList, TabParamList } from "src/utils/navigationTypes";
 import { getStatusColor } from "src/utils/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable } from "react-native";
 import Text from "src/components/common/Text";
-import { StackScreenProps } from "@react-navigation/stack";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import { triggerHapticFeedback } from "src/utils/systemUtils";
 const Stack = createStackNavigator<RootStackParamList>();
 
+type MainNavigationProp = NavigationProp<RootStackParamList>;
+
 const MainNavigationContainer: React.FC = () => {
+    const navigation = useNavigation<MainNavigationProp>();
     const [gameData, setGameData] = useState<
         Record<GameStatus, MinimalQuestGame[]>
     >({
@@ -168,102 +174,7 @@ const MainNavigationContainer: React.FC = () => {
         return updateData;
     };
 
-    const handleDiscover = async (
-        game: MinimalQuestGame,
-        newStatus: GameStatus
-    ) => {
-        try {
-            const dbQuestGame = await doesGameExist(game.id);
-            // Get current games count for priority calculation
-            const currentGames = await getQuestGamesByStatus(newStatus);
-            const currentPriority =
-                newStatus !== "undiscovered"
-                    ? currentGames.length + 1
-                    : undefined;
-
-            if (dbQuestGame) {
-                let selectedPlatform = game.platforms?.[0];
-
-                // Game exists, show platform selection with current platform pre-selected
-                if (game.platforms?.length > 1) {
-                    selectedPlatform =
-                        (await showPlatformSelectionModal(
-                            game.platforms || []
-                        )) || selectedPlatform;
-                }
-
-                if (selectedPlatform?.id === dbQuestGame.selectedPlatform?.id) {
-                    // Same platform selected, only update status if needed
-                    if (dbQuestGame.gameStatus !== newStatus) {
-                        await handleStatusChange(
-                            dbQuestGame.id,
-                            newStatus,
-                            dbQuestGame.gameStatus
-                        );
-                    }
-                } else {
-                    // Different platform selected, update both platform and status
-                    try {
-                        await createQuestGameData(game.id, {
-                            game_status: newStatus,
-                            selected_platform_id: selectedPlatform?.id || null,
-                            priority: currentPriority,
-                        });
-                        Toast.show({
-                            type: "success",
-                            text1: "Game Updated",
-                            text2: `${game.name} added to ${getStatusLabel(
-                                newStatus
-                            )} for ${selectedPlatform?.name}`,
-                            position: "bottom",
-                            visibilityTime: 2000,
-                        });
-                    } catch (error) {
-                        throw error;
-                    }
-                }
-            } else {
-                // Game doesn't exist, create new IGDB game and quest game
-                const fetchedIGDBGame = await IGDBService.getIGDBGameById(
-                    game.id
-                );
-                if (!fetchedIGDBGame) {
-                    throw new Error(
-                        `Failed to fetch game details for ID: ${game.id}`
-                    );
-                }
-
-                let selectedPlatform = game.platforms?.[0];
-
-                // Show platform selection for new game
-                if (game.platforms?.length > 1) {
-                    selectedPlatform =
-                        (await showPlatformSelectionModal(
-                            game.platforms || []
-                        )) || selectedPlatform;
-                }
-
-                try {
-                    await createIGDBGame(fetchedIGDBGame);
-                    await createQuestGameData(game.id, {
-                        game_status: newStatus,
-                        date_added: new Date().toISOString(),
-                        priority: currentPriority,
-                        selected_platform_id: selectedPlatform?.id || null,
-                    });
-                } catch (error) {
-                    throw error;
-                }
-            }
-
-            // Refresh the game list after all changes are complete
-            await loadGamesForStatus(newStatus);
-        } catch (error) {
-            console.error("[handleDiscover] Error:", error);
-        }
-    };
-
-    const getStatusLabel = (status: GameStatus) => {
+    const getStatusLabel = (status: GameStatus): string => {
         switch (status) {
             case "ongoing":
                 return "Ongoing";
@@ -277,6 +188,23 @@ const MainNavigationContainer: React.FC = () => {
                 return "On Hold";
             case "dropped":
                 return "Dropped";
+        }
+    };
+
+    const getStatusTab = (status: GameStatus): keyof TabParamList => {
+        switch (status) {
+            case "ongoing":
+                return "Ongoing";
+
+            case "backlog":
+                return "Backlog";
+
+            case "completed":
+                return "Completed";
+            case "undiscovered":
+                return "Search";
+            default:
+                return "Ongoing";
         }
     };
 
@@ -354,6 +282,25 @@ const MainNavigationContainer: React.FC = () => {
                     newStatus
                 );
 
+                // Show success toast here where we have access to gameToMove
+                showToast({
+                    type: "success",
+                    text1: "Game Updated",
+                    text2: `${gameToMove.name} moved to ${getStatusLabel(
+                        newStatus
+                    )}`,
+                    position: "bottom",
+                    visibilityTime: 2000,
+                    color: getStatusColor(newStatus),
+                    onPress: () => {
+                        triggerHapticFeedback("light");
+                        Toast.hide();
+                        navigation.navigate("GameTabs", {
+                            screen: getStatusTab(newStatus),
+                        });
+                    },
+                });
+
                 return {
                     ...prev,
                     [currentStatus]: updatedCurrentGamesWithPriorities,
@@ -403,6 +350,13 @@ const MainNavigationContainer: React.FC = () => {
                 "[GameListNavigationContainer] Failed to update game status:",
                 error
             );
+            showToast({
+                type: "error",
+                text1: "Update Failed",
+                text2: "Failed to update game status. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
             await loadGamesForStatus(currentStatus);
             await loadGamesForStatus(newStatus);
         }
@@ -420,6 +374,11 @@ const MainNavigationContainer: React.FC = () => {
 
             // Update UI state after successful database operations
             setGameData((prev) => {
+                const gameToRemove = prev[status].find(
+                    (game) => game.id === itemId
+                );
+                if (!gameToRemove) return prev;
+
                 const updatedGames = prev[status].filter(
                     (game) => game.id !== itemId
                 );
@@ -428,12 +387,20 @@ const MainNavigationContainer: React.FC = () => {
                 const gamesWithUpdatedPriorities = updatedGames.map(
                     (game, index) => {
                         const newPriority = index + 1;
-                        // Only update priority if it has changed
                         return game.priority !== newPriority
                             ? { ...game, priority: newPriority }
                             : game;
                     }
                 );
+
+                // Show success toast
+                showToast({
+                    type: "success",
+                    text1: "Game Removed",
+                    text2: `${gameToRemove.name} removed`,
+                    position: "bottom",
+                    visibilityTime: 2000,
+                });
 
                 return {
                     ...prev,
@@ -466,8 +433,165 @@ const MainNavigationContainer: React.FC = () => {
                 "[GameListNavigationContainer] Failed to remove item:",
                 error
             );
-            // Reload the status to ensure UI is in sync with database
+            showToast({
+                type: "error",
+                text1: "Remove Failed",
+                text2: "Failed to remove game. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
             await loadGamesForStatus(status);
+        }
+    };
+
+    const handleDiscover = async (
+        game: MinimalQuestGame,
+        newStatus: GameStatus
+    ) => {
+        try {
+            const dbQuestGame = await doesGameExist(game.id); // Get current games count for priority calculation
+
+            const currentGames = await getQuestGamesByStatus(newStatus);
+
+            const currentPriority =
+                newStatus !== "undiscovered"
+                    ? currentGames.length + 1
+                    : undefined;
+
+            if (dbQuestGame) {
+                let selectedPlatform = game.platforms?.[0]; // Game exists, show platform selection with current platform pre-selected
+
+                if (game.platforms?.length > 1) {
+                    selectedPlatform =
+                        (await showPlatformSelectionModal(
+                            game.platforms || []
+                        )) || selectedPlatform;
+                }
+
+                if (selectedPlatform?.id === dbQuestGame.selectedPlatform?.id) {
+                    // Same platform selected, only update status if needed
+
+                    if (dbQuestGame.gameStatus !== newStatus) {
+                        await handleStatusChange(
+                            dbQuestGame.id,
+                            newStatus,
+                            dbQuestGame.gameStatus
+                        );
+                    }
+                } else {
+                    // Different platform selected, update both platform and status
+
+                    try {
+                        await createQuestGameData(game.id, {
+                            game_status: newStatus,
+                            selected_platform_id: selectedPlatform?.id || null,
+                            priority: currentPriority,
+                        });
+                        showToast({
+                            type: "success",
+                            text1: "Game Updated",
+                            text2: `${game.name} added to ${getStatusLabel(
+                                newStatus
+                            )} for ${selectedPlatform?.name}`,
+                            position: "bottom",
+                            visibilityTime: 2000,
+                            onPress: () => {
+                                triggerHapticFeedback("light");
+                                Toast.hide();
+                                navigation.navigate("GameTabs", {
+                                    screen: getStatusTab(newStatus),
+                                });
+                            },
+                        });
+                    } catch (error) {
+                        showToast({
+                            type: "error",
+                            text1: "Update Failed",
+                            text2:
+                                "Failed to update game platform. Please try again.",
+                            position: "bottom",
+                            visibilityTime: 3000,
+                        });
+                        throw error;
+                    }
+                }
+            } else {
+                // Game doesn't exist, create new IGDB game and quest game
+
+                const fetchedIGDBGame = await IGDBService.getIGDBGameById(
+                    game.id
+                );
+
+                if (!fetchedIGDBGame) {
+                    showToast({
+                        type: "error",
+                        text1: "Game Not Found",
+                        text2: "Failed to fetch game details from IGDB.",
+                        position: "bottom",
+                        visibilityTime: 3000,
+                    });
+                    throw new Error(
+                        `Failed to fetch game details for ID: ${game.id}`
+                    );
+                }
+
+                let selectedPlatform = game.platforms?.[0]; // Show platform selection for new game
+
+                if (game.platforms?.length > 1) {
+                    selectedPlatform =
+                        (await showPlatformSelectionModal(
+                            game.platforms || []
+                        )) || selectedPlatform;
+                }
+
+                try {
+                    await createIGDBGame(fetchedIGDBGame);
+
+                    await createQuestGameData(game.id, {
+                        game_status: newStatus,
+                        date_added: new Date().toISOString(),
+                        priority: currentPriority,
+                        selected_platform_id: selectedPlatform?.id || null,
+                    });
+                    showToast({
+                        type: "success",
+                        text1: "Game Added",
+                        text2: `${game.name} added to ${getStatusLabel(
+                            newStatus
+                        )}`,
+                        position: "bottom",
+                        visibilityTime: 2000,
+                        onPress: () => {
+                            triggerHapticFeedback("light");
+                            Toast.hide();
+                            navigation.navigate("GameTabs", {
+                                screen: getStatusTab(newStatus),
+                            });
+                        },
+                    });
+                } catch (error) {
+                    showToast({
+                        type: "error",
+                        text1: "Add Failed",
+                        text2:
+                            "Failed to add game to your collection. Please try again.",
+                        position: "bottom",
+                        visibilityTime: 3000,
+                    });
+                    throw error;
+                }
+            } // Refresh the game list after all changes are complete
+
+            await loadGamesForStatus(newStatus);
+        } catch (error) {
+            console.error("[handleDiscover] Error:", error);
+            showToast({
+                type: "error",
+                text1: "Operation Failed",
+                text2: "An unexpected error occurred. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
         }
     };
 
@@ -601,6 +725,7 @@ const MainNavigationContainer: React.FC = () => {
                     })}
                 />
             </Stack.Navigator>
+            <QuestToast />
         </>
     );
 };
