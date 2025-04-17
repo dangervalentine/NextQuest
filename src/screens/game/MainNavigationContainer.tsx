@@ -1,5 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+    createStackNavigator,
+    StackNavigationOptions,
+} from "@react-navigation/stack";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
@@ -20,7 +23,10 @@ import Toast from "react-native-toast-message";
 import GameTabs from "./GameTabs";
 import { RootStackParamList } from "src/utils/navigationTypes";
 import { getStatusColor } from "src/utils/colors";
-
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable } from "react-native";
+import Text from "src/components/common/Text";
+import { StackScreenProps } from "@react-navigation/stack";
 const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigationContainer: React.FC = () => {
@@ -552,16 +558,42 @@ const MainNavigationContainer: React.FC = () => {
                 <Stack.Screen
                     name="QuestGameDetailPage"
                     component={QuestGameDetailPage}
-                    options={({ route }) => ({
+                    options={({ route, navigation }) => ({
                         headerTransparent: true,
                         headerTintColor: activeTabColor,
-                        headerTitle: route.params.name,
-                        headerTitleStyle: {
-                            fontFamily: "Inter-Regular",
-                            fontSize: 24,
-                            lineHeight: 32,
-                            fontWeight: "600",
-                        },
+                        headerLeft: () => (
+                            <Pressable
+                                onPress={() => navigation.goBack()}
+                                style={({ pressed }) => ({
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    paddingRight: 16,
+                                    paddingVertical: 8,
+                                    paddingLeft: 8,
+                                    width: "100%",
+                                    opacity: pressed ? 0.8 : 1,
+                                })}
+                            >
+                                <Ionicons
+                                    name="arrow-back"
+                                    size={24}
+                                    color={activeTabColor}
+                                />
+                                <Text
+                                    variant="title"
+                                    style={{
+                                        fontSize: 24,
+                                        lineHeight: 32,
+                                        color: activeTabColor,
+                                        marginLeft: 4,
+                                    }}
+                                    numberOfLines={1}
+                                >
+                                    {route.params.name}
+                                </Text>
+                            </Pressable>
+                        ),
+                        headerTitle: "",
                         headerBackgroundContainerStyle: {
                             backgroundColor: colorSwatch.background.darkest,
                         },

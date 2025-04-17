@@ -8,32 +8,45 @@ const FullWidthImage = ({
     source,
     style,
 }: {
-    source: string;
+    source?: string;
     style?: StyleProp<ViewStyle>;
 }): React.JSX.Element => {
     const [imageHeight, setImageHeight] = useState(0);
-    const [hasError, setHasError] = useState(false);
+    const [shouldShowPlaceholder, setShouldShowPlaceholder] = useState(false);
 
     useEffect(() => {
+        // Check if source is empty or undefined
+        if (!source) {
+            setShouldShowPlaceholder(true);
+            return;
+        }
+
         // Get the image dimensions
-        RNImage.getSize(source, (width, height) => {
-            // Calculate the height based on the full width
-            const aspectRatio = width / height;
-            const fullWidth = Dimensions.get("window").width; // Get the full width of the screen
-            setImageHeight(fullWidth / aspectRatio); // Set the height based on the aspect ratio
-        });
+        RNImage.getSize(
+            source,
+            (width, height) => {
+                // Calculate the height based on the full width
+                const aspectRatio = width / height;
+                const fullWidth = Dimensions.get("window").width; // Get the full width of the screen
+                setImageHeight(fullWidth / aspectRatio); // Set the height based on the aspect ratio
+            },
+            () => {
+                // Error callback for getSize
+                setShouldShowPlaceholder(true);
+            }
+        );
     }, [source]);
 
     return (
         <View style={[styles.imageContainer, style]}>
-            {!hasError ? (
+            {!shouldShowPlaceholder ? (
                 <Image
                     source={{ uri: source }}
-                    style={[styles.image, { height: imageHeight }]}
+                    style={[styles.image, { height: imageHeight || 560 }]}
                     contentFit="cover"
                     transition={300}
                     onError={() => {
-                        setHasError(true);
+                        setShouldShowPlaceholder(true);
                     }}
                 />
             ) : (

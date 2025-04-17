@@ -30,28 +30,32 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
     return (
         <View style={styles.headerSection}>
             {game.cover && (
-                <View>
+                <View style={styles.imageContainer}>
                     <FullWidthImage
                         source={`https:${game.cover.url
                             .replace("t_cover_big", "t_720p")
                             .replace("t_thumb", "t_720p")}`}
                     />
+                    <LinearGradient
+                        colors={[
+                            "rgba(2, 15, 29, 0)",
+                            "rgba(2, 15, 29, 0)",
+                            "rgba(2, 15, 29, 0.4)",
+                            "rgba(2, 15, 29, 0.8)",
+                            "rgba(2, 15, 29, 0.95)",
+                        ]}
+                        locations={[0, 0.4, 0.6, 0.8, 1]}
+                        style={styles.headerOverlay}
+                    />
                     <View style={styles.headerContainer}>
-                        <LinearGradient
-                            colors={[
-                                "rgba(2, 15, 29, 0)",
-                                "rgba(2, 15, 29, 0)",
-                                "rgba(2, 15, 29, 0.4)",
-                                "rgba(2, 15, 29, 0.8)",
-                                "rgba(2, 15, 29, 0.95)",
-                            ]}
-                            locations={[0, 0.4, 0.6, 0.8, 1]}
-                            style={styles.headerOverlay}
-                        />
-                        {game.metacriticScore && (
-                            <MetacriticBadge score={game.metacriticScore} />
-                        )}
-                        <AgeRatingBadge game={game} />
+                        <View style={styles.badgeContainer}>
+                            {game.metacriticScore && (
+                                <MetacriticBadge score={game.metacriticScore} />
+                            )}
+                        </View>
+                        <View style={styles.badgeContainer}>
+                            <AgeRatingBadge game={game} />
+                        </View>
                     </View>
                 </View>
             )}
@@ -66,7 +70,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
                     {game.name}
                 </Text>
                 <Text variant="subtitle" style={styles.releaseDate}>
-                    {game.release_dates?.[0]?.human || "Release date unknown"}
+                    {game.release_dates?.[0]?.human}
                 </Text>
             </View>
 
@@ -94,6 +98,16 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
 };
 
 const styles = StyleSheet.create({
+    headerSection: {
+        flex: 1,
+        minHeight: 560,
+        backgroundColor: colorSwatch.background.darkest,
+        overflow: "hidden",
+    },
+    imageContainer: {
+        position: "relative",
+        width: "100%",
+    },
     headerContainer: {
         position: "absolute",
         bottom: 0,
@@ -104,16 +118,21 @@ const styles = StyleSheet.create({
         height: 50,
         right: 0,
         width: "100%",
-        paddingLeft: 12,
-        paddingRight: 8,
+        paddingLeft: 14,
+        paddingRight: 10,
         paddingBottom: 8,
+        zIndex: 2,
     },
     headerOverlay: {
         position: "absolute",
-        top: -200,
+        top: 300,
         left: 0,
         right: 0,
         bottom: 0,
+        zIndex: 1,
+    },
+    badgeContainer: {
+        zIndex: 3,
     },
     titleText: {
         fontSize: 32,
@@ -131,19 +150,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: colorSwatch.text.secondary,
     },
-    ageRatingContainer: {
-        position: "absolute",
-        right: 2,
-    },
     companyInfo: {
         flexDirection: "row",
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
+        paddingVertical: 16,
+        paddingTop: 0,
         marginHorizontal: 12,
-        marginTop: 16,
         backgroundColor: colorSwatch.background.darkest,
-        padding: 16,
         elevation: 4,
     },
     companyColumn: {
@@ -166,10 +178,5 @@ const styles = StyleSheet.create({
         width: 1,
         backgroundColor: colorSwatch.neutral.darkGray,
         marginHorizontal: 16,
-    },
-    headerSection: {
-        flex: 1,
-        minHeight: 560,
-        backgroundColor: colorSwatch.background.darkest,
     },
 });

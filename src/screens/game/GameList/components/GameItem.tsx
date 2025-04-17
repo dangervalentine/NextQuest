@@ -178,8 +178,9 @@ const GameItem: React.FC<GameItemProps> = memo(
         const panResponder = useMemo(
             () =>
                 PanResponder.create({
-                    onStartShouldSetPanResponder: () => true,
+                    onStartShouldSetPanResponder: () => !isReordering,
                     onMoveShouldSetPanResponder: (_, gestureState) => {
+                        if (isReordering) return false;
                         return (
                             Math.abs(gestureState.dx) >
                             Math.abs(gestureState.dy)
@@ -189,6 +190,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         pan.setValue(0);
                     },
                     onPanResponderMove: (_, gestureState) => {
+                        if (isReordering) return;
                         // Only allow right swipe if not undiscovered
                         const maxRight =
                             questGame.gameStatus === "undiscovered" ? 0 : 100;
@@ -204,6 +206,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         pan.setValue(newX);
                     },
                     onPanResponderRelease: (_, gestureState) => {
+                        if (isReordering) return;
                         if (gestureState.dx < -SWIPE_THRESHOLD) {
                             // Left swipe - wider for undiscovered
                             const leftPosition =
@@ -232,7 +235,31 @@ const GameItem: React.FC<GameItemProps> = memo(
                         }
                     },
                 }),
-            [questGame.gameStatus]
+            [questGame.gameStatus, isReordering, pan]
+        );
+
+        const dragPanResponder = useMemo(
+            () =>
+                PanResponder.create({
+                    onStartShouldSetPanResponder: () => true,
+                    onMoveShouldSetPanResponder: () => true,
+                    onPanResponderGrant: () => {
+                        setIsReordering(true);
+                        triggerHapticFeedback("light");
+                        if (reorder) {
+                            reorder();
+                        }
+                    },
+                    onPanResponderRelease: () => {
+                        setIsReordering(false);
+                        triggerHapticFeedback("light");
+                    },
+                    onPanResponderTerminate: () => {
+                        setIsReordering(false);
+                        triggerHapticFeedback("light");
+                    },
+                }),
+            [reorder]
         );
 
         const handleRemove = () => {
@@ -329,19 +356,6 @@ const GameItem: React.FC<GameItemProps> = memo(
             return {
                 backgroundColor: color,
             };
-        };
-
-        const handleReorderStart = () => {
-            setIsReordering(true);
-            triggerHapticFeedback("light");
-            if (reorder) {
-                reorder();
-            }
-        };
-
-        const handleReorderEnd = () => {
-            setIsReordering(false);
-            triggerHapticFeedback("light");
         };
 
         let coverUrl;
@@ -452,14 +466,17 @@ const GameItem: React.FC<GameItemProps> = memo(
                 >
                     {typeof questGame.priority === "number" &&
                         questGame.gameStatus !== "undiscovered" && (
-                            <Pressable
-                                onTouchStart={handleReorderStart}
-                                onTouchEnd={handleReorderEnd}
+                            <View
                                 style={styles.dragHandle}
+                                {...dragPanResponder.panHandlers}
                             >
                                 <View style={styles.dragHandleContent}>
                                     <Text
-                                        style={styles.priorityText}
+                                        style={{
+                                            color: getStatusColor(
+                                                questGame.gameStatus
+                                            ),
+                                        }}
                                         numberOfLines={1}
                                     >
                                         {questGame.priority}
@@ -467,17 +484,14 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <SimpleLineIcons
                                         name="menu"
                                         size={20}
-                                        color={colorSwatch.primary.dark}
+                                        color={colorSwatch.text.muted}
                                     />
                                 </View>
-                            </Pressable>
+                            </View>
                         )}
                     <Pressable
                         onPress={handlePress}
-                        style={({ pressed }) => [
-                            styles.pressableNavigation,
-                            pressed && styles.pressed,
-                        ]}
+                        style={styles.pressableNavigation}
                     >
                         {questGame.cover && questGame.cover.url ? (
                             <FullHeightImage source={coverUrl} />
@@ -574,7 +588,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     <MaterialCommunityIcons
                         name="arrow-left"
                         size={32}
-                        color={colorSwatch.accent.cyan}
+                        color={getStatusColor(questGame.gameStatus)}
                     />
                 </Animated.View>
                 <Animated.View
@@ -590,7 +604,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     <MaterialCommunityIcons
                         name="arrow-right"
                         size={32}
-                        color={colorSwatch.accent.cyan}
+                        color={getStatusColor(questGame.gameStatus)}
                     />
                 </Animated.View>
             </Animated.View>
@@ -697,9 +711,6 @@ const styles = StyleSheet.create({
     dragHandleContent: {
         alignItems: "center",
     },
-    priorityText: {
-        color: colorSwatch.accent.cyan,
-    },
     title: {
         fontSize: 16,
         color: colorSwatch.text.primary,
@@ -716,9 +727,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         gap: 12,
     },
-    pressed: {
-        opacity: 0.8,
-    },
+    pressed: {},
     rating: {
         fontSize: 10,
         flexShrink: 0,

@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         flexDirection: "row",
         alignItems: "center",
-        gap: 4,
+        gap: 8,
         height: "100%",
     },
 });

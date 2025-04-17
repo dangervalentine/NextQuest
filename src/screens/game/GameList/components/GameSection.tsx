@@ -12,6 +12,7 @@ import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
 import GameSearchInput from "./GameSearchInput";
+import { getStatusColor } from "src/utils/colors";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -57,8 +58,10 @@ const GameSection: React.FC<GameSectionProps> = ({
             return (
                 <View
                     style={[
-                        styles.itemContainer,
                         isActive && styles.activeItem,
+                        {
+                            borderColor: getStatusColor(item.gameStatus),
+                        },
                     ]}
                 >
                     <GameItem
@@ -150,14 +153,10 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.darker,
         opacity: 0.99,
     },
-    itemContainer: {
-        // Keeping only styles that might be needed for active state
-    },
     activeItem: {
-        opacity: 0.7,
-        backgroundColor: colorSwatch.background.darker,
-        borderWidth: 2,
-        borderColor: colorSwatch.accent.cyan,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.gray,
     },
     loadingContainer: {
         flex: 1,
