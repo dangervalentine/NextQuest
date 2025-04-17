@@ -1,11 +1,6 @@
 import { Image } from "expo-image";
 import React, { useEffect, useState } from "react";
-import {
-    Dimensions,
-    StyleProp,
-    ViewStyle,
-    ActivityIndicator,
-} from "react-native";
+import { Dimensions, StyleProp, ViewStyle } from "react-native";
 import { View, StyleSheet, Image as RNImage } from "react-native";
 import { colorSwatch } from "src/utils/colorConstants";
 

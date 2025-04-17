@@ -77,7 +77,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         async (params: SearchParams | undefined, query: string = "") => {
             setError(null);
             setIsSearching(true);
-            setSearchResults([]); // Reset results before starting new search
+            setSearchResults([]);
 
             try {
                 let results: MinimalQuestGame[] = [];
@@ -213,6 +213,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     gameStatus={gameStatus}
                     searchQuery={searchQuery}
                     onSearchChange={handleSearchChange}
+                    onClear={() => executeSearch(undefined, "")}
                     placeholder="Search to discover new games..."
                 />
 
@@ -226,7 +227,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator
                             size="large"
-                            color={colorSwatch.accent.cyan}
+                            color={colorSwatch.accent.green}
                         />
                         <Text
                             variant="subtitle"

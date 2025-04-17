@@ -19,8 +19,8 @@ import { formatReleaseDate } from "src/utils/dateFormatters";
 import { ScreenNavigationProp } from "src/utils/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
 import { getStatusLabel, getStatusStyles } from "src/utils/gameStatusUtils";
-import QuestIcon from "../../shared/GameIcon";
 import { getRatingColor, getStatusColor } from "src/utils/colors";
+import { triggerHapticFeedback } from "src/utils/systemUtils";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -238,6 +238,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleRemove = () => {
             if (containerHeight === 0) return;
             setIsAnimating(true);
+            triggerHapticFeedback("medium");
 
             Animated.parallel([
                 Animated.timing(pan, {
@@ -264,6 +265,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleStatusSelect = (status: GameStatus) => {
             if (containerHeight === 0) return;
             setIsAnimating(true);
+            triggerHapticFeedback("light");
 
             const animations = [
                 Animated.timing(pan, {
@@ -314,7 +316,11 @@ const GameItem: React.FC<GameItemProps> = memo(
         );
 
         const genresText = useMemo(
-            () => questGame.genres?.map((genre) => genre.name).join(", ") || "",
+            () =>
+                questGame.genres
+                    ?.slice(0, 2)
+                    .map((genre) => genre.name)
+                    .join(", ") || "",
             [questGame.genres]
         );
 
@@ -327,6 +333,7 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const handleReorderStart = () => {
             setIsReordering(true);
+            triggerHapticFeedback("light");
             if (reorder) {
                 reorder();
             }
@@ -334,6 +341,7 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const handleReorderEnd = () => {
             setIsReordering(false);
+            triggerHapticFeedback("light");
         };
 
         let coverUrl;
@@ -443,8 +451,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     {...panResponder.panHandlers}
                 >
                     {typeof questGame.priority === "number" &&
-                        questGame.priority > 0 &&
-                        questGame.gameStatus === "backlog" && (
+                        questGame.gameStatus !== "undiscovered" && (
                             <Pressable
                                 onTouchStart={handleReorderStart}
                                 onTouchEnd={handleReorderEnd}
@@ -473,10 +480,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         ]}
                     >
                         {questGame.cover && questGame.cover.url ? (
-                            <FullHeightImage
-                                source={coverUrl}
-                                style={getStatusStyles(questGame.gameStatus)}
-                            />
+                            <FullHeightImage source={coverUrl} />
                         ) : (
                             <FullHeightImage
                                 source={require("../../../../assets/placeholder.png")}
@@ -485,74 +489,37 @@ const GameItem: React.FC<GameItemProps> = memo(
                         )}
 
                         <View style={styles.contentContainer}>
-                            <Text variant="subtitle" style={styles.title}>
-                                {questGame.name}
-                            </Text>
-                            {questGame.personalRating && (
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                    }}
+                            <View style={styles.titleContainer}>
+                                <Text
+                                    variant="subtitle"
+                                    style={styles.title}
+                                    numberOfLines={2}
                                 >
-                                    {Array.from({
-                                        length: questGame.personalRating || 0,
-                                    }).map((_, index) => (
-                                        <QuestIcon
-                                            key={index}
-                                            name="star"
-                                            size={12}
-                                            color={getRatingColor(
-                                                questGame.personalRating || 0
-                                            )}
-                                        />
-                                    ))}
-                                    {Array.from({
-                                        length:
-                                            10 -
-                                            (questGame.personalRating || 0),
-                                    }).map((_, index) => (
-                                        <QuestIcon
-                                            key={index}
-                                            name="star-outline"
-                                            size={12}
-                                            color={colorSwatch.text.muted}
-                                        />
-                                    ))}
-                                    <Text
-                                        variant="caption"
-                                        style={[
-                                            styles.rating,
-                                            {
-                                                color: getRatingColor(
-                                                    questGame.personalRating ||
-                                                        0
-                                                ),
-                                            },
-                                        ]}
-                                    >
-                                        ({questGame.personalRating}/10)
-                                    </Text>
-                                </View>
-                            )}
-                            {/* {questGame.notes &&
+                                    {questGame.name}
+                                </Text>
+                                {questGame.personalRating &&
                                     questGame.gameStatus === "completed" && (
-                                        <View style={styles.quoteContainer}>
-                                            <Text
-                                                variant="caption"
-                                                style={styles.quote}
-                                            >
-                                                "{questGame.notes}"
-                                            </Text>
-                                        </View>
-                                    )} */}
-                            {/* {questGame.gameStatus !== "completed" && ( */}
+                                        <Text
+                                            variant="caption"
+                                            style={[
+                                                styles.rating,
+                                                {
+                                                    color: getRatingColor(
+                                                        questGame.personalRating ||
+                                                            0
+                                                    ),
+                                                },
+                                            ]}
+                                        >
+                                            ({questGame.personalRating}/10)
+                                        </Text>
+                                    )}
+                            </View>
                             <View style={styles.detailsContainer}>
                                 <Text
                                     variant="small"
                                     style={styles.textSecondary}
                                 >
-                                    <Text variant="small">Platform: </Text>
                                     <Text variant="small">
                                         {/* Display the selected platform name if available. 
                                             If not, check the number of platforms:
@@ -573,9 +540,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         style={styles.textSecondary}
                                     >
                                         <Text variant="small">
-                                            Release Date:{" "}
-                                        </Text>
-                                        <Text variant="small">
                                             {formatReleaseDate(
                                                 platformReleaseDate.date
                                             )}
@@ -586,7 +550,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     variant="small"
                                     style={styles.textSecondary}
                                 >
-                                    <Text variant="small">Genres: </Text>
                                     <Text
                                         variant="small"
                                         style={styles.textSecondary}
@@ -595,7 +558,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     </Text>
                                 </Text>
                             </View>
-                            {/* )} */}
                         </View>
                     </Pressable>
                 </Animated.View>
@@ -660,7 +622,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         borderRadius: 12,
         marginHorizontal: 4,
-        marginVertical: 8,
+        marginVertical: 4,
         shadowColor: colorSwatch.background.dark,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
@@ -707,6 +669,12 @@ const styles = StyleSheet.create({
         borderColor: colorSwatch.accent.cyan,
         borderRadius: 12,
     },
+    titleContainer: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        gap: 4,
+    },
     statusButton: {
         flex: 1,
         justifyContent: "center",
@@ -737,14 +705,14 @@ const styles = StyleSheet.create({
         color: colorSwatch.text.primary,
         fontFamily: "Inter-Regular",
         flexWrap: "wrap",
-        maxWidth: "100%",
-        lineHeight: 18,
-        marginBottom: 4,
+        flex: 1,
+        lineHeight: 20,
     },
     pressableNavigation: {
         flexDirection: "row",
         flex: 1,
-        padding: 12,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
         alignItems: "flex-start",
         gap: 12,
     },
@@ -752,8 +720,8 @@ const styles = StyleSheet.create({
         opacity: 0.8,
     },
     rating: {
-        marginLeft: 4,
         fontSize: 10,
+        flexShrink: 0,
     },
     contentContainer: {
         flex: 1,

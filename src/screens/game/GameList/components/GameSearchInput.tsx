@@ -9,6 +9,7 @@ interface GameSearchInputProps {
     gameStatus: GameStatus;
     searchQuery: string;
     onSearchChange: (text: string) => void;
+    onClear: () => void;
     placeholder?: string;
 }
 
@@ -16,6 +17,7 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     gameStatus,
     searchQuery,
     onSearchChange,
+    onClear,
     placeholder = `Search ${getStatusLabel(gameStatus)} games...`,
 }) => {
     const [inputValue, setInputValue] = React.useState(searchQuery);
@@ -56,7 +58,7 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                         style={styles.clearButton}
                         onPress={() => {
                             setInputValue("");
-                            onSearchChange("");
+                            onClear();
                         }}
                     >
                         <QuestIcon
@@ -74,7 +76,7 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
 const styles = StyleSheet.create({
     searchContainer: {
         marginTop: 80,
-        marginBottom: 8,
+        marginBottom: 4,
         borderBottomColor: colorSwatch.neutral.darkGray,
         zIndex: 1,
         marginHorizontal: 4,

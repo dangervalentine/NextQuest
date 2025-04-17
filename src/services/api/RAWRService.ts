@@ -44,8 +44,6 @@ class RAWRService {
             if (!match || !match.id || !match.name) {
                 match = data.results[0];
             }
-            console.log("score", match.metacritic);
-            console.log("url", match.metacritic_url);
 
             return {
                 score: match.metacritic,

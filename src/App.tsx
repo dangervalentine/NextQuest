@@ -16,18 +16,12 @@ export default function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [fontsLoaded] = useFonts({
-        "FiraCode-SemiBold": require("./assets/fonts/FiraCode-SemiBold.ttf"),
-        "FiraCode-Medium": require("./assets/fonts/FiraCode-Medium.ttf"),
-        "FiraCode-Regular": require("./assets/fonts/FiraCode-Regular.ttf"),
-        "FiraCode-Light": require("./assets/fonts/FiraCode-Light.ttf"),
-        "FiraCode-Bold": require("./assets/fonts/FiraCode-Bold.ttf"),
-        "PressStart2P-Regular": require("./assets/fonts/PressStart2P-Regular.ttf"),
         "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
         "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
-        "VictorMono-Thin": require("./assets/fonts/VictorMono-Thin.ttf"),
-        "VictorMono-Regular": require("./assets/fonts/VictorMono-Regular.ttf"),
-        "VictorMono-Bold": require("./assets/fonts/VictorMono-Bold.ttf"),
-        "VictorMono-Italic": require("./assets/fonts/VictorMono-Italic.ttf"),
+        "FiraCode-Light": require("./assets/fonts/FiraCode-Light.ttf"),
+        "FiraCode-Regular": require("./assets/fonts/FiraCode-Regular.ttf"),
+        "FiraCode-Bold": require("./assets/fonts/FiraCode-Bold.ttf"),
+        "PressStart2P-Regular": require("./assets/fonts/PressStart2P-Regular.ttf"),
     });
 
     useEffect(() => {
@@ -56,7 +50,7 @@ export default function App() {
             <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
-                    color={colorSwatch.accent.cyan}
+                    color={colorSwatch.accent.green}
                 />
                 <Text variant="body" style={styles.loadingText}>
                     Loading...

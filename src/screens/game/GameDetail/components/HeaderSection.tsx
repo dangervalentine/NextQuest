@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colorSwatch } from "../../../../utils/colorConstants";
 import Text from "../../../../components/common/Text";
@@ -14,7 +14,6 @@ interface HeaderSectionProps {
 }
 
 export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
-    // Group companies by role, similar to CompaniesSection
     const groupedCompanies = {
         developers:
             game.involved_companies

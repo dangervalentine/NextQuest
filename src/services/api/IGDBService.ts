@@ -68,12 +68,15 @@ class IGDBService {
                     id: genre.id,
                     name: genre.name,
                 })) || [],
-            release_dates:
+            release_dates: (
                 game.release_dates?.map((release: any) => ({
                     id: release.id,
                     date: release.date,
                     platform_id: release.platform,
-                })) || [],
+                })) || []
+            ).sort(
+                (a: { date: number }, b: { date: number }) => a.date - b.date
+            ),
         };
     }
 

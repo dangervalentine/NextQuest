@@ -21,7 +21,7 @@ export const generateRandomColorSequence = (length: number): string[] => {
     return result;
 };
 
-export const getRatingColor = (rating: number) => {
+export const getRatingColor = (rating: number): string => {
     // Normal rating color logic for non-10 ratings
     const normalizedRating = rating / 10;
 
@@ -52,6 +52,7 @@ export const getRatingColor = (rating: number) => {
         const greenRGB = hexToRGB(colorSwatch.accent.green);
         return interpolateColors(t, yellowRGB, greenRGB);
     }
+    return colorSwatch.background.darkest;
 };
 
 // Helper function to convert hex to RGB
@@ -67,7 +68,7 @@ const interpolateColors = (
     t: number,
     color1: { r: number; g: number; b: number },
     color2: { r: number; g: number; b: number }
-) => {
+): string => {
     const r = Math.round(color1.r + (color2.r - color1.r) * t);
     const g = Math.round(color1.g + (color2.g - color1.g) * t);
     const b = Math.round(color1.b + (color2.b - color1.b) * t);

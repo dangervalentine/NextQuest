@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
+import { QuestGame } from "src/data/models/QuestGame";
 import {
     createQuestGameData,
     doesGameExist,
@@ -56,20 +57,9 @@ const MainNavigationContainer: React.FC = () => {
 
     const sortGames = (games: MinimalQuestGame[], status: GameStatus) => {
         return [...games].sort((a, b) => {
-            if (status === "backlog") {
-                // For backlog, priority is the primary sort (lowest first)
-                const priorityA = a.priority || Infinity;
-                const priorityB = b.priority || Infinity;
-                if (priorityA !== priorityB) {
-                    return priorityA - priorityB;
-                }
-            }
-            // For non-backlog or equal priorities, sort by updatedAt in ascending order
-            // This will make newest items appear at the bottom, which will be rendered last (top) in the list
-            return (
-                new Date(a.updatedAt).getTime() -
-                new Date(b.updatedAt).getTime()
-            );
+            const priorityA = a.priority || Infinity;
+            const priorityB = b.priority || Infinity;
+            return priorityA - priorityB;
         });
     };
 
@@ -111,39 +101,38 @@ const MainNavigationContainer: React.FC = () => {
         newStatus: GameStatus,
         currentStatus: GameStatus
     ) => {
-        // Initialize the update data object with the game ID and new status
-        let updateData: any = { id, gameStatus: newStatus };
+        let updateData: Partial<QuestGame> & { id: number } = {
+            id,
+            gameStatus: newStatus,
+        };
 
-        // If the game is being moved to the backlog
-        if (newStatus === "backlog") {
-            // Get the current backlog games to determine the highest priority
-            const backlogGames = gameData.backlog;
-            const highestPriority = backlogGames.reduce(
-                (max, game) => Math.max(max, game.priority || 0),
-                0
-            );
-            // Set the new priority to be one higher than the current highest
-            updateData = {
-                ...updateData,
-                priority: highestPriority + 1,
-                notes: undefined, // Clear notes when moving to backlog
-            };
-        }
-        // If the game is being moved from the backlog
-        else if (currentStatus === "backlog") {
-            // Set the moved game's priority to undefined
+        // If moving to undiscovered, remove priority
+        if (newStatus === "undiscovered") {
             updateData = {
                 ...updateData,
                 priority: undefined,
             };
-
-            // Update the priorities of the remaining backlog games
-            const remainingGames = gameData.backlog.filter(
+        }
+        // If moving from one status to another (except undiscovered)
+        else if (currentStatus !== "undiscovered") {
+            // Get the games in the target status
+            const targetStatusGames = gameData[newStatus].filter(
                 (game) => game.id !== id
             );
 
-            // Calculate which items need priority updates
-            const priorityUpdates = remainingGames
+            // Set the priority to be at the end of the list
+            updateData = {
+                ...updateData,
+                priority: targetStatusGames.length + 1,
+            };
+
+            // No need to update priorities of existing games in target status since we're adding to the end
+
+            // Update priorities of remaining games in the current status
+            const remainingGames = gameData[currentStatus].filter(
+                (game) => game.id !== id
+            );
+            const currentStatusUpdates = remainingGames
                 .map((game, index) => ({
                     id: game.id,
                     oldPriority: game.priority || index + 1,
@@ -151,25 +140,25 @@ const MainNavigationContainer: React.FC = () => {
                 }))
                 .filter((item) => item.oldPriority !== item.newPriority);
 
-            if (priorityUpdates.length > 0) {
-                // Execute the priority updates for the remaining games
+            if (currentStatusUpdates.length > 0) {
                 await updateGamePriorities(
-                    priorityUpdates.map(({ id, newPriority }) => ({
+                    currentStatusUpdates.map(({ id, newPriority }) => ({
                         id,
                         priority: newPriority,
                     }))
                 );
             }
         }
-        // For any other status change
+        // If moving from undiscovered to another status
         else {
-            // Set the moved game's priority to undefined
+            // Set priority to be at the end of the target status list
+            const targetStatusGames = gameData[newStatus];
             updateData = {
                 ...updateData,
-                priority: undefined,
+                priority: targetStatusGames.length + 1,
             };
         }
-        // Return the constructed update data object
+
         return updateData;
     };
 
@@ -179,6 +168,12 @@ const MainNavigationContainer: React.FC = () => {
     ) => {
         try {
             const dbQuestGame = await doesGameExist(game.id);
+            // Get current games count for priority calculation
+            const currentGames = await getQuestGamesByStatus(newStatus);
+            const currentPriority =
+                newStatus !== "undiscovered"
+                    ? currentGames.length + 1
+                    : undefined;
 
             if (dbQuestGame) {
                 let selectedPlatform = game.platforms?.[0];
@@ -199,15 +194,6 @@ const MainNavigationContainer: React.FC = () => {
                             newStatus,
                             dbQuestGame.gameStatus
                         );
-                        Toast.show({
-                            type: "success",
-                            text1: "Game Status Updated",
-                            text2: `${game.name} moved to ${getStatusLabel(
-                                newStatus
-                            )}`,
-                            position: "bottom",
-                            visibilityTime: 2000,
-                        });
                     }
                 } else {
                     // Different platform selected, update both platform and status
@@ -215,10 +201,7 @@ const MainNavigationContainer: React.FC = () => {
                         await createQuestGameData(game.id, {
                             game_status: newStatus,
                             selected_platform_id: selectedPlatform?.id || null,
-                            priority:
-                                newStatus === "backlog"
-                                    ? gameData.backlog.length + 1
-                                    : 0,
+                            priority: currentPriority,
                         });
                         Toast.show({
                             type: "success",
@@ -239,13 +222,6 @@ const MainNavigationContainer: React.FC = () => {
                     game.id
                 );
                 if (!fetchedIGDBGame) {
-                    Toast.show({
-                        type: "error",
-                        text1: "Error Adding Game",
-                        text2: `Failed to fetch game details for ${game.name}`,
-                        position: "bottom",
-                        visibilityTime: 3000,
-                    });
                     throw new Error(
                         `Failed to fetch game details for ID: ${game.id}`
                     );
@@ -266,27 +242,15 @@ const MainNavigationContainer: React.FC = () => {
                     await createQuestGameData(game.id, {
                         game_status: newStatus,
                         date_added: new Date().toISOString(),
-                        priority:
-                            newStatus === "backlog"
-                                ? gameData.backlog.length + 1
-                                : 0,
+                        priority: currentPriority,
                         selected_platform_id: selectedPlatform?.id || null,
-                    });
-                    Toast.show({
-                        type: "success",
-                        text1: "Game Added",
-                        text2: `${game.name} added to ${getStatusLabel(
-                            newStatus
-                        )}`,
-                        position: "bottom",
-                        visibilityTime: 2000,
                     });
                 } catch (error) {
                     throw error;
                 }
             }
 
-            // Refresh the game list after any changes
+            // Refresh the game list after all changes are complete
             await loadGamesForStatus(newStatus);
         } catch (error) {
             console.error("[handleDiscover] Error:", error);
@@ -357,40 +321,36 @@ const MainNavigationContainer: React.FC = () => {
                     (game) => game.id !== id
                 );
 
-                const updatedBacklogGames =
-                    currentStatus === "backlog"
+                // Update priorities for current status games if not undiscovered
+                const updatedCurrentGamesWithPriorities =
+                    currentStatus !== "undiscovered"
                         ? sortGames(
                               updatedCurrentGames.map((game, index) => ({
                                   ...game,
                                   priority: index + 1,
                               })),
-                              "backlog"
+                              currentStatus
                           )
-                        : prev.backlog;
+                        : updatedCurrentGames;
 
                 const movedGame = {
                     ...gameToMove,
                     gameStatus: newStatus,
                     priority:
-                        newStatus === "backlog"
-                            ? prev.backlog.length + 1
+                        newStatus !== "undiscovered"
+                            ? prev[newStatus].length + 1
                             : undefined,
                     updatedAt: new Date().toISOString(),
                 };
 
                 const updatedTargetGames = sortGames(
-                    newStatus === "backlog"
-                        ? [...prev.backlog, movedGame]
-                        : [...prev[newStatus], movedGame],
+                    [...prev[newStatus], movedGame],
                     newStatus
                 );
 
                 return {
                     ...prev,
-                    [currentStatus]:
-                        currentStatus === "backlog"
-                            ? updatedBacklogGames
-                            : sortGames(updatedCurrentGames, currentStatus),
+                    [currentStatus]: updatedCurrentGamesWithPriorities,
                     [newStatus]: updatedTargetGames,
                 };
             });
@@ -405,17 +365,23 @@ const MainNavigationContainer: React.FC = () => {
                     );
                     await updateQuestGame(updateData);
 
-                    if (currentStatus === "backlog") {
-                        const remainingGames = gameData.backlog.filter(
+                    if (
+                        currentStatus !== "undiscovered" &&
+                        newStatus !== "undiscovered"
+                    ) {
+                        // Update source list priorities
+                        const sourceGames = gameData[currentStatus].filter(
                             (game) => game.id !== id
                         );
-                        const priorityUpdates = remainingGames.map(
+                        const sourcePriorityUpdates = sourceGames.map(
                             (game, index) => ({
                                 id: game.id,
                                 priority: index + 1,
                             })
                         );
-                        await updateGamePriorities(priorityUpdates);
+                        if (sourcePriorityUpdates.length > 0) {
+                            await updateGamePriorities(sourcePriorityUpdates);
+                        }
                     }
                 } catch (error) {
                     console.error(
@@ -452,21 +418,43 @@ const MainNavigationContainer: React.FC = () => {
                     (game) => game.id !== itemId
                 );
 
-                if (status === "backlog") {
-                    return {
-                        ...prev,
-                        [status]: updatedGames.map((game, index) => ({
-                            ...game,
-                            priority: index + 1,
-                        })),
-                    };
-                }
+                // Calculate which items need priority updates
+                const gamesWithUpdatedPriorities = updatedGames.map(
+                    (game, index) => {
+                        const newPriority = index + 1;
+                        // Only update priority if it has changed
+                        return game.priority !== newPriority
+                            ? { ...game, priority: newPriority }
+                            : game;
+                    }
+                );
 
                 return {
                     ...prev,
-                    [status]: updatedGames,
+                    [status]: gamesWithUpdatedPriorities,
                 };
             });
+
+            // Update priorities in the database for non-undiscovered statuses
+            if (status !== "undiscovered") {
+                const priorityUpdates = gameData[status]
+                    .filter((game) => game.id !== itemId)
+                    .map((game, index) => ({
+                        id: game.id,
+                        oldPriority: game.priority || index + 1,
+                        newPriority: index + 1,
+                    }))
+                    .filter((item) => item.oldPriority !== item.newPriority);
+
+                if (priorityUpdates.length > 0) {
+                    await updateGamePriorities(
+                        priorityUpdates.map(({ id, newPriority }) => ({
+                            id,
+                            priority: newPriority,
+                        }))
+                    );
+                }
+            }
         } catch (error) {
             console.error(
                 "[GameListNavigationContainer] Failed to remove item:",

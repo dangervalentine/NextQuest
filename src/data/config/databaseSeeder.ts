@@ -609,17 +609,17 @@ const updateGameStatusesAndPriorities = async () => {
         // Start transaction
         await db.execAsync("BEGIN TRANSACTION");
 
-        // Update ongoing games (no priority)
-        for (const game of ongoingGames) {
+        // Update ongoing games with priority
+        for (let i = 0; i < ongoingGames.length; i++) {
             await db.execAsync(`
                 UPDATE quest_games 
-                SET status_id = ${ongoingStatus.id}, priority = NULL
-                WHERE game_id = ${game.game_id}
+                SET status_id = ${ongoingStatus.id}, priority = ${i + 1}
+                WHERE game_id = ${ongoingGames[i].game_id}
             `);
         }
 
-        // Update completed games (with reviews and ratings)
-        for (const game of completedGames) {
+        // Update completed games with priority and other metadata
+        for (let i = 0; i < completedGames.length; i++) {
             const reviews = [
                 "An absolute masterpiece that kept me engaged from start to finish. The story and gameplay mechanics blend perfectly, creating an unforgettable experience.",
                 "While the game has some minor flaws, the overall experience is fantastic. The character development and world-building are particularly impressive.",
@@ -635,15 +635,15 @@ const updateGameStatusesAndPriorities = async () => {
             await db.execAsync(`
                 UPDATE quest_games 
                 SET status_id = ${completedStatus.id},
-                    priority = NULL,
+                    priority = ${i + 1},
                     personal_rating = ${Math.floor(Math.random() * 10 + 1)},
                     notes = '${reviews[randomIndex].replace(/'/g, "''")}',
                     completion_date = date('now', '-' || abs(random() % 90) || ' days')
-                WHERE game_id = ${game.game_id}
+                WHERE game_id = ${completedGames[i].game_id}
             `);
         }
 
-        // Update backlog games (with priority)
+        // Update backlog games with priority
         for (let i = 0; i < backlogGames.length; i++) {
             await db.execAsync(`
                 UPDATE quest_games 
@@ -652,13 +652,13 @@ const updateGameStatusesAndPriorities = async () => {
             `);
         }
 
-        // Update undiscovered games
+        // Update undiscovered games (no priority)
         const undiscoveredGames = shuffledGames.slice(16);
-        for (let i = 0; i < undiscoveredGames.length; i++) {
+        for (const game of undiscoveredGames) {
             await db.execAsync(`
                 UPDATE quest_games 
-                SET status_id = ${undiscoveredStatus.id}, priority = ${i + 1}
-                WHERE game_id = ${undiscoveredGames[i].game_id}
+                SET status_id = ${undiscoveredStatus.id}, priority = NULL
+                WHERE game_id = ${game.game_id}
             `);
         }
 

@@ -87,7 +87,7 @@ const GameSection: React.FC<GameSectionProps> = ({
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
                         size="large"
-                        color={colorSwatch.accent.cyan}
+                        color={colorSwatch.accent.green}
                     />
                 </View>
             </ImageBackground>
@@ -119,6 +119,7 @@ const GameSection: React.FC<GameSectionProps> = ({
                     gameStatus={gameStatus}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
+                    onClear={() => setSearchQuery("")}
                 />
                 <View style={styles.listWrapper}>
                     <DragList

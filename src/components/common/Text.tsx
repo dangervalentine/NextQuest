@@ -15,19 +15,12 @@ interface CustomTextProps extends TextProps {
 const fonts = {
     title: "Inter-Regular",
     subtitle: "FiraCode-Light",
+    caption: "FiraCode-Light",
     body: "FiraCode-Regular",
-    caption: "FiraCode-Italic",
     button: "FiraCode-Bold",
-    pixel: "PressStart2P-Regular",
     small: "FiraCode-Regular",
+    pixel: "PressStart2P-Regular",
 } as const;
-// const fonts = {
-//     title: "Inter-Regular",
-//     subtitle: "VictorMono-Thin",
-//     body: "VictorMono-Regular",
-//     caption: "VictorMono-Italic",
-//     button: "VictorMono-Bold",
-// } as const;
 
 const baseStyles: Record<NonNullable<CustomTextProps["variant"]>, TextStyle> = {
     body: {

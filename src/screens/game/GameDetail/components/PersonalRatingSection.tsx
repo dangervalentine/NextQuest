@@ -4,6 +4,7 @@ import Text from "src/components/common/Text";
 import { updateGameRating } from "src/data/repositories/questGames";
 import { colorSwatch } from "src/utils/colorConstants";
 import { getRatingColor } from "src/utils/colors";
+import QuestIcon from "../../shared/GameIcon";
 
 interface RatingProps {
     gameId: number;
@@ -43,8 +44,8 @@ export const PersonalRatingSection = memo(
                     <View style={styles.ratingButtonsContainer}>
                         {[...Array(10)].map((_, index) => {
                             const buttonRating = index + 1;
-                            const color = getRatingColor(buttonRating);
-                            const isSelected = rating === buttonRating;
+                            const isSelected =
+                                rating !== null && buttonRating <= rating;
 
                             return (
                                 <Pressable
@@ -52,17 +53,19 @@ export const PersonalRatingSection = memo(
                                     onPress={() =>
                                         handleRatingPress(buttonRating)
                                     }
-                                    style={[
-                                        styles.ratingButton,
-                                        { backgroundColor: color },
-                                        isSelected && styles.selectedRating,
-                                    ]}
+                                    style={styles.ratingButton}
                                 >
-                                    {isSelected && (
-                                        <Text style={styles.ratingButtonText}>
-                                            {buttonRating}
-                                        </Text>
-                                    )}
+                                    <QuestIcon
+                                        name={
+                                            isSelected ? "star" : "star-outline"
+                                        }
+                                        size={24}
+                                        color={
+                                            isSelected
+                                                ? getRatingColor(rating || 0)
+                                                : colorSwatch.text.muted
+                                        }
+                                    />
                                 </Pressable>
                             );
                         })}
@@ -115,34 +118,14 @@ const styles = StyleSheet.create({
     },
     ratingButtonsContainer: {
         flexDirection: "row",
-        height: 40,
-        marginVertical: 16,
-        borderRadius: 3,
-        overflow: "hidden",
-        gap: 1,
-        backgroundColor: colorSwatch.background.darkest,
-    },
-    ratingButton: {
-        flex: 1,
-        height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        borderRightColor: colorSwatch.background.darkest,
+        marginVertical: 16,
+        gap: 4,
     },
-    selectedRating: {
-        borderWidth: 3,
-        borderTopWidth: 0,
-        borderBottomWidth: 0,
-        borderColor: colorSwatch.background.darkest,
-        elevation: 4,
-        transform: [{ scale: 1.1 }],
-        zIndex: 1,
-    },
-    ratingButtonText: {
-        color: colorSwatch.background.darkest,
-        paddingTop: 2,
-        fontSize: 20,
-        fontWeight: "bold",
+    ratingButton: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     noteContainer: {
         backgroundColor: colorSwatch.background.dark,

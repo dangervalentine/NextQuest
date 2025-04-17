@@ -11,6 +11,7 @@ import {
 import { PlatformLogoBadge } from "./PlatformLogoBadge";
 import { colorSwatch } from "src/utils/colorConstants";
 import { Ionicons } from "@expo/vector-icons";
+import { triggerHapticFeedback } from "src/utils/systemUtils";
 
 interface Platform {
     id: number;
@@ -30,6 +31,11 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
     onSelect,
     platforms,
 }) => {
+    const handlePlatformSelect = (platform: Platform) => {
+        triggerHapticFeedback("light");
+        onSelect(platform);
+    };
+
     return (
         <Modal
             visible={visible}
@@ -57,11 +63,12 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
                         {platforms
                             ?.sort((a, b) => a.name.localeCompare(b.name))
                             .map((platform) => (
-                                <>
+                                <View key={platform.id}>
                                     <TouchableOpacity
-                                        key={platform.id}
                                         style={[styles.platformItem]}
-                                        onPress={() => onSelect(platform)}
+                                        onPress={() =>
+                                            handlePlatformSelect(platform)
+                                        }
                                     >
                                         <View style={styles.platformContent}>
                                             <PlatformLogoBadge
@@ -74,7 +81,7 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
                                         </View>
                                     </TouchableOpacity>
                                     <View style={styles.divider} />
-                                </>
+                                </View>
                             ))}
                     </ScrollView>
 
