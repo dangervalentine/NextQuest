@@ -1,11 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-    Platform,
-    Pressable,
-    TouchableNativeFeedback,
-    View,
-} from "react-native";
+import { View } from "react-native";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import GameSection from "./GameSection";
 import GameSearchSection from "./GameSearchSection";
@@ -94,7 +89,10 @@ export const screenOptions: BottomTabNavigationOptions = {
     },
     tabBarBackground: () => (
         <View
-            style={{ backgroundColor: colorSwatch.background.darkest, flex: 1 }}
+            style={{
+                backgroundColor: colorSwatch.background.darkest,
+                flex: 1,
+            }}
         />
     ),
 };

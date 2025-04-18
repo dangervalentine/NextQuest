@@ -1,20 +1,20 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import {
-    ImageBackground,
-    StyleSheet,
-    View,
-    ScrollView,
     ActivityIndicator,
+    ImageBackground,
+    ScrollView,
+    View,
+    StyleSheet,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import GameItem from "./GameItem";
-import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
-import { colorSwatch } from "src/utils/colorConstants";
 import IGDBService from "src/services/api/IGDBService";
-import GameSearchInput from "./GameSearchInput";
 import { SearchTabRouteProp } from "src/utils/navigationTypes";
+import { colorSwatch } from "src/utils/colorConstants";
+import GameSearchInput from "./GameSearchInput";
+import Text from "src/components/common/Text";
 
 interface SearchParams {
     searchQuery?: string;
@@ -72,6 +72,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const [error, setError] = useState<string | null>(null);
     const [isSearching, setIsSearching] = useState(false);
     const [searchContext, setSearchContext] = useState<string>("popular");
+    const initialLoadRef = useRef(true);
 
     const executeSearch = useCallback(
         async (params: SearchParams | undefined, query: string = "") => {
@@ -83,39 +84,47 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 let results: MinimalQuestGame[] = [];
                 const isActiveSearch = query.length > 0;
 
-                if (isActiveSearch) {
-                    setSearchContext("search");
-                    if (query.length >= 2) {
-                        results = await IGDBService.searchGames(query);
+                // Handle initial load differently from subsequent searches
+                if (initialLoadRef.current) {
+                    if (params?.franchiseId) {
+                        setSearchContext("franchise");
+                        results = await IGDBService.searchGamesByFranchise(
+                            params.franchiseId
+                        );
+                    } else if (params?.platformId) {
+                        setSearchContext("platform");
+                        results = await IGDBService.searchGamesByPlatform(
+                            params.platformId
+                        );
+                    } else if (params?.genreId) {
+                        setSearchContext("genre");
+                        results = await IGDBService.searchGamesByGenre(
+                            params.genreId
+                        );
+                    } else if (params?.themeId) {
+                        setSearchContext("theme");
+                        results = await IGDBService.searchGamesByTheme(
+                            params.themeId
+                        );
+                    } else if (params?.companyId) {
+                        setSearchContext("company");
+                        results = await IGDBService.searchGamesByCompany(
+                            params.companyId
+                        );
+                    } else {
+                        setSearchContext("popular");
+                        results = await IGDBService.getPopularGames();
                     }
-                } else if (params?.franchiseId) {
-                    setSearchContext("franchise");
-                    results = await IGDBService.searchGamesByFranchise(
-                        params.franchiseId
-                    );
-                } else if (params?.platformId) {
-                    setSearchContext("platform");
-                    results = await IGDBService.searchGamesByPlatform(
-                        params.platformId
-                    );
-                } else if (params?.genreId) {
-                    setSearchContext("genre");
-                    results = await IGDBService.searchGamesByGenre(
-                        params.genreId
-                    );
-                } else if (params?.themeId) {
-                    setSearchContext("theme");
-                    results = await IGDBService.searchGamesByTheme(
-                        params.themeId
-                    );
-                } else if (params?.companyId) {
-                    setSearchContext("company");
-                    results = await IGDBService.searchGamesByCompany(
-                        params.companyId
-                    );
-                } else if (!isActiveSearch) {
-                    setSearchContext("popular");
-                    results = await IGDBService.getPopularGames();
+                    initialLoadRef.current = false;
+                } else {
+                    // For all subsequent searches, only use search or popular context
+                    if (isActiveSearch) {
+                        setSearchContext("search");
+                        results = await IGDBService.searchGames(query);
+                    } else {
+                        setSearchContext("popular");
+                        results = await IGDBService.getPopularGames();
+                    }
                 }
 
                 setSearchResults(results);
@@ -130,18 +139,29 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 setIsSearching(false);
             }
         },
-        [searchContext]
+        [] // Remove searchContext from dependencies as it's only used for error messages
     );
 
     // Handle route parameter changes
     useEffect(() => {
+        initialLoadRef.current = true;
         const params = route.params as SearchParams;
-        executeSearch(params, searchQuery);
-    }, [route.params, executeSearch, searchQuery]);
+        executeSearch(params, "");
+    }, [route.params, executeSearch]); // Remove searchQuery dependency
+
+    // Handle search query changes with debounce
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (!initialLoadRef.current) {
+                executeSearch(undefined, searchQuery);
+            }
+        }, 300); // Add 300ms debounce
+
+        return () => clearTimeout(timeoutId);
+    }, [searchQuery, executeSearch]);
 
     const handleSearchChange = (text: string) => {
         setSearchQuery(text);
-        executeSearch(undefined, text);
     };
 
     const getLoadingMessage = () => {
@@ -157,7 +177,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
             case "company":
                 return "Loading games by company...";
             case "search":
-                return "Searching for games...";
+                return `Searching for ${searchQuery}...`;
             default:
                 return "Loading popular games...";
         }

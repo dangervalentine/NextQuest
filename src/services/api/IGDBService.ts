@@ -149,9 +149,8 @@ limit 100;`;
     }
 
     public static async getPopularGames(): Promise<MinimalQuestGame[]> {
-        const chosenPopularityType = popularityTypes.find(
-            (type) => type.name === "Played"
-        );
+        const chosenPopularityType =
+            popularityTypes[Math.floor(Math.random() * 8)];
 
         if (!chosenPopularityType) {
             throw new Error("IGDB Popular popularity type not found");

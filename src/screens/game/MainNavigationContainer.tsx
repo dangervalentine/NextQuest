@@ -1,9 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import {
-    createStackNavigator,
-    StackNavigationOptions,
-} from "@react-navigation/stack";
-import { StyleSheet } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";

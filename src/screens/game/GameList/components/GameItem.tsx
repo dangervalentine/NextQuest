@@ -393,188 +393,199 @@ const GameItem: React.FC<GameItemProps> = memo(
                     }
                 }}
             >
-                {!isReordering && (
-                    <View
-                        style={[
-                            styles.statusMenu,
-                            questGame.gameStatus === "undiscovered" && {
-                                width: 300,
-                            },
-                        ]}
-                    >
-                        {getAvailableStatuses(questGame.gameStatus).map(
-                            (status, index) => (
-                                <TouchableOpacity
-                                    key={status}
-                                    style={[
-                                        styles.statusButton,
-                                        getStatusButtonStyles(status),
-                                        index ===
-                                            getAvailableStatuses(
-                                                questGame.gameStatus
-                                            ).length -
-                                                1 && {
-                                            borderTopRightRadius: 12,
-                                            borderBottomRightRadius: 12,
-                                        },
-                                    ]}
-                                    onPress={() => handleStatusSelect(status)}
-                                    activeOpacity={0.7}
-                                >
-                                    <Text
-                                        variant="button"
-                                        style={styles.statusButtonText}
-                                    >
-                                        {getStatusLabel(status)}
-                                    </Text>
-                                </TouchableOpacity>
-                            )
-                        )}
-                    </View>
-                )}
-                {!isReordering && questGame.gameStatus !== "undiscovered" && (
-                    <View style={styles.rightMenu}>
-                        <TouchableOpacity
+                <View style={styles.innerContainer}>
+                    {!isReordering && (
+                        <View
                             style={[
-                                styles.statusButton,
-                                {
-                                    backgroundColor: colorSwatch.accent.pink,
-                                    borderTopLeftRadius: 12,
-                                    borderBottomLeftRadius: 12,
+                                styles.statusMenu,
+                                questGame.gameStatus === "undiscovered" && {
+                                    width: 300,
                                 },
                             ]}
-                            activeOpacity={0.7}
-                            onPress={handleRemove}
                         >
-                            <Text
-                                variant="button"
-                                style={styles.statusButtonText}
-                            >
-                                Remove
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
-                <Animated.View
-                    style={[
-                        styles.gameContainer,
-                        {
-                            transform: [{ translateX: pan }],
-                        },
-                    ]}
-                    {...panResponder.panHandlers}
-                >
-                    {typeof questGame.priority === "number" &&
-                        questGame.gameStatus !== "undiscovered" && (
-                            <View
-                                style={styles.dragHandle}
-                                {...dragPanResponder.panHandlers}
-                            >
-                                <View style={styles.dragHandleContent}>
-                                    <Text
-                                        style={{
-                                            color: getStatusColor(
-                                                questGame.gameStatus
-                                            ),
-                                        }}
-                                        numberOfLines={1}
+                            {getAvailableStatuses(questGame.gameStatus).map(
+                                (status, index) => (
+                                    <TouchableOpacity
+                                        key={status}
+                                        style={[
+                                            styles.statusButton,
+                                            getStatusButtonStyles(status),
+                                            index ===
+                                                getAvailableStatuses(
+                                                    questGame.gameStatus
+                                                ).length -
+                                                    1 && {
+                                                borderTopRightRadius: 8,
+                                                borderBottomRightRadius: 8,
+                                            },
+                                        ]}
+                                        onPress={() =>
+                                            handleStatusSelect(status)
+                                        }
+                                        activeOpacity={0.7}
                                     >
-                                        {questGame.priority}
-                                    </Text>
-                                    <SimpleLineIcons
-                                        name="menu"
-                                        size={20}
-                                        color={colorSwatch.text.muted}
-                                    />
-                                </View>
-                            </View>
-                        )}
-                    <Pressable
-                        onPress={handlePress}
-                        style={styles.pressableNavigation}
-                    >
-                        {questGame.cover && questGame.cover.url ? (
-                            <FullHeightImage source={coverUrl} />
-                        ) : (
-                            <FullHeightImage
-                                source={require("../../../../assets/placeholder.png")}
-                                style={getStatusStyles(questGame.gameStatus)}
-                            />
-                        )}
-
-                        <View style={styles.contentContainer}>
-                            <View style={styles.titleContainer}>
-                                <Text
-                                    variant="subtitle"
-                                    style={styles.title}
-                                    numberOfLines={2}
-                                >
-                                    {questGame.name}
-                                </Text>
-                                {questGame.personalRating &&
-                                    questGame.gameStatus === "completed" && (
                                         <Text
-                                            variant="caption"
-                                            style={[
-                                                styles.rating,
-                                                {
-                                                    color: getRatingColor(
-                                                        questGame.personalRating ||
-                                                            0
-                                                    ),
-                                                },
-                                            ]}
+                                            variant="button"
+                                            style={styles.statusButtonText}
                                         >
-                                            ({questGame.personalRating}/10)
+                                            {getStatusLabel(status)}
                                         </Text>
-                                    )}
-                            </View>
-                            <View style={styles.detailsContainer}>
+                                    </TouchableOpacity>
+                                )
+                            )}
+                        </View>
+                    )}
+                    {!isReordering && questGame.gameStatus !== "undiscovered" && (
+                        <View style={styles.rightMenu}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.statusButton,
+                                    {
+                                        backgroundColor:
+                                            colorSwatch.accent.pink,
+                                        borderTopLeftRadius: 8,
+                                        borderBottomLeftRadius: 8,
+                                    },
+                                ]}
+                                activeOpacity={0.7}
+                                onPress={handleRemove}
+                            >
                                 <Text
-                                    variant="small"
-                                    style={styles.textSecondary}
+                                    variant="button"
+                                    style={styles.statusButtonText}
                                 >
-                                    <Text variant="small">
-                                        {/* Display the selected platform name if available. 
-                                            If not, check the number of platforms:
-                                            - Show "No Platforms" if there are none.
-                                            - Show the platform name if there is exactly one.
-                                            - Show the number of platforms if there are multiple. */}
-                                        {questGame.selectedPlatform?.name ||
-                                            (questGame.platforms.length === 0
-                                                ? "No Platforms"
-                                                : questGame.platforms.length > 1
-                                                ? `${questGame.platforms.length} Platforms`
-                                                : questGame.platforms[0].name)}
-                                    </Text>
+                                    Remove
                                 </Text>
-                                {platformReleaseDate && (
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    <Animated.View
+                        style={[
+                            styles.gameContainer,
+                            {
+                                transform: [{ translateX: pan }],
+                            },
+                        ]}
+                        {...panResponder.panHandlers}
+                    >
+                        {typeof questGame.priority === "number" &&
+                            questGame.gameStatus !== "undiscovered" && (
+                                <View
+                                    style={styles.dragHandle}
+                                    {...dragPanResponder.panHandlers}
+                                >
+                                    <View style={styles.dragHandleContent}>
+                                        <Text
+                                            style={{
+                                                color: getStatusColor(
+                                                    questGame.gameStatus
+                                                ),
+                                            }}
+                                            numberOfLines={1}
+                                        >
+                                            {questGame.priority}
+                                        </Text>
+                                        <SimpleLineIcons
+                                            name="menu"
+                                            size={20}
+                                            color={colorSwatch.text.muted}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                        <Pressable
+                            onPress={handlePress}
+                            style={styles.pressableNavigation}
+                        >
+                            {questGame.cover && questGame.cover.url ? (
+                                <FullHeightImage source={coverUrl} />
+                            ) : (
+                                <FullHeightImage
+                                    source={require("../../../../assets/placeholder.png")}
+                                    style={getStatusStyles(
+                                        questGame.gameStatus
+                                    )}
+                                />
+                            )}
+
+                            <View style={styles.contentContainer}>
+                                <View style={styles.titleContainer}>
+                                    <Text
+                                        variant="subtitle"
+                                        style={styles.title}
+                                        numberOfLines={2}
+                                    >
+                                        {questGame.name}
+                                    </Text>
+                                    {questGame.personalRating &&
+                                        questGame.gameStatus ===
+                                            "completed" && (
+                                            <Text
+                                                variant="caption"
+                                                style={[
+                                                    styles.rating,
+                                                    {
+                                                        color: getRatingColor(
+                                                            questGame.personalRating ||
+                                                                0
+                                                        ),
+                                                    },
+                                                ]}
+                                            >
+                                                ({questGame.personalRating}/10)
+                                            </Text>
+                                        )}
+                                </View>
+                                <View style={styles.detailsContainer}>
                                     <Text
                                         variant="small"
                                         style={styles.textSecondary}
                                     >
                                         <Text variant="small">
-                                            {formatReleaseDate(
-                                                platformReleaseDate.date
-                                            )}
+                                            {/* Display the selected platform name if available. 
+                                                If not, check the number of platforms:
+                                                - Show "No Platforms" if there are none.
+                                                - Show the platform name if there is exactly one.
+                                                - Show the number of platforms if there are multiple. */}
+                                            {questGame.selectedPlatform?.name ||
+                                                (questGame.platforms.length ===
+                                                0
+                                                    ? "No Platforms"
+                                                    : questGame.platforms
+                                                          .length > 1
+                                                    ? `${questGame.platforms.length} Platforms`
+                                                    : questGame.platforms[0]
+                                                          .name)}
                                         </Text>
                                     </Text>
-                                )}
-                                <Text
-                                    variant="small"
-                                    style={styles.textSecondary}
-                                >
+                                    {platformReleaseDate && (
+                                        <Text
+                                            variant="small"
+                                            style={styles.textSecondary}
+                                        >
+                                            <Text variant="small">
+                                                {formatReleaseDate(
+                                                    platformReleaseDate.date
+                                                )}
+                                            </Text>
+                                        </Text>
+                                    )}
                                     <Text
                                         variant="small"
                                         style={styles.textSecondary}
                                     >
-                                        {genresText}
+                                        <Text
+                                            variant="small"
+                                            style={styles.textSecondary}
+                                        >
+                                            {genresText}
+                                        </Text>
                                     </Text>
-                                </Text>
+                                </View>
                             </View>
-                        </View>
-                    </Pressable>
-                </Animated.View>
+                        </Pressable>
+                    </Animated.View>
+                </View>
                 <Animated.View
                     style={[
                         styles.chevronContainer,
@@ -631,7 +642,6 @@ const GameItem: React.FC<GameItemProps> = memo(
 const styles = StyleSheet.create({
     container: {
         position: "relative",
-        overflow: "hidden",
         backgroundColor: colorSwatch.background.darkest,
         opacity: 1,
         borderRadius: 12,
@@ -645,11 +655,17 @@ const styles = StyleSheet.create({
         borderColor: colorSwatch.neutral.darkGray,
         minHeight: 120,
     },
+    innerContainer: {
+        position: "relative",
+        overflow: "hidden",
+        flex: 1,
+        margin: 2,
+        borderRadius: 10,
+    },
     gameContainer: {
         flexDirection: "row",
         flex: 1,
         backgroundColor: colorSwatch.background.darkest,
-        overflow: "hidden",
         zIndex: 2,
         elevation: 2,
     },
