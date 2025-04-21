@@ -1,7 +1,11 @@
 import { TWITCH_CLIENT_ID } from "@env";
 import TwitchAuthService from "./TwitchAuthService";
 import { QuestGame } from "src/data/models/QuestGame";
-import { getQuestGameById } from "src/data/repositories/questGames";
+import {
+    getQuestGameById,
+    getQuestGameStatusesForIds,
+    QuestGameStatus,
+} from "src/data/repositories/questGames";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { IGDBGameResponse } from "src/data/models/IGDBGameResponse";
 import { GameStatus } from "src/constants/config/gameStatus";
@@ -106,10 +110,32 @@ sort release_dates.date desc;
 limit 100;`;
 
         const data = await this.executeQuery("/games", query);
+
+        // Map the games first
         const mappedGames = data.map((game) =>
             this.mapToMinimalQuestGame(game)
         );
-        return sortGamesByReleaseDate(mappedGames);
+
+        // Get all game IDs
+        const gameIds = mappedGames.map((game) => game.id);
+
+        // Fetch quest game statuses for these IDs
+        const questGameStatuses = await getQuestGameStatusesForIds(gameIds);
+        // Merge the quest game statuses with the mapped games
+        const gamesWithStatus = mappedGames.map((game) => {
+            const questGame = questGameStatuses.find(
+                (qg: QuestGameStatus) => qg.game_id === game.id
+            );
+            if (questGame) {
+                return {
+                    ...game,
+                    gameStatus: questGame.game_status,
+                };
+            }
+            return game;
+        });
+
+        return sortGamesByReleaseDate(gamesWithStatus);
     }
 
     public static async searchGames(

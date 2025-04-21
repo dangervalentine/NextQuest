@@ -43,7 +43,7 @@ function ImageCarousel({ images }: ImageCarouselProps) {
                             )}
                             style={styles.image}
                             contentFit="contain"
-                            placeholder={require("../../../../assets/placeholder.png")}
+                            placeholder={require("../../../../assets/next-quest-icons/game_item_placeholder_controller.png")}
                             onError={() =>
                                 console.error("Failed to load image")
                             }

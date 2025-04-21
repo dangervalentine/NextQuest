@@ -375,3 +375,30 @@ export const doesGameExist = async (id: number): Promise<QuestGame | null> => {
         throw error;
     }
 };
+
+export interface QuestGameStatus {
+    game_id: number;
+    game_status: GameStatus;
+}
+
+export const getQuestGameStatusesForIds = async (
+    gameIds: number[]
+): Promise<QuestGameStatus[]> => {
+    if (!gameIds.length) return [];
+
+    try {
+        const query = `
+            SELECT 
+                qg.game_id,
+                qs.name as game_status
+            FROM quest_games qg
+            JOIN quest_game_status qs ON qg.status_id = qs.id
+            WHERE qg.game_id IN (${gameIds.join(",")})
+        `;
+
+        return await db.getAllAsync<QuestGameStatus>(query);
+    } catch (error) {
+        console.error("[getQuestGameStatusesForIds] Error:", error);
+        return [];
+    }
+};

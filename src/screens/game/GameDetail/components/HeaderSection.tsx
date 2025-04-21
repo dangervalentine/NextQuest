@@ -27,38 +27,41 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
                 .filter(Boolean) || [],
     };
 
+    const coverUrl = game.cover?.url
+        ? game.cover.url
+              .replace("t_cover_big", "t_720p")
+              .replace("t_thumb", "t_720p")
+        : "";
+
     return (
         <View style={styles.headerSection}>
-            {game.cover && (
-                <View style={styles.imageContainer}>
-                    <FullWidthImage
-                        source={`https:${game.cover.url
-                            .replace("t_cover_big", "t_720p")
-                            .replace("t_thumb", "t_720p")}`}
-                    />
-                    <LinearGradient
-                        colors={[
-                            "rgba(2, 15, 29, 0)",
-                            "rgba(2, 15, 29, 0)",
-                            "rgba(2, 15, 29, 0.4)",
-                            "rgba(2, 15, 29, 0.8)",
-                            "rgba(2, 15, 29, 0.95)",
-                        ]}
-                        locations={[0, 0.4, 0.6, 0.8, 1]}
-                        style={styles.headerOverlay}
-                    />
-                    <View style={styles.headerContainer}>
-                        <View style={styles.badgeContainer}>
-                            {game.metacriticScore && (
-                                <MetacriticBadge score={game.metacriticScore} />
-                            )}
-                        </View>
-                        <View style={styles.badgeContainer}>
-                            <AgeRatingBadge game={game} />
-                        </View>
+            <View style={styles.imageContainer}>
+                <FullWidthImage
+                    source={coverUrl}
+                    loaderColor={getStatusColor(game.gameStatus)}
+                />
+                <LinearGradient
+                    colors={[
+                        "rgba(2, 15, 29, 0)",
+                        "rgba(2, 15, 29, 0)",
+                        "rgba(2, 15, 29, 0.4)",
+                        "rgba(2, 15, 29, 0.8)",
+                        "rgba(2, 15, 29, 0.95)",
+                    ]}
+                    locations={[0, 0.4, 0.6, 0.8, 1]}
+                    style={styles.headerOverlay}
+                />
+                <View style={styles.headerContainer}>
+                    <View style={styles.badgeContainer}>
+                        {game.metacriticScore && (
+                            <MetacriticBadge score={game.metacriticScore} />
+                        )}
+                    </View>
+                    <View style={styles.badgeContainer}>
+                        <AgeRatingBadge game={game} />
                     </View>
                 </View>
-            )}
+            </View>
             <View style={styles.headerInfo}>
                 <Text
                     variant="title"

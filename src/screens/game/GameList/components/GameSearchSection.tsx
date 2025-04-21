@@ -15,6 +15,7 @@ import { SearchTabRouteProp } from "src/utils/navigationTypes";
 import { colorSwatch } from "src/utils/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
+import { getStatusColor } from "src/utils/colors";
 
 interface SearchParams {
     searchQuery?: string;
@@ -177,7 +178,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
             case "company":
                 return "Loading games by company...";
             case "search":
-                return `Searching for ${searchQuery}...`;
+                return `Searching for "${searchQuery}"...`;
             default:
                 return "Loading popular games...";
         }
@@ -223,7 +224,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
     return (
         <ImageBackground
-            source={require("../../../../assets/next_quest.png")}
+            source={require("../../../../assets/next-quest-icons/next_quest_scroll.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -247,7 +248,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator
                             size="large"
-                            color={colorSwatch.accent.green}
+                            color={getStatusColor("undiscovered")}
                         />
                         <Text
                             variant="subtitle"

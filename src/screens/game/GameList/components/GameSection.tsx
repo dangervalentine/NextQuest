@@ -82,7 +82,7 @@ const GameSection: React.FC<GameSectionProps> = ({
     if (isLoading) {
         return (
             <ImageBackground
-                source={require("../../../../assets/next_quest.png")}
+                source={require("../../../../assets/next-quest-icons/next_quest_scroll.png")}
                 style={styles.pageContainer}
                 resizeMode="contain"
             >
@@ -90,7 +90,7 @@ const GameSection: React.FC<GameSectionProps> = ({
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
                         size="large"
-                        color={colorSwatch.accent.green}
+                        color={getStatusColor(gameStatus)}
                     />
                 </View>
             </ImageBackground>
@@ -99,7 +99,7 @@ const GameSection: React.FC<GameSectionProps> = ({
 
     return games.length === 0 ? (
         <ImageBackground
-            source={require("../../../../assets/next_quest.png")}
+            source={require("../../../../assets/next-quest-icons/next_quest_scroll.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -112,7 +112,7 @@ const GameSection: React.FC<GameSectionProps> = ({
         </ImageBackground>
     ) : (
         <ImageBackground
-            source={require("../../../../assets/next_quest.png")}
+            source={require("../../../../assets/next-quest-icons/next_quest_scroll.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >

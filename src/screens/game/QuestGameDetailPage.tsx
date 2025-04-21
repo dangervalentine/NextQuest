@@ -26,10 +26,11 @@ import { PlatformsSection } from "./GameDetail/components/PlatformsSection";
 import { HeaderSection } from "./GameDetail/components/HeaderSection";
 import FranchiseSection from "./GameDetail/components/MetadataGrid";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { getStatusColor } from "src/utils/colors";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
-    const { id } = route.params;
+    const { id, gameStatus } = route.params;
     const [game, setGame] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const headerHeight = useHeaderHeight();
@@ -54,7 +55,7 @@ const QuestGameDetailPage: React.FC = () => {
         return (
             <SafeAreaView style={styles.loadingContainer}>
                 <ImageBackground
-                    source={require("../../assets/next_quest.png")}
+                    source={require("../../assets/next-quest-icons/next_quest_scroll.png")}
                     style={styles.container}
                     resizeMode="contain"
                 >
@@ -62,7 +63,7 @@ const QuestGameDetailPage: React.FC = () => {
                     <View style={[styles.skeleton]}>
                         <ActivityIndicator
                             size="large"
-                            color={colorSwatch.accent.green}
+                            color={getStatusColor(gameStatus)}
                         />
                     </View>
                 </ImageBackground>
@@ -72,7 +73,7 @@ const QuestGameDetailPage: React.FC = () => {
 
     return (
         <ImageBackground
-            source={require("../../assets/next_quest.png")}
+            source={require("../../assets/next-quest-icons/next_quest_scroll.png")}
             style={[styles.container, { marginTop: headerHeight }]}
             resizeMode="contain"
         >

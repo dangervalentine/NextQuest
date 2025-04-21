@@ -21,8 +21,8 @@ type ToastBaseProps = ToastProps & {
 
 // Default configuration for toasts
 const DEFAULT_POSITION = "bottom";
-const DEFAULT_VISIBILITY_TIME = 2000;
-const DEFAULT_BOTTOM_OFFSET = 16;
+const DEFAULT_VISIBILITY_TIME = 3000;
+const DEFAULT_BOTTOM_OFFSET = 64;
 
 const toastConfig = {
     success: (props: ToastBaseProps) => (
@@ -36,8 +36,13 @@ const toastConfig = {
                 }
             }}
             style={{
+                borderWidth: 1,
+                borderTopColor: colorSwatch.primary.main,
+                borderRightColor: colorSwatch.primary.main,
+                borderBottomColor: colorSwatch.primary.main,
+                borderLeftWidth: 5,
                 borderLeftColor: props.props?.color || colorSwatch.accent.cyan,
-                backgroundColor: colorSwatch.background.darker,
+                backgroundColor: colorSwatch.background.darkest,
                 height: "auto",
                 paddingVertical: 12,
                 marginBottom: 12,
@@ -72,7 +77,7 @@ const toastConfig = {
             }}
             style={{
                 borderLeftColor: props.props?.color || colorSwatch.accent.pink,
-                backgroundColor: colorSwatch.background.darker,
+                backgroundColor: colorSwatch.background.medium,
                 height: "auto",
                 paddingVertical: 12,
                 marginBottom: 12,
@@ -127,6 +132,6 @@ export const showIndefiniteToast = (
 ) => {
     showToast({
         ...params,
-        visibilityTime: 0, // Setting to 0 makes the toast stay indefinitely
+        visibilityTime: 0,
     });
 };

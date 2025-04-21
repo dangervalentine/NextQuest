@@ -114,7 +114,7 @@ const GameTabNavigator: React.FC<TabNavigatorProps> = ({
                     ...tabBarStyle,
                 },
                 tabBarActiveTintColor:
-                    route.name === "Discover"
+                    route.name === "Search"
                         ? getStatusColor("undiscovered")
                         : getStatusColor(
                               tabScreens.find(

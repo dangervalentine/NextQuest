@@ -445,7 +445,7 @@ const MainNavigationContainer: React.FC = () => {
         newStatus: GameStatus
     ) => {
         try {
-            const dbQuestGame = await doesGameExist(game.id); // Get current games count for priority calculation
+            const dbQuestGame = await doesGameExist(game.id);
 
             const currentGames = await getQuestGamesByStatus(newStatus);
 
@@ -455,7 +455,8 @@ const MainNavigationContainer: React.FC = () => {
                     : undefined;
 
             if (dbQuestGame) {
-                let selectedPlatform = game.platforms?.[0]; // Game exists, show platform selection with current platform pre-selected
+                // Game exists, show platform selection with current platform pre-selected
+                let selectedPlatform = game.platforms?.[0];
 
                 if (game.platforms?.length > 1) {
                     selectedPlatform =
@@ -485,12 +486,13 @@ const MainNavigationContainer: React.FC = () => {
                         });
                         showToast({
                             type: "success",
-                            text1: "Game Updated",
+                            text1: "Game Added",
                             text2: `${game.name} added to ${getStatusLabel(
                                 newStatus
                             )} for ${selectedPlatform?.name}`,
+                            color: getStatusColor(newStatus),
                             position: "bottom",
-                            visibilityTime: 2000,
+                            visibilityTime: 3000,
                             onPress: () => {
                                 triggerHapticFeedback("light");
                                 Toast.hide();
@@ -555,6 +557,7 @@ const MainNavigationContainer: React.FC = () => {
                         text2: `${game.name} added to ${getStatusLabel(
                             newStatus
                         )}`,
+                        color: getStatusColor(newStatus),
                         position: "bottom",
                         visibilityTime: 2000,
                         onPress: () => {
@@ -705,7 +708,7 @@ const MainNavigationContainer: React.FC = () => {
                                         fontSize: 24,
                                         lineHeight: 32,
                                         color: activeTabColor,
-                                        marginLeft: 4,
+                                        marginLeft: 12,
                                     }}
                                     numberOfLines={1}
                                 >

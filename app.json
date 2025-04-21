@@ -1,19 +1,58 @@
 {
     "expo": {
-        "newArchEnabled": true,
         "name": "NextQuest",
-        "displayName": "NextQuest",
-        "extra": {
-            "eas": {
-                "projectId": "3af2aa1e-3dd2-494b-b367-e0cf43aeffbc"
+        "slug": "next-quest",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./src/assets/next-quest-icons/next_quest.png",
+        "jsEngine": "hermes",
+        "userInterfaceStyle": "dark",
+        "splash": {
+            "image": "./src/assets/next-quest-icons/next_quest.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#01111d",
+            "imageWidth": 200
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.dangervalentine.nextquest",
+            "icon": {
+                "dark": "./src/assets/next-quest-icons/next_quest.png",
+                "light": "./src/assets/next-quest-icons/next_quest.png",
+                "tinted": "./src/assets/next-quest-icons/next_quest.png"
             }
         },
         "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./src/assets/next-quest-icons/next_quest.png",
+                "backgroundColor": "#01111d"
+            },
             "package": "com.dangervalentine.nextquest",
             "permissions": [
                 "WRITE_EXTERNAL_STORAGE",
                 "READ_EXTERNAL_STORAGE"
             ]
-        }
+        },
+        "web": {
+            "favicon": "./src/assets/next-quest-icons/next_quest.png"
+        },
+        "plugins": [
+            "expo-sqlite",
+            "expo-font",
+            "expo-splash-screen"
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "3af2aa1e-3dd2-494b-b367-e0cf43aeffbc"
+            }
+        },
+        "owner": "dangervalentine",
+        "cli": {
+            "appVersionSource": "remote"
+        },
+        "newArchEnabled": true
     }
 }

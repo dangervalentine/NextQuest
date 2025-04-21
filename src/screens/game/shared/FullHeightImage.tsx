@@ -11,64 +11,92 @@ import { colorSwatch } from "src/utils/colorConstants";
 interface FullHeightImageProps {
     source: string;
     style?: any;
+    loaderColor?: string;
 }
 
-const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
+const FullHeightImage: React.FC<FullHeightImageProps> = ({
+    source,
+    style,
+    loaderColor = colorSwatch.accent.green,
+}) => {
     const [imageWidth, setImageWidth] = useState(0);
     const [imageHeight, setImageHeight] = useState(0);
     const [hasError, setHasError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        if (source) {
-            // Reset error state when source changes
+        let isMounted = true;
+
+        const prepareImage = async () => {
+            if (!source) return;
+
+            setIsReady(false);
             setHasError(false);
 
-            // Check if source is a local image (require statement)
-            if (typeof source === "number") {
-                setImageHeight(100);
-                setImageWidth(56);
-                return;
-            }
-
-            // Ensure the URL is properly formatted
-            const imageUrl = source.startsWith("http")
-                ? source
-                : `https:${source}`;
-
-            // Prefetch the image
-            Image.prefetch(imageUrl);
-
-            // Get the image dimensions with original aspect ratio logic
-            RNImage.getSize(
-                imageUrl,
-                (width, height) => {
-                    const aspectRatio = width / height;
-                    const fullHeight = 100; // Set this to the desired height of the container
-                    setImageHeight(fullHeight);
-                    setImageWidth(fullHeight * aspectRatio); // Calculate width based on height
-                },
-                (error) => {
-                    console.error("Error getting image size:", error);
-                    setHasError(true);
-                    setImageHeight(100);
-                    setImageWidth(56);
+            try {
+                if (typeof source === "number") {
+                    if (isMounted) {
+                        setImageHeight(100);
+                        setImageWidth(75);
+                        setIsReady(true);
+                    }
+                    return;
                 }
-            );
-        }
+
+                const imageUrl = source.startsWith("http")
+                    ? source
+                    : `https:${source}`;
+
+                // Wait for prefetch to complete
+                await Image.prefetch(imageUrl);
+
+                // Get dimensions
+                await new Promise((resolve, reject) => {
+                    RNImage.getSize(
+                        imageUrl,
+                        (width, height) => {
+                            if (isMounted) {
+                                const aspectRatio = width / height;
+                                const fullHeight = 100;
+                                setImageHeight(fullHeight);
+                                setImageWidth(fullHeight * aspectRatio);
+                                setIsReady(true);
+                            }
+                            resolve(null);
+                        },
+                        (error) => {
+                            console.error("Error getting image size:", error);
+                            if (isMounted) {
+                                setHasError(true);
+                                setImageHeight(100);
+                                setImageWidth(75);
+                            }
+                            reject(error);
+                        }
+                    );
+                });
+            } catch (error) {
+                if (isMounted) {
+                    console.error("Error preparing image:", error);
+                    setHasError(true);
+                }
+            }
+        };
+
+        prepareImage();
+
+        return () => {
+            isMounted = false;
+        };
     }, [source]);
 
     return (
         <View style={[styles.container, style]}>
-            {isLoading && (
+            {!isReady ? (
                 <View style={[styles.skeleton]}>
-                    <ActivityIndicator
-                        size="large"
-                        color={colorSwatch.accent.green}
-                    />
+                    <ActivityIndicator size="large" color={loaderColor} />
                 </View>
-            )}
-            {!hasError && imageHeight > 0 && imageWidth > 0 ? (
+            ) : !hasError ? (
                 <Image
                     source={
                         typeof source === "number"
@@ -95,14 +123,12 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
                     onError={() => {
                         console.error("Failed to load image");
                         setHasError(true);
-                        setIsLoading(false);
                     }}
-                    onLoadEnd={() => setIsLoading(false)}
                 />
             ) : (
                 <Image
                     style={styles.cover}
-                    source={require("../../../assets/placeholder.png")}
+                    source={require("../../../assets/next-quest-icons/game_item_placeholder.png")}
                     priority="high"
                     cachePolicy="memory-disk"
                 />
@@ -112,9 +138,7 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({ source, style }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        marginRight: 12,
-    },
+    container: {},
     cover: {
         maxWidth: 75,
     },

@@ -8,14 +8,19 @@ import { initializeDatabase } from "./data/config/databaseSeeder";
 import { colorSwatch } from "./utils/colorConstants";
 import { StatusBar } from "expo-status-bar";
 import MainNavigationContainer from "./screens/game/MainNavigationContainer";
-import { QuestToast } from "./components/common/QuestToast";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
+SplashScreen.setOptions({
+    duration: 600,
+    fade: true,
+});
+
 export default function App() {
-    const [isLoading, setIsLoading] = useState(true);
+    const [dbInitialized, setDbInitialized] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
     const [fontsLoaded] = useFonts({
         "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
         "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
@@ -28,12 +33,11 @@ export default function App() {
     useEffect(() => {
         async function prepare() {
             try {
-                // await initializeDatabase();
+                await initializeDatabase();
+                setDbInitialized(true);
             } catch (e) {
                 console.warn(e);
                 setError("Failed to initialize database");
-            } finally {
-                setIsLoading(false);
             }
         }
 
@@ -41,17 +45,17 @@ export default function App() {
     }, []);
 
     const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded && !isLoading) {
+        if (fontsLoaded && dbInitialized) {
             await SplashScreen.hideAsync();
         }
-    }, [fontsLoaded, isLoading]);
+    }, [fontsLoaded, dbInitialized]);
 
-    if (!fontsLoaded || isLoading) {
+    if (!fontsLoaded || !dbInitialized) {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
-                    color={colorSwatch.accent.green}
+                    color={colorSwatch.accent.cyan}
                 />
                 <Text variant="body" style={styles.loadingText}>
                     Loading...

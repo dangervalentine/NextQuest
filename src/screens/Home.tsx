@@ -6,7 +6,7 @@ import Text from "../components/common/Text";
 const Home: React.FC = () => {
     return (
         <ImageBackground
-            source={require("../assets/next_quest.png")}
+            source={require("../assets/next-quest-icons/next_quest_scroll.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >

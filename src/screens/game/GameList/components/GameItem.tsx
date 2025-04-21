@@ -18,7 +18,7 @@ import { colorSwatch } from "src/utils/colorConstants";
 import { formatReleaseDate } from "src/utils/dateFormatters";
 import { ScreenNavigationProp } from "src/utils/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
-import { getStatusLabel, getStatusStyles } from "src/utils/gameStatusUtils";
+import { getStatusLabel } from "src/utils/gameStatusUtils";
 import { getRatingColor, getStatusColor } from "src/utils/colors";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
 
@@ -49,6 +49,8 @@ const GameItem: React.FC<GameItemProps> = memo(
         const [isInitialHeight, setIsInitialHeight] = useState(true);
         const [isAnimating, setIsAnimating] = useState(false);
         const heightAnim = useRef(new Animated.Value(1)).current;
+        const [isRemoveClicked, setIsRemoveClicked] = useState(false);
+        const prevSwipeX = useRef(0);
 
         useFocusEffect(
             React.useCallback(() => {
@@ -188,12 +190,18 @@ const GameItem: React.FC<GameItemProps> = memo(
                     },
                     onPanResponderGrant: () => {
                         pan.setValue(0);
+                        prevSwipeX.current = 0;
                     },
                     onPanResponderMove: (_, gestureState) => {
                         if (isReordering) return;
+
                         // Only allow right swipe if not undiscovered
                         const maxRight =
-                            questGame.gameStatus === "undiscovered" ? 0 : 100;
+                            questGame.gameStatus === "undiscovered"
+                                ? 0
+                                : isRemoveClicked
+                                ? 200 // Allow full swipe when remove is clicked
+                                : 100; // Only show first button otherwise
                         // Make left swipe wider for undiscovered games
                         const maxLeft =
                             questGame.gameStatus === "undiscovered"
@@ -203,6 +211,30 @@ const GameItem: React.FC<GameItemProps> = memo(
                             maxLeft,
                             Math.min(maxRight, gestureState.dx)
                         );
+
+                        // Add haptic feedback only when crossing menu thresholds
+                        if (
+                            (prevSwipeX.current < 75 && newX >= 75) ||
+                            (prevSwipeX.current > 75 && newX <= 75)
+                        ) {
+                            // Crossing the remove menu threshold
+                            triggerHapticFeedback("light");
+                        } else if (
+                            isRemoveClicked &&
+                            ((prevSwipeX.current < 150 && newX >= 150) ||
+                                (prevSwipeX.current > 150 && newX <= 150))
+                        ) {
+                            // Crossing the confirm menu threshold
+                            triggerHapticFeedback("light");
+                        } else if (
+                            (prevSwipeX.current > -75 && newX <= -75) ||
+                            (prevSwipeX.current < -75 && newX >= -75)
+                        ) {
+                            // Crossing the status change menu threshold
+                            triggerHapticFeedback("light");
+                        }
+
+                        prevSwipeX.current = newX;
                         pan.setValue(newX);
                     },
                     onPanResponderRelease: (_, gestureState) => {
@@ -221,21 +253,33 @@ const GameItem: React.FC<GameItemProps> = memo(
                             gestureState.dx > SWIPE_THRESHOLD &&
                             questGame.gameStatus !== "undiscovered"
                         ) {
-                            // Right swipe - only if not undiscovered
-                            Animated.spring(pan, {
-                                toValue: 105,
-                                useNativeDriver: false,
-                            }).start();
+                            // If we're swiping far enough to confirm and remove is clicked
+                            if (gestureState.dx > 150 && isRemoveClicked) {
+                                Animated.spring(pan, {
+                                    toValue: 200,
+                                    useNativeDriver: false,
+                                }).start();
+                            } else {
+                                // Always snap to first button position if not in remove mode
+                                Animated.spring(pan, {
+                                    toValue: 100,
+                                    useNativeDriver: false,
+                                }).start();
+                            }
                         } else {
                             // Close menu
                             Animated.spring(pan, {
                                 toValue: 0,
                                 useNativeDriver: false,
-                            }).start();
+                            }).start(() => {
+                                if (isRemoveClicked) {
+                                    setIsRemoveClicked(false);
+                                }
+                            });
                         }
                     },
                 }),
-            [questGame.gameStatus, isReordering, pan]
+            [questGame.gameStatus, isReordering, pan, isRemoveClicked]
         );
 
         const dragPanResponder = useMemo(
@@ -262,10 +306,29 @@ const GameItem: React.FC<GameItemProps> = memo(
             [reorder]
         );
 
-        const handleRemove = () => {
+        const handleRemoveClick = () => {
+            triggerHapticFeedback("light");
+            setIsRemoveClicked(true);
+            Animated.spring(pan, {
+                toValue: 200,
+                useNativeDriver: false,
+            }).start();
+        };
+
+        const handleCancel = () => {
+            triggerHapticFeedback("light");
+            Animated.spring(pan, {
+                toValue: 0,
+                useNativeDriver: false,
+            }).start(() => {
+                setIsRemoveClicked(false);
+            });
+        };
+
+        const handleConfirmRemove = () => {
             if (containerHeight === 0) return;
             setIsAnimating(true);
-            triggerHapticFeedback("medium");
+            triggerHapticFeedback("light");
 
             Animated.parallel([
                 Animated.timing(pan, {
@@ -274,7 +337,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                     duration: 300,
                     easing: Easing.out(Easing.cubic),
                 }),
-
                 Animated.timing(heightAnim, {
                     toValue: 0,
                     duration: 300,
@@ -338,6 +400,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                 navigation.navigate("QuestGameDetailPage", {
                     id: questGame.id,
                     name: questGame.name || "",
+                    gameStatus: questGame.gameStatus,
                 }),
             [navigation, questGame.id, questGame.name]
         );
@@ -362,7 +425,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         if (questGame.cover && questGame.cover.url) {
             coverUrl = questGame.cover.url.replace("t_thumb", "t_cover_big");
         } else {
-            coverUrl = require("../../../../assets/placeholder.png");
+            coverUrl = require("../../../../assets/next-quest-icons/game_item_placeholder.png");
         }
 
         return (
@@ -441,20 +504,57 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 style={[
                                     styles.statusButton,
                                     {
-                                        backgroundColor:
-                                            colorSwatch.accent.pink,
                                         borderTopLeftRadius: 8,
                                         borderBottomLeftRadius: 8,
                                     },
+                                    {
+                                        backgroundColor: isRemoveClicked
+                                            ? colorSwatch.background.darkest
+                                            : colorSwatch.accent.pink,
+                                    },
                                 ]}
                                 activeOpacity={0.7}
-                                onPress={handleRemove}
+                                onPress={
+                                    isRemoveClicked
+                                        ? handleCancel
+                                        : handleRemoveClick
+                                }
                             >
                                 <Text
                                     variant="button"
-                                    style={styles.statusButtonText}
+                                    style={[
+                                        styles.statusButtonText,
+                                        {
+                                            color: isRemoveClicked
+                                                ? colorSwatch.text.primary
+                                                : colorSwatch.text.inverse,
+                                        },
+                                    ]}
                                 >
-                                    Remove
+                                    {isRemoveClicked ? "Cancel" : "Remove"}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[
+                                    styles.statusButton,
+                                    {
+                                        backgroundColor:
+                                            colorSwatch.accent.pink,
+                                        opacity: isRemoveClicked ? 1 : 0.3,
+                                    },
+                                ]}
+                                activeOpacity={0.7}
+                                onPress={handleConfirmRemove}
+                                disabled={!isRemoveClicked}
+                            >
+                                <Text
+                                    variant="button"
+                                    style={[
+                                        styles.statusButtonText,
+                                        !isRemoveClicked && { opacity: 0.3 },
+                                    ]}
+                                >
+                                    Confirm
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -497,23 +597,27 @@ const GameItem: React.FC<GameItemProps> = memo(
                             onPress={handlePress}
                             style={styles.pressableNavigation}
                         >
-                            {questGame.cover && questGame.cover.url ? (
-                                <FullHeightImage source={coverUrl} />
-                            ) : (
-                                <FullHeightImage
-                                    source={require("../../../../assets/placeholder.png")}
-                                    style={getStatusStyles(
-                                        questGame.gameStatus
-                                    )}
-                                />
-                            )}
+                            <FullHeightImage
+                                source={coverUrl}
+                                loaderColor={getStatusColor(
+                                    questGame.gameStatus
+                                )}
+                            />
 
                             <View style={styles.contentContainer}>
                                 <View style={styles.titleContainer}>
                                     <Text
                                         variant="subtitle"
-                                        style={styles.title}
-                                        numberOfLines={2}
+                                        style={[
+                                            styles.title,
+
+                                            {
+                                                color: getStatusColor(
+                                                    questGame.gameStatus
+                                                ),
+                                            },
+                                        ]}
+                                        numberOfLines={1}
                                     >
                                         {questGame.name}
                                     </Text>
@@ -540,46 +644,37 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <Text
                                         variant="small"
                                         style={styles.textSecondary}
+                                        numberOfLines={1}
                                     >
-                                        <Text variant="small">
-                                            {/* Display the selected platform name if available. 
+                                        {/* Display the selected platform name if available. 
                                                 If not, check the number of platforms:
                                                 - Show "No Platforms" if there are none.
                                                 - Show the platform name if there is exactly one.
                                                 - Show the number of platforms if there are multiple. */}
-                                            {questGame.selectedPlatform?.name ||
-                                                (questGame.platforms.length ===
-                                                0
-                                                    ? "No Platforms"
-                                                    : questGame.platforms
-                                                          .length > 1
-                                                    ? `${questGame.platforms.length} Platforms`
-                                                    : questGame.platforms[0]
-                                                          .name)}
-                                        </Text>
+                                        {questGame.selectedPlatform?.name ||
+                                            (questGame.platforms.length === 0
+                                                ? "No Platforms"
+                                                : questGame.platforms.length > 1
+                                                ? `${questGame.platforms.length} Platforms`
+                                                : questGame.platforms[0].name)}
                                     </Text>
                                     {platformReleaseDate && (
                                         <Text
                                             variant="small"
                                             style={styles.textSecondary}
+                                            numberOfLines={1}
                                         >
-                                            <Text variant="small">
-                                                {formatReleaseDate(
-                                                    platformReleaseDate.date
-                                                )}
-                                            </Text>
+                                            {formatReleaseDate(
+                                                platformReleaseDate.date
+                                            )}
                                         </Text>
                                     )}
                                     <Text
                                         variant="small"
                                         style={styles.textSecondary}
+                                        numberOfLines={1}
                                     >
-                                        <Text
-                                            variant="small"
-                                            style={styles.textSecondary}
-                                        >
-                                            {genresText}
-                                        </Text>
+                                        {genresText}
                                     </Text>
                                 </View>
                             </View>
@@ -688,7 +783,7 @@ const styles = StyleSheet.create({
         left: 0,
         top: 0,
         bottom: 0,
-        width: 100,
+        width: 200, // Increased width to accommodate both buttons
         flexDirection: "row",
         alignItems: "stretch",
         borderRightWidth: 1,
@@ -752,7 +847,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
-        gap: 4,
+        gap: 8,
     },
     detailsContainer: {
         justifyContent: "flex-start",

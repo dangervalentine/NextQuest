@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { GameStatus } from "src/constants/config/gameStatus";
 
 export type TabParamList = {
     Ongoing: undefined;
@@ -20,7 +21,7 @@ export type RootStackParamList = {
         screen?: keyof TabParamList;
         params?: TabParamList[keyof TabParamList];
     };
-    QuestGameDetailPage: { id: number; name: string };
+    QuestGameDetailPage: { id: number; name: string; gameStatus: GameStatus };
 };
 
 export type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
