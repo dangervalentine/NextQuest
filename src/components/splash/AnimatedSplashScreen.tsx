@@ -164,7 +164,7 @@ export function AnimatedSplashScreen({
                                 { opacity: dotsOpacity },
                             ]}
                         >
-                            <LoadingText />
+                            <LoadingText text="Danger Valentine" />
                         </Animated.View>
                     </View>
                 </Animated.View>
