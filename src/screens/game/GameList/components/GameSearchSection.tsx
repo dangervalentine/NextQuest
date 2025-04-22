@@ -224,7 +224,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
     return (
         <ImageBackground
-            source={require("../../../../assets/next-quest-icons/next_quest_scroll.png")}
+            source={require("../../../../assets/next-quest-icons/next_quest_cyan.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.darker,
-        opacity: 0.99,
+        opacity: 0.6,
     },
     scrollContainer: {
         flex: 1,

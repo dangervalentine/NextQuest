@@ -7,11 +7,11 @@
         "icon": "./src/assets/next-quest-icons/next_quest.png",
         "jsEngine": "hermes",
         "userInterfaceStyle": "dark",
+        "backgroundColor": "#01111d",
         "splash": {
-            "image": "./src/assets/next-quest-icons/next_quest.png",
+            "image": "./src/assets/next-quest-icons/next_quest_yellow.png",
             "resizeMode": "contain",
-            "backgroundColor": "#01111d",
-            "imageWidth": 200
+            "backgroundColor": "#01111d"
         },
         "assetBundlePatterns": [
             "**/*"

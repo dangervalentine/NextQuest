@@ -1,83 +1,41 @@
-import { StyleSheet, View, ActivityIndicator } from "react-native";
-import Text from "./components/common/Text";
-import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from "expo-font";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback, useEffect, useState } from "react";
-import { initializeDatabase } from "./data/config/databaseSeeder";
-import { colorSwatch } from "./utils/colorConstants";
 import { StatusBar } from "expo-status-bar";
+import { colorSwatch } from "./utils/colorConstants";
 import MainNavigationContainer from "./screens/game/MainNavigationContainer";
+import { AnimatedAppLoader } from "./components/splash/AnimatedAppLoader";
 
-// Keep the splash screen visible while we fetch resources
+// Create a dark theme for navigation
+const NavigationTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: colorSwatch.background.darkest,
+    },
+};
+
+// Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
-SplashScreen.setOptions({
-    duration: 600,
-    fade: true,
-});
-
 export default function App() {
-    const [dbInitialized, setDbInitialized] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-    const [fontsLoaded] = useFonts({
-        "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
-        "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
-        "FiraCode-Light": require("./assets/fonts/FiraCode-Light.ttf"),
-        "FiraCode-Regular": require("./assets/fonts/FiraCode-Regular.ttf"),
-        "FiraCode-Bold": require("./assets/fonts/FiraCode-Bold.ttf"),
-        "PressStart2P-Regular": require("./assets/fonts/PressStart2P-Regular.ttf"),
-    });
-
-    useEffect(() => {
-        async function prepare() {
-            try {
-                await initializeDatabase();
-                setDbInitialized(true);
-            } catch (e) {
-                console.warn(e);
-                setError("Failed to initialize database");
-            }
-        }
-
-        prepare();
-    }, []);
-
-    const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded && dbInitialized) {
-            await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded, dbInitialized]);
-
-    if (!fontsLoaded || !dbInitialized) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator
-                    size="large"
-                    color={colorSwatch.accent.cyan}
-                />
-                <Text variant="body" style={styles.loadingText}>
-                    Loading...
-                </Text>
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.errorContainer}>
-                <Text variant="subtitle" style={styles.errorText}>
-                    {error}
-                </Text>
-            </View>
-        );
-    }
-
     return (
-        <View style={styles.container} onLayout={onLayoutRootView}>
+        <View style={styles.rootContainer}>
+            <AnimatedAppLoader
+                image={require("./assets/next-quest-icons/next_quest_yellow.png")}
+            >
+                <MainApp />
+            </AnimatedAppLoader>
+        </View>
+    );
+}
+
+function MainApp() {
+    return (
+        <View style={styles.container}>
             <StatusBar style="light" />
-            <NavigationContainer>
+            <NavigationContainer theme={NavigationTheme}>
                 <MainNavigationContainer />
             </NavigationContainer>
         </View>
@@ -85,27 +43,12 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+    rootContainer: {
+        flex: 1,
+        backgroundColor: colorSwatch.background.darkest,
+    },
     container: {
         flex: 1,
         backgroundColor: colorSwatch.background.darkest,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: "center",
-        backgroundColor: colorSwatch.background.darkest,
-        alignItems: "center",
-        gap: 16,
-    },
-    loadingText: {
-        color: colorSwatch.text.primary,
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.darkest,
-    },
-    errorText: {
-        color: colorSwatch.accent.pink,
     },
 });

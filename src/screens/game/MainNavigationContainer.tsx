@@ -395,6 +395,7 @@ const MainNavigationContainer: React.FC = () => {
                     text1: "Game Removed",
                     text2: `${gameToRemove.name} removed`,
                     position: "bottom",
+                    color: getStatusColor(status),
                     visibilityTime: 2000,
                 });
 

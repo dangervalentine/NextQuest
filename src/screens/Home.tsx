@@ -6,7 +6,7 @@ import Text from "../components/common/Text";
 const Home: React.FC = () => {
     return (
         <ImageBackground
-            source={require("../assets/next-quest-icons/next_quest_scroll.png")}
+            source={require("../assets/next-quest-icons/next_quest_lg.png")}
             style={styles.pageContainer}
             resizeMode="contain"
         >
@@ -26,11 +26,12 @@ const Home: React.FC = () => {
 const styles = StyleSheet.create({
     pageContainer: {
         flex: 1,
+        backgroundColor: colorSwatch.background.darkest,
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.darker,
-        opacity: 0.99,
+        opacity: 0.975,
     },
     contentContainer: {
         flex: 1,

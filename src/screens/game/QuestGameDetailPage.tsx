@@ -27,6 +27,7 @@ import { HeaderSection } from "./GameDetail/components/HeaderSection";
 import FranchiseSection from "./GameDetail/components/MetadataGrid";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { getStatusColor } from "src/utils/colors";
+import { getBackgroundImage } from "../../utils/imageUtils";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -55,7 +56,7 @@ const QuestGameDetailPage: React.FC = () => {
         return (
             <SafeAreaView style={styles.loadingContainer}>
                 <ImageBackground
-                    source={require("../../assets/next-quest-icons/next_quest_scroll.png")}
+                    source={getBackgroundImage(gameStatus)}
                     style={styles.container}
                     resizeMode="contain"
                 >
@@ -73,7 +74,7 @@ const QuestGameDetailPage: React.FC = () => {
 
     return (
         <ImageBackground
-            source={require("../../assets/next-quest-icons/next_quest_scroll.png")}
+            source={getBackgroundImage(game.gameStatus)}
             style={[styles.container, { marginTop: headerHeight }]}
             resizeMode="contain"
         >
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
         opacity: 0.99,
     },
     skeleton: {
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: colorSwatch.background.dark,
+        backgroundColor: colorSwatch.background.darkest,
         paddingTop: 130,
     },
     sectionContainer: {
