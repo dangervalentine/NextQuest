@@ -75,7 +75,7 @@ const interpolateColors = (
     return `rgb(${r}, ${g}, ${b})`;
 };
 
-export const getStatusColor = (status: GameStatus): string => {
+export const getStatusColor = (status: GameStatus | undefined): string => {
     switch (status) {
         case "ongoing":
             return colorSwatch.accent.yellow;
@@ -86,7 +86,7 @@ export const getStatusColor = (status: GameStatus): string => {
         case "undiscovered":
             return colorSwatch.accent.cyan;
         default:
-            return colorSwatch.accent.cyan;
+            return colorSwatch.neutral.white;
     }
 };
 

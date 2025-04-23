@@ -223,58 +223,51 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     );
 
     return (
-        <ImageBackground
-            source={require("../../../../assets/next-quest-icons/next_quest_cyan.png")}
-            style={styles.pageContainer}
-            resizeMode="contain"
-        >
-            <View style={styles.overlay} />
-            <View style={styles.contentContainer}>
-                <GameSearchInput
-                    gameStatus={gameStatus}
-                    searchQuery={searchQuery}
-                    onSearchChange={handleSearchChange}
-                    onClear={() => executeSearch(undefined, "")}
-                    placeholder="Search to discover new games..."
-                />
+        <View style={styles.contentContainer}>
+            <GameSearchInput
+                gameStatus={gameStatus}
+                searchQuery={searchQuery}
+                onSearchChange={handleSearchChange}
+                onClear={() => executeSearch(undefined, "")}
+                placeholder="Search to discover new games..."
+            />
 
-                {error ? (
-                    <View style={styles.loadingContainer}>
-                        <Text variant="subtitle" style={styles.errorText}>
-                            {error}
-                        </Text>
-                    </View>
-                ) : isSearching ? (
-                    <View style={styles.loadingContainer}>
-                        <ActivityIndicator
-                            size="large"
-                            color={getStatusColor("undiscovered")}
-                        />
-                        <Text
-                            variant="subtitle"
-                            style={[styles.emptyText, { marginTop: 16 }]}
-                        >
-                            {getLoadingMessage()}
-                        </Text>
-                    </View>
-                ) : searchResults.length === 0 ? (
-                    <View style={styles.loadingContainer}>
-                        <Text variant="subtitle" style={styles.emptyText}>
-                            {getEmptyMessage()}
-                        </Text>
-                    </View>
-                ) : (
-                    <ScrollView
-                        style={styles.scrollContainer}
-                        contentContainerStyle={styles.listContainer}
+            {error ? (
+                <View style={styles.loadingContainer}>
+                    <Text variant="subtitle" style={styles.errorText}>
+                        {error}
+                    </Text>
+                </View>
+            ) : isSearching ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                        size="large"
+                        color={getStatusColor("undiscovered")}
+                    />
+                    <Text
+                        variant="subtitle"
+                        style={[styles.emptyText, { marginTop: 16 }]}
                     >
-                        {searchResults.map((game, index) =>
-                            renderItem(game, index)
-                        )}
-                    </ScrollView>
-                )}
-            </View>
-        </ImageBackground>
+                        {getLoadingMessage()}
+                    </Text>
+                </View>
+            ) : searchResults.length === 0 ? (
+                <View style={styles.loadingContainer}>
+                    <Text variant="subtitle" style={styles.emptyText}>
+                        {getEmptyMessage()}
+                    </Text>
+                </View>
+            ) : (
+                <ScrollView
+                    style={styles.scrollContainer}
+                    contentContainerStyle={styles.listContainer}
+                >
+                    {searchResults.map((game, index) =>
+                        renderItem(game, index)
+                    )}
+                </ScrollView>
+            )}
+        </View>
     );
 };
 
@@ -286,11 +279,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         justifyContent: "flex-start",
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: colorSwatch.background.darker,
-        opacity: 0.6,
     },
     scrollContainer: {
         flex: 1,

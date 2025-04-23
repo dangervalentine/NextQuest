@@ -4,12 +4,12 @@
         "slug": "next-quest",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./src/assets/next-quest-icons/next_quest.png",
+        "icon": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png",
         "jsEngine": "hermes",
         "userInterfaceStyle": "dark",
         "backgroundColor": "#01111d",
         "splash": {
-            "image": "./src/assets/next-quest-icons/next_quest_yellow.png",
+            "image": "./src/assets/next-quest-icons/next_quest_mono_white.png",
             "resizeMode": "contain",
             "backgroundColor": "#01111d"
         },
@@ -20,14 +20,14 @@
             "supportsTablet": true,
             "bundleIdentifier": "com.dangervalentine.nextquest",
             "icon": {
-                "dark": "./src/assets/next-quest-icons/next_quest.png",
+                "dark": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png",
                 "light": "./src/assets/next-quest-icons/next_quest.png",
-                "tinted": "./src/assets/next-quest-icons/next_quest.png"
+                "tinted": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png"
             }
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./src/assets/next-quest-icons/next_quest.png",
+                "foregroundImage": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png",
                 "backgroundColor": "#01111d"
             },
             "package": "com.dangervalentine.nextquest",
@@ -37,7 +37,7 @@
             ]
         },
         "web": {
-            "favicon": "./src/assets/next-quest-icons/next_quest.png"
+            "favicon": "./src/assets/next-quest-icons/next_quest_mono_cyan.png"
         },
         "plugins": [
             "expo-sqlite",

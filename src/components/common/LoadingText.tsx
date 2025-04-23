@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useMemo } from "react";
 import { Animated, View } from "react-native";
 import { generateRandomColorSequence } from "src/utils/colors";
 
-export const LoadingText = ({ text }: { text: string }) => {
+export const LoadingText = ({
+    text,
+    delay,
+}: {
+    text: string;
+    delay?: number;
+}) => {
     const letters = (text || "Loading...").split("");
     const letterAnimations = letters.map(
         () => useRef(new Animated.Value(1)).current
@@ -15,7 +21,7 @@ export const LoadingText = ({ text }: { text: string }) => {
 
     const LETTER_DELAY = 100; // Delay between each letter starting
     const FADE_DURATION = 200; // Duration of each fade
-    const INITIAL_PAUSE = 1000; // Initial pause before flicker starts // Calculate total sequence time: // Time for last letter to start + fade duration + a small buffer
+    const INITIAL_PAUSE = delay || 1000; // Initial pause before flicker starts // Calculate total sequence time: // Time for last letter to start + fade duration + a small buffer
     const SEQUENCE_TIME =
         (letters.length - 1) * LETTER_DELAY + FADE_DURATION - 200;
 
@@ -47,6 +53,7 @@ export const LoadingText = ({ text }: { text: string }) => {
                 ])
             ); // Run fade in, then start the flicker
 
+            // Animated.sequence([fadeIn, Animated.delay(0)]).start(() => {
             Animated.sequence([fadeIn, Animated.delay(INITIAL_PAUSE)]).start(
                 () => {
                     flicker.start();
@@ -69,7 +76,7 @@ export const LoadingText = ({ text }: { text: string }) => {
                 color: colors[index],
                 fontSize: 18,
                 marginHorizontal: letter === " " ? 6 : 1,
-                fontFamily: "PressStart2P-Regular",
+                fontFamily: "sans-serif",
             }}
         >
             {letter}

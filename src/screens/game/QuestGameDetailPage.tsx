@@ -3,7 +3,6 @@ import {
     ScrollView,
     StyleSheet,
     View,
-    ActivityIndicator,
     Animated,
     ImageBackground,
     SafeAreaView,
@@ -26,8 +25,8 @@ import { PlatformsSection } from "./GameDetail/components/PlatformsSection";
 import { HeaderSection } from "./GameDetail/components/HeaderSection";
 import FranchiseSection from "./GameDetail/components/MetadataGrid";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { getStatusColor } from "src/utils/colors";
 import { getBackgroundImage } from "../../utils/imageUtils";
+import { LoadingText } from "src/components/common/LoadingText";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -62,10 +61,7 @@ const QuestGameDetailPage: React.FC = () => {
                 >
                     <View style={styles.overlay} />
                     <View style={[styles.skeleton]}>
-                        <ActivityIndicator
-                            size="large"
-                            color={getStatusColor(gameStatus)}
-                        />
+                        <LoadingText text="Loading..." delay={1} />
                     </View>
                 </ImageBackground>
             </SafeAreaView>
@@ -184,7 +180,7 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.darkest,
-        opacity: 0.99,
+        opacity: 0.95,
     },
     skeleton: {
         justifyContent: "center",

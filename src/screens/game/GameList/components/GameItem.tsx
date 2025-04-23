@@ -741,7 +741,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         borderRadius: 12,
         marginHorizontal: 4,
-        marginVertical: 1,
+        marginVertical: 2,
         shadowColor: colorSwatch.background.dark,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Image, View, StyleSheet } from "react-native";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
@@ -26,12 +27,15 @@ import Text from "src/components/common/Text";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
+import { useGameStatus } from "src/contexts/GameStatusContext";
+
 const Stack = createStackNavigator<RootStackParamList>();
 
 type MainNavigationProp = NavigationProp<RootStackParamList>;
 
 const MainNavigationContainer: React.FC = () => {
     const navigation = useNavigation<MainNavigationProp>();
+    const { activeStatus, setActiveStatus } = useGameStatus();
     const [gameData, setGameData] = useState<
         Record<GameStatus, MinimalQuestGame[]>
     >({
@@ -51,7 +55,7 @@ const MainNavigationContainer: React.FC = () => {
         dropped: false,
     });
     const [activeTabColor, setActiveTabColor] = useState<string>(
-        getStatusColor("ongoing")
+        colorSwatch.neutral.white
     );
 
     // Add this state for the modal
@@ -91,7 +95,9 @@ const MainNavigationContainer: React.FC = () => {
     }, []);
 
     const handleTabChange = (tabName: string) => {
-        setActiveTabColor(getStatusColor(tabName.toLowerCase() as GameStatus));
+        const status = tabName.toLowerCase() as GameStatus;
+        setActiveTabColor(getStatusColor(status));
+        setActiveStatus(status);
     };
 
     useEffect(() => {
@@ -100,6 +106,8 @@ const MainNavigationContainer: React.FC = () => {
             for (const status of statuses) {
                 await loadGamesForStatus(status);
             }
+            // Set initial tab to ongoing only after data is loaded
+            setActiveTabColor(getStatusColor("ongoing"));
         };
         loadInitialData();
     }, []);
@@ -641,6 +649,8 @@ const MainNavigationContainer: React.FC = () => {
         }
     };
 
+    console.log(activeStatus);
+
     return (
         <>
             <Stack.Navigator
@@ -658,25 +668,39 @@ const MainNavigationContainer: React.FC = () => {
                     component={Home}
                     options={{ headerShown: false }}
                 /> */}
-                <Stack.Screen name="GameTabs" options={{ headerShown: false }}>
+                <Stack.Screen
+                    name="GameTabs"
+                    options={{
+                        headerShown: false,
+                        cardStyle: { backgroundColor: "transparent" },
+                    }}
+                >
                     {() => (
-                        <>
-                            <GameTabs
-                                gameData={gameData}
-                                isLoading={isLoading}
-                                handleStatusChange={handleStatusChange}
-                                handleRemoveItem={handleRemoveItem}
-                                handleReorder={handleReorder}
-                                handleDiscover={handleDiscover}
-                                onTabChange={handleTabChange}
+                        <View style={styles.container}>
+                            <Image
+                                source={require("../../assets/next-quest-icons/next_quest_mono_white.png")}
+                                style={styles.backgroundImage}
+                                resizeMode="contain"
+                                tintColor={getStatusColor(activeStatus)}
                             />
-                            <PlatformSelectionModal
-                                visible={isPlatformModalVisible}
-                                onClose={handlePlatformModalClose}
-                                onSelect={handlePlatformSelect}
-                                platforms={platformModalPlatforms}
-                            />
-                        </>
+                            <View style={styles.contentContainer}>
+                                <GameTabs
+                                    gameData={gameData}
+                                    isLoading={isLoading}
+                                    handleStatusChange={handleStatusChange}
+                                    handleRemoveItem={handleRemoveItem}
+                                    handleReorder={handleReorder}
+                                    handleDiscover={handleDiscover}
+                                    onTabChange={handleTabChange}
+                                />
+                                <PlatformSelectionModal
+                                    visible={isPlatformModalVisible}
+                                    onClose={handlePlatformModalClose}
+                                    onSelect={handlePlatformSelect}
+                                    platforms={platformModalPlatforms}
+                                />
+                            </View>
+                        </View>
                     )}
                 </Stack.Screen>
                 <Stack.Screen
@@ -719,7 +743,7 @@ const MainNavigationContainer: React.FC = () => {
                         ),
                         headerTitle: "",
                         headerBackgroundContainerStyle: {
-                            backgroundColor: colorSwatch.background.darkest,
+                            backgroundColor: colorSwatch.accent.pink,
                         },
                         animation: "slide_from_right",
                     })}
@@ -729,5 +753,23 @@ const MainNavigationContainer: React.FC = () => {
         </>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    backgroundImage: {
+        ...StyleSheet.absoluteFillObject,
+        width: "100%",
+        height: "100%",
+        opacity: 0.2,
+        zIndex: -1,
+    },
+    contentContainer: {
+        flex: 1,
+        backgroundColor: "transparent",
+        zIndex: 1,
+    },
+});
 
 export default MainNavigationContainer;

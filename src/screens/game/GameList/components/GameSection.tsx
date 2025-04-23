@@ -1,10 +1,5 @@
 import React, { useCallback, useState, useMemo } from "react";
-import {
-    ImageBackground,
-    StyleSheet,
-    View,
-    ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
@@ -13,7 +8,6 @@ import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/utils/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import { getStatusColor } from "src/utils/colors";
-import { getBackgroundImage } from "../../../../utils/imageUtils";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -82,78 +76,51 @@ const GameSection: React.FC<GameSectionProps> = ({
 
     if (isLoading) {
         return (
-            <ImageBackground
-                source={getBackgroundImage(gameStatus)}
-                style={styles.pageContainer}
-                resizeMode="contain"
-            >
-                <View style={styles.overlay} />
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                        size="large"
-                        color={getStatusColor(gameStatus)}
-                    />
-                </View>
-            </ImageBackground>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator
+                    size="large"
+                    color={getStatusColor(gameStatus)}
+                />
+            </View>
         );
     }
 
     return games.length === 0 ? (
-        <ImageBackground
-            source={getBackgroundImage(gameStatus)}
-            style={styles.pageContainer}
-            resizeMode="contain"
-        >
-            <View style={styles.overlay} />
-            <View style={styles.loadingContainer}>
-                <Text variant="subtitle" style={styles.emptyText}>
-                    No games found in this category
-                </Text>
-            </View>
-        </ImageBackground>
+        <View style={styles.loadingContainer}>
+            <Text variant="subtitle" style={styles.emptyText}>
+                No games found in this category
+            </Text>
+        </View>
     ) : (
-        <ImageBackground
-            source={getBackgroundImage(gameStatus)}
-            style={styles.pageContainer}
-            resizeMode="contain"
-        >
-            <View style={styles.overlay} />
-            <View style={styles.contentContainer}>
-                <GameSearchInput
-                    gameStatus={gameStatus}
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    onClear={() => setSearchQuery("")}
+        <View style={styles.contentContainer}>
+            <GameSearchInput
+                gameStatus={gameStatus}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onClear={() => setSearchQuery("")}
+            />
+            <View style={styles.listWrapper}>
+                <DragList
+                    data={filteredGames}
+                    onReordered={(fromIndex, toIndex) =>
+                        onReorder(fromIndex, toIndex, gameStatus)
+                    }
+                    keyExtractor={(item) => item?.id?.toString() || ""}
+                    renderItem={renderItem}
+                    contentContainerStyle={styles.listContainer}
+                    removeClippedSubviews={true}
                 />
-                <View style={styles.listWrapper}>
-                    <DragList
-                        data={filteredGames}
-                        onReordered={(fromIndex, toIndex) =>
-                            onReorder(fromIndex, toIndex, gameStatus)
-                        }
-                        keyExtractor={(item) => item?.id?.toString() || ""}
-                        renderItem={renderItem}
-                        contentContainerStyle={styles.listContainer}
-                        removeClippedSubviews={true}
-                    />
-                </View>
             </View>
-        </ImageBackground>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     pageContainer: {
         flex: 1,
-        backgroundColor: colorSwatch.background.darkest,
     },
     contentContainer: {
         flex: 1,
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: colorSwatch.background.darkest,
-        opacity: 0.6,
     },
     activeItem: {
         borderRadius: 16,
@@ -174,6 +141,7 @@ const styles = StyleSheet.create({
     },
     listWrapper: {
         flex: 1,
+        backgroundColor: "transparent",
     },
     listContainer: {},
 });

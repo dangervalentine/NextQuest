@@ -58,8 +58,10 @@ export const tabBarStyle = {
     backgroundColor: colorSwatch.background.darkest,
     borderColor: colorSwatch.neutral.darkGray,
     borderTopWidth: 1,
+    flexDirection: "row" as const,
+    justifyContent: "space-around" as const,
+    paddingHorizontal: 0,
     height: 60,
-    paddingBottom: 8,
 };
 
 export const headerStyle = {
@@ -69,7 +71,7 @@ export const headerStyle = {
         width: 0,
         height: 4,
     },
-    shadowColor: colorSwatch.background.darker,
+    shadowColor: colorSwatch.background.darkest,
     shadowOpacity: 0.5,
     shadowRadius: 8,
     elevation: 8,
@@ -78,23 +80,24 @@ export const headerStyle = {
 export const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
     tabBarActiveTintColor: colorSwatch.accent.cyan,
-    tabBarInactiveTintColor: colorSwatch.text.muted,
+    tabBarInactiveTintColor: colorSwatch.neutral.darkGray,
     tabBarLabelStyle: {
         fontSize: 12,
         fontFamily: "FiraCode-Regular",
+        marginBottom: 5,
+    },
+    tabBarItemStyle: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        minWidth: "25%",
+        margin: 1,
+        padding: 0,
     },
     headerStyle,
     headerTitleStyle: {
         fontFamily: "FiraCode-Regular",
     },
-    tabBarBackground: () => (
-        <View
-            style={{
-                backgroundColor: colorSwatch.background.darkest,
-                flex: 1,
-            }}
-        />
-    ),
 };
 
 const GameTabNavigator: React.FC<TabNavigatorProps> = ({
