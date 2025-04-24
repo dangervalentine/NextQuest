@@ -84,9 +84,9 @@ export const getStatusColor = (status: GameStatus | undefined): string => {
         case "backlog":
             return colorSwatch.accent.purple;
         case "undiscovered":
-            return colorSwatch.accent.cyan;
         default:
-            return colorSwatch.neutral.white;
+            return colorSwatch.accent.cyan;
+        // return colorSwatch.neutral.white;
     }
 };
 

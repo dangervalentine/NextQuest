@@ -71,29 +71,28 @@ function AppContent() {
         if (isSplashReady) {
             async function prepare() {
                 try {
-                    Animated.sequence([
-                        Animated.timing(textOpacity, {
-                            toValue: 1,
-                            duration: 300,
-                            useNativeDriver: true,
-                        }),
+                    Animated.timing(textOpacity, {
+                        toValue: 1,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }).start(() => {
                         Animated.timing(circleSizeAnim, {
                             toValue: IMAGE_SIZE * 2,
                             duration: 600,
                             delay: 300,
                             easing: Easing.inOut(Easing.ease),
                             useNativeDriver: false,
-                        }),
-                    ]).start(async () => {
-                        // Simulate additional loading time
-                        await new Promise((resolve) =>
-                            setTimeout(resolve, ADDITIONAL_LOAD_TIME_MS)
-                        );
-                        // Initialize database
-                        await initializeDatabase();
-                        setDbInitialized(true);
+                        }).start(async () => {
+                            // Simulate additional loading time
+                            await new Promise((resolve) =>
+                                setTimeout(resolve, ADDITIONAL_LOAD_TIME_MS)
+                            );
+                            // Initialize database
+                            await initializeDatabase();
+                            setDbInitialized(true);
 
-                        setAdditionalLoadComplete(true);
+                            setAdditionalLoadComplete(true);
+                        });
                     });
                 } catch (e) {
                     console.warn("Initialization failed:", e);

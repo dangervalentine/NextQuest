@@ -12,6 +12,8 @@ import { PlatformLogoBadge } from "./PlatformLogoBadge";
 import { colorSwatch } from "src/utils/colorConstants";
 import { Ionicons } from "@expo/vector-icons";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
+import { useGameStatus } from "src/contexts/GameStatusContext";
+import { getStatusColor } from "src/utils/colors";
 
 interface Platform {
     id: number;
@@ -35,7 +37,8 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
         triggerHapticFeedback("light");
         onSelect(platform);
     };
-
+    const { activeStatus } = useGameStatus();
+    const statusColor = getStatusColor(activeStatus);
     return (
         <Modal
             visible={visible}
@@ -74,6 +77,7 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
                                             <PlatformLogoBadge
                                                 platform={platform.name}
                                                 size={72}
+                                                tintColor={statusColor}
                                             />
                                             <Text style={styles.platformName}>
                                                 - {platform.name}

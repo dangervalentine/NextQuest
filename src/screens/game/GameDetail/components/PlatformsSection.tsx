@@ -5,6 +5,7 @@ import { colorSwatch } from "src/utils/colorConstants";
 import { QuestGame } from "src/data/models/QuestGame";
 import Text from "src/components/common/Text";
 import ExpandableContent from "src/components/common/ExpandableContent";
+import { getStatusColor } from "src/utils/colors";
 
 interface PlatformsSectionProps {
     game: QuestGame;
@@ -35,8 +36,11 @@ export const PlatformsSection: React.FC<PlatformsSectionProps> = ({ game }) => {
                                     return (
                                         <PlatformLogoBadge
                                             platform={platform.name}
-                                            size={72}
+                                            size={64}
                                             style={{ marginRight: 12 }}
+                                            tintColor={getStatusColor(
+                                                game.gameStatus
+                                            )}
                                         />
                                     );
                                 } catch (error) {
@@ -55,9 +59,6 @@ export const PlatformsSection: React.FC<PlatformsSectionProps> = ({ game }) => {
                                 }
                             })()}
                         </View>
-                        <Text variant="body" style={styles.platformDate}>
-                            {platform.human?.split("T")[0]}
-                        </Text>
                     </View>
                 ))}
         </View>
@@ -66,7 +67,7 @@ export const PlatformsSection: React.FC<PlatformsSectionProps> = ({ game }) => {
     return (
         <ExpandableContent
             content={platformsList}
-            maxCollapsedHeight={85}
+            maxCollapsedHeight={65}
             containerStyle={styles.container}
         />
     );
@@ -76,25 +77,20 @@ const styles = StyleSheet.create({
     container: {},
     platformsList: {
         gap: 8,
-    },
-    platformDate: {
-        color: colorSwatch.text.secondary,
-        fontSize: 12,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "center",
     },
     platformItem: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: "column",
         justifyContent: "space-between",
-        marginBottom: 12,
         paddingVertical: 8,
         paddingHorizontal: 12,
         backgroundColor: colorSwatch.background.darker,
         borderRadius: 8,
     },
-    platformInfo: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
+    platformInfo: {},
     platformName: {
         color: colorSwatch.text.primary,
         fontSize: 16,

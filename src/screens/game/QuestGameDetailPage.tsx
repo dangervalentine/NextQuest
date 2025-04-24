@@ -27,6 +27,7 @@ import FranchiseSection from "./GameDetail/components/MetadataGrid";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { getBackgroundImage } from "../../utils/imageUtils";
 import { LoadingText } from "src/components/common/LoadingText";
+import { getStatusColor } from "src/utils/colors";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -68,6 +69,9 @@ const QuestGameDetailPage: React.FC = () => {
         );
     }
 
+    // Get status color for all section titles
+    const statusColor = getStatusColor(game.gameStatus);
+
     return (
         <ImageBackground
             source={getBackgroundImage(game.gameStatus)}
@@ -94,7 +98,10 @@ const QuestGameDetailPage: React.FC = () => {
                         <View style={styles.sectionContainer}>
                             <Text
                                 variant="title"
-                                style={styles.mainSectionTitle}
+                                style={[
+                                    styles.mainSectionTitle,
+                                    { color: statusColor },
+                                ]}
                             >
                                 About the Game
                             </Text>
@@ -110,7 +117,10 @@ const QuestGameDetailPage: React.FC = () => {
                         <View style={styles.sectionContainer}>
                             <Text
                                 variant="title"
-                                style={styles.mainSectionTitle}
+                                style={[
+                                    styles.mainSectionTitle,
+                                    { color: statusColor },
+                                ]}
                             >
                                 Screenshots
                             </Text>
@@ -126,7 +136,13 @@ const QuestGameDetailPage: React.FC = () => {
 
                     {/* Essential Game Categories */}
                     <View style={styles.sectionContainer}>
-                        <Text variant="title" style={styles.mainSectionTitle}>
+                        <Text
+                            variant="title"
+                            style={[
+                                styles.mainSectionTitle,
+                                { color: statusColor },
+                            ]}
+                        >
                             Information
                         </Text>
                         {/* Core Categories */}
@@ -143,7 +159,13 @@ const QuestGameDetailPage: React.FC = () => {
 
                     {/* Additional Game Details */}
                     <View style={styles.sectionContainer}>
-                        <Text variant="title" style={styles.mainSectionTitle}>
+                        <Text
+                            variant="title"
+                            style={[
+                                styles.mainSectionTitle,
+                                { color: statusColor },
+                            ]}
+                        >
                             Additional Details
                         </Text>
 
@@ -152,7 +174,10 @@ const QuestGameDetailPage: React.FC = () => {
                             <View>
                                 <Text
                                     variant="title"
-                                    style={styles.platformTitle}
+                                    style={[
+                                        styles.platformTitle,
+                                        { color: statusColor },
+                                    ]}
                                 >
                                     Platforms
                                 </Text>
@@ -161,7 +186,10 @@ const QuestGameDetailPage: React.FC = () => {
                         )}
 
                         {/* External Links */}
-                        <WebsitesSection websites={game.websites || []} />
+                        <WebsitesSection
+                            websites={game.websites || []}
+                            tintColor={statusColor}
+                        />
                     </View>
 
                     <View style={styles.bottomClearance} />
@@ -212,7 +240,6 @@ const styles = StyleSheet.create({
     platformTitle: {
         fontSize: 16,
         fontWeight: "600",
-        color: colorSwatch.primary.dark,
         marginBottom: 12,
     },
     infoSection: {
@@ -220,7 +247,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     mainSectionTitle: {
-        color: colorSwatch.accent.purple,
         marginBottom: 20,
     },
     subSectionTitle: {
@@ -232,7 +258,6 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 20,
         fontWeight: "600",
-        color: colorSwatch.accent.green,
         marginBottom: 12,
     },
     noteContainer: {

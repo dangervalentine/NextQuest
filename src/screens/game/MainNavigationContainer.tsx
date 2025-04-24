@@ -672,7 +672,6 @@ const MainNavigationContainer: React.FC = () => {
                     name="GameTabs"
                     options={{
                         headerShown: false,
-                        cardStyle: { backgroundColor: "transparent" },
                     }}
                 >
                     {() => (
@@ -742,9 +741,7 @@ const MainNavigationContainer: React.FC = () => {
                             </Pressable>
                         ),
                         headerTitle: "",
-                        headerBackgroundContainerStyle: {
-                            backgroundColor: colorSwatch.accent.pink,
-                        },
+                        headerBackgroundContainerStyle: {},
                         animation: "slide_from_right",
                     })}
                 />

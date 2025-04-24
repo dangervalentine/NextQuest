@@ -11,16 +11,20 @@ interface Website {
 
 interface WebsitesSectionProps {
     websites: Website[];
+    tintColor?: string;
 }
 
-const WebsitesSection: React.FC<WebsitesSectionProps> = ({ websites }) => {
+const WebsitesSection: React.FC<WebsitesSectionProps> = ({
+    websites,
+    tintColor,
+}) => {
     if (!websites?.length) return null;
 
     const getWebsiteInfo = (
         category: number
     ): { label: string; icon: JSX.Element } => {
         const iconSize = 12;
-        const iconColor = colorSwatch.accent.cyan;
+        const iconColor = tintColor || colorSwatch.accent.cyan;
 
         const types = {
             1: {
@@ -258,6 +262,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: colorSwatch.primary.dark,
         marginBottom: 12,
+        borderBottomWidth: 1,
     },
     websitesContainer: {
         flexDirection: "row",
@@ -276,6 +281,8 @@ const styles = StyleSheet.create({
         borderColor: colorSwatch.neutral.darkGray,
     },
     websiteType: {
+        borderBottomWidth: 1,
+        borderBottomColor: colorSwatch.text.primary,
         color: colorSwatch.neutral.lightGray,
     },
 });
