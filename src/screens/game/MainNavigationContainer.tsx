@@ -678,7 +678,7 @@ const MainNavigationContainer: React.FC = () => {
                     {() => (
                         <View style={styles.container}>
                             <Image
-                                source={require("../../assets/next-quest-icons/next_quest_mono_white.png")}
+                                source={require("../../assets/next-quest-icons/next_quest_white.png")}
                                 style={styles.backgroundImage}
                                 resizeMode="contain"
                                 tintColor={getStatusColor(activeStatus)}

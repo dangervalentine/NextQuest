@@ -27,7 +27,7 @@ const NavigationTheme = {
 SplashScreen.preventAutoHideAsync();
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const IMAGE_SIZE = 200; // Original size of the image
+const IMAGE_SIZE = screenWidth * 0.25; // Original size of the image
 const ADDITIONAL_LOAD_TIME_MS = 4000;
 
 function AppContent() {
@@ -43,6 +43,10 @@ function AppContent() {
     const textOpacity = useMemo(() => new Animated.Value(1), []);
     const imageOpacity = useMemo(() => new Animated.Value(1), []);
     const targetScale = useMemo(() => screenWidth / IMAGE_SIZE, []);
+    const imageBorderRadius = useMemo(
+        () => new Animated.Value(IMAGE_SIZE / 2),
+        []
+    );
     const { activeStatus } = useGameStatus();
 
     const [fontsLoaded] = useFonts({
@@ -71,7 +75,6 @@ function AppContent() {
                     await new Promise((resolve) =>
                         setTimeout(resolve, ADDITIONAL_LOAD_TIME_MS)
                     );
-
                     // Initialize database
                     await initializeDatabase();
                     setDbInitialized(true);
@@ -93,32 +96,38 @@ function AppContent() {
                 Animated.sequence([
                     Animated.timing(tintColorAnim, {
                         toValue: 1,
-                        duration: 500,
+                        duration: 300,
+                        useNativeDriver: false,
+                    }),
+                    Animated.timing(imageBorderRadius, {
+                        toValue: 0,
+                        duration: 300,
+                        easing: Easing.inOut(Easing.ease),
                         useNativeDriver: false,
                     }),
                 ]).start(() => {
                     // Start the animation sequence
                     Animated.parallel([
+                        Animated.timing(textOpacity, {
+                            toValue: 0,
+                            duration: 300,
+                            useNativeDriver: true,
+                        }),
                         Animated.timing(imageOpacity, {
                             toValue: 0.1,
-                            duration: 500,
+                            duration: 300,
                             useNativeDriver: true,
                         }),
                         Animated.timing(imageScale, {
                             toValue: targetScale,
-                            duration: 500,
+                            duration: 300,
                             easing: Easing.inOut(Easing.ease),
-                            useNativeDriver: true,
-                        }),
-                        Animated.timing(textOpacity, {
-                            toValue: 0,
-                            duration: 500,
                             useNativeDriver: true,
                         }),
                     ]).start(() => {
                         Animated.timing(mainAppOpacity, {
                             toValue: 1,
-                            duration: 0,
+                            duration: 10,
                             useNativeDriver: true,
                         }).start();
                         setAppReady(true);
@@ -173,12 +182,13 @@ function AppContent() {
                         ]}
                     >
                         <Animated.Image
-                            source={require("./assets/next-quest-icons/next_quest_mono_white.png")}
+                            source={require("./assets/next-quest-icons/next_quest_white.png")}
                             style={[
                                 styles.splashImage,
                                 {
                                     opacity: imageOpacity,
                                     tintColor: interpolatedTintColor,
+                                    borderRadius: imageBorderRadius,
                                 },
                             ]}
                             resizeMode="contain"

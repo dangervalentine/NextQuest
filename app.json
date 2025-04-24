@@ -4,14 +4,15 @@
         "slug": "next-quest",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png",
+        "icon": "./src/assets/next-quest-icons/next_quest_white.png",
         "jsEngine": "hermes",
         "userInterfaceStyle": "dark",
         "backgroundColor": "#01111d",
         "splash": {
-            "image": "./src/assets/next-quest-icons/next_quest_mono_white.png",
+            "image": "./src/assets/next-quest-icons/next_quest_white.png",
             "resizeMode": "contain",
-            "backgroundColor": "#01111d"
+            "backgroundColor": "#01111d",
+            "imageWidth": 200
         },
         "assetBundlePatterns": [
             "**/*"
@@ -20,14 +21,14 @@
             "supportsTablet": true,
             "bundleIdentifier": "com.dangervalentine.nextquest",
             "icon": {
-                "dark": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png",
-                "light": "./src/assets/next-quest-icons/next_quest.png",
-                "tinted": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png"
+                "dark": "./src/assets/next-quest-icons/next_quest_white.png",
+                "light": "./src/assets/next-quest-icons/next_quest_black.png",
+                "tinted": "./src/assets/next-quest-icons/next_quest_white.png"
             }
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./src/assets/next-quest-icons/next_quest_mono_app_icon.png",
+                "foregroundImage": "./src/assets/next-quest-icons/next_quest_white.png",
                 "backgroundColor": "#01111d"
             },
             "package": "com.dangervalentine.nextquest",
@@ -37,7 +38,7 @@
             ]
         },
         "web": {
-            "favicon": "./src/assets/next-quest-icons/next_quest_mono_cyan.png"
+            "favicon": "./src/assets/next-quest-icons/next_quest_white.png"
         },
         "plugins": [
             "expo-sqlite",

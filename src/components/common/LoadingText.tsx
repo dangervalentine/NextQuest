@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo } from "react";
-import { Animated, View } from "react-native";
+import { Animated, Easing, EasingFunction, View } from "react-native";
 import { generateRandomColorSequence } from "src/utils/colors";
 
 export const LoadingText = ({
@@ -11,57 +11,57 @@ export const LoadingText = ({
 }) => {
     const letters = (text || "Loading...").split("");
     const letterAnimations = letters.map(
-        () => useRef(new Animated.Value(1)).current
-    ); // Memoize the colors so they don't change on re-render
+        () => useRef(new Animated.Value(0)).current
+    );
 
     const colors = useMemo(
         () => generateRandomColorSequence(letters.length),
         []
-    ); // Animation timing constants
+    );
 
-    const LETTER_DELAY = 100; // Delay between each letter starting
-    const FADE_DURATION = 200; // Duration of each fade
-    const INITIAL_PAUSE = delay || 1000; // Initial pause before flicker starts // Calculate total sequence time: // Time for last letter to start + fade duration + a small buffer
-    const SEQUENCE_TIME =
-        (letters.length - 1) * LETTER_DELAY + FADE_DURATION - 200;
+    const LETTER_DELAY = 100;
+    const WAVE_DURATION = 500;
+    const WAVE_HEIGHT = -5;
+    const INITIAL_PAUSE = delay || 1000;
+
+    const waveEasing: EasingFunction = Easing.inOut(Easing.ease);
 
     useEffect(() => {
-        const animateLetter = (anim: Animated.Value, index: number) => {
-            // Initial fade in
-            const fadeIn = Animated.timing(anim, {
-                toValue: 1,
-                duration: 300,
-                delay: index * LETTER_DELAY,
-                useNativeDriver: true,
-            }); // Flicker effect
+        // Create the wave animation sequence
+        const wave = (anim: Animated.Value) =>
+            Animated.sequence([
+                Animated.timing(anim, {
+                    toValue: WAVE_HEIGHT,
+                    duration: WAVE_DURATION / 2,
+                    easing: waveEasing,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(anim, {
+                    toValue: 0,
+                    duration: WAVE_DURATION / 2,
+                    easing: waveEasing,
+                    useNativeDriver: true,
+                }),
+            ]);
 
-            const flicker = Animated.loop(
-                Animated.sequence([
-                    Animated.timing(anim, {
-                        toValue: 0,
-                        duration: FADE_DURATION,
-                        useNativeDriver: true,
-                    }),
-
-                    Animated.timing(anim, {
-                        toValue: 1,
-                        duration: FADE_DURATION,
-                        useNativeDriver: true,
-                    }), // Wait for exactly one sequence to complete before restarting
-
-                    Animated.delay(SEQUENCE_TIME),
-                ])
-            ); // Run fade in, then start the flicker
-
-            // Animated.sequence([fadeIn, Animated.delay(0)]).start(() => {
-            Animated.sequence([fadeIn, Animated.delay(INITIAL_PAUSE)]).start(
-                () => {
-                    flicker.start();
-                }
-            );
+        // Function to start the wave sequence for all letters
+        const startWaveSequence = () => {
+            letterAnimations.forEach((anim, index) => {
+                setTimeout(() => {
+                    wave(anim).start(() => {
+                        // When the last letter completes, start over
+                        if (index === letters.length - 1) {
+                            startWaveSequence();
+                        }
+                    });
+                }, index * LETTER_DELAY);
+            });
         };
 
-        letterAnimations.forEach((anim, index) => animateLetter(anim, index));
+        // Start with initial delay, then begin the wave sequence
+        setTimeout(() => {
+            startWaveSequence();
+        }, INITIAL_PAUSE);
     }, []);
 
     const renderLetter = (
@@ -72,7 +72,7 @@ export const LoadingText = ({
         <Animated.Text
             key={index}
             style={{
-                opacity: animation,
+                transform: [{ translateY: animation }],
                 color: colors[index],
                 fontSize: 18,
                 marginHorizontal: letter === " " ? 6 : 1,

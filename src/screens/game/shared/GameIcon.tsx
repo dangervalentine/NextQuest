@@ -53,8 +53,9 @@ const QuestIcon: React.FC<IconProps> = ({
     }
     return (
         <Image
-            source={require("../../../assets/next-quest-icons/next_quest_scroll.png")}
+            source={require("../../../assets/next-quest-icons/next_quest_white.png")}
             style={{ width: size, height: size }}
+            tintColor={color}
         />
     ); // Fallback to NextQuest image
 };
