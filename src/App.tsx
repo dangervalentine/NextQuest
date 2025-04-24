@@ -13,7 +13,7 @@ import {
 import { useFonts } from "expo-font";
 import { initializeDatabase } from "./data/config/databaseSeeder";
 import { getStatusColor } from "./utils/colors";
-
+import CircleMask from "./components/splash/CircleMask";
 // Create a dark theme for navigation
 const NavigationTheme = {
     ...DefaultTheme,
@@ -27,8 +27,8 @@ const NavigationTheme = {
 SplashScreen.preventAutoHideAsync();
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const IMAGE_SIZE = screenWidth * 0.25; // Original size of the image
-const ADDITIONAL_LOAD_TIME_MS = 4000;
+const IMAGE_SIZE = screenWidth * 0.475; // Original size of the image
+const ADDITIONAL_LOAD_TIME_MS = 2000;
 
 function AppContent() {
     const [isSplashReady, setSplashReady] = useState(false);
@@ -40,13 +40,13 @@ function AppContent() {
     const tintColorAnim = useMemo(() => new Animated.Value(0), []);
     const mainAppOpacity = useMemo(() => new Animated.Value(0), []);
     const imageScale = useMemo(() => new Animated.Value(1), []);
-    const textOpacity = useMemo(() => new Animated.Value(1), []);
+    const textOpacity = useMemo(() => new Animated.Value(0), []);
     const imageOpacity = useMemo(() => new Animated.Value(1), []);
-    const targetScale = useMemo(() => screenWidth / IMAGE_SIZE, []);
-    const imageBorderRadius = useMemo(
-        () => new Animated.Value(IMAGE_SIZE / 2),
+    const circleSizeAnim = useMemo(
+        () => new Animated.Value(IMAGE_SIZE * 0.95),
         []
-    );
+    ); // Larger initial size for better visibility
+    const targetScale = useMemo(() => screenWidth / IMAGE_SIZE, []);
     const { activeStatus } = useGameStatus();
 
     const [fontsLoaded] = useFonts({
@@ -71,15 +71,30 @@ function AppContent() {
         if (isSplashReady) {
             async function prepare() {
                 try {
-                    // Simulate additional loading time
-                    await new Promise((resolve) =>
-                        setTimeout(resolve, ADDITIONAL_LOAD_TIME_MS)
-                    );
-                    // Initialize database
-                    await initializeDatabase();
-                    setDbInitialized(true);
+                    Animated.sequence([
+                        Animated.timing(textOpacity, {
+                            toValue: 1,
+                            duration: 300,
+                            useNativeDriver: true,
+                        }),
+                        Animated.timing(circleSizeAnim, {
+                            toValue: IMAGE_SIZE * 2,
+                            duration: 600,
+                            delay: 300,
+                            easing: Easing.inOut(Easing.ease),
+                            useNativeDriver: false,
+                        }),
+                    ]).start(async () => {
+                        // Simulate additional loading time
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, ADDITIONAL_LOAD_TIME_MS)
+                        );
+                        // Initialize database
+                        await initializeDatabase();
+                        setDbInitialized(true);
 
-                    setAdditionalLoadComplete(true);
+                        setAdditionalLoadComplete(true);
+                    });
                 } catch (e) {
                     console.warn("Initialization failed:", e);
                     setDbInitialized(true);
@@ -92,21 +107,16 @@ function AppContent() {
 
     const prepare = useCallback(async () => {
         try {
-            if (isSplashReady && dbInitialized && additionalLoadComplete) {
-                Animated.sequence([
-                    Animated.timing(tintColorAnim, {
-                        toValue: 1,
-                        duration: 300,
-                        useNativeDriver: false,
-                    }),
-                    Animated.timing(imageBorderRadius, {
-                        toValue: 0,
-                        duration: 300,
-                        easing: Easing.inOut(Easing.ease),
-                        useNativeDriver: false,
-                    }),
-                ]).start(() => {
-                    // Start the animation sequence
+            const appIsReady =
+                isSplashReady && dbInitialized && additionalLoadComplete;
+
+            if (appIsReady) {
+                // Start the animation sequence
+                Animated.timing(tintColorAnim, {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: false,
+                }).start(() => {
                     Animated.parallel([
                         Animated.timing(textOpacity, {
                             toValue: 0,
@@ -143,6 +153,7 @@ function AppContent() {
         imageScale,
         textOpacity,
         imageOpacity,
+        circleSizeAnim,
         targetScale,
         isSplashReady,
         dbInitialized,
@@ -181,19 +192,23 @@ function AppContent() {
                             },
                         ]}
                     >
-                        <Animated.Image
-                            source={require("./assets/next-quest-icons/next_quest_white.png")}
-                            style={[
-                                styles.splashImage,
-                                {
-                                    opacity: imageOpacity,
-                                    tintColor: interpolatedTintColor,
-                                    borderRadius: imageBorderRadius,
-                                },
-                            ]}
-                            resizeMode="contain"
-                            onLoad={() => setImageLoaded(true)}
-                        />
+                        <View
+                            style={{
+                                width: IMAGE_SIZE,
+                                height: IMAGE_SIZE,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: colorSwatch.background.darkest,
+                            }}
+                        >
+                            <CircleMask
+                                size={IMAGE_SIZE}
+                                circleSize={circleSizeAnim}
+                                tintColor={interpolatedTintColor}
+                                onImageLoad={() => setImageLoaded(true)}
+                                opacity={imageOpacity}
+                            />
+                        </View>
                     </Animated.View>
                     <Animated.View
                         style={[
@@ -229,6 +244,7 @@ const styles = StyleSheet.create({
     },
     splashContainer: {
         flex: 1,
+        marginTop: screenHeight * 0.027,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -244,7 +260,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 0,
         right: 0,
-        bottom: screenHeight / 2 - 120,
+        bottom: screenHeight / 3,
         alignItems: "center",
     },
 });

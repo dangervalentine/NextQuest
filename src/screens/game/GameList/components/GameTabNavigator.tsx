@@ -59,9 +59,9 @@ export const tabBarStyle = {
     borderColor: colorSwatch.neutral.darkGray,
     borderTopWidth: 1,
     flexDirection: "row" as const,
-    justifyContent: "space-around" as const,
-    paddingHorizontal: 0,
+    justifyContent: "space-between" as const,
     height: 60,
+    paddingHorizontal: 0,
 };
 
 export const headerStyle = {
@@ -90,8 +90,7 @@ export const screenOptions: BottomTabNavigationOptions = {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        minWidth: "25%",
-        margin: 1,
+        margin: 0,
         padding: 0,
     },
     headerStyle,
