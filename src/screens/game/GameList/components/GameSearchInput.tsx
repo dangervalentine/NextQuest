@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import { GameStatus } from "src/constants/config/gameStatus";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
-import { getStatusLabel, getStatusStyles } from "src/utils/gameStatusUtils";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusLabel } from "src/utils/gameStatusUtils";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface GameSearchInputProps {
     gameStatus: GameStatus;
@@ -47,15 +47,10 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     const statusColor = getStatusColor(gameStatus);
 
     return (
-        <View style={styles.searchContainer}>
-            <View
-                style={[
-                    styles.searchInputContainer,
-                    getStatusStyles(gameStatus),
-                ]}
-            >
+        <View style={[styles.searchContainer, { borderColor: statusColor }]}>
+            <View style={styles.searchInputContainer}>
                 <TextInput
-                    style={styles.searchInput}
+                    style={[styles.searchInput, { color: statusColor }]}
                     placeholder={placeholder}
                     placeholderTextColor={statusColor}
                     value={inputValue}
@@ -106,6 +101,7 @@ const styles = StyleSheet.create({
         minHeight: 45,
     },
     searchInputContainer: {
+        color: colorSwatch.text.primary,
         flexDirection: "row",
         alignItems: "center",
     },

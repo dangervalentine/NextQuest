@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { Image } from "react-native";
-import { colorSwatch } from "../../../utils/colorConstants";
+import { colorSwatch } from "../../../constants/theme/colorConstants";
 
 // Define the valid icon names for each library
 type MaterialCommunityIconNames = keyof typeof MaterialCommunityIcons.glyphMap;

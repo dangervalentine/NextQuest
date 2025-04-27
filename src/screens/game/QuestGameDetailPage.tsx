@@ -9,12 +9,11 @@ import {
     Easing,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { QuestGameDetailRouteProp } from "src/utils/navigationTypes";
+import { QuestGameDetailRouteProp } from "src/navigation/navigationTypes";
 import ImageCarousel from "./GameDetail/components/ImageCarousel";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import IGDBService from "src/services/api/IGDBService";
 import { QuestGame } from "src/data/models/QuestGame";
-import WebsitesSection from "src/app/components/WebsitesSection";
 import StorylineSection from "./GameDetail/components/StorylineSection";
 import Text from "src/components/common/Text";
 import { PersonalRatingSection } from "./GameDetail/components/PersonalRatingSection";
@@ -28,7 +27,8 @@ import FranchiseSection from "./GameDetail/components/MetadataGrid";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { getBackgroundImage } from "../../utils/imageUtils";
 import { LoadingText } from "src/components/common/LoadingText";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusColor } from "src/utils/colorsUtils";
+import WebsitesSection from "./GameDetail/components/WebsitesSection";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();

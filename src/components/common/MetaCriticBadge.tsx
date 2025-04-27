@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Linking,
 } from "react-native";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import { Image } from "expo-image";
 import MetacriticLogo from "../../assets/Metacritic_logo.svg";
 

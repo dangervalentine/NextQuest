@@ -12,9 +12,9 @@ import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface GameSectionProps {
     gameStatus: GameStatus;

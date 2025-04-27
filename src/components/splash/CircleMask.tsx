@@ -1,5 +1,5 @@
 import { View, Animated } from "react-native";
-import { colorSwatch } from "../../utils/colorConstants";
+import { colorSwatch } from "../../constants/theme/colorConstants";
 // Custom triangle-in-circle-in-square mask component
 interface CircleMaskProps {
     size: number;

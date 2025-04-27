@@ -7,7 +7,7 @@ import {
 } from "@expo/vector-icons";
 import QuestIcon from "./GameIcon";
 import Text from "../../../components/common/Text";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 
 interface HeaderWithIconProps {
     iconName:

@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import Text from "../../components/Text";
-import { colorSwatch } from "../../utils/colorConstants";
+import Text from "src/components/common/Text";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 
 const GameLoggerHeader = () => {
     return (
@@ -28,11 +28,3 @@ const styles = StyleSheet.create({
 });
 
 export default GameLoggerHeader;
-
-
-
-
-
-
-
-

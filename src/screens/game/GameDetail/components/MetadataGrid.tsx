@@ -2,12 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "src/utils/navigationTypes";
+import { RootStackParamList } from "src/navigation/navigationTypes";
 import { QuestGame } from "src/data/models/QuestGame";
 import Text from "src/components/common/Text";
 import { StyleSheet } from "react-native";
-import { colorSwatch } from "src/utils/colorConstants";
-import { getStatusColor } from "src/utils/colors";
+import { colorSwatch } from "src/constants/theme/colorConstants";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface MetadataGridProps {
     game: QuestGame;

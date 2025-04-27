@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, Image as RNImage } from "react-native";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 
 interface PlatformLogoBadgeProps {
     platform: string;

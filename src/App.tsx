@@ -3,7 +3,7 @@ import { StyleSheet, View, Animated, Easing, Dimensions } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { colorSwatch } from "./utils/colorConstants";
+import { colorSwatch } from "./constants/theme/colorConstants";
 import MainNavigationContainer from "./screens/game/MainNavigationContainer";
 import { LoadingText } from "./components/common/LoadingText";
 import {
@@ -12,7 +12,7 @@ import {
 } from "./contexts/GameStatusContext";
 import { useFonts } from "expo-font";
 import { initializeDatabase } from "./data/config/databaseSeeder";
-import { getStatusColor } from "./utils/colors";
+import { getStatusColor } from "./utils/colorsUtils";
 import CircleMask from "./components/splash/CircleMask";
 // Create a dark theme for navigation
 const NavigationTheme = {

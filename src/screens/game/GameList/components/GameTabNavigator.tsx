@@ -8,8 +8,8 @@ import HeaderWithIcon from "../../shared/HeaderWithIcon";
 import QuestIcon from "../../shared/GameIcon";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
-import { colorSwatch } from "src/utils/colorConstants";
-import { getStatusColor } from "src/utils/colors";
+import { colorSwatch } from "src/constants/theme/colorConstants";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 const Tab = createBottomTabNavigator();
 

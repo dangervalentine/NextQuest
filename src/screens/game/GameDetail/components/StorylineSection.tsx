@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { StyleSheet } from "react-native";
 import Text from "../../../../components/common/Text";
 import ExpandableContent from "../../../../components/common/ExpandableContent";
-import { colorSwatch } from "../../../../utils/colorConstants";
+import { colorSwatch } from "../../../../constants/theme/colorConstants";
 
 interface StorylineSectionProps {
     storyline?: string;

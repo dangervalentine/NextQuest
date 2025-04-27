@@ -1,11 +1,11 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { PlatformLogoBadge } from "src/components/common/PlatformLogoBadge";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import { QuestGame } from "src/data/models/QuestGame";
 import Text from "src/components/common/Text";
 import ExpandableContent from "src/components/common/ExpandableContent";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface PlatformsSectionProps {
     game: QuestGame;

@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { getAgeRating } from "src/utils/getAgeRating";
 import { QuestGame } from "src/data/models/QuestGame";
 import E from "../../assets/ESRB/E.svg";
 import E10 from "../../assets/ESRB/E10.svg";
@@ -9,6 +8,7 @@ import M from "../../assets/ESRB/M.svg";
 import AO from "../../assets/ESRB/AO.svg";
 import RP from "../../assets/ESRB/RP.svg";
 import { Image } from "expo-image";
+import { ESRB_RATINGS } from "src/constants/config/ratings";
 
 interface AgeRatingBadgeProps {
     game: QuestGame;
@@ -19,6 +19,18 @@ export const AgeRatingBadge: React.FC<AgeRatingBadgeProps> = ({
     game,
     style,
 }) => {
+    const getAgeRating = (questGame: QuestGame) => {
+        const ageRating = questGame.age_ratings?.find(
+            (rating) => rating.category === 1
+        );
+
+        if (!ageRating) return null;
+
+        const rating = ESRB_RATINGS[ageRating.rating];
+
+        return rating;
+    };
+
     const rating = getAgeRating(game);
 
     if (!rating) return null;

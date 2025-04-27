@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
-import { colorSwatch } from "../../utils/colorConstants";
+import { colorSwatch } from "../../constants/theme/colorConstants";
 import QuestIcon from "../../screens/game/shared/GameIcon";
 
 interface ExpandableContentProps {

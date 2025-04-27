@@ -1,6 +1,6 @@
 import React from "react";
 import Toast, { BaseToast, ToastProps } from "react-native-toast-message";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 
 type ToastConfigParams = {
     type: string;

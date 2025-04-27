@@ -1,13 +1,13 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { colorSwatch } from "../../../../utils/colorConstants";
+import { colorSwatch } from "../../../../constants/theme/colorConstants";
 import Text from "../../../../components/common/Text";
 import { AgeRatingBadge } from "../../../../components/common/AgeRatingBadge";
 import FullWidthImage from "../../shared/FullWidthImage";
 import { QuestGame } from "../../../../data/models/QuestGame";
 import { MetacriticBadge } from "../../../../components/common/MetaCriticBadge";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface HeaderSectionProps {
     game: QuestGame;

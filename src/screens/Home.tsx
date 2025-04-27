@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
-import { colorSwatch } from "../utils/colorConstants";
+import { colorSwatch } from "../constants/theme/colorConstants";
 import Text from "../components/common/Text";
 
 const Home: React.FC = () => {

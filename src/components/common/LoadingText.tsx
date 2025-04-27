@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { Animated, Easing, EasingFunction, View } from "react-native";
-import { generateRandomColorSequence } from "src/utils/colors";
+import { generateRandomColorSequence } from "src/utils/colorsUtils";
 
 export const LoadingText = ({
     text,

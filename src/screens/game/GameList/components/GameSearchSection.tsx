@@ -11,11 +11,11 @@ import GameItem from "./GameItem";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import IGDBService from "src/services/api/IGDBService";
-import { SearchTabRouteProp } from "src/utils/navigationTypes";
-import { colorSwatch } from "src/utils/colorConstants";
+import { SearchTabRouteProp } from "src/navigation/navigationTypes";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface SearchParams {
     searchQuery?: string;

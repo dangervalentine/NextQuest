@@ -9,11 +9,11 @@ import {
     Dimensions,
 } from "react-native";
 import { PlatformLogoBadge } from "./PlatformLogoBadge";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import { Ionicons } from "@expo/vector-icons";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
 import { useGameStatus } from "src/contexts/GameStatusContext";
-import { getStatusColor } from "src/utils/colors";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface Platform {
     id: number;

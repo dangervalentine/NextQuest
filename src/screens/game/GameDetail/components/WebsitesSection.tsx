@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Linking, TouchableOpacity } from "react-native";
-import { colorSwatch } from "../../utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-import Text from "../../components/common/Text";
+import Text from "src/components/common/Text";
 interface Website {
     id: number;
     category: number;

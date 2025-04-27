@@ -2,8 +2,8 @@ import React, { memo, useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import Text from "src/components/common/Text";
 import { updateGameRating } from "src/data/repositories/questGames";
-import { colorSwatch } from "src/utils/colorConstants";
-import { getRatingColor } from "src/utils/colors";
+import { colorSwatch } from "src/constants/theme/colorConstants";
+import { getRatingColor } from "src/utils/colorsUtils";
 import QuestIcon from "../../shared/GameIcon";
 
 interface RatingProps {

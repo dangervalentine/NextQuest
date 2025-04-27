@@ -6,7 +6,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { Image } from "expo-image";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 
 interface FullHeightImageProps {
     source: string;

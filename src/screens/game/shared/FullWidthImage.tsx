@@ -7,7 +7,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { View, StyleSheet, Image as RNImage } from "react-native";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 
 interface FullWidthImageProps {
     source?: string;

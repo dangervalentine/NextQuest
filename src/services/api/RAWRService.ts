@@ -1,5 +1,5 @@
 import { RAWG_API_KEY } from "@env";
-import { rawgPlatformIds } from "src/utils/rawgPlatformIds";
+import { rawgPlatformIds } from "src/constants/api/rawgPlatformIds";
 
 class RAWRService {
     private static API_URL = "https://api.rawg.io/api/";

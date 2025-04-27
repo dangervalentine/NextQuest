@@ -1,5 +1,5 @@
 import { GameStatus } from "src/constants/config/gameStatus";
-import { COLOR_ARRAY, colorSwatch } from "./colorConstants";
+import { COLOR_ARRAY, colorSwatch } from "../constants/theme/colorConstants";
 
 export const generateRandomColorSequence = (length: number): string[] => {
     if (length <= 0) return [];

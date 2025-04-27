@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import Text from "src/components/common/Text";
 import { QuestGame } from "src/data/models/QuestGame";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import { StyleSheet } from "react-native";
 
 interface ThemesSectionProps {

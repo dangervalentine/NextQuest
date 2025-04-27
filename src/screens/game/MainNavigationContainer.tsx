@@ -19,14 +19,17 @@ import {
     updateQuestGame,
 } from "src/data/repositories/questGames";
 import IGDBService from "src/services/api/IGDBService";
-import { colorSwatch } from "src/utils/colorConstants";
+import { colorSwatch } from "src/constants/theme/colorConstants";
 import { headerStyle } from "./GameList/components/GameTabNavigator";
 import { createIGDBGame } from "src/data/repositories/igdbGames";
 import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";
 import { QuestToast, showToast } from "src/components/common/QuestToast";
 import GameTabs from "./GameTabs";
-import { RootStackParamList, TabParamList } from "src/utils/navigationTypes";
-import { getStatusColor } from "src/utils/colors";
+import {
+    RootStackParamList,
+    TabParamList,
+} from "src/navigation/navigationTypes";
+import { getStatusColor } from "src/utils/colorsUtils";
 import { Ionicons } from "@expo/vector-icons";
 import Text from "src/components/common/Text";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
@@ -34,73 +37,10 @@ import Toast from "react-native-toast-message";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import { GameTabNavigatorRef } from "./GameList/components/GameTabNavigator";
-
+import AnimatedBackButton from "./shared/AnimatedBackButton";
 const Stack = createStackNavigator<RootStackParamList>();
 
 type MainNavigationProp = NavigationProp<RootStackParamList>;
-
-// Custom animated back button component
-interface AnimatedBackButtonProps {
-    onPress: () => void;
-    color: string;
-    title: string;
-}
-
-const AnimatedBackButton: React.FC<AnimatedBackButtonProps> = ({
-    onPress,
-    color,
-    title,
-}) => {
-    const textMargin = useRef(new Animated.Value(12)).current;
-
-    const handlePress = () => {
-        // Animation sequence: text moves toward icon, then bounces back
-        Animated.sequence([
-            // Move text closer to icon - make faster (80ms)
-            Animated.timing(textMargin, {
-                toValue: 0,
-                duration: 80,
-                useNativeDriver: false,
-            }),
-            // Bounce back with spring effect - make snappier with higher tension
-            Animated.timing(textMargin, {
-                toValue: 12,
-                duration: 80,
-                useNativeDriver: false,
-            }),
-        ]).start(() => onPress());
-    };
-
-    return (
-        <Pressable
-            onPress={handlePress}
-            style={({ pressed }) => ({
-                flexDirection: "row",
-                alignItems: "center",
-                paddingRight: 16,
-                paddingVertical: 8,
-                paddingLeft: 8,
-                width: "100%",
-                opacity: pressed ? 0.6 : 1,
-            })}
-        >
-            <Ionicons name="chevron-back" size={24} color={color} />
-            <Animated.View style={{ marginLeft: textMargin }}>
-                <Text
-                    variant="title"
-                    style={{
-                        fontSize: 24,
-                        lineHeight: 32,
-                        color: color,
-                    }}
-                    numberOfLines={1}
-                >
-                    {title}
-                </Text>
-            </Animated.View>
-        </Pressable>
-    );
-};
 
 const MainNavigationContainer: React.FC = () => {
     const navigation = useNavigation<MainNavigationProp>();
@@ -149,9 +89,7 @@ const MainNavigationContainer: React.FC = () => {
     const loadGamesForStatus = useCallback(async (status: GameStatus) => {
         try {
             setIsLoading((prev) => ({ ...prev, [status]: true }));
-
             const games = await getQuestGamesByStatus(status);
-
             const sortedGames = sortGames(games);
 
             setGameData((prev) => ({ ...prev, [status]: sortedGames }));

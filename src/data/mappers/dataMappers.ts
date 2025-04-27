@@ -1,4 +1,3 @@
-import { GameStatus } from "src/constants/config/gameStatus";
 import { ESRB_RATINGS } from "src/constants/config/ratings";
 import { GameDetails } from "src/data/models/GameDetails";
 
@@ -76,51 +75,3 @@ export const mapToGameDetails = (data: any): GameDetails => {
 
     return gameDetails;
 };
-
-/**
- * Formats release dates in chronological order with platform information
- * @param game The game details containing release dates
- * @returns Array of formatted release date strings in the format "date (platform)"
- */
-export function formatReleaseDates(game: GameDetails): string[] {
-    if (!game.release_dates || game.release_dates.length === 0) {
-        return [];
-    }
-
-    // Sort release dates by date in ascending order
-    const sortedDates = [...game.release_dates].sort((a, b) => a.date - b.date);
-
-    return sortedDates.map((release) => {
-        const date =
-            release.human ||
-            new Date(release.date * 1000).toISOString().split("T")[0];
-        const platform = release.platform
-            ? `Platform ${release.platform}`
-            : "Unknown Platform";
-        return `${date} (${platform})`;
-    });
-}
-
-/**
- * Converts a GameStatus enum value to a human-readable string
- * @param gameStatus The game status to convert
- * @returns Human-readable status string
- */
-export function getGameStatus(gameStatus: GameStatus): string {
-    switch (gameStatus) {
-        case "completed":
-            return "Completed";
-        case "ongoing":
-            return "Ongoing";
-        case "backlog":
-            return "Backlog";
-        case "undiscovered":
-            return "Undiscovered";
-        case "on_hold":
-            return "On Hold";
-        case "dropped":
-            return "Dropped";
-        default:
-            return "Undiscovered";
-    }
-}

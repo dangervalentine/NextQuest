@@ -6,7 +6,7 @@ import Carousel, {
     Pagination,
 } from "react-native-reanimated-carousel";
 import { Image } from "expo-image";
-import { generateRandomColorSequence } from "src/utils/colors";
+import { generateRandomColorSequence } from "src/utils/colorsUtils";
 
 const { width } = Dimensions.get("window");
 

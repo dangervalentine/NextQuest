@@ -14,12 +14,12 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
-import { colorSwatch } from "src/utils/colorConstants";
-import { formatReleaseDate } from "src/utils/dateFormatters";
-import { ScreenNavigationProp } from "src/utils/navigationTypes";
+import { colorSwatch } from "src/constants/theme/colorConstants";
+import { formatReleaseDate } from "src/utils/dateUtils";
+import { ScreenNavigationProp } from "src/navigation/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
 import { getStatusLabel } from "src/utils/gameStatusUtils";
-import { getRatingColor, getStatusColor } from "src/utils/colors";
+import { getRatingColor, getStatusColor } from "src/utils/colorsUtils";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
 
 // Shared state to track if hint has been shown in this session
