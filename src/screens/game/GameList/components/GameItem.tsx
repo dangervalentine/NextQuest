@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef, useState } from "react";
+import React, { memo, useMemo, useRef, useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -51,6 +51,18 @@ const GameItem: React.FC<GameItemProps> = memo(
         const heightAnim = useRef(new Animated.Value(1)).current;
         const [isRemoveClicked, setIsRemoveClicked] = useState(false);
         const prevSwipeX = useRef(0);
+        const [panValue, setPanValue] = useState(0);
+
+        // Add a listener to track pan value
+        useEffect(() => {
+            const panListener = pan.addListener(({ value }) => {
+                setPanValue(value);
+            });
+
+            return () => {
+                pan.removeListener(panListener);
+            };
+        }, [pan]);
 
         useFocusEffect(
             React.useCallback(() => {
@@ -75,11 +87,10 @@ const GameItem: React.FC<GameItemProps> = memo(
                 // Brief pause before starting the demonstration
                 Animated.delay(300),
 
-                // Phase 1: Left swipe demonstration
-                // Move chevron and peek menu simultaneously to show left swipe gesture
+                // Left swipe demonstration - show the status menu
                 Animated.parallel([
                     Animated.timing(leftChevronPosition, {
-                        toValue: -200,
+                        toValue: -300,
                         duration: 300,
                         useNativeDriver: true,
                     }),
@@ -89,7 +100,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         useNativeDriver: true,
                     }),
                     Animated.timing(pan, {
-                        toValue: -60,
+                        toValue: -100,
                         duration: 300,
                         delay: 100,
                         useNativeDriver: false,
@@ -119,7 +130,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                 ]),
 
                 // Phase 2: Right swipe demonstration
-                // Move chevron and peek menu simultaneously to show right swipe gesture
                 Animated.parallel([
                     Animated.timing(rightChevronPosition, {
                         toValue: 200,
@@ -133,13 +143,13 @@ const GameItem: React.FC<GameItemProps> = memo(
                         useNativeDriver: true,
                     }),
                     Animated.timing(pan, {
-                        toValue: 60,
+                        toValue: 100,
                         duration: 300,
                         delay: 100,
                         useNativeDriver: false,
                     }),
                 ]),
-                // Pause to show the remove menu
+                // Pause to show the right menu
                 Animated.delay(500),
 
                 Animated.parallel([
@@ -195,18 +205,18 @@ const GameItem: React.FC<GameItemProps> = memo(
                     onPanResponderMove: (_, gestureState) => {
                         if (isReordering) return;
 
-                        // Only allow right swipe if not undiscovered
+                        // Allow both left and right swipes
                         const maxRight =
-                            questGame.gameStatus === "undiscovered"
-                                ? 0
-                                : isRemoveClicked
-                                ? 200 // Allow full swipe when remove is clicked
-                                : 100; // Only show first button otherwise
-                        // Make left swipe wider for undiscovered games
+                            questGame.gameStatus === "undiscovered" ? 0 : 200; // Max right swipe value - full width of right menu
+
+                        // Make left swipe wider for undiscovered games or when remove is clicked
                         const maxLeft =
                             questGame.gameStatus === "undiscovered"
                                 ? -300
-                                : -200;
+                                : isRemoveClicked
+                                ? -300 // Width for confirmation buttons
+                                : -300; // Width for status buttons
+
                         const newX = Math.max(
                             maxLeft,
                             Math.min(maxRight, gestureState.dx)
@@ -217,20 +227,13 @@ const GameItem: React.FC<GameItemProps> = memo(
                             (prevSwipeX.current < 75 && newX >= 75) ||
                             (prevSwipeX.current > 75 && newX <= 75)
                         ) {
-                            // Crossing the remove menu threshold
-                            triggerHapticFeedback("light");
-                        } else if (
-                            isRemoveClicked &&
-                            ((prevSwipeX.current < 150 && newX >= 150) ||
-                                (prevSwipeX.current > 150 && newX <= 150))
-                        ) {
-                            // Crossing the confirm menu threshold
+                            // Crossing the right menu threshold
                             triggerHapticFeedback("light");
                         } else if (
                             (prevSwipeX.current > -75 && newX <= -75) ||
                             (prevSwipeX.current < -75 && newX >= -75)
                         ) {
-                            // Crossing the status change menu threshold
+                            // Crossing the status change/delete menu threshold
                             triggerHapticFeedback("light");
                         }
 
@@ -240,11 +243,11 @@ const GameItem: React.FC<GameItemProps> = memo(
                     onPanResponderRelease: (_, gestureState) => {
                         if (isReordering) return;
                         if (gestureState.dx < -SWIPE_THRESHOLD) {
-                            // Left swipe - wider for undiscovered
+                            // Left swipe - wider for undiscovered or when in remove confirmation mode
                             const leftPosition =
                                 questGame.gameStatus === "undiscovered"
                                     ? -305
-                                    : -205;
+                                    : -305; // Match the full menu width
                             Animated.spring(pan, {
                                 toValue: leftPosition,
                                 useNativeDriver: false,
@@ -253,19 +256,11 @@ const GameItem: React.FC<GameItemProps> = memo(
                             gestureState.dx > SWIPE_THRESHOLD &&
                             questGame.gameStatus !== "undiscovered"
                         ) {
-                            // If we're swiping far enough to confirm and remove is clicked
-                            if (gestureState.dx > 150 && isRemoveClicked) {
-                                Animated.spring(pan, {
-                                    toValue: 200,
-                                    useNativeDriver: false,
-                                }).start();
-                            } else {
-                                // Always snap to first button position if not in remove mode
-                                Animated.spring(pan, {
-                                    toValue: 100,
-                                    useNativeDriver: false,
-                                }).start();
-                            }
+                            // Right swipe for the right menu
+                            Animated.spring(pan, {
+                                toValue: 200, // Full right menu width
+                                useNativeDriver: false,
+                            }).start();
                         } else {
                             // Close menu
                             Animated.spring(pan, {
@@ -309,8 +304,9 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleRemoveClick = () => {
             triggerHapticFeedback("light");
             setIsRemoveClicked(true);
+            // Keep menu open by maintaining the same left position
             Animated.spring(pan, {
-                toValue: 200,
+                toValue: -305, // Match full left menu width
                 useNativeDriver: false,
             }).start();
         };
@@ -457,7 +453,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                 }}
             >
                 <View style={styles.innerContainer}>
-                    {!isReordering && (
+                    {!isReordering && panValue < -5 && (
                         <View
                             style={[
                                 styles.statusMenu,
@@ -466,99 +462,119 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 },
                             ]}
                         >
-                            {getAvailableStatuses(questGame.gameStatus).map(
-                                (status, index) => (
+                            {!isRemoveClicked ? (
+                                <>
+                                    {questGame.gameStatus !==
+                                        "undiscovered" && (
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.statusButton,
+                                                {
+                                                    backgroundColor:
+                                                        colorSwatch.accent.pink,
+                                                },
+                                            ]}
+                                            activeOpacity={0.7}
+                                            onPress={handleRemoveClick}
+                                        >
+                                            <Text
+                                                variant="button"
+                                                style={styles.statusButtonText}
+                                            >
+                                                Remove
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                    {getAvailableStatuses(
+                                        questGame.gameStatus
+                                    ).map((status, index) => (
+                                        <TouchableOpacity
+                                            key={status}
+                                            style={[
+                                                styles.statusButton,
+                                                getStatusButtonStyles(status),
+                                                index ===
+                                                    getAvailableStatuses(
+                                                        questGame.gameStatus
+                                                    ).length -
+                                                        1 && {
+                                                    borderTopRightRadius: 8,
+                                                    borderBottomRightRadius: 8,
+                                                },
+                                            ]}
+                                            onPress={() =>
+                                                handleStatusSelect(status)
+                                            }
+                                            activeOpacity={0.7}
+                                        >
+                                            <Text
+                                                variant="button"
+                                                style={styles.statusButtonText}
+                                            >
+                                                {getStatusLabel(status)}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </>
+                            ) : (
+                                <>
                                     <TouchableOpacity
-                                        key={status}
                                         style={[
                                             styles.statusButton,
-                                            getStatusButtonStyles(status),
-                                            index ===
-                                                getAvailableStatuses(
-                                                    questGame.gameStatus
-                                                ).length -
-                                                    1 && {
+                                            {
+                                                backgroundColor:
+                                                    colorSwatch.background
+                                                        .darkest,
+                                            },
+                                        ]}
+                                        activeOpacity={0.7}
+                                        onPress={handleCancel}
+                                    >
+                                        <Text
+                                            variant="button"
+                                            style={[
+                                                styles.statusButtonText,
+                                                {
+                                                    color:
+                                                        colorSwatch.text
+                                                            .primary,
+                                                },
+                                            ]}
+                                        >
+                                            Cancel
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.statusButton,
+                                            {
+                                                backgroundColor:
+                                                    colorSwatch.accent.pink,
                                                 borderTopRightRadius: 8,
                                                 borderBottomRightRadius: 8,
                                             },
                                         ]}
-                                        onPress={() =>
-                                            handleStatusSelect(status)
-                                        }
                                         activeOpacity={0.7}
+                                        onPress={handleConfirmRemove}
                                     >
                                         <Text
                                             variant="button"
                                             style={styles.statusButtonText}
                                         >
-                                            {getStatusLabel(status)}
+                                            Confirm
                                         </Text>
                                     </TouchableOpacity>
-                                )
+                                </>
                             )}
                         </View>
                     )}
-                    {!isReordering && questGame.gameStatus !== "undiscovered" && (
-                        <View style={styles.rightMenu}>
-                            <TouchableOpacity
-                                style={[
-                                    styles.statusButton,
-                                    {
-                                        borderTopLeftRadius: 8,
-                                        borderBottomLeftRadius: 8,
-                                    },
-                                    {
-                                        backgroundColor: isRemoveClicked
-                                            ? colorSwatch.background.darkest
-                                            : colorSwatch.accent.pink,
-                                    },
-                                ]}
-                                activeOpacity={0.7}
-                                onPress={
-                                    isRemoveClicked
-                                        ? handleCancel
-                                        : handleRemoveClick
-                                }
-                            >
-                                <Text
-                                    variant="button"
-                                    style={[
-                                        styles.statusButtonText,
-                                        {
-                                            color: isRemoveClicked
-                                                ? colorSwatch.text.primary
-                                                : colorSwatch.text.inverse,
-                                        },
-                                    ]}
-                                >
-                                    {isRemoveClicked ? "Cancel" : "Remove"}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.statusButton,
-                                    {
-                                        backgroundColor:
-                                            colorSwatch.accent.pink,
-                                        opacity: isRemoveClicked ? 1 : 0.3,
-                                    },
-                                ]}
-                                activeOpacity={0.7}
-                                onPress={handleConfirmRemove}
-                                disabled={!isRemoveClicked}
-                            >
-                                <Text
-                                    variant="button"
-                                    style={[
-                                        styles.statusButtonText,
-                                        !isRemoveClicked && { opacity: 0.3 },
-                                    ]}
-                                >
-                                    Confirm
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
+                    {!isReordering &&
+                        panValue > 5 &&
+                        questGame.gameStatus !== "undiscovered" && (
+                            <View style={styles.rightMenu}>
+                                {/* Empty right menu for future use */}
+                            </View>
+                        )}
                     <Animated.View
                         style={[
                             styles.gameContainer,
@@ -756,6 +772,7 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 2,
         borderRadius: 10,
+        backgroundColor: colorSwatch.background.dark,
     },
     gameContainer: {
         flexDirection: "row",
@@ -769,7 +786,7 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        width: 200,
+        width: 300,
         backgroundColor: colorSwatch.background.darker,
         zIndex: 1,
         elevation: 1,
@@ -777,13 +794,14 @@ const styles = StyleSheet.create({
         alignItems: "stretch",
         borderLeftWidth: 1,
         borderLeftColor: colorSwatch.neutral.darkGray,
+        paddingLeft: 2,
     },
     rightMenu: {
         position: "absolute",
         left: 0,
         top: 0,
         bottom: 0,
-        width: 200, // Increased width to accommodate both buttons
+        width: 200,
         flexDirection: "row",
         alignItems: "stretch",
         borderRightWidth: 1,
@@ -806,6 +824,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 8,
         margin: 1,
+        minWidth: 80,
     },
     statusButtonText: {
         fontSize: 14,
