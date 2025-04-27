@@ -1,7 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
-import GameTabNavigator from "./GameList/components/GameTabNavigator";
+import GameTabNavigator, {
+    GameTabNavigatorRef,
+} from "./GameList/components/GameTabNavigator";
 
 interface GameTabsProps {
     gameData: Record<GameStatus, MinimalQuestGame[]>;
@@ -21,26 +23,32 @@ interface GameTabsProps {
     onTabChange: (tabName: string) => void;
 }
 
-const GameTabs: React.FC<GameTabsProps> = ({
-    gameData,
-    isLoading,
-    handleStatusChange,
-    handleDiscover,
-    handleRemoveItem,
-    handleReorder,
-    onTabChange,
-}) => {
-    return (
-        <GameTabNavigator
-            gameData={gameData}
-            isLoading={isLoading}
-            handleStatusChange={handleStatusChange}
-            handleDiscover={handleDiscover}
-            handleRemoveItem={handleRemoveItem}
-            handleReorder={handleReorder}
-            onTabChange={onTabChange}
-        />
-    );
-};
+const GameTabs = forwardRef<GameTabNavigatorRef, GameTabsProps>(
+    (
+        {
+            gameData,
+            isLoading,
+            handleStatusChange,
+            handleDiscover,
+            handleRemoveItem,
+            handleReorder,
+            onTabChange,
+        },
+        ref
+    ) => {
+        return (
+            <GameTabNavigator
+                ref={ref}
+                gameData={gameData}
+                isLoading={isLoading}
+                handleStatusChange={handleStatusChange}
+                handleDiscover={handleDiscover}
+                handleRemoveItem={handleRemoveItem}
+                handleReorder={handleReorder}
+                onTabChange={onTabChange}
+            />
+        );
+    }
+);
 
 export default GameTabs;

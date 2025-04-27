@@ -31,12 +31,22 @@ interface GameItemProps {
     removeItem?: (id: number, status: GameStatus) => void;
     onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
     isFirstItem?: boolean;
+    moveToTop?: (id: number, status: GameStatus) => void;
+    moveToBottom?: (id: number, status: GameStatus) => void;
 }
 
 const SWIPE_THRESHOLD = 75; // Absolute value for both directions
 
 const GameItem: React.FC<GameItemProps> = memo(
-    ({ questGame, reorder, removeItem, onStatusChange, isFirstItem }) => {
+    ({
+        questGame,
+        reorder,
+        removeItem,
+        onStatusChange,
+        isFirstItem,
+        moveToTop,
+        moveToBottom,
+    }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
         const [isReordering, setIsReordering] = useState(false);
         const [hasShownHint, setHasShownHint] = useState(false);
@@ -424,6 +434,30 @@ const GameItem: React.FC<GameItemProps> = memo(
             coverUrl = require("../../../../assets/next-quest-icons/game_item_placeholder.png");
         }
 
+        const handleMoveToTop = () => {
+            if (moveToTop && questGame.gameStatus !== "undiscovered") {
+                triggerHapticFeedback("light");
+                moveToTop(questGame.id, questGame.gameStatus);
+                // Close menu after action
+                Animated.spring(pan, {
+                    toValue: 0,
+                    useNativeDriver: false,
+                }).start();
+            }
+        };
+
+        const handleMoveToBottom = () => {
+            if (moveToBottom && questGame.gameStatus !== "undiscovered") {
+                triggerHapticFeedback("light");
+                moveToBottom(questGame.id, questGame.gameStatus);
+                // Close menu after action
+                Animated.spring(pan, {
+                    toValue: 0,
+                    useNativeDriver: false,
+                }).start();
+            }
+        };
+
         return (
             <Animated.View
                 style={[
@@ -464,6 +498,38 @@ const GameItem: React.FC<GameItemProps> = memo(
                         >
                             {!isRemoveClicked ? (
                                 <>
+                                    {getAvailableStatuses(
+                                        questGame.gameStatus
+                                    ).map((status, index) => (
+                                        <TouchableOpacity
+                                            key={status}
+                                            style={[
+                                                styles.statusButton,
+                                                getStatusButtonStyles(status),
+                                                index ===
+                                                    getAvailableStatuses(
+                                                        questGame.gameStatus
+                                                    ).length -
+                                                        1 &&
+                                                    questGame.gameStatus ===
+                                                        "undiscovered" && {
+                                                        borderTopRightRadius: 8,
+                                                        borderBottomRightRadius: 8,
+                                                    },
+                                            ]}
+                                            onPress={() =>
+                                                handleStatusSelect(status)
+                                            }
+                                            activeOpacity={0.7}
+                                        >
+                                            <Text
+                                                variant="button"
+                                                style={styles.statusButtonText}
+                                            >
+                                                {getStatusLabel(status)}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ))}
                                     {questGame.gameStatus !==
                                         "undiscovered" && (
                                         <TouchableOpacity
@@ -479,42 +545,18 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         >
                                             <Text
                                                 variant="button"
-                                                style={styles.statusButtonText}
+                                                style={[
+                                                    styles.statusButtonText,
+                                                    {
+                                                        borderTopRightRadius: 8,
+                                                        borderBottomRightRadius: 8,
+                                                    },
+                                                ]}
                                             >
                                                 Remove
                                             </Text>
                                         </TouchableOpacity>
                                     )}
-                                    {getAvailableStatuses(
-                                        questGame.gameStatus
-                                    ).map((status, index) => (
-                                        <TouchableOpacity
-                                            key={status}
-                                            style={[
-                                                styles.statusButton,
-                                                getStatusButtonStyles(status),
-                                                index ===
-                                                    getAvailableStatuses(
-                                                        questGame.gameStatus
-                                                    ).length -
-                                                        1 && {
-                                                    borderTopRightRadius: 8,
-                                                    borderBottomRightRadius: 8,
-                                                },
-                                            ]}
-                                            onPress={() =>
-                                                handleStatusSelect(status)
-                                            }
-                                            activeOpacity={0.7}
-                                        >
-                                            <Text
-                                                variant="button"
-                                                style={styles.statusButtonText}
-                                            >
-                                                {getStatusLabel(status)}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    ))}
                                 </>
                             ) : (
                                 <>
@@ -523,8 +565,28 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             styles.statusButton,
                                             {
                                                 backgroundColor:
+                                                    colorSwatch.accent.pink,
+                                            },
+                                        ]}
+                                        activeOpacity={0.7}
+                                        onPress={handleConfirmRemove}
+                                    >
+                                        <Text
+                                            variant="button"
+                                            style={styles.statusButtonText}
+                                        >
+                                            Confirm
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.statusButton,
+                                            {
+                                                backgroundColor:
                                                     colorSwatch.background
                                                         .darkest,
+                                                borderTopRightRadius: 8,
+                                                borderBottomRightRadius: 8,
                                             },
                                         ]}
                                         activeOpacity={0.7}
@@ -544,35 +606,78 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             Cancel
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.statusButton,
-                                            {
-                                                backgroundColor:
-                                                    colorSwatch.accent.pink,
-                                                borderTopRightRadius: 8,
-                                                borderBottomRightRadius: 8,
-                                            },
-                                        ]}
-                                        activeOpacity={0.7}
-                                        onPress={handleConfirmRemove}
-                                    >
-                                        <Text
-                                            variant="button"
-                                            style={styles.statusButtonText}
-                                        >
-                                            Confirm
-                                        </Text>
-                                    </TouchableOpacity>
                                 </>
                             )}
                         </View>
                     )}
                     {!isReordering &&
-                        panValue > 5 &&
+                        panValue > 10 &&
                         questGame.gameStatus !== "undiscovered" && (
                             <View style={styles.rightMenu}>
-                                {/* Empty right menu for future use */}
+                                <TouchableOpacity
+                                    style={[
+                                        styles.statusButton,
+                                        {
+                                            backgroundColor:
+                                                colorSwatch.background.darkest,
+                                            borderTopLeftRadius: 8,
+                                            borderBottomLeftRadius: 8,
+                                            borderRightWidth: 1,
+                                            borderRightColor:
+                                                colorSwatch.neutral.darkGray,
+                                        },
+                                    ]}
+                                    activeOpacity={0.7}
+                                    onPress={handleMoveToTop}
+                                >
+                                    <MaterialCommunityIcons
+                                        name="chevron-up"
+                                        size={24}
+                                        color={colorSwatch.accent.cyan}
+                                    />
+                                    <Text
+                                        variant="button"
+                                        style={[
+                                            styles.statusButtonText,
+                                            {
+                                                color: colorSwatch.accent.cyan,
+                                            },
+                                        ]}
+                                    >
+                                        Top
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.statusButton,
+                                        {
+                                            backgroundColor:
+                                                colorSwatch.background.darkest,
+                                            borderColor:
+                                                colorSwatch.background.dark,
+                                            borderWidth: 1,
+                                        },
+                                    ]}
+                                    activeOpacity={0.7}
+                                    onPress={handleMoveToBottom}
+                                >
+                                    <MaterialCommunityIcons
+                                        name="chevron-down"
+                                        size={24}
+                                        color={colorSwatch.accent.cyan}
+                                    />
+                                    <Text
+                                        variant="button"
+                                        style={[
+                                            styles.statusButtonText,
+                                            {
+                                                color: colorSwatch.accent.cyan,
+                                            },
+                                        ]}
+                                    >
+                                        Bottom
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
                         )}
                     <Animated.View
@@ -744,7 +849,9 @@ const GameItem: React.FC<GameItemProps> = memo(
             prevProps.questGame.cover?.url !== nextProps.questGame.cover?.url ||
             prevProps.questGame.selectedPlatform?.id !==
                 nextProps.questGame.selectedPlatform?.id ||
-            prevProps.isFirstItem !== nextProps.isFirstItem;
+            prevProps.isFirstItem !== nextProps.isFirstItem ||
+            prevProps.moveToTop !== nextProps.moveToTop ||
+            prevProps.moveToBottom !== nextProps.moveToBottom;
 
         return !shouldUpdate; // Return true to prevent re-render
     }
@@ -772,7 +879,6 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 2,
         borderRadius: 10,
-        backgroundColor: colorSwatch.background.dark,
     },
     gameContainer: {
         flexDirection: "row",
@@ -787,14 +893,12 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         width: 300,
-        backgroundColor: colorSwatch.background.darker,
         zIndex: 1,
         elevation: 1,
         flexDirection: "row",
         alignItems: "stretch",
         borderLeftWidth: 1,
         borderLeftColor: colorSwatch.neutral.darkGray,
-        paddingLeft: 2,
     },
     rightMenu: {
         position: "absolute",
@@ -822,13 +926,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        padding: 8,
         margin: 1,
-        minWidth: 80,
+        flexDirection: "column",
     },
     statusButtonText: {
         fontSize: 14,
         color: colorSwatch.text.inverse,
+        textAlign: "center",
     },
     dragHandle: {
         justifyContent: "center",

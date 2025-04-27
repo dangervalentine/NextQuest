@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useRef, useImperativeHandle, forwardRef } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from "react-native";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
-import GameSection from "./GameSection";
+import GameSection, { GameSectionRef } from "./GameSection";
 import GameSearchSection from "./GameSearchSection";
 import HeaderWithIcon from "../../shared/HeaderWithIcon";
 import QuestIcon from "../../shared/GameIcon";
@@ -29,6 +29,11 @@ interface TabNavigatorProps {
         status: GameStatus
     ) => void;
     onTabChange: (tabName: string) => void;
+}
+
+export interface GameTabNavigatorRef {
+    scrollToBottom: (status: GameStatus) => void;
+    scrollToTop: (status: GameStatus) => void;
 }
 
 // Tab screen configurations
@@ -99,103 +104,135 @@ export const screenOptions: BottomTabNavigationOptions = {
     },
 };
 
-const GameTabNavigator: React.FC<TabNavigatorProps> = ({
-    gameData,
-    isLoading,
-    handleStatusChange,
-    handleDiscover,
-    handleRemoveItem,
-    handleReorder,
-    onTabChange,
-}) => {
-    return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                ...screenOptions,
-                tabBarStyle: {
-                    ...tabBarStyle,
-                },
-                tabBarActiveTintColor:
-                    route.name === "Search"
-                        ? getStatusColor("undiscovered")
-                        : getStatusColor(
-                              tabScreens.find(
-                                  (screen) => screen.name === route.name
-                              )?.gameStatus || "ongoing"
-                          ),
-                tabBarInactiveTintColor: colorSwatch.text.muted,
-            })}
-            screenListeners={{
-                state: (e) => {
-                    const currentRoute =
-                        e.data.state.routes[e.data.state.index];
-                    onTabChange?.(currentRoute.name);
-                },
-            }}
-        >
-            {tabScreens.map((screen) => (
+const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
+    (
+        {
+            gameData,
+            isLoading,
+            handleStatusChange,
+            handleDiscover,
+            handleRemoveItem,
+            handleReorder,
+            onTabChange,
+        },
+        ref
+    ) => {
+        // Create refs for each game section tab
+        const gameSectionRefs = useRef<
+            Record<GameStatus, React.RefObject<GameSectionRef>>
+        >({
+            ongoing: React.createRef(),
+            backlog: React.createRef(),
+            completed: React.createRef(),
+            undiscovered: React.createRef(),
+            on_hold: React.createRef(),
+            dropped: React.createRef(),
+        });
+
+        // Expose methods to parent
+        useImperativeHandle(ref, () => ({
+            scrollToBottom: (status: GameStatus) => {
+                gameSectionRefs.current[status]?.current?.scrollToBottom();
+            },
+            scrollToTop: (status: GameStatus) => {
+                gameSectionRefs.current[status]?.current?.scrollToTop();
+            },
+        }));
+
+        return (
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    ...screenOptions,
+                    tabBarStyle: {
+                        ...tabBarStyle,
+                    },
+                    tabBarActiveTintColor:
+                        route.name === "Search"
+                            ? getStatusColor("undiscovered")
+                            : getStatusColor(
+                                  tabScreens.find(
+                                      (screen) => screen.name === route.name
+                                  )?.gameStatus || "ongoing"
+                              ),
+                    tabBarInactiveTintColor: colorSwatch.text.muted,
+                })}
+                screenListeners={{
+                    state: (e) => {
+                        const currentRoute =
+                            e.data.state.routes[e.data.state.index];
+                        onTabChange?.(currentRoute.name);
+                    },
+                }}
+            >
+                {tabScreens.map((screen) => (
+                    <Tab.Screen
+                        key={screen.name}
+                        name={screen.name}
+                        options={{
+                            headerShown: false,
+                            tabBarLabel: screen.name,
+                            tabBarIcon: ({ color, size }) => (
+                                <QuestIcon
+                                    name={screen.iconName}
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                            headerTitle: () => (
+                                <HeaderWithIcon
+                                    iconName={screen.iconName}
+                                    title={screen.title}
+                                    color={getStatusColor(screen.gameStatus)}
+                                />
+                            ),
+                        }}
+                    >
+                        {() => (
+                            <GameSection
+                                ref={gameSectionRefs.current[screen.gameStatus]}
+                                gameStatus={screen.gameStatus}
+                                games={gameData[screen.gameStatus]}
+                                isLoading={isLoading[screen.gameStatus]}
+                                onStatusChange={handleStatusChange}
+                                onRemoveItem={handleRemoveItem}
+                                onReorder={handleReorder}
+                            />
+                        )}
+                    </Tab.Screen>
+                ))}
                 <Tab.Screen
-                    key={screen.name}
-                    name={screen.name}
+                    key={"Search"}
+                    name={"Search"}
                     options={{
                         headerShown: false,
-                        tabBarLabel: screen.name,
+                        tabBarLabel: "Search",
                         tabBarIcon: ({ color, size }) => (
                             <QuestIcon
-                                name={screen.iconName}
+                                name={"magnify"}
                                 size={size}
                                 color={color}
                             />
                         ),
                         headerTitle: () => (
                             <HeaderWithIcon
-                                iconName={screen.iconName}
-                                title={screen.title}
-                                color={getStatusColor(screen.gameStatus)}
+                                iconName={"magnify"}
+                                title={"Search"}
+                                color={getStatusColor("undiscovered")}
                             />
                         ),
                     }}
                 >
                     {() => (
-                        <GameSection
-                            gameStatus={screen.gameStatus}
-                            games={gameData[screen.gameStatus]}
-                            isLoading={isLoading[screen.gameStatus]}
-                            onStatusChange={handleStatusChange}
-                            onRemoveItem={handleRemoveItem}
-                            onReorder={handleReorder}
+                        <GameSearchSection
+                            gameStatus={"undiscovered"}
+                            games={gameData["undiscovered"]}
+                            handleDiscover={handleDiscover}
                         />
                     )}
                 </Tab.Screen>
-            ))}
-            <Tab.Screen
-                key={"Search"}
-                name={"Search"}
-                options={{
-                    headerShown: false,
-                    tabBarLabel: "Search",
-                    tabBarIcon: ({ color, size }) => (
-                        <QuestIcon name={"magnify"} size={size} color={color} />
-                    ),
-                    headerTitle: () => (
-                        <HeaderWithIcon
-                            iconName={"magnify"}
-                            title={"Search"}
-                            color={getStatusColor("undiscovered")}
-                        />
-                    ),
-                }}
-            >
-                {() => (
-                    <GameSearchSection
-                        gameStatus={"undiscovered"}
-                        games={gameData["undiscovered"]}
-                        handleDiscover={handleDiscover}
-                    />
-                )}
-            </Tab.Screen>
-        </Tab.Navigator>
-    );
-};
+            </Tab.Navigator>
+        );
+    }
+);
 
 export default GameTabNavigator;
