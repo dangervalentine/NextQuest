@@ -7,6 +7,7 @@ import { QuestGame } from "src/data/models/QuestGame";
 import Text from "src/components/common/Text";
 import { StyleSheet } from "react-native";
 import { colorSwatch } from "src/utils/colorConstants";
+import { getStatusColor } from "src/utils/colors";
 
 interface MetadataGridProps {
     game: QuestGame;
@@ -32,7 +33,10 @@ const FranchiseSection: React.FC<MetadataGridProps> = ({ game }) => {
                     <Text
                         key={franchise.id}
                         variant="body"
-                        style={styles.franchiseLink}
+                        style={[
+                            styles.franchiseLink,
+                            { color: getStatusColor(game.gameStatus) },
+                        ]}
                         onPress={() => handleFranchisePress(franchise.id)}
                     >
                         {franchise.name}

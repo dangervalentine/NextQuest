@@ -96,7 +96,7 @@ const ExpandableContent: React.FC<ExpandableContentProps> = memo(
                             variant="button"
                             style={[styles.seeMoreText, buttonTextStyle]}
                         >
-                            {isExpanded ? "See less" : "See more"}
+                            {isExpanded ? "Collapse" : "Learn more"}
                         </Text>
                         <Animated.View
                             style={{ transform: [{ rotate: spin }] }}

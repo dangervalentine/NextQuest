@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     sectionTitle: {
-        color: colorSwatch.accent.purple,
+        color: colorSwatch.primary.dark,
     },
     ratingSelectionContainer: {
         backgroundColor: colorSwatch.background.darker,

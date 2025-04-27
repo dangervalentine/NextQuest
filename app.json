@@ -38,7 +38,7 @@
             ]
         },
         "web": {
-            "favicon": "./src/assets/next-quest-icons/next_quest_white.png"
+            "favicon": "./src/assets/next-quest-icons/next_quest_cyan.png"
         },
         "plugins": [
             "expo-sqlite",

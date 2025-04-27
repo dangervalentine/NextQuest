@@ -63,6 +63,9 @@ const GameItem: React.FC<GameItemProps> = memo(
         const prevSwipeX = useRef(0);
         const [panValue, setPanValue] = useState(0);
 
+        // Get status color once and reuse it throughout the component
+        const statusColor = getStatusColor(questGame.gameStatus);
+
         // Add a listener to track pan value
         useEffect(() => {
             const panListener = pan.addListener(({ value }) => {
@@ -633,14 +636,14 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <MaterialCommunityIcons
                                         name="chevron-up"
                                         size={24}
-                                        color={colorSwatch.accent.cyan}
+                                        color={statusColor}
                                     />
                                     <Text
                                         variant="button"
                                         style={[
                                             styles.statusButtonText,
                                             {
-                                                color: colorSwatch.accent.cyan,
+                                                color: statusColor,
                                             },
                                         ]}
                                     >
@@ -664,14 +667,14 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <MaterialCommunityIcons
                                         name="chevron-down"
                                         size={24}
-                                        color={colorSwatch.accent.cyan}
+                                        color={statusColor}
                                     />
                                     <Text
                                         variant="button"
                                         style={[
                                             styles.statusButtonText,
                                             {
-                                                color: colorSwatch.accent.cyan,
+                                                color: statusColor,
                                             },
                                         ]}
                                     >
@@ -698,9 +701,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     <View style={styles.dragHandleContent}>
                                         <Text
                                             style={{
-                                                color: getStatusColor(
-                                                    questGame.gameStatus
-                                                ),
+                                                color: statusColor,
                                             }}
                                             numberOfLines={1}
                                         >
@@ -720,9 +721,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         >
                             <FullHeightImage
                                 source={coverUrl}
-                                loaderColor={getStatusColor(
-                                    questGame.gameStatus
-                                )}
+                                loaderColor={statusColor}
                             />
 
                             <View style={styles.contentContainer}>
@@ -731,11 +730,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         variant="subtitle"
                                         style={[
                                             styles.title,
-
                                             {
-                                                color: getStatusColor(
-                                                    questGame.gameStatus
-                                                ),
+                                                color: statusColor,
                                             },
                                         ]}
                                         numberOfLines={1}
@@ -815,7 +811,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     <MaterialCommunityIcons
                         name="arrow-left"
                         size={32}
-                        color={getStatusColor(questGame.gameStatus)}
+                        color={statusColor}
                     />
                 </Animated.View>
                 <Animated.View
@@ -831,7 +827,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     <MaterialCommunityIcons
                         name="arrow-right"
                         size={32}
-                        color={getStatusColor(questGame.gameStatus)}
+                        color={statusColor}
                     />
                 </Animated.View>
             </Animated.View>

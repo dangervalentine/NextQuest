@@ -82,7 +82,13 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
                     <Text variant="subtitle" style={styles.companyLabel}>
                         Developed by:
                     </Text>
-                    <Text variant="body" style={styles.companyName}>
+                    <Text
+                        variant="body"
+                        style={[
+                            styles.companyName,
+                            { color: colorSwatch.primary.dark },
+                        ]}
+                    >
                         {groupedCompanies.developers[0] || "Unknown"}
                     </Text>
                 </View>
@@ -91,7 +97,13 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ game }) => {
                     <Text variant="subtitle" style={styles.companyLabel}>
                         Published by:
                     </Text>
-                    <Text variant="body" style={styles.companyName}>
+                    <Text
+                        variant="body"
+                        style={[
+                            styles.companyName,
+                            { color: colorSwatch.primary.dark },
+                        ]}
+                    >
                         {groupedCompanies.publishers[0] || "Unknown"}
                     </Text>
                 </View>

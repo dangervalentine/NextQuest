@@ -6,6 +6,7 @@ import {
     Animated,
     ImageBackground,
     SafeAreaView,
+    Easing,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { QuestGameDetailRouteProp } from "src/utils/navigationTypes";
@@ -41,12 +42,15 @@ const QuestGameDetailPage: React.FC = () => {
                 id
             );
 
+            fadeAnim.setValue(0);
+
             setGame(igdbGame);
 
             Animated.timing(fadeAnim, {
                 toValue: 1,
-                duration: 300,
+                duration: 800,
                 useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
             }).start();
         };
         loadGameDetails();
@@ -61,7 +65,7 @@ const QuestGameDetailPage: React.FC = () => {
                     resizeMode="contain"
                 >
                     <View style={styles.overlay} />
-                    <View style={[styles.skeleton]}>
+                    <View style={styles.loadingMessageContainer}>
                         <LoadingText text="Loading..." delay={1} />
                     </View>
                 </ImageBackground>
@@ -204,18 +208,12 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         backgroundColor: colorSwatch.background.darkest,
+        position: "relative",
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.background.darkest,
         opacity: 0.95,
-    },
-    skeleton: {
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorSwatch.background.darker,
-        width: "100%",
-        height: 580,
     },
     loadingContainer: {
         flex: 1,
@@ -272,6 +270,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         alignSelf: "center",
         marginBottom: 20,
+    },
+    loadingMessageContainer: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
     },
 });
 

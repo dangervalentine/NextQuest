@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { colorSwatch } from "src/utils/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
 import { getStatusLabel, getStatusStyles } from "src/utils/gameStatusUtils";
+import { getStatusColor } from "src/utils/colors";
 
 interface GameSearchInputProps {
     gameStatus: GameStatus;
@@ -21,10 +22,29 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     placeholder = `Search ${getStatusLabel(gameStatus)} games...`,
 }) => {
     const [inputValue, setInputValue] = React.useState(searchQuery);
+    const isUndiscovered = gameStatus === "undiscovered";
+
+    // Effect to update the search when input changes for non-undiscovered status
+    useEffect(() => {
+        if (!isUndiscovered) {
+            onSearchChange(inputValue);
+        }
+    }, [inputValue, isUndiscovered, onSearchChange]);
 
     const handleSearch = () => {
         onSearchChange(inputValue);
     };
+
+    const handleInputChange = (text: string) => {
+        setInputValue(text);
+    };
+
+    const handleClear = () => {
+        setInputValue("");
+        onClear();
+    };
+
+    const statusColor = getStatusColor(gameStatus);
 
     return (
         <View style={styles.searchContainer}>
@@ -37,34 +57,33 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                 <TextInput
                     style={styles.searchInput}
                     placeholder={placeholder}
-                    placeholderTextColor={getStatusStyles(gameStatus).color}
+                    placeholderTextColor={statusColor}
                     value={inputValue}
-                    onChangeText={setInputValue}
+                    onChangeText={handleInputChange}
                     onSubmitEditing={handleSearch}
                     returnKeyType="search"
                 />
-                <TouchableOpacity
-                    style={styles.searchButton}
-                    onPress={handleSearch}
-                >
-                    <QuestIcon
-                        name="magnify"
-                        size={24}
-                        color={getStatusStyles(gameStatus).color}
-                    />
-                </TouchableOpacity>
+                {isUndiscovered && (
+                    <TouchableOpacity
+                        style={styles.searchButton}
+                        onPress={handleSearch}
+                    >
+                        <QuestIcon
+                            name="magnify"
+                            size={24}
+                            color={statusColor}
+                        />
+                    </TouchableOpacity>
+                )}
                 {inputValue.length > 0 && (
                     <TouchableOpacity
                         style={styles.clearButton}
-                        onPress={() => {
-                            setInputValue("");
-                            onClear();
-                        }}
+                        onPress={handleClear}
                     >
                         <QuestIcon
                             name="close-circle"
                             size={24}
-                            color={getStatusStyles(gameStatus).color}
+                            color={statusColor}
                         />
                     </TouchableOpacity>
                 )}
@@ -83,6 +102,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         borderColor: colorSwatch.neutral.darkGray,
+        justifyContent: "center",
+        minHeight: 45,
     },
     searchInputContainer: {
         flexDirection: "row",

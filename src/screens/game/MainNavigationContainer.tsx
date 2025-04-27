@@ -6,7 +6,7 @@ import React, {
     useMemo,
 } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, Animated, Pressable } from "react-native";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
@@ -28,7 +28,6 @@ import GameTabs from "./GameTabs";
 import { RootStackParamList, TabParamList } from "src/utils/navigationTypes";
 import { getStatusColor } from "src/utils/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable } from "react-native";
 import Text from "src/components/common/Text";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
@@ -39,6 +38,69 @@ import { GameTabNavigatorRef } from "./GameList/components/GameTabNavigator";
 const Stack = createStackNavigator<RootStackParamList>();
 
 type MainNavigationProp = NavigationProp<RootStackParamList>;
+
+// Custom animated back button component
+interface AnimatedBackButtonProps {
+    onPress: () => void;
+    color: string;
+    title: string;
+}
+
+const AnimatedBackButton: React.FC<AnimatedBackButtonProps> = ({
+    onPress,
+    color,
+    title,
+}) => {
+    const textMargin = useRef(new Animated.Value(12)).current;
+
+    const handlePress = () => {
+        // Animation sequence: text moves toward icon, then bounces back
+        Animated.sequence([
+            // Move text closer to icon - make faster (80ms)
+            Animated.timing(textMargin, {
+                toValue: 0,
+                duration: 80,
+                useNativeDriver: false,
+            }),
+            // Bounce back with spring effect - make snappier with higher tension
+            Animated.timing(textMargin, {
+                toValue: 12,
+                duration: 80,
+                useNativeDriver: false,
+            }),
+        ]).start(() => onPress());
+    };
+
+    return (
+        <Pressable
+            onPress={handlePress}
+            style={({ pressed }) => ({
+                flexDirection: "row",
+                alignItems: "center",
+                paddingRight: 16,
+                paddingVertical: 8,
+                paddingLeft: 8,
+                width: "100%",
+                opacity: pressed ? 0.6 : 1,
+            })}
+        >
+            <Ionicons name="chevron-back" size={24} color={color} />
+            <Animated.View style={{ marginLeft: textMargin }}>
+                <Text
+                    variant="title"
+                    style={{
+                        fontSize: 24,
+                        lineHeight: 32,
+                        color: color,
+                    }}
+                    numberOfLines={1}
+                >
+                    {title}
+                </Text>
+            </Animated.View>
+        </Pressable>
+    );
+};
 
 const MainNavigationContainer: React.FC = () => {
     const navigation = useNavigation<MainNavigationProp>();
@@ -804,36 +866,11 @@ const MainNavigationContainer: React.FC = () => {
                         headerTransparent: true,
                         headerTintColor: activeTabColor,
                         headerLeft: () => (
-                            <Pressable
+                            <AnimatedBackButton
                                 onPress={() => navigation.goBack()}
-                                style={({ pressed }) => ({
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    paddingRight: 16,
-                                    paddingVertical: 8,
-                                    paddingLeft: 8,
-                                    width: "100%",
-                                    opacity: pressed ? 0.8 : 1,
-                                })}
-                            >
-                                <Ionicons
-                                    name="arrow-back"
-                                    size={24}
-                                    color={activeTabColor}
-                                />
-                                <Text
-                                    variant="title"
-                                    style={{
-                                        fontSize: 24,
-                                        lineHeight: 32,
-                                        color: activeTabColor,
-                                        marginLeft: 12,
-                                    }}
-                                    numberOfLines={1}
-                                >
-                                    {route.params.name}
-                                </Text>
-                            </Pressable>
+                                color={activeTabColor}
+                                title={route.params.name}
+                            />
                         ),
                         headerTitle: "",
                         headerBackgroundContainerStyle: {},
