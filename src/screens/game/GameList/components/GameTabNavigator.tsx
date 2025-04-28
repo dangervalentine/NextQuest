@@ -1,4 +1,9 @@
-import React, { useRef, useImperativeHandle, forwardRef } from "react";
+import React, {
+    useRef,
+    useImperativeHandle,
+    forwardRef,
+    useState,
+} from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from "react-native";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
@@ -10,6 +15,7 @@ import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { SortField } from "src/types/sortTypes";
 
 const Tab = createBottomTabNavigator();
 
@@ -127,6 +133,15 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             },
         }));
 
+        const [sort, setSort] = useState<{
+            field: SortField;
+            direction: "asc" | "desc";
+        }>({
+            field: "name",
+            direction: "asc",
+        });
+        const [isMenuVisible, setMenuVisible] = useState(false);
+
         return (
             <Tab.Navigator
                 screenOptions={({ route }) => ({
@@ -184,6 +199,10 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                 onStatusChange={handleStatusChange}
                                 onRemoveItem={handleRemoveItem}
                                 onReorder={handleReorder}
+                                sort={sort}
+                                onSortChange={setSort}
+                                isMenuVisible={isMenuVisible}
+                                setMenuVisible={setMenuVisible}
                             />
                         )}
                     </Tab.Screen>

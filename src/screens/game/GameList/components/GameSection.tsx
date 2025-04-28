@@ -15,6 +15,8 @@ import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import { LoadingText } from "src/components/common/LoadingText";
+import GameSortFilterMenu from "./GameSortFilterMenu";
+import { SortField } from "src/types/sortTypes";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -27,6 +29,13 @@ interface GameSectionProps {
     ) => void;
     onRemoveItem: (id: number, status: GameStatus) => void;
     onReorder: (fromIndex: number, toIndex: number, status: GameStatus) => void;
+    sort: { field: SortField; direction: "asc" | "desc" };
+    onSortChange: (sort: {
+        field: SortField;
+        direction: "asc" | "desc";
+    }) => void;
+    isMenuVisible: boolean;
+    setMenuVisible: (visible: boolean) => void;
 }
 
 export interface GameSectionRef {
@@ -43,6 +52,10 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             onStatusChange,
             onRemoveItem,
             onReorder,
+            sort,
+            onSortChange,
+            isMenuVisible,
+            setMenuVisible,
         },
         ref
     ) => {
@@ -94,6 +107,55 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                 ),
             [games, searchQuery]
         );
+
+        // Sort the filtered games
+        const getReleaseYear = (game: MinimalQuestGame) => {
+            if (!game.release_dates || game.release_dates.length === 0)
+                return 0;
+            // Use the earliest release date
+            const minDate = Math.min(
+                ...game.release_dates.map((rd) => rd.date)
+            );
+            if (!minDate || isNaN(minDate)) return 0;
+            return new Date(minDate * 1000).getFullYear();
+        };
+        const sortedGames = useMemo(() => {
+            const sorted = [...filteredGames];
+            sorted.sort((a, b) => {
+                let aValue: any;
+                let bValue: any;
+                switch (sort.field) {
+                    case "priority":
+                        aValue = a.priority ?? 0;
+                        bValue = b.priority ?? 0;
+                        break;
+                    case "name":
+                        aValue = a.name?.toLowerCase() || "";
+                        bValue = b.name?.toLowerCase() || "";
+                        break;
+                    case "dateAdded":
+                        aValue = a.createdAt || "";
+                        bValue = b.createdAt || "";
+                        break;
+                    case "rating":
+                        aValue = a.personalRating || 0;
+                        bValue = b.personalRating || 0;
+                        break;
+                    case "releaseYear":
+                        aValue = getReleaseYear(a);
+                        bValue = getReleaseYear(b);
+                        break;
+                    default:
+                        aValue = a.name?.toLowerCase() || "";
+                        bValue = b.name?.toLowerCase() || "";
+                        break;
+                }
+                if (aValue < bValue) return sort.direction === "asc" ? -1 : 1;
+                if (aValue > bValue) return sort.direction === "asc" ? 1 : -1;
+                return 0;
+            });
+            return sorted;
+        }, [filteredGames, sort]);
 
         const handleMoveToTop = useCallback(
             (id: number, status: GameStatus) => {
@@ -195,30 +257,36 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                 </Text>
             </View>
         ) : (
-            <View style={styles.contentContainer}>
-                <GameSearchInput
-                    gameStatus={gameStatus}
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    onClear={() => setSearchQuery("")}
-                    onMenuPress={() => console.log("Menu pressed")}
-                    onSortPress={() => console.log("Sort pressed")}
-                    onFilterPress={() => console.log("Filter pressed")}
-                />
-                <View style={styles.listWrapper}>
-                    <DragList
-                        ref={dragListRef}
-                        data={filteredGames}
-                        onReordered={(fromIndex, toIndex) =>
-                            onReorder(fromIndex, toIndex, gameStatus)
-                        }
-                        keyExtractor={(item) => item?.id?.toString() || ""}
-                        renderItem={renderItem}
-                        contentContainerStyle={styles.listContainer}
-                        removeClippedSubviews={true}
+            <>
+                <View style={styles.contentContainer}>
+                    <GameSearchInput
+                        gameStatus={gameStatus}
+                        searchQuery={searchQuery}
+                        onSearchChange={setSearchQuery}
+                        onClear={() => setSearchQuery("")}
+                        onMenuPress={() => setMenuVisible(true)}
                     />
+                    <View style={styles.listWrapper}>
+                        <DragList
+                            ref={dragListRef}
+                            data={sortedGames}
+                            onReordered={(fromIndex, toIndex) =>
+                                onReorder(fromIndex, toIndex, gameStatus)
+                            }
+                            keyExtractor={(item) => item?.id?.toString() || ""}
+                            renderItem={renderItem}
+                            contentContainerStyle={styles.listContainer}
+                            removeClippedSubviews={true}
+                        />
+                    </View>
                 </View>
-            </View>
+                <GameSortFilterMenu
+                    visible={isMenuVisible}
+                    onClose={() => setMenuVisible(false)}
+                    sort={sort}
+                    onSortChange={onSortChange}
+                />
+            </>
         );
     }
 );

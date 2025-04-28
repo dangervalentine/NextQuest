@@ -11,8 +11,6 @@ interface GameSearchInputProps {
     searchQuery: string;
     onSearchChange: (text: string) => void;
     onClear: () => void;
-    onSortPress?: () => void;
-    onFilterPress?: () => void;
     onMenuPress?: () => void;
     placeholder?: string;
 }
@@ -22,8 +20,6 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     searchQuery,
     onSearchChange,
     onClear,
-    onSortPress,
-    onFilterPress,
     onMenuPress,
     placeholder = `Search ${getStatusLabel(gameStatus)} games...`,
 }) => {
@@ -58,16 +54,6 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                 { borderBottomColor: colorSwatch.neutral.darkGray },
             ]}
         >
-            {/* Hamburger Menu */}
-            {onMenuPress && (
-                <TouchableOpacity
-                    style={styles.iconButton}
-                    onPress={onMenuPress}
-                >
-                    <QuestIcon name="menu" size={24} color={statusColor} />
-                </TouchableOpacity>
-            )}
-
             {/* Search Bar */}
             <View style={styles.searchInputContainer}>
                 <TextInput
@@ -98,22 +84,11 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                     <QuestIcon name="magnify" size={24} color={statusColor} />
                 </TouchableOpacity>
             </View>
-
-            {/* Sort Button */}
-            {onSortPress && (
+            {/* Hamburger Menu */}
+            {onMenuPress && (
                 <TouchableOpacity
                     style={styles.iconButton}
-                    onPress={onSortPress}
-                >
-                    <QuestIcon name="sort" size={24} color={statusColor} />
-                </TouchableOpacity>
-            )}
-
-            {/* Filter Button */}
-            {onFilterPress && (
-                <TouchableOpacity
-                    style={styles.iconButton}
-                    onPress={onFilterPress}
+                    onPress={onMenuPress}
                 >
                     <QuestIcon name="tune" size={24} color={statusColor} />
                 </TouchableOpacity>
@@ -126,14 +101,15 @@ const styles = StyleSheet.create({
     topBar: {
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 8,
         borderWidth: 1,
         justifyContent: "center",
         backgroundColor: colorSwatch.background.darkest,
         borderTopColor: "transparent",
         elevation: 4,
         paddingBottom: 8,
+        marginHorizontal: 4,
         marginBottom: 4,
+        gap: 8,
     },
     searchInputContainer: {
         flex: 1,
@@ -141,7 +117,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: colorSwatch.background.darkest,
         borderRadius: 8,
-        marginHorizontal: 8,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
     },
@@ -158,7 +133,10 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     iconButton: {
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
         padding: 8,
+        borderRadius: 8,
     },
 });
 

@@ -232,8 +232,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 onClear={() => setSearchQuery("")}
                 placeholder="Discover new games..."
                 onMenuPress={() => console.log("Menu pressed")}
-                onSortPress={() => console.log("Sort pressed")}
-                onFilterPress={() => console.log("Filter pressed")}
             />
 
             {error ? (
