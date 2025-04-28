@@ -34,9 +34,10 @@ interface GameItemProps {
     moveToTop?: (id: number, status: GameStatus) => void;
     moveToBottom?: (id: number, status: GameStatus) => void;
     isActive?: boolean;
+    canReorder?: boolean;
 }
 
-const SWIPE_THRESHOLD = 75; // Absolute value for both directions
+const SWIPE_THRESHOLD = 50; // Reduced from 75 to make menus easier to open
 
 const GameItem: React.FC<GameItemProps> = memo(
     ({
@@ -48,6 +49,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         moveToTop,
         moveToBottom,
         isActive = false,
+        canReorder = false,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
         const [isReordering, setIsReordering] = useState(false);
@@ -214,41 +216,48 @@ const GameItem: React.FC<GameItemProps> = memo(
                         );
                     },
                     onPanResponderGrant: () => {
-                        pan.setValue(0);
-                        prevSwipeX.current = 0;
+                        pan.setValue(panValue);
+                        pan.setOffset(0);
                     },
                     onPanResponderMove: (_, gestureState) => {
                         if (isReordering) return;
 
-                        // Allow both left and right swipes
+                        let newX = panValue + gestureState.dx;
+
+                        // Prevent right swipes past 0 when !canReorder
+                        if (!canReorder && newX > 0) {
+                            newX = 0;
+                        }
+
+                        // Constrain within left and right menu bounds
                         const maxRight =
-                            questGame.gameStatus === "undiscovered" ? 0 : 200; // Max right swipe value - full width of right menu
-
-                        // Make left swipe wider for undiscovered games or when remove is clicked
+                            questGame.gameStatus === "undiscovered" ||
+                            !canReorder
+                                ? 0
+                                : 200;
                         const maxLeft =
-                            questGame.gameStatus === "undiscovered"
+                            questGame.gameStatus === "undiscovered" ||
+                            isRemoveClicked
                                 ? -300
-                                : isRemoveClicked
-                                ? -300 // Width for confirmation buttons
-                                : -300; // Width for status buttons
+                                : -300;
 
-                        const newX = Math.max(
-                            maxLeft,
-                            Math.min(maxRight, gestureState.dx)
-                        );
+                        newX = Math.max(maxLeft, Math.min(maxRight, newX));
 
-                        // Add haptic feedback only when crossing menu thresholds
+                        // Haptic feedback when crossing thresholds
                         if (
                             (prevSwipeX.current < 75 && newX >= 75) ||
                             (prevSwipeX.current > 75 && newX <= 75)
                         ) {
-                            // Crossing the right menu threshold
-                            triggerHapticFeedback("light");
+                            if (
+                                canReorder &&
+                                questGame.gameStatus !== "undiscovered"
+                            ) {
+                                triggerHapticFeedback("light");
+                            }
                         } else if (
                             (prevSwipeX.current > -75 && newX <= -75) ||
                             (prevSwipeX.current < -75 && newX >= -75)
                         ) {
-                            // Crossing the status change/delete menu threshold
                             triggerHapticFeedback("light");
                         }
 
@@ -257,27 +266,73 @@ const GameItem: React.FC<GameItemProps> = memo(
                     },
                     onPanResponderRelease: (_, gestureState) => {
                         if (isReordering) return;
-                        if (gestureState.dx < -SWIPE_THRESHOLD) {
-                            // Left swipe - wider for undiscovered or when in remove confirmation mode
-                            const leftPosition =
-                                questGame.gameStatus === "undiscovered"
-                                    ? -305
-                                    : -305; // Match the full menu width
+
+                        // Get the current position after the gesture
+                        const currentPosition = panValue;
+                        const startingPosition =
+                            currentPosition - gestureState.dx;
+                        const positionChange = Math.abs(
+                            currentPosition - startingPosition
+                        );
+
+                        // For slow movements, use position thresholds rather than velocity
+                        const significantRightMovement = currentPosition > 20;
+                        const significantLeftMovement = currentPosition < -20;
+
+                        // Check if we're trying to close a menu (moving from open position toward center)
+                        const closingLeftMenu =
+                            startingPosition < -50 &&
+                            currentPosition > startingPosition;
+                        const closingRightMenu =
+                            startingPosition > 50 &&
+                            currentPosition < startingPosition;
+
+                        // If trying to close a menu
+                        if (closingLeftMenu || closingRightMenu) {
+                            // If moved enough toward center or flicked, close it
+                            if (
+                                positionChange > 30 ||
+                                Math.abs(gestureState.vx) > 0.1
+                            ) {
+                                Animated.spring(pan, {
+                                    toValue: 0,
+                                    useNativeDriver: false,
+                                }).start(() => {
+                                    if (isRemoveClicked) {
+                                        setIsRemoveClicked(false);
+                                    }
+                                });
+                            }
+                            // Otherwise, keep menu open
+                            else {
+                                Animated.spring(pan, {
+                                    toValue: startingPosition < 0 ? -305 : 200,
+                                    useNativeDriver: false,
+                                }).start();
+                            }
+                        }
+                        // Opening left menu (status)
+                        else if (significantLeftMovement) {
                             Animated.spring(pan, {
-                                toValue: leftPosition,
+                                toValue: -305,
                                 useNativeDriver: false,
                             }).start();
-                        } else if (
-                            gestureState.dx > SWIPE_THRESHOLD &&
-                            questGame.gameStatus !== "undiscovered"
+                        }
+                        // Opening right menu (priority)
+                        else if (
+                            significantRightMovement &&
+                            questGame.gameStatus !== "undiscovered" &&
+                            canReorder
                         ) {
-                            // Right swipe for the right menu
                             Animated.spring(pan, {
-                                toValue: 200, // Full right menu width
+                                toValue: 200,
                                 useNativeDriver: false,
+                                tension: 40,
+                                friction: 7,
                             }).start();
-                        } else {
-                            // Close menu
+                        }
+                        // Return to center/closed
+                        else {
                             Animated.spring(pan, {
                                 toValue: 0,
                                 useNativeDriver: false,
@@ -289,15 +344,23 @@ const GameItem: React.FC<GameItemProps> = memo(
                         }
                     },
                 }),
-            [questGame.gameStatus, isReordering, pan, isRemoveClicked]
+            [
+                questGame.gameStatus,
+                isReordering,
+                pan,
+                isRemoveClicked,
+                canReorder,
+                panValue,
+            ]
         );
 
         const dragPanResponder = useMemo(
             () =>
                 PanResponder.create({
-                    onStartShouldSetPanResponder: () => true,
-                    onMoveShouldSetPanResponder: () => true,
+                    onStartShouldSetPanResponder: () => canReorder,
+                    onMoveShouldSetPanResponder: () => canReorder,
                     onPanResponderGrant: () => {
+                        if (!canReorder) return;
                         setIsReordering(true);
                         triggerHapticFeedback("light");
                         if (reorder) {
@@ -305,15 +368,17 @@ const GameItem: React.FC<GameItemProps> = memo(
                         }
                     },
                     onPanResponderRelease: () => {
+                        if (!canReorder) return;
                         setIsReordering(false);
                         triggerHapticFeedback("light");
                     },
                     onPanResponderTerminate: () => {
+                        if (!canReorder) return;
                         setIsReordering(false);
                         triggerHapticFeedback("light");
                     },
                 }),
-            [reorder]
+            [reorder, canReorder]
         );
 
         const handleRemoveClick = () => {
@@ -628,7 +693,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                     )}
                     {!isReordering &&
                         panValue > 10 &&
-                        questGame.gameStatus !== "undiscovered" && (
+                        questGame.gameStatus !== "undiscovered" &&
+                        canReorder && (
                             <View style={styles.rightMenu}>
                                 <TouchableOpacity
                                     style={[
@@ -706,7 +772,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                         {...panResponder.panHandlers}
                     >
                         {typeof questGame.priority === "number" &&
-                            questGame.gameStatus !== "undiscovered" && (
+                            questGame.gameStatus !== "undiscovered" &&
+                            canReorder && (
                                 <View
                                     style={styles.dragHandle}
                                     {...dragPanResponder.panHandlers}
@@ -860,7 +927,9 @@ const GameItem: React.FC<GameItemProps> = memo(
                 nextProps.questGame.selectedPlatform?.id ||
             prevProps.isFirstItem !== nextProps.isFirstItem ||
             prevProps.moveToTop !== nextProps.moveToTop ||
-            prevProps.moveToBottom !== nextProps.moveToBottom;
+            prevProps.moveToBottom !== nextProps.moveToBottom ||
+            prevProps.canReorder !== nextProps.canReorder ||
+            prevProps.isActive !== nextProps.isActive;
 
         return !shouldUpdate; // Return true to prevent re-render
     }

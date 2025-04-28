@@ -230,6 +230,10 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             handleMoveToBottom(id, status)
                         }
                         isActive={isActive}
+                        canReorder={
+                            sort.field === "priority" &&
+                            sort.direction === "asc"
+                        }
                     />
                 );
             },
@@ -239,6 +243,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                 onStatusChange,
                 handleMoveToTop,
                 handleMoveToBottom,
+                sort,
             ]
         );
 
