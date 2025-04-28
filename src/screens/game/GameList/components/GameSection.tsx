@@ -6,7 +6,7 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { StyleSheet, View } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
@@ -14,7 +14,7 @@ import { GameStatus } from "src/constants/config/gameStatus";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
-import { getStatusColor } from "src/utils/colorsUtils";
+import { LoadingText } from "src/components/common/LoadingText";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -155,34 +155,20 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                 if (!item) return null;
 
                 return (
-                    <View
-                        style={[
-                            isActive && styles.activeItem,
-                            {
-                                borderColor: getStatusColor(item.gameStatus),
-                            },
-                        ]}
-                    >
-                        <GameItem
-                            questGame={item}
-                            reorder={onDragStart}
-                            removeItem={(id) => onRemoveItem(id, gameStatus)}
-                            isFirstItem={index === 0}
-                            onStatusChange={(newStatus, currentStatus) =>
-                                onStatusChange(
-                                    item.id,
-                                    newStatus,
-                                    currentStatus
-                                )
-                            }
-                            moveToTop={(id, status) =>
-                                handleMoveToTop(id, status)
-                            }
-                            moveToBottom={(id, status) =>
-                                handleMoveToBottom(id, status)
-                            }
-                        />
-                    </View>
+                    <GameItem
+                        questGame={item}
+                        reorder={onDragStart}
+                        removeItem={(id) => onRemoveItem(id, gameStatus)}
+                        isFirstItem={index === 0}
+                        onStatusChange={(newStatus, currentStatus) =>
+                            onStatusChange(item.id, newStatus, currentStatus)
+                        }
+                        moveToTop={(id, status) => handleMoveToTop(id, status)}
+                        moveToBottom={(id, status) =>
+                            handleMoveToBottom(id, status)
+                        }
+                        isActive={isActive}
+                    />
                 );
             },
             [
@@ -197,10 +183,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         if (isLoading) {
             return (
                 <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                        size="large"
-                        color={getStatusColor(gameStatus)}
-                    />
+                    <LoadingText text="Loading games..." />
                 </View>
             );
         }
@@ -218,6 +201,9 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                     onClear={() => setSearchQuery("")}
+                    onMenuPress={() => console.log("Menu pressed")}
+                    onSortPress={() => console.log("Sort pressed")}
+                    onFilterPress={() => console.log("Filter pressed")}
                 />
                 <View style={styles.listWrapper}>
                     <DragList
@@ -243,11 +229,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-    },
-    activeItem: {
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: colorSwatch.neutral.gray,
+        marginTop: 60,
     },
     loadingContainer: {
         flex: 1,
@@ -263,7 +245,6 @@ const styles = StyleSheet.create({
     },
     listWrapper: {
         flex: 1,
-        backgroundColor: "transparent",
     },
     listContainer: {},
 });

@@ -11,6 +11,9 @@ interface GameSearchInputProps {
     searchQuery: string;
     onSearchChange: (text: string) => void;
     onClear: () => void;
+    onSortPress?: () => void;
+    onFilterPress?: () => void;
+    onMenuPress?: () => void;
     placeholder?: string;
 }
 
@@ -19,12 +22,14 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     searchQuery,
     onSearchChange,
     onClear,
+    onSortPress,
+    onFilterPress,
+    onMenuPress,
     placeholder = `Search ${getStatusLabel(gameStatus)} games...`,
 }) => {
     const [inputValue, setInputValue] = React.useState(searchQuery);
     const isUndiscovered = gameStatus === "undiscovered";
 
-    // Effect to update the search when input changes for non-undiscovered status
     useEffect(() => {
         if (!isUndiscovered) {
             onSearchChange(inputValue);
@@ -47,7 +52,23 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     const statusColor = getStatusColor(gameStatus);
 
     return (
-        <View style={[styles.searchContainer, { borderColor: statusColor }]}>
+        <View
+            style={[
+                styles.topBar,
+                { borderBottomColor: colorSwatch.neutral.darkGray },
+            ]}
+        >
+            {/* Hamburger Menu */}
+            {onMenuPress && (
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={onMenuPress}
+                >
+                    <QuestIcon name="menu" size={24} color={statusColor} />
+                </TouchableOpacity>
+            )}
+
+            {/* Search Bar */}
             <View style={styles.searchInputContainer}>
                 <TextInput
                     style={[styles.searchInput, { color: statusColor }]}
@@ -58,18 +79,6 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                     onSubmitEditing={handleSearch}
                     returnKeyType="search"
                 />
-                {isUndiscovered && (
-                    <TouchableOpacity
-                        style={styles.searchButton}
-                        onPress={handleSearch}
-                    >
-                        <QuestIcon
-                            name="magnify"
-                            size={24}
-                            color={statusColor}
-                        />
-                    </TouchableOpacity>
-                )}
                 {inputValue.length > 0 && (
                     <TouchableOpacity
                         style={styles.clearButton}
@@ -82,46 +91,74 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                         />
                     </TouchableOpacity>
                 )}
+                <TouchableOpacity
+                    style={styles.searchButton}
+                    onPress={handleSearch}
+                >
+                    <QuestIcon name="magnify" size={24} color={statusColor} />
+                </TouchableOpacity>
             </View>
+
+            {/* Sort Button */}
+            {onSortPress && (
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={onSortPress}
+                >
+                    <QuestIcon name="sort" size={24} color={statusColor} />
+                </TouchableOpacity>
+            )}
+
+            {/* Filter Button */}
+            {onFilterPress && (
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={onFilterPress}
+                >
+                    <QuestIcon name="tune" size={24} color={statusColor} />
+                </TouchableOpacity>
+            )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    searchContainer: {
-        marginTop: 80,
-        marginBottom: 4,
-        borderBottomColor: colorSwatch.neutral.darkGray,
-        zIndex: 1,
-        marginHorizontal: 4,
-        borderWidth: 1,
-        borderRadius: 8,
-        borderColor: colorSwatch.neutral.darkGray,
-        justifyContent: "center",
-        minHeight: 45,
-    },
-    searchInputContainer: {
-        color: colorSwatch.text.primary,
+    topBar: {
         flexDirection: "row",
         alignItems: "center",
+        paddingHorizontal: 8,
+        borderWidth: 1,
+        justifyContent: "center",
+        backgroundColor: colorSwatch.background.darkest,
+        borderTopColor: "transparent",
+        elevation: 4,
+        paddingBottom: 8,
+        marginBottom: 4,
+    },
+    searchInputContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: colorSwatch.background.darkest,
+        borderRadius: 8,
+        marginHorizontal: 8,
+        borderWidth: 1,
+        borderColor: colorSwatch.neutral.darkGray,
     },
     searchInput: {
         flex: 1,
-        paddingHorizontal: 12,
-        color: colorSwatch.text.primary,
+        paddingHorizontal: 8,
         fontSize: 16,
+        color: colorSwatch.text.primary,
     },
     searchButton: {
         padding: 8,
-        paddingHorizontal: 12,
-        borderWidth: 0,
-        borderRadius: 0,
     },
     clearButton: {
         padding: 8,
-        paddingHorizontal: 12,
-        borderWidth: 0,
-        borderRadius: 0,
+    },
+    iconButton: {
+        padding: 8,
     },
 });
 

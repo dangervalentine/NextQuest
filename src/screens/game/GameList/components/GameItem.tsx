@@ -33,6 +33,7 @@ interface GameItemProps {
     isFirstItem?: boolean;
     moveToTop?: (id: number, status: GameStatus) => void;
     moveToBottom?: (id: number, status: GameStatus) => void;
+    isActive?: boolean;
 }
 
 const SWIPE_THRESHOLD = 75; // Absolute value for both directions
@@ -46,6 +47,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         isFirstItem,
         moveToTop,
         moveToBottom,
+        isActive = false,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
         const [isReordering, setIsReordering] = useState(false);
@@ -465,6 +467,9 @@ const GameItem: React.FC<GameItemProps> = memo(
             <Animated.View
                 style={[
                     styles.container,
+                    isActive && {
+                        borderColor: getStatusColor(questGame.gameStatus),
+                    },
                     isAnimating && {
                         height: heightAnim.interpolate({
                             inputRange: [0, 1],
@@ -541,6 +546,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                                 {
                                                     backgroundColor:
                                                         colorSwatch.accent.pink,
+                                                    borderTopRightRadius: 8,
+                                                    borderBottomRightRadius: 8,
                                                 },
                                             ]}
                                             activeOpacity={0.7}
@@ -550,10 +557,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                                                 variant="button"
                                                 style={[
                                                     styles.statusButtonText,
-                                                    {
-                                                        borderTopRightRadius: 8,
-                                                        borderBottomRightRadius: 8,
-                                                    },
                                                 ]}
                                             >
                                                 Remove
@@ -562,13 +565,21 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     )}
                                 </>
                             ) : (
-                                <>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        justifyContent: "flex-end",
+                                        flex: 1,
+                                    }}
+                                >
                                     <TouchableOpacity
                                         style={[
                                             styles.statusButton,
                                             {
                                                 backgroundColor:
                                                     colorSwatch.accent.pink,
+                                                width: 200,
+                                                flex: 0,
                                             },
                                         ]}
                                         activeOpacity={0.7}
@@ -587,9 +598,11 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             {
                                                 backgroundColor:
                                                     colorSwatch.background
-                                                        .darkest,
+                                                        .medium,
                                                 borderTopRightRadius: 8,
                                                 borderBottomRightRadius: 8,
+                                                width: 100,
+                                                flex: 0,
                                             },
                                         ]}
                                         activeOpacity={0.7}
@@ -609,7 +622,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             Cancel
                                         </Text>
                                     </TouchableOpacity>
-                                </>
+                                </View>
                             )}
                         </View>
                     )}

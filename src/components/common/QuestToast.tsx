@@ -10,12 +10,14 @@ type ToastConfigParams = {
     position?: "top" | "bottom";
     visibilityTime?: number;
     color?: string;
+    bottomOffset?: number;
 };
 
 type ToastBaseProps = ToastProps & {
     props?: {
         onPress?: () => void;
         color?: string;
+        bottomOffset?: number;
     };
 };
 
@@ -107,7 +109,6 @@ export const QuestToast: React.FC = () => {
         <Toast
             config={toastConfig}
             position={DEFAULT_POSITION}
-            bottomOffset={DEFAULT_BOTTOM_OFFSET}
             visibilityTime={DEFAULT_VISIBILITY_TIME}
         />
     );
@@ -122,6 +123,7 @@ export const showToast = (params: ToastConfigParams) => {
         props: {
             onPress: params.onPress,
             color: params.color,
+            bottomOffset: params.bottomOffset,
         },
     });
 };

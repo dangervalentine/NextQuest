@@ -16,6 +16,7 @@ import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { LoadingText } from "src/components/common/LoadingText";
 
 interface SearchParams {
     searchQuery?: string;
@@ -228,8 +229,11 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 gameStatus={gameStatus}
                 searchQuery={searchQuery}
                 onSearchChange={handleSearchChange}
-                onClear={() => executeSearch(undefined, "")}
-                placeholder="Search to discover new games..."
+                onClear={() => setSearchQuery("")}
+                placeholder="Discover new games..."
+                onMenuPress={() => console.log("Menu pressed")}
+                onSortPress={() => console.log("Sort pressed")}
+                onFilterPress={() => console.log("Filter pressed")}
             />
 
             {error ? (
@@ -240,16 +244,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 </View>
             ) : isSearching ? (
                 <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                        size="large"
-                        color={getStatusColor("undiscovered")}
-                    />
-                    <Text
-                        variant="subtitle"
-                        style={[styles.emptyText, { marginTop: 16 }]}
-                    >
-                        {getLoadingMessage()}
-                    </Text>
+                    <LoadingText text={getLoadingMessage()} />
                 </View>
             ) : searchResults.length === 0 ? (
                 <View style={styles.loadingContainer}>
@@ -278,6 +273,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: "100%",
+        marginTop: 60,
         justifyContent: "flex-start",
     },
     scrollContainer: {

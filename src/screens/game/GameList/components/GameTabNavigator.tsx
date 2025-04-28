@@ -63,23 +63,14 @@ export const tabBarStyle = {
     backgroundColor: colorSwatch.background.darkest,
     borderColor: colorSwatch.neutral.darkGray,
     borderTopWidth: 1,
-    flexDirection: "row" as const,
-    justifyContent: "space-between" as const,
     height: 60,
     paddingHorizontal: 0,
+    marginTop: 4,
 };
 
 export const headerStyle = {
     backgroundColor: colorSwatch.background.darkest,
     borderColor: colorSwatch.neutral.darkGray,
-    shadowOffset: {
-        width: 0,
-        height: 4,
-    },
-    shadowColor: colorSwatch.background.darkest,
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
-    elevation: 8,
 };
 
 export const screenOptions: BottomTabNavigationOptions = {
@@ -89,14 +80,11 @@ export const screenOptions: BottomTabNavigationOptions = {
     tabBarLabelStyle: {
         fontSize: 12,
         fontFamily: "FiraCode-Regular",
-        marginBottom: 5,
     },
     tabBarItemStyle: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        margin: 0,
-        padding: 0,
     },
     headerStyle,
     headerTitleStyle: {
