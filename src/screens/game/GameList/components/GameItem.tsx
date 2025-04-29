@@ -37,7 +37,9 @@ interface GameItemProps {
     canReorder?: boolean;
 }
 
-const SWIPE_THRESHOLD = 50; // Reduced from 75 to make menus easier to open
+const SWIPE_THRESHOLD = 20; // Reduced from 75 to make menus easier to open
+const LEFT_MENU_POSITION = -305;
+const RIGHT_MENU_POSITION = 200;
 
 const GameItem: React.FC<GameItemProps> = memo(
     ({
@@ -52,20 +54,28 @@ const GameItem: React.FC<GameItemProps> = memo(
         canReorder = false,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
-        const [isReordering, setIsReordering] = useState(false);
-        const [hasShownHint, setHasShownHint] = useState(false);
+
+        // Animation values
         const pan = useRef(new Animated.Value(0)).current;
         const leftChevronOpacity = useRef(new Animated.Value(0)).current;
         const rightChevronOpacity = useRef(new Animated.Value(0)).current;
         const leftChevronPosition = useRef(new Animated.Value(0)).current;
         const rightChevronPosition = useRef(new Animated.Value(0)).current;
+        const heightAnim = useRef(new Animated.Value(1)).current;
+
+        // State variables
+        const [isReordering, setIsReordering] = useState(false);
+        const [hasShownHint, setHasShownHint] = useState(false);
+        const [isRemoveClicked, setIsRemoveClicked] = useState(false);
+        const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false);
+        const [isRightMenuOpen, setIsRightMenuOpen] = useState(false);
+        const prevSwipeX = useRef(0);
+        const [panValue, setPanValue] = useState(0);
+
+        // Layout variables
         const [containerHeight, setContainerHeight] = useState<number>(0);
         const [isInitialHeight, setIsInitialHeight] = useState(true);
         const [isAnimating, setIsAnimating] = useState(false);
-        const heightAnim = useRef(new Animated.Value(1)).current;
-        const [isRemoveClicked, setIsRemoveClicked] = useState(false);
-        const prevSwipeX = useRef(0);
-        const [panValue, setPanValue] = useState(0);
 
         // Get status color once and reuse it throughout the component
         const statusColor = getStatusColor(questGame.gameStatus);
@@ -199,7 +209,6 @@ const GameItem: React.FC<GameItemProps> = memo(
                 "ongoing",
                 "backlog",
                 "completed",
-                // "undiscovered",
             ];
             return allStatuses.filter((status) => status !== currentStatus);
         };
@@ -210,6 +219,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     onStartShouldSetPanResponder: () => !isReordering,
                     onMoveShouldSetPanResponder: (_, gestureState) => {
                         if (isReordering) return false;
+
                         return (
                             Math.abs(gestureState.dx) >
                             Math.abs(gestureState.dy)
@@ -234,102 +244,106 @@ const GameItem: React.FC<GameItemProps> = memo(
                             questGame.gameStatus === "undiscovered" ||
                             !canReorder
                                 ? 0
-                                : 200;
-                        const maxLeft =
-                            questGame.gameStatus === "undiscovered" ||
-                            isRemoveClicked
-                                ? -300
-                                : -300;
+                                : RIGHT_MENU_POSITION;
+
+                        const maxLeft = LEFT_MENU_POSITION;
 
                         newX = Math.max(maxLeft, Math.min(maxRight, newX));
 
                         // Haptic feedback when crossing thresholds
-                        if (
-                            (prevSwipeX.current < 75 && newX >= 75) ||
-                            (prevSwipeX.current > 75 && newX <= 75)
-                        ) {
+                        if (isLeftMenuOpen) {
+                            // Closing left menu - trigger when moving away from full open position
                             if (
-                                canReorder &&
-                                questGame.gameStatus !== "undiscovered"
+                                prevSwipeX.current <=
+                                    LEFT_MENU_POSITION + SWIPE_THRESHOLD &&
+                                newX > LEFT_MENU_POSITION + SWIPE_THRESHOLD
                             ) {
                                 triggerHapticFeedback("light");
                             }
-                        } else if (
-                            (prevSwipeX.current > -75 && newX <= -75) ||
-                            (prevSwipeX.current < -75 && newX >= -75)
-                        ) {
-                            triggerHapticFeedback("light");
+                        } else if (isRightMenuOpen) {
+                            // Closing right menu - trigger when moving away from full open position
+                            if (
+                                prevSwipeX.current >=
+                                    RIGHT_MENU_POSITION - SWIPE_THRESHOLD &&
+                                newX < RIGHT_MENU_POSITION - SWIPE_THRESHOLD
+                            ) {
+                                triggerHapticFeedback("light");
+                            }
+                        } else {
+                            // Opening menu - trigger when moving away from center
+                            if (
+                                (prevSwipeX.current > -SWIPE_THRESHOLD &&
+                                    newX <= -SWIPE_THRESHOLD) ||
+                                (prevSwipeX.current < SWIPE_THRESHOLD &&
+                                    newX >= SWIPE_THRESHOLD)
+                            ) {
+                                triggerHapticFeedback("light");
+                            }
                         }
 
                         prevSwipeX.current = newX;
                         pan.setValue(newX);
                     },
-                    onPanResponderRelease: (_, gestureState) => {
+                    onPanResponderRelease: () => {
                         if (isReordering) return;
 
                         // Get the current position after the gesture
                         const currentPosition = panValue;
-                        const startingPosition =
-                            currentPosition - gestureState.dx;
-                        const positionChange = Math.abs(
-                            currentPosition - startingPosition
-                        );
 
                         // For slow movements, use position thresholds rather than velocity
-                        const significantRightMovement = currentPosition > 20;
-                        const significantLeftMovement = currentPosition < -20;
+                        const significantRightMovement =
+                            currentPosition > SWIPE_THRESHOLD;
+                        const significantLeftMovement =
+                            currentPosition < -SWIPE_THRESHOLD;
 
-                        // Check if we're trying to close a menu (moving from open position toward center)
-                        const closingLeftMenu =
-                            startingPosition < -50 &&
-                            currentPosition > startingPosition;
-                        const closingRightMenu =
-                            startingPosition > 50 &&
-                            currentPosition < startingPosition;
+                        // Calculate distance from menu position
+                        const distanceFromLeftMenu = Math.abs(
+                            currentPosition - LEFT_MENU_POSITION
+                        );
+                        const distanceFromRightMenu = Math.abs(
+                            currentPosition - RIGHT_MENU_POSITION
+                        );
 
-                        // If trying to close a menu
-                        if (closingLeftMenu || closingRightMenu) {
-                            // If moved enough toward center or flicked, close it
-                            if (
-                                positionChange > 30 ||
-                                Math.abs(gestureState.vx) > 0.1
-                            ) {
-                                Animated.spring(pan, {
-                                    toValue: 0,
-                                    useNativeDriver: false,
-                                }).start(() => {
-                                    if (isRemoveClicked) {
-                                        setIsRemoveClicked(false);
-                                    }
-                                });
-                            }
-                            // Otherwise, keep menu open
-                            else {
-                                Animated.spring(pan, {
-                                    toValue: startingPosition < 0 ? -305 : 200,
-                                    useNativeDriver: false,
-                                }).start();
-                            }
+                        if (
+                            (isLeftMenuOpen &&
+                                distanceFromLeftMenu > SWIPE_THRESHOLD) ||
+                            (isRightMenuOpen &&
+                                distanceFromRightMenu > SWIPE_THRESHOLD)
+                        ) {
+                            triggerHapticFeedback("light");
+
+                            Animated.spring(pan, {
+                                toValue: 0,
+                                useNativeDriver: false,
+                            }).start(() => {
+                                if (isRemoveClicked) {
+                                    setIsRemoveClicked(false);
+                                }
+                                setIsLeftMenuOpen(false);
+                                setIsRightMenuOpen(false);
+                            });
                         }
                         // Opening left menu (status)
                         else if (significantLeftMovement) {
                             Animated.spring(pan, {
-                                toValue: -305,
+                                toValue: LEFT_MENU_POSITION,
                                 useNativeDriver: false,
-                            }).start();
+                            }).start(() => {
+                                setIsLeftMenuOpen(true);
+                                setIsRightMenuOpen(false);
+                            });
                         }
                         // Opening right menu (priority)
-                        else if (
-                            significantRightMovement &&
-                            questGame.gameStatus !== "undiscovered" &&
-                            canReorder
-                        ) {
+                        else if (significantRightMovement) {
                             Animated.spring(pan, {
-                                toValue: 200,
+                                toValue: RIGHT_MENU_POSITION,
                                 useNativeDriver: false,
                                 tension: 40,
                                 friction: 7,
-                            }).start();
+                            }).start(() => {
+                                setIsRightMenuOpen(true);
+                                setIsLeftMenuOpen(false);
+                            });
                         }
                         // Return to center/closed
                         else {
@@ -340,6 +354,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 if (isRemoveClicked) {
                                     setIsRemoveClicked(false);
                                 }
+                                setIsLeftMenuOpen(false);
+                                setIsRightMenuOpen(false);
                             });
                         }
                     },
@@ -360,21 +376,22 @@ const GameItem: React.FC<GameItemProps> = memo(
                     onStartShouldSetPanResponder: () => canReorder,
                     onMoveShouldSetPanResponder: () => canReorder,
                     onPanResponderGrant: () => {
-                        if (!canReorder) return;
                         setIsReordering(true);
+
                         triggerHapticFeedback("light");
+
                         if (reorder) {
                             reorder();
                         }
                     },
                     onPanResponderRelease: () => {
-                        if (!canReorder) return;
                         setIsReordering(false);
+
                         triggerHapticFeedback("light");
                     },
                     onPanResponderTerminate: () => {
-                        if (!canReorder) return;
                         setIsReordering(false);
+
                         triggerHapticFeedback("light");
                     },
                 }),
@@ -386,7 +403,7 @@ const GameItem: React.FC<GameItemProps> = memo(
             setIsRemoveClicked(true);
             // Keep menu open by maintaining the same left position
             Animated.spring(pan, {
-                toValue: -305, // Match full left menu width
+                toValue: LEFT_MENU_POSITION, // Match full left menu width
                 useNativeDriver: false,
             }).start();
         };
@@ -490,20 +507,6 @@ const GameItem: React.FC<GameItemProps> = memo(
             [questGame.genres]
         );
 
-        const getStatusButtonStyles = (status: GameStatus) => {
-            const color = getStatusColor(status);
-            return {
-                backgroundColor: color,
-            };
-        };
-
-        let coverUrl;
-        if (questGame.cover && questGame.cover.url) {
-            coverUrl = questGame.cover.url.replace("t_thumb", "t_cover_big");
-        } else {
-            coverUrl = require("../../../../assets/next-quest-icons/game_item_placeholder.png");
-        }
-
         const handleMoveToTop = () => {
             if (moveToTop && questGame.gameStatus !== "undiscovered") {
                 triggerHapticFeedback("light");
@@ -527,6 +530,13 @@ const GameItem: React.FC<GameItemProps> = memo(
                 }).start();
             }
         };
+
+        let coverUrl;
+        if (questGame.cover && questGame.cover.url) {
+            coverUrl = questGame.cover.url.replace("t_thumb", "t_cover_big");
+        } else {
+            coverUrl = require("../../../../assets/next-quest-icons/game_item_placeholder.png");
+        }
 
         return (
             <Animated.View
@@ -578,7 +588,11 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             key={status}
                                             style={[
                                                 styles.statusButton,
-                                                getStatusButtonStyles(status),
+                                                {
+                                                    backgroundColor: getStatusColor(
+                                                        status
+                                                    ),
+                                                },
                                                 index ===
                                                     getAvailableStatuses(
                                                         questGame.gameStatus
