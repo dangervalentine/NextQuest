@@ -8,7 +8,7 @@ import { getRatingColor, getStatusColor } from "src/utils/colorsUtils";
 import QuestIcon from "../../shared/GameIcon";
 import { useGames } from "src/contexts/GamesContext";
 import { showToast } from "src/components/common/QuestToast";
-import { triggerHapticFeedback } from "src/utils/systemUtils";
+import { HapticFeedback } from "src/utils/hapticUtils";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import { theme } from "src/constants/theme/styles";
 
@@ -68,7 +68,7 @@ export const PersonalRatingSection = memo(
         // Handle star rating press
         const handleRatingPress = async (newRating: number) => {
             try {
-                triggerHapticFeedback("light");
+                HapticFeedback.selection();
 
                 // Update UI immediately for responsiveness
                 lastSelectedRating.current = newRating;

@@ -20,7 +20,7 @@ import { ScreenNavigationProp } from "src/navigation/navigationTypes";
 import FullHeightImage from "../../shared/FullHeightImage";
 import { getStatusLabel } from "src/utils/gameStatusUtils";
 import { getRatingColor, getStatusColor } from "src/utils/colorsUtils";
-import { triggerHapticFeedback } from "src/utils/systemUtils";
+import { HapticFeedback } from "src/utils/hapticUtils";
 import { theme } from "src/constants/theme/styles";
 
 // Shared state to track if hint has been shown in this session
@@ -259,7 +259,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     LEFT_MENU_POSITION + SWIPE_THRESHOLD &&
                                 newX > LEFT_MENU_POSITION + SWIPE_THRESHOLD
                             ) {
-                                triggerHapticFeedback("light");
+                                HapticFeedback.selection();
                             }
                         } else if (isRightMenuOpen) {
                             // Closing right menu - trigger when moving away from full open position
@@ -268,7 +268,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     RIGHT_MENU_POSITION - SWIPE_THRESHOLD &&
                                 newX < RIGHT_MENU_POSITION - SWIPE_THRESHOLD
                             ) {
-                                triggerHapticFeedback("light");
+                                HapticFeedback.selection();
                             }
                         } else {
                             // Opening menu - trigger when moving away from center
@@ -278,7 +278,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                 (prevSwipeX.current < SWIPE_THRESHOLD &&
                                     newX >= SWIPE_THRESHOLD)
                             ) {
-                                triggerHapticFeedback("light");
+                                HapticFeedback.selection();
                             }
                         }
 
@@ -311,7 +311,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                             (isRightMenuOpen &&
                                 distanceFromRightMenu > SWIPE_THRESHOLD)
                         ) {
-                            triggerHapticFeedback("light");
+                            HapticFeedback.selection();
 
                             Animated.spring(pan, {
                                 toValue: 0,
@@ -378,29 +378,25 @@ const GameItem: React.FC<GameItemProps> = memo(
                     onMoveShouldSetPanResponder: () => canReorder,
                     onPanResponderGrant: () => {
                         setIsReordering(true);
-
-                        triggerHapticFeedback("light");
-
+                        HapticFeedback.selection();
                         if (reorder) {
                             reorder();
                         }
                     },
                     onPanResponderRelease: () => {
                         setIsReordering(false);
-
-                        triggerHapticFeedback("light");
+                        HapticFeedback.selection();
                     },
                     onPanResponderTerminate: () => {
                         setIsReordering(false);
-
-                        triggerHapticFeedback("light");
+                        HapticFeedback.selection();
                     },
                 }),
             [reorder, canReorder]
         );
 
         const handleRemoveClick = () => {
-            triggerHapticFeedback("light");
+            HapticFeedback.selection();
             setIsRemoveClicked(true);
             // Keep menu open by maintaining the same left position
             Animated.spring(pan, {
@@ -410,7 +406,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         };
 
         const handleCancel = () => {
-            triggerHapticFeedback("light");
+            HapticFeedback.selection();
             Animated.spring(pan, {
                 toValue: 0,
                 useNativeDriver: false,
@@ -422,7 +418,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleConfirmRemove = () => {
             if (containerHeight === 0) return;
             setIsAnimating(true);
-            triggerHapticFeedback("light");
+            HapticFeedback.selection();
 
             Animated.parallel([
                 Animated.timing(pan, {
@@ -448,7 +444,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleStatusSelect = (status: GameStatus) => {
             if (containerHeight === 0) return;
             setIsAnimating(true);
-            triggerHapticFeedback("light");
+            HapticFeedback.selection();
 
             const animations = [
                 Animated.timing(pan, {
@@ -510,7 +506,7 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const handleMoveToTop = () => {
             if (moveToTop && questGame.gameStatus !== "undiscovered") {
-                triggerHapticFeedback("light");
+                HapticFeedback.selection();
                 moveToTop(questGame.id, questGame.gameStatus);
                 // Close menu after action
                 Animated.spring(pan, {
@@ -522,7 +518,7 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         const handleMoveToBottom = () => {
             if (moveToBottom && questGame.gameStatus !== "undiscovered") {
-                triggerHapticFeedback("light");
+                HapticFeedback.selection();
                 moveToBottom(questGame.id, questGame.gameStatus);
                 // Close menu after action
                 Animated.spring(pan, {

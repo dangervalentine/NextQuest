@@ -11,7 +11,7 @@ import {
 import { PlatformLogoBadge } from "./PlatformLogoBadge";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { Ionicons } from "@expo/vector-icons";
-import { triggerHapticFeedback } from "src/utils/systemUtils";
+import { HapticFeedback } from "src/utils/hapticUtils";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
 import { theme } from "src/constants/theme/styles";
@@ -35,7 +35,7 @@ export const PlatformSelectionModal: React.FC<PlatformSelectionModalProps> = ({
     platforms,
 }) => {
     const handlePlatformSelect = (platform: Platform) => {
-        triggerHapticFeedback("light");
+        HapticFeedback.selection();
         onSelect(platform);
     };
     const { activeStatus } = useGameStatus();

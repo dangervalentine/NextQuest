@@ -20,7 +20,7 @@ import IGDBService from "../services/api/IGDBService";
 import { showToast } from "../components/common/QuestToast";
 import { getStatusColor } from "../utils/colorsUtils";
 import { getStatusLabel } from "../utils/gameStatusUtils";
-import { triggerHapticFeedback } from "../utils/systemUtils";
+import { HapticFeedback } from "../utils/hapticUtils";
 import Toast from "react-native-toast-message";
 
 interface GamesContextType {
@@ -295,7 +295,7 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                         visibilityTime: 2000,
                         color: getStatusColor(newStatus),
                         onPress: () => {
-                            triggerHapticFeedback("light");
+                            HapticFeedback.selection();
                             Toast.hide();
                             handleNavigateAndScroll(newStatus);
                         },
@@ -474,10 +474,14 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                     let selectedPlatform = game.platforms?.[0];
 
                     if (game.platforms?.length > 1) {
-                        selectedPlatform =
-                            (await showPlatformSelectionModal(
-                                game.platforms || []
-                            )) || selectedPlatform;
+                        const selectedPlatformResult = await showPlatformSelectionModal(
+                            game.platforms || []
+                        );
+                        if (selectedPlatformResult === null) {
+                            // User cancelled platform selection
+                            return;
+                        }
+                        selectedPlatform = selectedPlatformResult;
                     }
 
                     if (
@@ -513,7 +517,7 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                                 position: "bottom",
                                 visibilityTime: 3000,
                                 onPress: () => {
-                                    triggerHapticFeedback("light");
+                                    HapticFeedback.selection();
                                     Toast.hide();
                                     handleNavigateAndScroll(newStatus);
                                 },
@@ -553,10 +557,14 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                     let selectedPlatform = game.platforms?.[0]; // Show platform selection for new game
 
                     if (game.platforms?.length > 1) {
-                        selectedPlatform =
-                            (await showPlatformSelectionModal(
-                                game.platforms || []
-                            )) || selectedPlatform;
+                        const selectedPlatformResult = await showPlatformSelectionModal(
+                            game.platforms || []
+                        );
+                        if (selectedPlatformResult === null) {
+                            // User cancelled platform selection
+                            return;
+                        }
+                        selectedPlatform = selectedPlatformResult;
                     }
 
                     try {
@@ -578,7 +586,7 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                             position: "bottom",
                             visibilityTime: 2000,
                             onPress: () => {
-                                triggerHapticFeedback("light");
+                                HapticFeedback.selection();
                                 Toast.hide();
                                 handleNavigateAndScroll(newStatus);
                             },
