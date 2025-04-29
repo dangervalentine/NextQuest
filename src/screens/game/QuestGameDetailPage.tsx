@@ -29,6 +29,7 @@ import { getBackgroundImage } from "../../utils/imageUtils";
 import { LoadingText } from "src/components/common/LoadingText";
 import { getStatusColor } from "src/utils/colorsUtils";
 import WebsitesSection from "./GameDetail/components/WebsitesSection";
+import { theme } from "src/constants/theme/styles";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         marginTop: 16,
         backgroundColor: colorSwatch.background.darkest,
-        borderRadius: 12,
+        borderRadius: theme.borderRadius,
         padding: 16,
         elevation: 4,
     },
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
     },
     infoSection: {
         marginTop: 16,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
     },
     mainSectionTitle: {
         marginBottom: 20,
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
     noteContainer: {
         backgroundColor: colorSwatch.background.dark,
         padding: 16,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
     },
     bottomClearance: {
         height: 60,

@@ -10,6 +10,7 @@ import { useGames } from "src/contexts/GamesContext";
 import { showToast } from "src/components/common/QuestToast";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
 import { useGameStatus } from "src/contexts/GameStatusContext";
+import { theme } from "src/constants/theme/styles";
 
 interface RatingProps {
     gameId: number;
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         marginTop: 24,
         backgroundColor: colorSwatch.background.darkest,
-        borderRadius: 12,
+        borderRadius: theme.borderRadius,
         padding: 16,
         elevation: 4,
     },
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
     ratingSelectionContainer: {
         backgroundColor: colorSwatch.background.darker,
         paddingHorizontal: 8,
-        borderRadius: 12,
+        borderRadius: theme.borderRadius,
     },
     ratingPrompt: {
         marginTop: 16,
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
     noteContainer: {
         backgroundColor: colorSwatch.background.dark,
         padding: 16,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
     },
     noteText: {
         fontSize: 16,

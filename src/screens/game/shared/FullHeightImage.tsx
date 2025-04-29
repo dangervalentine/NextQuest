@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { colorSwatch } from "src/constants/theme/colorConstants";
+import { theme } from "src/constants/theme/styles";
 
 interface FullHeightImageProps {
     source: string;
@@ -113,7 +114,7 @@ const FullHeightImage: React.FC<FullHeightImageProps> = ({
                             width: imageWidth,
                             height: imageHeight,
                             overflow: "hidden",
-                            borderRadius: 4,
+                            borderRadius: theme.borderRadius,
                         },
                     ]}
                     contentFit="cover"

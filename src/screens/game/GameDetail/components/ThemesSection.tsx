@@ -4,6 +4,7 @@ import Text from "src/components/common/Text";
 import { QuestGame } from "src/data/models/QuestGame";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { StyleSheet } from "react-native";
+import { theme } from "src/constants/theme/styles";
 
 interface ThemesSectionProps {
     game: QuestGame;
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         backgroundColor: colorSwatch.background.darkest,
         paddingHorizontal: 12,
         paddingVertical: 8,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
     },

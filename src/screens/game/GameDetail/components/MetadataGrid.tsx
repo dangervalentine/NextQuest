@@ -8,6 +8,7 @@ import Text from "src/components/common/Text";
 import { StyleSheet } from "react-native";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { theme } from "src/constants/theme/styles";
 
 interface MetadataGridProps {
     game: QuestGame;
@@ -53,7 +54,7 @@ const FranchiseSection: React.FC<MetadataGridProps> = ({ game }) => {
 
 const styles = StyleSheet.create({
     metadataGrid: {
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
         flexDirection: "row",
         alignItems: "center",
         paddingVertical: 8,

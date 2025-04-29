@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Text from "./Text";
 import { colorSwatch } from "../../constants/theme/colorConstants";
 import QuestIcon from "../../screens/game/shared/GameIcon";
+import { theme } from "src/constants/theme/styles";
 
 interface ExpandableContentProps {
     content: ReactNode;
@@ -117,7 +118,7 @@ const ExpandableContent: React.FC<ExpandableContentProps> = memo(
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colorSwatch.background.darker,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
         padding: 16,
     },
     contentContainer: {
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
         gap: 4,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
-        borderRadius: 4,
+        borderRadius: theme.borderRadius,
         paddingHorizontal: 8,
         paddingVertical: 4,
         alignSelf: "flex-start",

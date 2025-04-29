@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { theme } from "src/constants/theme/styles";
 
 interface Platform {
     id: number;
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
         width: width * 0.9,
         maxHeight: "80%",
         backgroundColor: colorSwatch.background.dark,
-        borderRadius: 12,
+        borderRadius: theme.borderRadius,
         overflow: "hidden",
         flex: 1,
     },

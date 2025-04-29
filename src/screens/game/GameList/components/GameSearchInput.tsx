@@ -5,6 +5,7 @@ import { colorSwatch } from "src/constants/theme/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
 import { getStatusLabel } from "src/utils/gameStatusUtils";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { theme } from "src/constants/theme/styles";
 
 interface GameSearchInputProps {
     gameStatus: GameStatus;
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: colorSwatch.background.darkest,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
     },
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
         padding: 8,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
     },
 });
 

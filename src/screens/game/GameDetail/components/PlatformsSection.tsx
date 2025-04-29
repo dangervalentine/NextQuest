@@ -6,6 +6,7 @@ import { QuestGame } from "src/data/models/QuestGame";
 import Text from "src/components/common/Text";
 import ExpandableContent from "src/components/common/ExpandableContent";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { theme } from "src/constants/theme/styles";
 
 interface PlatformsSectionProps {
     game: QuestGame;
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 12,
         backgroundColor: colorSwatch.background.darker,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
     },
     platformInfo: {},
     platformName: {

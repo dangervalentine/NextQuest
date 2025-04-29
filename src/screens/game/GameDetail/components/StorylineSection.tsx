@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import Text from "../../../../components/common/Text";
 import ExpandableContent from "../../../../components/common/ExpandableContent";
 import { colorSwatch } from "../../../../constants/theme/colorConstants";
+import { theme } from "src/constants/theme/styles";
 
 interface StorylineSectionProps {
     storyline?: string;
@@ -31,7 +32,7 @@ const StorylineSection: React.FC<StorylineSectionProps> = memo(
 const styles = StyleSheet.create({
     storylineContainer: {
         backgroundColor: colorSwatch.background.darker,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
     },
     storylineText: {
         color: colorSwatch.text.primary,

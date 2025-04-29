@@ -21,6 +21,7 @@ import FullHeightImage from "../../shared/FullHeightImage";
 import { getStatusLabel } from "src/utils/gameStatusUtils";
 import { getRatingColor, getStatusColor } from "src/utils/colorsUtils";
 import { triggerHapticFeedback } from "src/utils/systemUtils";
+import { theme } from "src/constants/theme/styles";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -954,7 +955,7 @@ const styles = StyleSheet.create({
         position: "relative",
         backgroundColor: colorSwatch.background.darkest,
         opacity: 1,
-        borderRadius: 12,
+        borderRadius: theme.borderRadius,
         marginHorizontal: 4,
         marginVertical: 2,
         shadowColor: colorSwatch.background.dark,
@@ -970,7 +971,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         flex: 1,
         margin: 2,
-        borderRadius: 10,
+        borderRadius: theme.borderRadius,
     },
     gameContainer: {
         flexDirection: "row",
@@ -1006,7 +1007,7 @@ const styles = StyleSheet.create({
     activeItem: {
         borderWidth: 2,
         borderColor: colorSwatch.accent.cyan,
-        borderRadius: 12,
+        borderRadius: theme.borderRadius,
     },
     titleContainer: {
         flexDirection: "row",
@@ -1091,7 +1092,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         backgroundColor: colorSwatch.background.darker,
         padding: 4,
-        borderRadius: 100,
+        borderRadius: theme.borderRadius,
     },
     leftChevron: {
         right: -50,

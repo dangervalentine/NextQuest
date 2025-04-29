@@ -13,6 +13,7 @@ import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
 import QuestIcon from "../../shared/GameIcon";
 import { SortField } from "src/types/sortTypes";
+import { theme } from "src/constants/theme/styles";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const MENU_WIDTH = Math.min(320, SCREEN_WIDTH * 0.85);
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
     },
     directionButton: {
         padding: 8,
-        borderRadius: 6,
+        borderRadius: theme.borderRadius,
     },
     divider: {
         height: 1,

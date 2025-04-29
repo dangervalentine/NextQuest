@@ -3,6 +3,7 @@ import { View, StyleSheet, Linking, TouchableOpacity } from "react-native";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import Text from "src/components/common/Text";
+import { theme } from "src/constants/theme/styles";
 interface Website {
     id: number;
     category: number;
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
     },
     websiteButton: {
         backgroundColor: colorSwatch.background.darkest,
-        borderRadius: 8,
+        borderRadius: theme.borderRadius,
         paddingVertical: 8,
         paddingHorizontal: 16,
         flexDirection: "row",
