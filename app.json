@@ -1,7 +1,7 @@
 {
     "expo": {
         "name": "NextQuest",
-        "slug": "next-quest",
+        "slug": "nextquest",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./src/assets/next-quest-icons/next_quest_white.png",
@@ -27,6 +27,7 @@
             }
         },
         "android": {
+            "edgeToEdgeEnabled": true,
             "adaptiveIcon": {
                 "foregroundImage": "./src/assets/next-quest-icons/next_quest_white.png",
                 "backgroundColor": "#01111d"

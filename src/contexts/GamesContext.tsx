@@ -262,11 +262,11 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                     const updatedCurrentGamesWithPriorities =
                         currentStatus !== "undiscovered"
                             ? sortGames(
-                                  updatedCurrentGames.map((game, index) => ({
-                                      ...game,
-                                      priority: index + 1,
-                                  }))
-                              )
+                                updatedCurrentGames.map((game, index) => ({
+                                    ...game,
+                                    priority: index + 1,
+                                }))
+                            )
                             : updatedCurrentGames;
 
                     const movedGame = {
@@ -610,7 +610,7 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                 showToast({
                     type: "error",
                     text1: "Operation Failed",
-                    text2: "An unexpected error occurred. Please try again.",
+                    text2: error instanceof Error ? error.message : "Unknown error",
                     position: "bottom",
                     visibilityTime: 3000,
                 });

@@ -58,9 +58,9 @@ class IGDBService {
             dateAdded: now,
             cover: game.cover
                 ? {
-                      id: game.cover.id,
-                      url: game.cover.url.replace("t_thumb", "t_cover_big"),
-                  }
+                    id: game.cover.id,
+                    url: game.cover.url.replace("t_thumb", "t_cover_big"),
+                }
                 : null,
             platforms:
                 game.platforms?.map((platform: any) => ({
@@ -85,7 +85,7 @@ class IGDBService {
     }
 
     private static getBaseGameFields(): string {
-        return `fields id, name, 
+        return `fields id, name,
        cover.id, cover.url,
        genres.id, genres.name,
        release_dates.id, release_dates.date,
@@ -141,7 +141,20 @@ limit 100;`;
     public static async searchGames(
         query: string
     ): Promise<MinimalQuestGame[]> {
-        return this.searchGamesBy(`name ~ *"${query}"*`);
+        const games = await this.searchGamesBy(`name ~ *"${query}"*`);
+        const lowerQuery = query.toLowerCase().trim();
+
+        // Sort games so exact matches appear first
+        return games
+            .sort((a, b) => {
+                const aNameLower = a.name.toLowerCase();
+                const bNameLower = b.name.toLowerCase();
+
+                if (aNameLower === lowerQuery && bNameLower !== lowerQuery) return -1;
+                if (bNameLower === lowerQuery && aNameLower !== lowerQuery) return 1;
+
+                return 0;
+            });
     }
 
     public static async searchGamesByPlatform(
@@ -236,15 +249,15 @@ where popularity_type = ${chosenPopularityType.id};`;
             }
 
             const query = `
-fields id, name, summary, 
-       genres.id, genres.name, 
-       platforms.id, platforms.name, 
+fields id, name, summary,
+       genres.id, genres.name,
+       platforms.id, platforms.name,
        release_dates.id, release_dates.human, release_dates.platform, release_dates.date,
-       cover.id, cover.url, 
-       age_ratings.id, age_ratings.rating, age_ratings.category, 
-       involved_companies.company.id, involved_companies.company.name, 
-       involved_companies.developer, involved_companies.publisher, 
-       screenshots.id, screenshots.url, 
+       cover.id, cover.url,
+       age_ratings.id, age_ratings.rating, age_ratings.category,
+       involved_companies.company.id, involved_companies.company.name,
+       involved_companies.developer, involved_companies.publisher,
+       screenshots.id, screenshots.url,
        videos.id, videos.video_id,
        game_modes.id, game_modes.name,
        player_perspectives.id, player_perspectives.name,
@@ -327,15 +340,15 @@ sort release_dates.date asc;
             }
 
             const query = `
-fields id, name, summary, 
-       genres.id, genres.name, 
-       platforms.id, platforms.name, 
+fields id, name, summary,
+       genres.id, genres.name,
+       platforms.id, platforms.name,
        release_dates.id, release_dates.human, release_dates.platform, release_dates.date,
-       cover.id, cover.url, 
-       age_ratings.id, age_ratings.rating, age_ratings.category, 
-       involved_companies.company.id, involved_companies.company.name, 
-       involved_companies.developer, involved_companies.publisher, 
-       screenshots.id, screenshots.url, 
+       cover.id, cover.url,
+       age_ratings.id, age_ratings.rating, age_ratings.category,
+       involved_companies.company.id, involved_companies.company.name,
+       involved_companies.developer, involved_companies.publisher,
+       screenshots.id, screenshots.url,
        videos.id, videos.video_id,
        game_modes.id, game_modes.name,
        player_perspectives.id, player_perspectives.name,
@@ -401,7 +414,7 @@ sort release_dates.date asc;
             };
         } catch (error) {
             console.error("Error fetching game details:", error);
-            return null;
+            throw error;
         }
     }
 }

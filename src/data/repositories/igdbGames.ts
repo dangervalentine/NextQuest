@@ -77,7 +77,7 @@ export const getIGDBGameById = async (
     try {
         const [game] = await db.getAllAsync<IGDBGameRow>(
             `
-            SELECT 
+            SELECT
                 g.*,
                 qg.personal_rating,
                 qg.completion_date,
@@ -268,14 +268,14 @@ export const getIGDBGameById = async (
                 const parsedCompanies = JSON.parse(game.involved_companies);
                 involvedCompanies = Array.isArray(parsedCompanies)
                     ? parsedCompanies.filter(
-                          (ic) =>
-                              ic &&
-                              ic.id &&
-                              ic.company_id &&
-                              ic.company &&
-                              ic.company.id &&
-                              ic.company.name
-                      )
+                        (ic) =>
+                            ic &&
+                            ic.id &&
+                            ic.company_id &&
+                            ic.company &&
+                            ic.company.id &&
+                            ic.company.name
+                    )
                     : [];
             }
         } catch (error) {
@@ -304,9 +304,9 @@ export const getIGDBGameById = async (
             cover:
                 game.cover_id && game.cover_url
                     ? {
-                          id: game.cover_id,
-                          url: game.cover_url,
-                      }
+                        id: game.cover_id,
+                        url: game.cover_url,
+                    }
                     : null,
             genres: genres || [],
             platforms: platforms || [],
@@ -336,7 +336,7 @@ export const getMinimalIGDBGameById = async (id: number) => {
     try {
         const [game] = await db.getAllAsync<MinimalIGDBGameRow>(
             `
-            SELECT 
+            SELECT
                 g.id,
                 g.name,
                 cov.id as cover_id,
@@ -394,9 +394,9 @@ export const getMinimalIGDBGameById = async (id: number) => {
             cover:
                 game.cover_id && game.cover_url
                     ? {
-                          id: game.cover_id,
-                          url: game.cover_url,
-                      }
+                        id: game.cover_id,
+                        url: game.cover_url,
+                    }
                     : null,
             genres,
             release_dates,
@@ -420,22 +420,19 @@ export const createIGDBGame = async (
     ) VALUES (
         ${gameData.id},
         '${gameData.name.replace(/'/g, "''")}',
-        ${
-            gameData.summary
-                ? `'${gameData.summary.replace(/'/g, "''")}'`
-                : "NULL"
-        },
-        ${
-            gameData.storyline
-                ? `'${gameData.storyline.replace(/'/g, "''")}'`
-                : "NULL"
-        },
+        ${gameData.summary
+                    ? `'${gameData.summary.replace(/'/g, "''")}'`
+                    : "NULL"
+                },
+        ${gameData.storyline
+                    ? `'${gameData.storyline.replace(/'/g, "''")}'`
+                    : "NULL"
+                },
         ${gameData.rating !== undefined ? gameData.rating : "NULL"},
-        ${
-            gameData.aggregated_rating !== undefined
-                ? gameData.aggregated_rating
-                : "NULL"
-        }
+        ${gameData.aggregated_rating !== undefined
+                    ? gameData.aggregated_rating
+                    : "NULL"
+                }
     )
 `;
             await db.execAsync(gameQuery);
@@ -464,7 +461,7 @@ export const createIGDBGame = async (
 
                         // Verify the genre was saved
                         const verifyQuery = `
-                SELECT g.* 
+                SELECT g.*
                 FROM genres g
                 JOIN game_genres gg ON g.id = gg.genre_id
                 WHERE gg.game_id = ${gameData.id}
@@ -536,9 +533,9 @@ export const createIGDBGame = async (
                         INSERT OR IGNORE INTO involved_companies (
                             game_id, company_id, developer, publisher
                         ) VALUES (
-                            ${gameData.id}, 
-                            ${involvedCompany.company.id}, 
-                            ${involvedCompany.developer ? 1 : 0}, 
+                            ${gameData.id},
+                            ${involvedCompany.company.id},
+                            ${involvedCompany.developer ? 1 : 0},
                             ${involvedCompany.publisher ? 1 : 0}
                         )
                     `);
@@ -646,16 +643,14 @@ export const createGame = async (
             VALUES (
                 ${game.id},
                 '${(game.name || "").replace(/'/g, "''")}',
-                ${
-                    game.summary
-                        ? `'${game.summary.replace(/'/g, "''")}'`
-                        : "NULL"
-                },
-                ${
-                    game.storyline
-                        ? `'${game.storyline.replace(/'/g, "''")}'`
-                        : "NULL"
-                },
+                ${game.summary
+                ? `'${game.summary.replace(/'/g, "''")}'`
+                : "NULL"
+            },
+                ${game.storyline
+                ? `'${game.storyline.replace(/'/g, "''")}'`
+                : "NULL"
+            },
                 ${game.rating || "NULL"},
                 ${game.aggregated_rating || "NULL"}
             )`
@@ -666,8 +661,7 @@ export const createGame = async (
             for (const platform of game.platforms) {
                 if (platform && platform.id && platform.name) {
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO platforms (id, name) VALUES (${
-                            platform.id
+                        `INSERT OR IGNORE INTO platforms (id, name) VALUES (${platform.id
                         }, '${platform.name.replace(/'/g, "''")}')`
                     );
 
@@ -682,8 +676,7 @@ export const createGame = async (
         // Insert cover if exists
         if (game.cover && game.cover.id && game.cover.url) {
             await db.execAsync(
-                `INSERT OR REPLACE INTO covers (id, game_id, url) VALUES (${
-                    game.cover.id
+                `INSERT OR REPLACE INTO covers (id, game_id, url) VALUES (${game.cover.id
                 }, ${game.id}, '${game.cover.url.replace(/'/g, "''")}')`
             );
         }
@@ -693,8 +686,7 @@ export const createGame = async (
             for (const screenshot of game.screenshots) {
                 if (screenshot && screenshot.id && screenshot.url) {
                     await db.execAsync(
-                        `INSERT OR REPLACE INTO screenshots (id, game_id, url) VALUES (${
-                            screenshot.id
+                        `INSERT OR REPLACE INTO screenshots (id, game_id, url) VALUES (${screenshot.id
                         }, ${game.id}, '${screenshot.url.replace(/'/g, "''")}')`
                     );
                 }
@@ -728,8 +720,7 @@ export const createGame = async (
                     date.platform_id
                 ) {
                     await db.execAsync(
-                        `INSERT OR REPLACE INTO release_dates (id, game_id, date, human, platform_id) VALUES (${
-                            date.id
+                        `INSERT OR REPLACE INTO release_dates (id, game_id, date, human, platform_id) VALUES (${date.id
                         }, ${game.id}, ${date.date}, '${date.human.replace(
                             /'/g,
                             "''"
@@ -745,17 +736,14 @@ export const createGame = async (
                 if (ic && ic.company && ic.company.id && ic.company.name) {
                     // Insert company if it doesn't exist
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO companies (id, name) VALUES (${
-                            ic.company.id
+                        `INSERT OR IGNORE INTO companies (id, name) VALUES (${ic.company.id
                         }, '${ic.company.name.replace(/'/g, "''")}')`
                     );
 
                     // Insert involved company relationship
                     await db.execAsync(
-                        `INSERT OR REPLACE INTO involved_companies (game_id, company_id, developer, publisher) VALUES (${
-                            game.id
-                        }, ${ic.company.id}, ${ic.developer ? 1 : 0}, ${
-                            ic.publisher ? 1 : 0
+                        `INSERT OR REPLACE INTO involved_companies (game_id, company_id, developer, publisher) VALUES (${game.id
+                        }, ${ic.company.id}, ${ic.developer ? 1 : 0}, ${ic.publisher ? 1 : 0
                         })`
                     );
                 }
@@ -768,8 +756,7 @@ export const createGame = async (
                 if (genre && genre.id && genre.name) {
                     // Insert genre if it doesn't exist
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO genres (id, name) VALUES (${
-                            genre.id
+                        `INSERT OR IGNORE INTO genres (id, name) VALUES (${genre.id
                         }, '${genre.name.replace(/'/g, "''")}')`
                     );
 
@@ -787,8 +774,7 @@ export const createGame = async (
                 if (mode && mode.id && mode.name) {
                     // Insert game mode if it doesn't exist
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO game_modes (id, name) VALUES (${
-                            mode.id
+                        `INSERT OR IGNORE INTO game_modes (id, name) VALUES (${mode.id
                         }, '${mode.name.replace(/'/g, "''")}')`
                     );
 
@@ -809,8 +795,7 @@ export const createGame = async (
                 if (perspective && perspective.id && perspective.name) {
                     // Insert perspective if it doesn't exist
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO player_perspectives (id, name) VALUES (${
-                            perspective.id
+                        `INSERT OR IGNORE INTO player_perspectives (id, name) VALUES (${perspective.id
                         }, '${perspective.name.replace(/'/g, "''")}')`
                     );
 
@@ -828,8 +813,7 @@ export const createGame = async (
                 if (theme && theme.id && theme.name) {
                     // Insert theme if it doesn't exist
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO themes (id, name) VALUES (${
-                            theme.id
+                        `INSERT OR IGNORE INTO themes (id, name) VALUES (${theme.id
                         }, '${theme.name.replace(/'/g, "''")}')`
                     );
 
@@ -847,8 +831,7 @@ export const createGame = async (
                 if (franchise && franchise.id && franchise.name) {
                     // Insert franchise if it doesn't exist
                     await db.execAsync(
-                        `INSERT OR IGNORE INTO franchises (id, name) VALUES (${
-                            franchise.id
+                        `INSERT OR IGNORE INTO franchises (id, name) VALUES (${franchise.id
                         }, '${franchise.name.replace(/'/g, "''")}')`
                     );
 
@@ -870,10 +853,8 @@ export const createGame = async (
                     website.category !== undefined
                 ) {
                     await db.execAsync(
-                        `INSERT OR REPLACE INTO websites (id, game_id, category, url) VALUES (${
-                            website.id
-                        }, ${game.id}, ${
-                            website.category
+                        `INSERT OR REPLACE INTO websites (id, game_id, category, url) VALUES (${website.id
+                        }, ${game.id}, ${website.category
                         }, '${website.url.replace(/'/g, "''")}')`
                     );
                 }
@@ -900,21 +881,18 @@ export const createGame = async (
             ) VALUES (
                 ${game.id},
                 ${status.id},
-                ${
-                    questData.personal_rating !== undefined
-                        ? questData.personal_rating
-                        : "NULL"
-                },
-                ${
-                    questData.completion_date
-                        ? `'${questData.completion_date}'`
-                        : "NULL"
-                },
-                ${
-                    questData.notes
-                        ? `'${questData.notes.replace(/'/g, "''")}'`
-                        : "NULL"
-                },
+                ${questData.personal_rating !== undefined
+                ? questData.personal_rating
+                : "NULL"
+            },
+                ${questData.completion_date
+                ? `'${questData.completion_date}'`
+                : "NULL"
+            },
+                ${questData.notes
+                ? `'${questData.notes.replace(/'/g, "''")}'`
+                : "NULL"
+            },
                 '${questData.date_added || new Date().toISOString()}',
                 ${questData.priority || 0},
                 ${questData.selected_platform_id || "NULL"}

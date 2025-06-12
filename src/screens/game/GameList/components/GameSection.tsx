@@ -258,7 +258,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         return games.length === 0 ? (
             <View style={styles.loadingContainer}>
                 <Text variant="subtitle" style={styles.emptyText}>
-                    No games found in this category
+                    No games found.
                 </Text>
             </View>
         ) : (

@@ -86,6 +86,7 @@ export const screenOptions: BottomTabNavigationOptions = {
     tabBarLabelStyle: {
         fontSize: 12,
         fontFamily: "FiraCode-Regular",
+        flex: 1,
     },
     tabBarItemStyle: {
         flex: 1,
@@ -137,7 +138,7 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             field: SortField;
             direction: "asc" | "desc";
         }>({
-            field: "name",
+            field: "priority",
             direction: "asc",
         });
         const [isMenuVisible, setMenuVisible] = useState(false);
@@ -153,10 +154,10 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                         route.name === "Search"
                             ? getStatusColor("undiscovered")
                             : getStatusColor(
-                                  tabScreens.find(
-                                      (screen) => screen.name === route.name
-                                  )?.gameStatus || "ongoing"
-                              ),
+                                tabScreens.find(
+                                    (screen) => screen.name === route.name
+                                )?.gameStatus || "ongoing"
+                            ),
                     tabBarInactiveTintColor: colorSwatch.text.muted,
                 })}
                 screenListeners={{

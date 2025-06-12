@@ -28,7 +28,7 @@ SplashScreen.preventAutoHideAsync();
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const IMAGE_SIZE = screenWidth * 0.475; // Original size of the image
-const ADDITIONAL_LOAD_TIME_MS = 2000;
+const ADDITIONAL_LOAD_TIME_MS = 0;
 
 function AppContent() {
     const [isSplashReady, setSplashReady] = useState(false);
