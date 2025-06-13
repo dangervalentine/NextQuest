@@ -11,9 +11,10 @@ import {
     useGameStatus,
 } from "./contexts/GameStatusContext";
 import { useFonts } from "expo-font";
-import { initializeDatabase } from "./data/config/databaseSeeder";
+import { initializeDatabase } from "./data/config/databaseSeederScripts";
 import { getStatusColor } from "./utils/colorsUtils";
 import CircleMask from "./components/splash/CircleMask";
+
 // Create a dark theme for navigation
 const NavigationTheme = {
     ...DefaultTheme,
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
     },
     splashContainer: {
         flex: 1,
-        marginTop: screenHeight * 0.027,
+        marginTop: screenHeight * 0.025,
         alignItems: "center",
         justifyContent: "center",
     },

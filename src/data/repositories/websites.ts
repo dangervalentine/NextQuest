@@ -85,13 +85,13 @@ export const deleteWebsitesForGame = async (gameId: number) => {
 export const getOrCreateWebsite = async (website: Website) => {
     try {
         let existingWebsite = await getWebsiteById(website.id);
-        if (!existingWebsite) {
+        if (!existingWebsite && website.category !== undefined) {
             const query = `
-                INSERT OR IGNORE INTO websites (id, game_id, category, url) 
+                INSERT OR IGNORE INTO websites (id, game_id, category, url)
                 VALUES (
-                    ${website.id}, 
-                    ${website.game_id}, 
-                    ${website.category}, 
+                    ${website.id},
+                    ${website.game_id},
+                    ${website.category},
                     '${website.url.replace(/'/g, "''")}'
                 )`;
             await db.execAsync(query);

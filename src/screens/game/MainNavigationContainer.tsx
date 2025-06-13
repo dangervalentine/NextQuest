@@ -26,7 +26,7 @@ import AnimatedBackButton from "./shared/AnimatedBackButton";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-type MainNavigationProp = NavigationProp<RootStackParamList>;
+export type MainNavigationProp = NavigationProp<RootStackParamList>;
 
 interface MainNavigationContentProps {
     setNavigationCallback: (callback: (status: GameStatus) => void) => void;
