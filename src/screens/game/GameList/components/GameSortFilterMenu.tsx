@@ -14,6 +14,7 @@ import { getStatusColor } from "src/utils/colorsUtils";
 import QuestIcon from "../../shared/GameIcon";
 import { SortField } from "src/types/sortTypes";
 import { theme } from "src/constants/theme/styles";
+import { showToast } from "src/components/common/QuestToast";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const MENU_WIDTH = Math.min(320, SCREEN_WIDTH * 0.85);
@@ -94,20 +95,44 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                                     <TouchableOpacity
                                         key={option.value}
                                         style={styles.optionRow}
-                                        onPress={() =>
-                                            onSortChange({
-                                                field: option.value as SortField,
-                                                direction: sort.field === option.value && sort.direction === "asc" ? "desc" : "asc",
-                                            })
-                                        }
+                                        onPress={() => {
+                                            if (option.value === "priority") {
+                                                // Do nothing if it's already selected
+                                                if (sort.field !== "priority") {
+                                                    onSortChange({
+                                                        field: "priority",
+                                                        direction: "asc",
+                                                    });
+                                                } else {
+                                                    showToast({
+                                                        type: "error",
+                                                        text1: "Priority is already selected",
+                                                        text2: "Games can only be sorted by priority in ascending order",
+                                                        position: "bottom",
+                                                        color: statusColor || colorSwatch.accent.cyan,
+                                                        visibilityTime: 4000,
+                                                    });
+                                                }
+                                            } else {
+                                                onSortChange({
+                                                    field: option.value as SortField,
+                                                    direction:
+                                                        sort.field === option.value && sort.direction === "asc"
+                                                            ? "desc"
+                                                            : "asc",
+                                                });
+                                            }
+                                        }}
                                     >
                                         <QuestIcon
                                             name={
-                                                sort.field === option.value
-                                                    ? sort.direction === "asc"
-                                                        ? "arrow-up"
-                                                        : "arrow-down"
-                                                    : "arrow-up-down"
+                                                option.value === "priority"
+                                                    ? "arrow-up"
+                                                    : sort.field === option.value
+                                                        ? sort.direction === "asc"
+                                                            ? "arrow-up"
+                                                            : "arrow-down"
+                                                        : "arrow-up-down"
                                             }
                                             size={22}
                                             color={
