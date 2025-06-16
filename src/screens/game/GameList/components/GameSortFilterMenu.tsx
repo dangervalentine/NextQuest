@@ -78,7 +78,7 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                             Sort & Filter
                         </Text>
                         <TouchableOpacity onPress={onClose}>
-                            <Text style={styles.closeText}>Close</Text>
+                            <QuestIcon name="close" size={24} color={statusColor || colorSwatch.text.primary} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.content}>
@@ -90,89 +90,43 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                                     option.value !== "priority" ||
                                     activeStatus !== "undiscovered"
                             ).map((option) => (
-                                <TouchableOpacity
-                                    key={option.value}
-                                    style={styles.optionRow}
-                                    onPress={() =>
-                                        onSortChange({
-                                            field: option.value as SortField,
-                                            direction: sort.direction,
-                                        })
-                                    }
-                                >
-                                    <QuestIcon
-                                        name={
-                                            sort.field === option.value
-                                                ? "radiobox-marked"
-                                                : "radiobox-blank"
+                                <View>
+                                    <TouchableOpacity
+                                        key={option.value}
+                                        style={styles.optionRow}
+                                        onPress={() =>
+                                            onSortChange({
+                                                field: option.value as SortField,
+                                                direction: sort.field === option.value && sort.direction === "asc" ? "desc" : "asc",
+                                            })
                                         }
-                                        size={22}
-                                        color={
-                                            sort.field === option.value
-                                                ? statusColor
-                                                : colorSwatch.neutral.darkGray
-                                        }
-                                    />
-                                    <Text style={styles.optionLabel}>
-                                        {option.label}
-                                    </Text>
-                                </TouchableOpacity>
+                                    >
+                                        <QuestIcon
+                                            name={
+                                                sort.field === option.value
+                                                    ? sort.direction === "asc"
+                                                        ? "arrow-up"
+                                                        : "arrow-down"
+                                                    : "arrow-up-down"
+                                            }
+                                            size={22}
+                                            color={
+                                                sort.field === option.value
+                                                    ? statusColor
+                                                    : colorSwatch.neutral.darkGray
+                                            }
+                                        />
+                                        <Text style={[
+                                            styles.optionLabel,
+                                            sort.field === option.value && { color: statusColor }
+                                        ]}>
+                                            {option.label}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.divider} />
+                                </View>
                             ))}
-                            <View style={styles.sortDirectionRow}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        onSortChange({
-                                            field: sort.field,
-                                            direction: "asc",
-                                        })
-                                    }
-                                    style={[
-                                        styles.directionButton,
-                                        sort.direction === "asc" && {
-                                            backgroundColor:
-                                                colorSwatch.neutral.darkGray,
-                                        },
-                                    ]}
-                                >
-                                    <QuestIcon
-                                        name="arrow-up"
-                                        size={20}
-                                        color={
-                                            sort.direction === "asc"
-                                                ? statusColor
-                                                : colorSwatch.text.secondary
-                                        }
-                                    />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        onSortChange({
-                                            field: sort.field,
-                                            direction: "desc",
-                                        })
-                                    }
-                                    style={[
-                                        styles.directionButton,
-                                        sort.direction === "desc" && {
-                                            backgroundColor:
-                                                colorSwatch.neutral.darkGray,
-                                        },
-                                    ]}
-                                >
-                                    <QuestIcon
-                                        name="arrow-down"
-                                        size={20}
-                                        color={
-                                            sort.direction === "desc"
-                                                ? statusColor
-                                                : colorSwatch.text.secondary
-                                        }
-                                    />
-                                </TouchableOpacity>
-                            </View>
                         </View>
-                        {/* Divider */}
-                        <View style={styles.divider} />
                         {/* Placeholder for filter options */}
                         <View style={styles.section}>
                             <Text style={styles.sectionHeader}>Filter</Text>
@@ -227,7 +181,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        padding: 20,
+        padding: 16,
     },
     placeholder: {
         color: colorSwatch.text.secondary,
@@ -247,27 +201,20 @@ const styles = StyleSheet.create({
     optionRow: {
         flexDirection: "row",
         alignItems: "center",
-        paddingVertical: 8,
+        paddingVertical: 16,
         paddingHorizontal: 4,
+        marginVertical: 2,
     },
     optionLabel: {
         marginLeft: 12,
-        fontSize: 15,
+        fontSize: 16,
+        fontWeight: "bold",
         color: colorSwatch.text.primary,
-    },
-    sortDirectionRow: {
-        flexDirection: "row",
-        marginTop: 12,
-        gap: 12,
-    },
-    directionButton: {
-        padding: 8,
-        borderRadius: theme.borderRadius,
+        flex: 1,
     },
     divider: {
-        height: 1,
-        backgroundColor: colorSwatch.neutral.darkGray,
-        marginVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: colorSwatch.neutral.darkGray,
     },
 });
 

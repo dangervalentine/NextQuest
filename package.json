@@ -6,7 +6,6 @@
         "start": "expo start",
         "android": "expo run:android",
         "ios": "expo run:ios",
-        "web": "expo start --web",
         "build:android": "expo run:android",
         "build:ios": "expo run:ios",
         "seed:games": "node scripts/getGameInformation.js ./games.json",
