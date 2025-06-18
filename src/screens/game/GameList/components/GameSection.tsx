@@ -6,7 +6,7 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        marginTop: 2,
+        marginTop: 4,
     },
     loadingContainer: {
         flex: 1,

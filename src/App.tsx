@@ -46,7 +46,7 @@ function AppContent() {
     const circleSizeAnim = useMemo(
         () => new Animated.Value(IMAGE_SIZE),
         []
-    ); // Larger initial size for better visibility
+    );
     const targetScale = useMemo(() => screenWidth / IMAGE_SIZE, []);
     const { activeStatus } = useGameStatus();
 
@@ -111,7 +111,6 @@ function AppContent() {
                 isSplashReady && dbInitialized && additionalLoadComplete;
 
             if (appIsReady) {
-                // Start the animation sequence
                 Animated.timing(tintColorAnim, {
                     toValue: 1,
                     duration: 300,

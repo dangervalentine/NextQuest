@@ -32,7 +32,12 @@ interface GameSortFilterMenuProps {
     children?: React.ReactNode;
 }
 
-const SORT_OPTIONS = [
+export interface SortOption {
+    label: string;
+    value: SortField;
+}
+
+const SORT_OPTIONS: SortOption[] = [
     { label: "Priority", value: "priority" },
     { label: "Name", value: "name" },
     { label: "Date Added", value: "dateAdded" },
@@ -67,6 +72,17 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
             }).start();
         }
     }, [visible]);
+
+    const getSortOptions: () => SortOption[] = () => {
+        return SORT_OPTIONS.filter(option => {
+            if (activeStatus === "undiscovered") {
+                return option.value !== "priority";
+            } else if (activeStatus !== "completed" && option.value === "rating") {
+                return false;
+            }
+            return true;
+        });
+    }
 
     return (
         <Modal
@@ -107,11 +123,7 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                     <View style={styles.content}>
                         {/* Sort By Section */}
                         <View style={styles.section}>
-                            {SORT_OPTIONS.filter(
-                                (option) =>
-                                    option.value !== "priority" ||
-                                    activeStatus !== "undiscovered"
-                            ).map((option) => (
+                            {getSortOptions().map((option) => (
                                 <View key={option.value}>
                                     <TouchableOpacity
                                         style={styles.optionRow}
@@ -206,6 +218,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 16,
         borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderTopColor: colorSwatch.neutral.darkGray,
         borderBottomColor: colorSwatch.neutral.darkGray,
     },
     headerText: {
