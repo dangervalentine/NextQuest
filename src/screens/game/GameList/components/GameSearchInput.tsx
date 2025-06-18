@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import QuestIcon from "../../shared/GameIcon";
-import { getStatusLabel } from "src/utils/gameStatusUtils";
 import { getStatusColor } from "src/utils/colorsUtils";
 import { theme } from "src/constants/theme/styles";
 
@@ -22,18 +21,34 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
     onSearchChange,
     onClear,
     onMenuPress,
-    placeholder = `Search ${getStatusLabel(gameStatus)} games...`,
+    placeholder = `Search these games...`,
 }) => {
     const [inputValue, setInputValue] = React.useState(searchQuery);
-    const isUndiscovered = gameStatus === "undiscovered";
+    const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    // Debounce onSearchChange
+    useEffect(() => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
+        debounceTimeout.current = setTimeout(() => {
+            onSearchChange(inputValue);
+        }, 300);
+        return () => {
+            if (debounceTimeout.current) {
+                clearTimeout(debounceTimeout.current);
+            }
+        };
+    }, [inputValue, onSearchChange]);
 
     useEffect(() => {
-        if (!isUndiscovered) {
-            onSearchChange(inputValue);
-        }
-    }, [inputValue, isUndiscovered, onSearchChange]);
+        setInputValue(searchQuery);
+    }, [searchQuery]);
 
     const handleSearch = () => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
         onSearchChange(inputValue);
     };
 
@@ -86,12 +101,12 @@ const GameSearchInput: React.FC<GameSearchInputProps> = ({
                 </TouchableOpacity>
             </View>
             {/* Hamburger Menu */}
-            {onMenuPress && (
+            {onMenuPress && gameStatus !== "undiscovered" && (
                 <TouchableOpacity
                     style={styles.iconButton}
                     onPress={onMenuPress}
                 >
-                    <QuestIcon name="tune" size={24} color={statusColor} />
+                    <QuestIcon name="sort" size={24} color={statusColor} />
                 </TouchableOpacity>
             )}
         </View>
@@ -102,14 +117,14 @@ const styles = StyleSheet.create({
     topBar: {
         flexDirection: "row",
         alignItems: "center",
-        borderWidth: 1,
         justifyContent: "center",
         backgroundColor: colorSwatch.background.darkest,
-        borderTopColor: "transparent",
+        borderWidth: 0,
+        borderTopWidth: 1,
+        borderTopColor: colorSwatch.neutral.darkGray,
         elevation: 4,
-        paddingBottom: 8,
-        marginHorizontal: 4,
-        marginBottom: 4,
+        paddingVertical: 8,
+        marginTop: 4,
         gap: 8,
     },
     searchInputContainer: {

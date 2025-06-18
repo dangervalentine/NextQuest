@@ -11,9 +11,9 @@ import { colorSwatch } from "src/constants/theme/colorConstants";
 
 interface HeaderWithIconProps {
     iconName:
-        | keyof typeof MaterialCommunityIcons.glyphMap
-        | keyof typeof SimpleLineIcons.glyphMap
-        | keyof typeof FontAwesome5.glyphMap;
+    | keyof typeof MaterialCommunityIcons.glyphMap
+    | keyof typeof SimpleLineIcons.glyphMap
+    | keyof typeof FontAwesome5.glyphMap;
     title: string;
     color?: string;
 }
@@ -32,7 +32,7 @@ const HeaderWithIcon: React.FC<HeaderWithIconProps> = ({
                     color={color || colorSwatch.accent.cyan}
                 />
             </View>
-            <Text variant="title" style={[styles.title, { color }]}>
+            <Text variant="title" style={[styles.title, { color }]} numberOfLines={1}>
                 {title}
             </Text>
         </View>
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
+        flex: 1,
         gap: 8,
     },
     iconContainer: {

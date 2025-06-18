@@ -19,7 +19,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { TabParamList } from "src/navigation/navigationTypes";
 import { MainNavigationProp } from "../../MainNavigationContainer";
-import Text from "src/components/common/Text";
+import { Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -71,30 +71,20 @@ const tabScreens = [
 // Navigation styles
 export const tabBarStyle = {
     backgroundColor: colorSwatch.background.darkest,
+    borderWidth: 0,
     borderColor: colorSwatch.neutral.darkGray,
-    borderTopWidth: 1,
+    // borderTopWidth: 1,
     height: 60,
-    paddingHorizontal: 0,
-    marginTop: 4,
-};
-
-export const headerStyle = {
-    backgroundColor: colorSwatch.background.darkest,
-    borderColor: colorSwatch.neutral.darkGray,
 };
 
 export const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
-    tabBarActiveTintColor: colorSwatch.accent.cyan,
     tabBarInactiveTintColor: colorSwatch.neutral.darkGray,
-    tabBarItemStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    headerStyle,
-    headerTitleStyle: {
-        fontFamily: "FiraCode-Regular",
-    },
+    // tabBarActiveTintColor: colorSwatch.accent.cyan,
+    // tabBarItemStyle: {
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // },
 };
 
 const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
@@ -175,7 +165,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             );
             const targetTab = firstNonEmptyTab ? firstNonEmptyTab.label : "Search";
 
-            // First navigate to the tab
             navigation.navigate("GameTabs", {
                 screen: targetTab as keyof TabParamList,
             });
@@ -185,6 +174,13 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             <Tab.Navigator
                 initialRouteName="Search"
                 screenOptions={({ route }) => ({
+                    headerStyle: {
+                        backgroundColor: colorSwatch.background.darkest,
+                        borderWidth: 0,
+                        borderColor: colorSwatch.neutral.darkGray,
+                        borderBottomWidth: 1,
+                        borderBottomColor: colorSwatch.neutral.darkGray,
+                    },
                     ...screenOptions,
                     tabBarStyle: {
                         ...tabBarStyle,
@@ -227,8 +223,7 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                         key={screen.name}
                         name={screen.name}
                         options={{
-                            headerShown: false,
-                            // tabBarLabel: screen.name,
+                            headerShown: true,
                             tabBarLabel: ({ color }) => (
                                 <Text
                                     style={{
@@ -236,7 +231,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                         fontSize: 12,
                                         textAlign: 'center',
                                     }}
-                                    variant="small"
                                 >
                                     {screen.name}
                                 </Text>
@@ -278,16 +272,14 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                     key={"Search"}
                     name={"Search"}
                     options={{
-                        headerShown: false,
+                        headerShown: true,
                         tabBarLabel: ({ color }) => (
                             <Text
                                 style={{
                                     color,
                                     fontSize: 12,
-
                                     textAlign: 'center',
                                 }}
-                                variant="small"
                             >
                                 Search
                             </Text>

@@ -1,7 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import {
-    ActivityIndicator,
-    ImageBackground,
     ScrollView,
     View,
     StyleSheet,
@@ -15,7 +13,6 @@ import { SearchTabRouteProp } from "src/navigation/navigationTypes";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
-import { getStatusColor } from "src/utils/colorsUtils";
 import { LoadingText } from "src/components/common/LoadingText";
 
 interface SearchParams {
@@ -225,14 +222,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
     return (
         <View style={styles.contentContainer}>
-            <GameSearchInput
-                gameStatus={gameStatus}
-                searchQuery={searchQuery}
-                onSearchChange={handleSearchChange}
-                onClear={() => setSearchQuery("")}
-                placeholder="Discover new games..."
-                onMenuPress={() => console.log("Menu pressed")}
-            />
 
             {error ? (
                 <View style={styles.loadingContainer}>
@@ -260,6 +249,14 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     )}
                 </ScrollView>
             )}
+            <GameSearchInput
+                gameStatus={gameStatus}
+                searchQuery={searchQuery}
+                onSearchChange={handleSearchChange}
+                onClear={() => setSearchQuery("")}
+                placeholder="Discover new games..."
+                onMenuPress={() => console.log("Menu pressed")}
+            />
         </View>
     );
 };
@@ -271,7 +268,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: "100%",
-        marginTop: 60,
+        marginTop: 4,
         justifyContent: "flex-start",
     },
     scrollContainer: {

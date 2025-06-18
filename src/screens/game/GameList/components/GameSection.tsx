@@ -264,13 +264,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         ) : (
             <>
                 <View style={styles.contentContainer}>
-                    <GameSearchInput
-                        gameStatus={gameStatus}
-                        searchQuery={searchQuery}
-                        onSearchChange={setSearchQuery}
-                        onClear={() => setSearchQuery("")}
-                        onMenuPress={() => setMenuVisible(true)}
-                    />
                     <View style={styles.listWrapper}>
                         <DragList
                             ref={dragListRef}
@@ -284,6 +277,13 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             removeClippedSubviews={true}
                         />
                     </View>
+                    <GameSearchInput
+                        gameStatus={gameStatus}
+                        searchQuery={searchQuery}
+                        onSearchChange={setSearchQuery}
+                        onClear={() => setSearchQuery("")}
+                        onMenuPress={() => setMenuVisible(true)}
+                    />
                 </View>
                 <GameSortFilterMenu
                     visible={isMenuVisible}
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        marginTop: 60,
+        marginTop: 2,
     },
     loadingContainer: {
         flex: 1,

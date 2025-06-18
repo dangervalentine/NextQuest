@@ -5,6 +5,9 @@ import {
     View,
     TouchableOpacity,
     Dimensions,
+    Modal,
+    Platform,
+    Easing,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colorSwatch } from "src/constants/theme/colorConstants";
@@ -13,11 +16,10 @@ import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
 import QuestIcon from "../../shared/GameIcon";
 import { SortField } from "src/types/sortTypes";
-import { theme } from "src/constants/theme/styles";
 import { showToast } from "src/components/common/QuestToast";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const MENU_WIDTH = Math.min(320, SCREEN_WIDTH * 0.85);
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SHEET_MAX_HEIGHT = Math.min(420, SCREEN_HEIGHT * 0.6);
 
 interface GameSortFilterMenuProps {
     visible: boolean;
@@ -28,7 +30,6 @@ interface GameSortFilterMenuProps {
         direction: "asc" | "desc";
     }) => void;
     children?: React.ReactNode;
-    // ...
 }
 
 const SORT_OPTIONS = [
@@ -44,48 +45,68 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
     onClose,
     sort,
     onSortChange,
-    children,
 }) => {
-    const [slideAnim] = React.useState(new Animated.Value(SCREEN_WIDTH));
+    const [slideAnim] = React.useState(new Animated.Value(SHEET_MAX_HEIGHT));
     const { activeStatus } = useGameStatus();
     const statusColor = getStatusColor(activeStatus);
 
     React.useEffect(() => {
-        Animated.timing(slideAnim, {
-            toValue: visible ? SCREEN_WIDTH - MENU_WIDTH : SCREEN_WIDTH,
-            duration: 300,
-            useNativeDriver: false,
-        }).start();
+        if (visible) {
+            Animated.timing(slideAnim, {
+                toValue: 0,
+                duration: 300,
+                easing: Easing.out(Easing.cubic),
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(slideAnim, {
+                toValue: SHEET_MAX_HEIGHT,
+                duration: 250,
+                easing: Easing.in(Easing.cubic),
+                useNativeDriver: true,
+            }).start();
+        }
     }, [visible]);
 
     return (
-        <>
+        <Modal
+            visible={visible}
+            transparent
+            animationType="none"
+            onRequestClose={onClose}
+        >
             {/* Overlay */}
-            {visible && (
-                <TouchableOpacity
-                    style={styles.overlay}
-                    activeOpacity={1}
-                    onPress={onClose}
-                />
-            )}
-            {/* Side Menu */}
-            <Animated.View style={[styles.menu, { left: slideAnim }]}>
+            <TouchableOpacity
+                style={styles.overlay}
+                activeOpacity={.3}
+                onPress={onClose}
+            />
+            {/* Bottom Sheet */}
+            <Animated.View
+                style={[
+                    styles.sheet,
+                    {
+                        transform: [
+                            { translateY: slideAnim },
+                        ],
+                    },
+                ]}
+            >
                 <SafeAreaView style={{ flex: 1 }}>
                     <View style={styles.header}>
                         <Text
                             variant="title"
                             style={[styles.headerText, { color: statusColor }]}
                         >
-                            Sort & Filter
+                            Sort
                         </Text>
-                        <TouchableOpacity onPress={onClose}>
+                        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                             <QuestIcon name="close" size={24} color={statusColor || colorSwatch.text.primary} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.content}>
                         {/* Sort By Section */}
                         <View style={styles.section}>
-                            <Text style={styles.sectionHeader}>Sort By</Text>
                             {SORT_OPTIONS.filter(
                                 (option) =>
                                     option.value !== "priority" ||
@@ -96,7 +117,6 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                                         style={styles.optionRow}
                                         onPress={() => {
                                             if (option.value === "priority") {
-                                                // Do nothing if it's already selected
                                                 if (sort.field !== "priority") {
                                                     onSortChange({
                                                         field: "priority",
@@ -151,46 +171,40 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                                 </View>
                             ))}
                         </View>
-                        {/* Placeholder for filter options */}
-                        <View style={styles.section}>
-                            <Text style={styles.sectionHeader}>Filter</Text>
-                            <Text style={styles.placeholder}>
-                                Filter options go here.
-                            </Text>
-                        </View>
                     </View>
                 </SafeAreaView>
             </Animated.View>
-        </>
+        </Modal>
     );
 };
 
 const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#000A",
-        zIndex: 10,
+        backgroundColor: colorSwatch.neutral.black,
+        opacity: 0.2,
+        zIndex: 1,
     },
-    menu: {
+    sheet: {
         position: "absolute",
-        top: 0,
+        left: 0,
+        right: 0,
         bottom: 0,
-        width: MENU_WIDTH,
+        height: SHEET_MAX_HEIGHT,
         backgroundColor: colorSwatch.background.darkest,
-        zIndex: 20,
-        borderTopLeftRadius: 16,
-        borderBottomLeftRadius: 16,
-        shadowColor: "#000",
+        zIndex: 2,
+        shadowColor: colorSwatch.neutral.black,
         shadowOpacity: 0.2,
-        shadowOffset: { width: -2, height: 0 },
+        shadowOffset: { width: 0, height: -2 },
         shadowRadius: 8,
         elevation: 8,
+        paddingBottom: Platform.OS === "ios" ? 24 : 8,
     },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 20,
+        padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: colorSwatch.neutral.darkGray,
     },
@@ -198,29 +212,15 @@ const styles = StyleSheet.create({
         color: colorSwatch.accent.cyan,
         fontSize: 20,
     },
-    closeText: {
-        color: colorSwatch.primary.dark,
-        fontWeight: "bold",
-        fontSize: 16,
+    closeButton: {
+        padding: 4,
     },
     content: {
         flex: 1,
         padding: 16,
     },
-    placeholder: {
-        color: colorSwatch.text.secondary,
-        fontSize: 16,
-        textAlign: "center",
-        marginTop: 40,
-    },
     section: {
         marginBottom: 24,
-    },
-    sectionHeader: {
-        fontWeight: "bold",
-        fontSize: 16,
-        marginBottom: 12,
-        color: colorSwatch.text.primary,
     },
     optionRow: {
         flexDirection: "row",
