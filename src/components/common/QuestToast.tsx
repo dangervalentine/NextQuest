@@ -11,6 +11,7 @@ type ToastConfigParams = {
     visibilityTime?: number;
     color?: string;
     bottomOffset?: number;
+    topOffset?: number;
 };
 
 type ToastBaseProps = ToastProps & {
@@ -18,6 +19,7 @@ type ToastBaseProps = ToastProps & {
         onPress?: () => void;
         color?: string;
         bottomOffset?: number;
+        topOffset?: number;
     };
 };
 
@@ -48,6 +50,10 @@ const toastConfig = {
                 height: "auto",
                 paddingVertical: 12,
                 marginBottom: 12,
+                marginTop:
+                    props.position === "top" && props.props?.topOffset != null
+                        ? props.props.topOffset
+                        : undefined,
                 width: "90%",
                 marginHorizontal: "5%",
             }}
@@ -92,6 +98,10 @@ const toastConfig = {
                 height: "auto",
                 paddingVertical: 12,
                 marginBottom: 12,
+                marginTop:
+                    props.position === "top" && props.props?.topOffset != null
+                        ? props.props.topOffset
+                        : undefined,
                 width: "90%",
                 marginHorizontal: "5%",
             }}
@@ -142,6 +152,7 @@ export const showToast = (params: ToastConfigParams) => {
             onPress: params.onPress,
             color: params.color,
             bottomOffset: params.bottomOffset,
+            topOffset: params.topOffset,
         },
     });
 };

@@ -91,9 +91,8 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                                     option.value !== "priority" ||
                                     activeStatus !== "undiscovered"
                             ).map((option) => (
-                                <View>
+                                <View key={option.value}>
                                     <TouchableOpacity
-                                        key={option.value}
                                         style={styles.optionRow}
                                         onPress={() => {
                                             if (option.value === "priority") {
@@ -107,7 +106,7 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
                                                     showToast({
                                                         type: "error",
                                                         text1: "Priority is already selected",
-                                                        text2: "Games can only be sorted by priority in ascending order",
+                                                        text2: "Swipe to the right to change priority quickly",
                                                         position: "bottom",
                                                         color: statusColor || colorSwatch.accent.cyan,
                                                         visibilityTime: 4000,

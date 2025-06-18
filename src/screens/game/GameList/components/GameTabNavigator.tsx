@@ -16,10 +16,10 @@ import { colorSwatch } from "src/constants/theme/colorConstants";
 import { getStatusColor } from "src/utils/colorsUtils";
 import { SortField } from "src/types/sortTypes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TabParamList } from "src/navigation/navigationTypes";
 import { MainNavigationProp } from "../../MainNavigationContainer";
+import Text from "src/components/common/Text";
 
 const Tab = createBottomTabNavigator();
 
@@ -87,21 +87,9 @@ export const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
     tabBarActiveTintColor: colorSwatch.accent.cyan,
     tabBarInactiveTintColor: colorSwatch.neutral.darkGray,
-    tabBarLabelStyle: {
-        fontSize: 14,
-        fontFamily: "FiraCode-Regular",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: '100%',
-        flex: 1,
-    },
     tabBarItemStyle: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        padding: 0,
     },
     headerStyle,
     headerTitleStyle: {
@@ -241,16 +229,14 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                         options={{
                             headerShown: false,
                             // tabBarLabel: screen.name,
-                            tabBarLabel: ({ color, focused }) => (
+                            tabBarLabel: ({ color }) => (
                                 <Text
                                     style={{
-                                        flex: 1,
-                                        width: '100%',
-                                        textAlign: 'center',
                                         color,
-                                        fontFamily: 'FiraCode-Regular',
-                                        fontSize: 14,
+                                        fontSize: 12,
+                                        textAlign: 'center',
                                     }}
+                                    variant="small"
                                 >
                                     {screen.name}
                                 </Text>
@@ -293,20 +279,20 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                     name={"Search"}
                     options={{
                         headerShown: false,
-                        tabBarLabel: ({ color, focused }) => (
+                        tabBarLabel: ({ color }) => (
                             <Text
                                 style={{
-                                    flex: 1,
-                                    width: '100%',
-                                    textAlign: 'center',
                                     color,
-                                    fontFamily: 'FiraCode-Regular',
-                                    fontSize: 14,
+                                    fontSize: 12,
+
+                                    textAlign: 'center',
                                 }}
+                                variant="small"
                             >
-                                {"Search"}
+                                Search
                             </Text>
                         ),
+
                         tabBarIcon: ({ color, size }) => (
                             <QuestIcon
                                 name={"magnify"}
