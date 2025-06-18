@@ -10,13 +10,16 @@ export const LoadingText = ({
     delay?: number;
 }) => {
     const letters = (text || "Loading...").split("");
-    const letterAnimations = letters.map(
-        () => useRef(new Animated.Value(0)).current
+
+    // Create animations array with useMemo to avoid hook violations
+    const letterAnimations = useMemo(
+        () => letters.map(() => new Animated.Value(0)),
+        [letters.length] // Only recreate when length changes
     );
 
     const colors = useMemo(
         () => generateRandomColorSequence(letters.length),
-        []
+        [letters.length] // Regenerate colors when length changes
     );
 
     const LETTER_DELAY = 100;

@@ -154,7 +154,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
             if (!initialLoadRef.current) {
                 executeSearch(undefined, searchQuery);
             }
-        }, 300); // Add 300ms debounce
+        }, 800); // Add 300ms debounce
 
         return () => clearTimeout(timeoutId);
     }, [searchQuery, executeSearch]);

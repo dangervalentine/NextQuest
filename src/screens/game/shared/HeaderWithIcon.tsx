@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: colorSwatch.accent.purple,
+        width: "100%",
     },
 });
 

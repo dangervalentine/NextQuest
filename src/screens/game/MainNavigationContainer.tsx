@@ -6,7 +6,7 @@ import React, {
     useMemo,
 } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, Platform, KeyboardAvoidingView } from "react-native";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";

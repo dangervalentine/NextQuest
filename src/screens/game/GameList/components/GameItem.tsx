@@ -112,7 +112,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         type: "success",
                                         text2: "Swipe to change the status or priority of a game",
                                         visibilityTime: 3000,
-                                        topOffset: pageY + 4,
+                                        topOffset: height + 12,
                                         position: "top",
                                         color: statusColor || colorSwatch.accent.cyan,
                                     });

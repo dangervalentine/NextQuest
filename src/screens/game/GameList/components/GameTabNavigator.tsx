@@ -19,7 +19,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { TabParamList } from "src/navigation/navigationTypes";
 import { MainNavigationProp } from "../../MainNavigationContainer";
-import { Text } from "react-native";
+import { Platform, Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -74,7 +74,7 @@ export const tabBarStyle = {
     borderWidth: 0,
     borderColor: colorSwatch.neutral.darkGray,
     // borderTopWidth: 1,
-    height: 60,
+    height: 56,
 };
 
 export const screenOptions: BottomTabNavigationOptions = {
@@ -185,7 +185,7 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                     tabBarStyle: {
                         ...tabBarStyle,
                         paddingBottom: insets.bottom,
-                        height: 60 + insets.bottom,
+                        height: 56 + insets.bottom,
                     },
                     tabBarItemStyle: {
                         flex: 1,

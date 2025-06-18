@@ -28,6 +28,7 @@
         },
         "android": {
             "edgeToEdgeEnabled": true,
+            "windowSoftInputMode": "adjustResize",
             "adaptiveIcon": {
                 "foregroundImage": "./src/assets/next-quest-icons/next_quest_white.png",
                 "backgroundColor": "#01111d"

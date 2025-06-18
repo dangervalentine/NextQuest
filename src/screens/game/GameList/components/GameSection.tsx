@@ -6,7 +6,7 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
@@ -275,6 +275,23 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             renderItem={renderItem}
                             contentContainerStyle={styles.listContainer}
                             removeClippedSubviews={true}
+                            getItemLayout={(data, index) => ({
+                                length: 128, // Estimated height of GameItem (120px + margins)
+                                offset: 128 * index,
+                                index,
+                            })}
+                            onScrollToIndexFailed={(info) => {
+                                console.warn('ScrollToIndex failed:', info);
+                                const wait = new Promise(resolve => setTimeout(resolve, 500));
+                                wait.then(() => {
+                                    if (dragListRef.current) {
+                                        dragListRef.current.scrollToIndex({
+                                            index: Math.min(info.index, info.highestMeasuredFrameIndex),
+                                            animated: true,
+                                        });
+                                    }
+                                });
+                            }}
                         />
                     </View>
                     <GameSearchInput

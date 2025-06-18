@@ -28,7 +28,7 @@ const NavigationTheme = {
 SplashScreen.preventAutoHideAsync();
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const IMAGE_SIZE = 72 * PixelRatio.get() * 1.2
+const IMAGE_SIZE = 72 * PixelRatio.get() * 1.196
 const ADDITIONAL_LOAD_TIME_MS = 0;
 
 function AppContent() {
