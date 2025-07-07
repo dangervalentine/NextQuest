@@ -38,8 +38,8 @@ export interface SortOption {
 }
 
 const SORT_OPTIONS: SortOption[] = [
-    { label: "Priority", value: "priority" },
     { label: "Name", value: "name" },
+    { label: "Priority", value: "priority" },
     { label: "Date Added", value: "dateAdded" },
     { label: "Personal Rating", value: "rating" },
     { label: "Release Year", value: "releaseYear" },
@@ -88,13 +88,13 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
         <Modal
             visible={visible}
             transparent
-            animationType="none"
+            animationType="fade"
             onRequestClose={onClose}
         >
             {/* Overlay */}
             <TouchableOpacity
                 style={styles.overlay}
-                activeOpacity={.3}
+                activeOpacity={.5}
                 onPress={onClose}
             />
             {/* Bottom Sheet */}
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: colorSwatch.neutral.black,
-        opacity: 0.2,
+        opacity: 0.5,
         zIndex: 1,
     },
     sheet: {
