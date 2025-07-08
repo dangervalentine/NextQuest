@@ -16,15 +16,18 @@ const StorylineSection: React.FC<StorylineSectionProps> = memo(
         if (!content) return null;
 
         return (
-            <ExpandableContent
-                content={
-                    <Text variant="body" style={styles.storylineText}>
-                        {content}
-                    </Text>
-                }
-                maxCollapsedHeight={80}
-                containerStyle={styles.storylineContainer}
-            />
+            <Text variant="body" style={styles.storylineText}>
+                {content}
+            </Text>
+            // <ExpandableContent
+            //     content={
+            //         <Text variant="body" style={styles.storylineText}>
+            //             {content}
+            //         </Text>
+            //     }
+            //     maxCollapsedHeight={80}
+            //     containerStyle={styles.storylineContainer}
+            // />
         );
     }
 );

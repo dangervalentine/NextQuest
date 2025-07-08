@@ -112,6 +112,8 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         id: number;
         newStatus: GameStatus;
         currentStatus: GameStatus;
+        resolve: (value: void) => void;
+        reject: (reason?: any) => void;
     } | null>(null);
 
     // Memoize sortGames to prevent recreation on every render
@@ -402,35 +404,13 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         setIsRatingModalVisible(false);
         setRatingModalGameId(null);
         setRatingModalGameName("");
-        pendingStatusChangeRef.current = null;
+
+        // Reject any pending status change if modal is closed without confirmation
+        if (pendingStatusChangeRef.current) {
+            pendingStatusChangeRef.current.reject(new Error("Rating modal cancelled"));
+            pendingStatusChangeRef.current = null;
+        }
     }, []);
-
-    const handleRatingConfirm = useCallback(async (rating: number) => {
-        if (!pendingStatusChangeRef.current || !ratingModalGameId) {
-            hideRatingModal();
-            return;
-        }
-
-        const { id, newStatus, currentStatus } = pendingStatusChangeRef.current;
-
-        try {
-            await updateGameRating(ratingModalGameId, rating || 0);
-
-            // Now proceed with the status change, passing the rating
-            await performStatusChange(id, newStatus, currentStatus, rating || undefined);
-        } catch (error) {
-            console.error("[GamesContext] Error in rating confirmation:", error);
-            showToast({
-                type: "error",
-                text1: "Update Failed",
-                text2: "Failed to update game status. Please try again.",
-                position: "bottom",
-                visibilityTime: 3000,
-            });
-        } finally {
-            hideRatingModal();
-        }
-    }, [ratingModalGameId, hideRatingModal]);
 
     // Extract the actual status change logic to a separate function
     const performStatusChange = useCallback(
@@ -567,6 +547,38 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
             handleNavigateAndScroll,
         ]
     );
+
+    const handleRatingConfirm = useCallback(async (rating: number) => {
+        if (!pendingStatusChangeRef.current || !ratingModalGameId) {
+            hideRatingModal();
+            return;
+        }
+
+        const { id, newStatus, currentStatus, resolve, reject } = pendingStatusChangeRef.current;
+
+        try {
+            await updateGameRating(ratingModalGameId, rating || 0);
+
+            // Now proceed with the status change, passing the rating
+            await performStatusChange(id, newStatus, currentStatus, rating || undefined);
+
+            // Resolve the Promise to indicate completion
+            resolve();
+        } catch (error) {
+            console.error("[GamesContext] Error in rating confirmation:", error);
+            showToast({
+                type: "error",
+                text1: "Update Failed",
+                text2: "Failed to update game status. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
+            // Reject the Promise to indicate failure
+            reject(error);
+        } finally {
+            hideRatingModal();
+        }
+    }, [ratingModalGameId, hideRatingModal, performStatusChange]);
 
     const handleDiscover = useCallback(
         async (game: MinimalQuestGame, newStatus: GameStatus) => {
@@ -742,26 +754,30 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
             id: number,
             newStatus: GameStatus,
             currentStatus: GameStatus
-        ) => {
+        ): Promise<void> => {
             // If moving to completed status, show rating modal first
             if (newStatus === "completed") {
                 const gameToMove = gameData[currentStatus].find(
                     (game) => game.id === id
                 );
                 if (gameToMove) {
-                    // Store the pending status change
-                    pendingStatusChangeRef.current = {
-                        id,
-                        newStatus,
-                        currentStatus,
-                    };
-                    showRatingModal(id, gameToMove.name);
-                    return;
+                    // Return a Promise that resolves when the rating modal is completed
+                    return new Promise((resolve, reject) => {
+                        // Store the pending status change with Promise resolvers
+                        pendingStatusChangeRef.current = {
+                            id,
+                            newStatus,
+                            currentStatus,
+                            resolve,
+                            reject,
+                        };
+                        showRatingModal(id, gameToMove.name);
+                    });
                 }
+            } else {
+                // For all other status changes, proceed normally
+                await performStatusChange(id, newStatus, currentStatus);
             }
-
-            // For all other status changes, proceed normally
-            await performStatusChange(id, newStatus, currentStatus);
         },
         [
             gameData,

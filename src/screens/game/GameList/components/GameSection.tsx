@@ -276,7 +276,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             contentContainerStyle={styles.listContainer}
                             removeClippedSubviews={true}
                             getItemLayout={(data, index) => ({
-                                length: 128, // Estimated height of GameItem (120px + margins)
+                                length: 128,
                                 offset: 128 * index,
                                 index,
                             })}
@@ -294,14 +294,14 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             }}
                         />
                     </View>
-                    <GameSearchInput
-                        gameStatus={gameStatus}
-                        searchQuery={searchQuery}
-                        onSearchChange={setSearchQuery}
-                        onClear={() => setSearchQuery("")}
-                        onMenuPress={() => setMenuVisible(true)}
-                    />
                 </View>
+                <GameSearchInput
+                    gameStatus={gameStatus}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    onClear={() => setSearchQuery("")}
+                    onMenuPress={() => setMenuVisible(true)}
+                />
                 <GameSortFilterMenu
                     visible={isMenuVisible}
                     onClose={() => setMenuVisible(false)}

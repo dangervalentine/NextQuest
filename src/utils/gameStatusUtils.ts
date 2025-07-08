@@ -28,7 +28,7 @@ export const getStatusIcon = (status: GameStatus): string => {
         case "completed":
             return "check-circle";
         case "undiscovered":
-            return "magnify";
+            return "compass";
         default:
             return "question";
     }

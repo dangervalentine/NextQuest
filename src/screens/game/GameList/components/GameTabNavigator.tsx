@@ -273,21 +273,21 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                     textAlign: 'center',
                                 }}
                             >
-                                Search
+                                Discover
                             </Text>
                         ),
 
                         tabBarIcon: ({ color, size }) => (
                             <QuestIcon
-                                name={"magnify"}
+                                name={getStatusIcon("undiscovered")}
                                 size={size}
                                 color={color}
                             />
                         ),
                         headerTitle: () => (
                             <HeaderWithIcon
-                                iconName={"magnify"}
-                                title={"Search"}
+                                iconName={getStatusIcon("undiscovered")}
+                                title={"Discover"}
                                 color={getStatusColor("undiscovered")}
                             />
                         ),

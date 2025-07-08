@@ -51,7 +51,6 @@ const QuestGameDetailPage: React.FC = () => {
     // FAB state
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuAnimation = useRef(new Animated.Value(0)).current;
-    const fabRotation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         const loadGameDetails = async () => {
@@ -71,7 +70,7 @@ const QuestGameDetailPage: React.FC = () => {
             }).start();
         };
         loadGameDetails();
-    }, [id]);
+    }, [id, activeStatus]);
 
     if (!game) {
         return (
@@ -128,20 +127,37 @@ const QuestGameDetailPage: React.FC = () => {
             HapticFeedback.selection();
             toggleMenu(); // Close menu first
 
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start();
+
             await handleStatusChange(game.id, newStatus, game.gameStatus);
 
             // Update local state
             setGame(prev => prev ? { ...prev, gameStatus: newStatus } : null);
+
             setActiveStatus(newStatus);
 
-            showToast({
-                type: "success",
-                text1: "Status Updated",
-                text2: `${game.name} moved to ${getStatusLabel(newStatus)}`,
-                position: "bottom",
-                color: getStatusColor(newStatus),
-                visibilityTime: 2000,
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start(() => {
+                showToast({
+                    type: "success",
+                    text1: "Status Updated",
+                    text2: `${game.name} moved to ${getStatusLabel(newStatus)}`,
+                    position: "bottom",
+                    color: getStatusColor(newStatus),
+                    visibilityTime: 2000,
+                });
             });
+
+
         } catch (error) {
             console.error("Failed to update status:", error);
             showToast({
@@ -175,25 +191,6 @@ const QuestGameDetailPage: React.FC = () => {
                         />
                     )}
 
-                    {/* Core Game Information */}
-                    {(game.storyline || game.summary) && (
-                        <View style={styles.sectionContainer}>
-                            <Text
-                                variant="title"
-                                style={[
-                                    styles.mainSectionTitle,
-                                    { color: statusColor },
-                                ]}
-                            >
-                                About the Game
-                            </Text>
-                            <StorylineSection
-                                storyline={game.storyline}
-                                summary={game.summary}
-                            />
-                        </View>
-                    )}
-
                     {/* Visual Showcase */}
                     {game.screenshots && game.screenshots.length > 0 && (
                         <View style={styles.sectionContainer}>
@@ -212,6 +209,25 @@ const QuestGameDetailPage: React.FC = () => {
                                         s.url.replace("t_thumb", "t_720p")
                                     ) ?? []
                                 }
+                            />
+                        </View>
+                    )}
+
+                    {/* Core Game Information */}
+                    {(game.storyline || game.summary) && (
+                        <View style={styles.sectionContainer}>
+                            <Text
+                                variant="title"
+                                style={[
+                                    styles.mainSectionTitle,
+                                    { color: statusColor },
+                                ]}
+                            >
+                                About the Game
+                            </Text>
+                            <StorylineSection
+                                storyline={game.storyline}
+                                summary={game.summary}
                             />
                         </View>
                     )}
@@ -321,7 +337,9 @@ const QuestGameDetailPage: React.FC = () => {
                                     styles.menuItem,
                                     {
                                         transform: [{ translateY }, { scale }],
-                                        backgroundColor: getStatusColor(status),
+                                        borderColor: getStatusColor(status),
+                                        borderWidth: 2,
+                                        backgroundColor: colorSwatch.background.darkest,
                                     },
                                 ]}
                             >
@@ -333,12 +351,12 @@ const QuestGameDetailPage: React.FC = () => {
                                     <View style={styles.menuItemTextContainer}>
                                         <Text
                                             variant="body"
-                                            style={styles.menuItemText}
+                                            style={[styles.menuItemText, { color: getStatusColor(status) }]}
                                             numberOfLines={1}
                                         >
                                             {getStatusLabel(status)}
                                         </Text>
-                                        <QuestIcon color={colorSwatch.text.inverse} name={getStatusIcon(status)} size={24} />
+                                        <QuestIcon color={getStatusColor(status)} name={getStatusIcon(status)} size={24} />
                                     </View>
                                 </TouchableOpacity>
                             </Animated.View>
@@ -350,8 +368,8 @@ const QuestGameDetailPage: React.FC = () => {
                         style={[
                             styles.fab,
                             {
-                                backgroundColor: isMenuOpen ? statusColor : "transparent",
-                                borderColor: isMenuOpen ? "transparent" : statusColor,
+                                backgroundColor: isMenuOpen ? colorSwatch.text.inverse : statusColor,
+                                borderColor: isMenuOpen ? statusColor : colorSwatch.text.inverse,
                             },
                         ]}
                     >
@@ -360,7 +378,7 @@ const QuestGameDetailPage: React.FC = () => {
                             style={styles.fabTouchable}
                             activeOpacity={0.8}
                         >
-                            <QuestIcon color={isMenuOpen ? colorSwatch.text.inverse : statusColor} name={getStatusIcon(game.gameStatus)} size={24} />
+                            <QuestIcon color={isMenuOpen ? statusColor : colorSwatch.text.inverse} name={getStatusIcon(game.gameStatus)} size={24} />
                         </TouchableOpacity>
                     </Animated.View>
                 </>
