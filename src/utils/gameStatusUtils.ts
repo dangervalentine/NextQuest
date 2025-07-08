@@ -18,3 +18,18 @@ export const getStatusLabel = (status: GameStatus): string => {
             return status;
     }
 };
+
+export const getStatusIcon = (status: GameStatus): string => {
+    switch (status) {
+        case "ongoing":
+            return "gamepad-variant";
+        case "backlog":
+            return "list";
+        case "completed":
+            return "check-circle";
+        case "undiscovered":
+            return "magnify";
+        default:
+            return "question";
+    }
+}

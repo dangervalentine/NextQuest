@@ -23,7 +23,7 @@ const WebsitesSection: React.FC<WebsitesSectionProps> = ({
 
     const getWebsiteInfo = (
         category: number
-    ): { label: string; icon: JSX.Element } => {
+    ): { label: string; icon: React.ReactElement } => {
         const iconSize = 12;
         const iconColor = tintColor || colorSwatch.accent.cyan;
 
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
         gap: 8,
         borderWidth: 1,
         borderColor: colorSwatch.neutral.darkGray,
+        width: '31%',
     },
     websiteType: {
         borderBottomWidth: 1,

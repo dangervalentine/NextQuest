@@ -7,6 +7,7 @@ import {
     ImageBackground,
     SafeAreaView,
     Easing,
+    TouchableOpacity,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { QuestGameDetailRouteProp } from "src/navigation/navigationTypes";
@@ -30,6 +31,13 @@ import { LoadingText } from "src/components/common/LoadingText";
 import { getStatusColor } from "src/utils/colorsUtils";
 import WebsitesSection from "./GameDetail/components/WebsitesSection";
 import { theme } from "src/constants/theme/styles";
+import { GameStatus } from "src/constants/config/gameStatus";
+import { getStatusIcon, getStatusLabel } from "src/utils/gameStatusUtils";
+import { useGames } from "src/contexts/GamesContext";
+import { HapticFeedback } from "src/utils/hapticUtils";
+import { showToast } from "src/components/common/QuestToast";
+import { useGameStatus } from "src/contexts/GameStatusContext";
+import QuestIcon from "./shared/GameIcon";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -37,6 +45,14 @@ const QuestGameDetailPage: React.FC = () => {
     const [game, setGame] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const headerHeight = useHeaderHeight();
+    const { handleStatusChange } = useGames();
+    const { activeStatus, setActiveStatus } = useGameStatus();
+
+    // FAB state
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuAnimation = useRef(new Animated.Value(0)).current;
+    const fabRotation = useRef(new Animated.Value(0)).current;
+
     useEffect(() => {
         const loadGameDetails = async () => {
             const igdbGame: QuestGame | null = await IGDBService.fetchGameDetails(
@@ -76,6 +92,67 @@ const QuestGameDetailPage: React.FC = () => {
 
     // Get status color for all section titles
     const statusColor = getStatusColor(game.gameStatus);
+
+    // Get available statuses (excluding current)
+    const getAvailableStatuses = (currentStatus: GameStatus): GameStatus[] => {
+        const allStatuses: GameStatus[] = [
+            "ongoing",
+            "backlog",
+            "completed",
+            "undiscovered",
+        ];
+        return allStatuses.filter((status) => status !== currentStatus);
+    };
+
+    // Toggle FAB menu
+    const toggleMenu = () => {
+        HapticFeedback.selection();
+        const toValue = isMenuOpen ? 0 : 1;
+        HapticFeedback.selection();
+
+        Animated.spring(menuAnimation, {
+            toValue,
+            useNativeDriver: true,
+            bounciness: 0,
+            speed: 100,
+        }).start();
+
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    // Handle status change
+    const handleStatusPress = async (newStatus: GameStatus) => {
+        if (!game) return;
+
+        try {
+            HapticFeedback.selection();
+            toggleMenu(); // Close menu first
+
+            await handleStatusChange(game.id, newStatus, game.gameStatus);
+
+            // Update local state
+            setGame(prev => prev ? { ...prev, gameStatus: newStatus } : null);
+            setActiveStatus(newStatus);
+
+            showToast({
+                type: "success",
+                text1: "Status Updated",
+                text2: `${game.name} moved to ${getStatusLabel(newStatus)}`,
+                position: "bottom",
+                color: getStatusColor(newStatus),
+                visibilityTime: 2000,
+            });
+        } catch (error) {
+            console.error("Failed to update status:", error);
+            showToast({
+                type: "error",
+                text1: "Update Failed",
+                text2: "Failed to update game status. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
+        }
+    };
 
     return (
         <ImageBackground
@@ -200,6 +277,94 @@ const QuestGameDetailPage: React.FC = () => {
                     <View style={styles.bottomClearance} />
                 </ScrollView>
             </Animated.View>
+
+            {/* FAB and Menu */}
+            {game && (
+                <>
+                    {/* Background Overlay */}
+                    {isMenuOpen && (
+                        <Animated.View
+                            style={[
+                                styles.menuOverlay,
+                                {
+                                    opacity: menuAnimation.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [0, 0.3],
+                                    }),
+                                },
+                            ]}
+                        >
+                            <TouchableOpacity
+                                style={styles.overlayTouchable}
+                                onPress={toggleMenu}
+                                activeOpacity={1}
+                            />
+                        </Animated.View>
+                    )}
+
+                    {/* Status Menu Items */}
+                    {getAvailableStatuses(game.gameStatus).map((status, index) => {
+                        const translateY = menuAnimation.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -(72 + index * 64)],
+                        });
+
+                        const scale = menuAnimation.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, 1],
+                        });
+
+                        return (
+                            <Animated.View
+                                key={status}
+                                style={[
+                                    styles.menuItem,
+                                    {
+                                        transform: [{ translateY }, { scale }],
+                                        backgroundColor: getStatusColor(status),
+                                    },
+                                ]}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => handleStatusPress(status)}
+                                    style={styles.menuItemTouchable}
+                                    activeOpacity={0.8}
+                                >
+                                    <View style={styles.menuItemTextContainer}>
+                                        <Text
+                                            variant="body"
+                                            style={styles.menuItemText}
+                                            numberOfLines={1}
+                                        >
+                                            {getStatusLabel(status)}
+                                        </Text>
+                                        <QuestIcon color={colorSwatch.text.inverse} name={getStatusIcon(status)} size={24} />
+                                    </View>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        );
+                    })}
+
+                    {/* Main FAB */}
+                    <Animated.View
+                        style={[
+                            styles.fab,
+                            {
+                                backgroundColor: isMenuOpen ? statusColor : "transparent",
+                                borderColor: isMenuOpen ? "transparent" : statusColor,
+                            },
+                        ]}
+                    >
+                        <TouchableOpacity
+                            onPress={toggleMenu}
+                            style={styles.fabTouchable}
+                            activeOpacity={0.8}
+                        >
+                            <QuestIcon color={isMenuOpen ? colorSwatch.text.inverse : statusColor} name={getStatusIcon(game.gameStatus)} size={24} />
+                        </TouchableOpacity>
+                    </Animated.View>
+                </>
+            )}
         </ImageBackground>
     );
 };
@@ -265,7 +430,7 @@ const styles = StyleSheet.create({
         borderRadius: theme.borderRadius,
     },
     bottomClearance: {
-        height: 60,
+        height: 120,
         width: "80%",
         borderBottomColor: colorSwatch.primary.dark,
         borderBottomWidth: 1,
@@ -280,6 +445,68 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: "center",
         alignItems: "center",
+    },
+    fab: {
+        position: "absolute",
+        bottom: 40,
+        right: 20,
+        width: 56,
+        height: 56,
+        borderRadius: theme.borderRadius,
+        elevation: 8,
+        borderWidth: 2,
+        zIndex: 1000,
+    },
+    fabTouchable: {
+        width: "100%",
+        height: "100%",
+        borderRadius: theme.borderRadius,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    fabIcon: {
+        fontSize: 24,
+        color: colorSwatch.text.inverse,
+        fontWeight: "bold",
+    },
+    menuItem: {
+        position: "absolute",
+        bottom: 30,
+        right: 20,
+        width: 160,
+        height: 60,
+        borderRadius: theme.borderRadius,
+        elevation: 6,
+        zIndex: 999,
+    },
+    menuItemTouchable: {
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    menuItemTextContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 16,
+        width: "100%",
+    },
+    menuItemText: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: colorSwatch.text.inverse,
+        textAlign: "left",
+        flex: 1,
+    },
+    menuOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 998,
+    },
+    overlayTouchable: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
     },
 });
 

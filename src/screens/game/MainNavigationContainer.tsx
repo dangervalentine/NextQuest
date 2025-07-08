@@ -6,7 +6,7 @@ import React, {
     useMemo,
 } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Image, View, StyleSheet, Platform, KeyboardAvoidingView } from "react-native";
+import { Image, View, StyleSheet } from "react-native";
 import QuestGameDetailPage from "./QuestGameDetailPage";
 import { GameStatus } from "src/constants/config/gameStatus";
 import { PlatformSelectionModal } from "../../components/common/PlatformSelectionModal";
@@ -64,6 +64,13 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
         // Set initial tab color
         setActiveTabColor(getStatusColor("ongoing"));
     }, [setActiveTabColor]);
+
+    // Update tab color when activeStatus changes (e.g., from QuestGameDetailPage)
+    useEffect(() => {
+        if (activeStatus) {
+            setActiveTabColor(getStatusColor(activeStatus));
+        }
+    }, [activeStatus, setActiveTabColor]);
 
     const getStatusTab = useCallback(
         (status: GameStatus): keyof TabParamList => {

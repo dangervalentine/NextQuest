@@ -19,7 +19,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { TabParamList } from "src/navigation/navigationTypes";
 import { MainNavigationProp } from "../../MainNavigationContainer";
-import { Platform, Text } from "react-native";
+import { Text } from "react-native";
+import { getStatusIcon } from "src/utils/gameStatusUtils";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,19 +51,16 @@ export interface GameTabNavigatorRef {
 const tabScreens = [
     {
         name: "Ongoing",
-        iconName: "gamepad-variant" as const,
         title: "Ongoing",
         gameStatus: "ongoing" as GameStatus,
     },
     {
         name: "Backlog",
-        iconName: "list" as const,
         title: "Backlog",
         gameStatus: "backlog" as GameStatus,
     },
     {
         name: "Completed",
-        iconName: "check-circle" as const,
         title: "Completed",
         gameStatus: "completed" as GameStatus,
     },
@@ -73,18 +71,12 @@ export const tabBarStyle = {
     backgroundColor: colorSwatch.background.darkest,
     borderWidth: 0,
     borderColor: colorSwatch.neutral.darkGray,
-    // borderTopWidth: 1,
     height: 56,
 };
 
 export const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
     tabBarInactiveTintColor: colorSwatch.neutral.darkGray,
-    // tabBarActiveTintColor: colorSwatch.accent.cyan,
-    // tabBarItemStyle: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // },
 };
 
 const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
@@ -237,14 +229,14 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                             ),
                             tabBarIcon: ({ color, size }) => (
                                 <QuestIcon
-                                    name={screen.iconName}
+                                    name={getStatusIcon(screen.gameStatus)}
                                     size={size}
                                     color={color}
                                 />
                             ),
                             headerTitle: () => (
                                 <HeaderWithIcon
-                                    iconName={screen.iconName}
+                                    iconName={getStatusIcon(screen.gameStatus)}
                                     title={screen.title}
                                     color={getStatusColor(screen.gameStatus)}
                                 />
