@@ -83,7 +83,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const scrollOffsetRef = useRef(0);
 
     // Auto-hide functionality
-    const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(false);
+    const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(true);
     const autoHideTimer = useRef<NodeJS.Timeout | null>(null);
 
     const executeSearch = useCallback(
@@ -292,7 +292,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         setScrollPosition(0);
         scrollOffsetRef.current = 0;
         setIsScrollTrackVisible(false);
-        setIsTrackAutoHidden(false);
+        setIsTrackAutoHidden(true); // Keep track hidden when new results load
         clearAutoHideTimer();
     }, [searchResults, clearAutoHideTimer]);
 

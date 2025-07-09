@@ -100,7 +100,7 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             field: SortField;
             direction: "asc" | "desc";
         }>({
-            field: "priority",
+            field: "name",
             direction: "asc",
         });
         const [isMenuVisible, setMenuVisible] = useState(false);

@@ -61,7 +61,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         const scrollOffsetRef = useRef(0);
 
         // Auto-hide functionality
-        const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(false);
+        const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(true);
         const autoHideTimer = useRef<NodeJS.Timeout | null>(null);
 
         // Expose methods to parent components
@@ -192,7 +192,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             setScrollPosition(0);
             scrollOffsetRef.current = 0;
             setIsScrollTrackVisible(false);
-            setIsTrackAutoHidden(false);
+            setIsTrackAutoHidden(true); // Keep track hidden when new games load
             clearAutoHideTimer();
         }, [sortedGames, clearAutoHideTimer]);
 

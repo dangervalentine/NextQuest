@@ -268,7 +268,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: "center",
         zIndex: 1000,
-        opacity: 0.5,
     },
     track: {
         position: "absolute",
@@ -282,7 +281,6 @@ const styles = StyleSheet.create({
     thumb: {
         position: "absolute",
         backgroundColor: colorSwatch.accent.cyan,
-        borderRadius: theme.borderRadius,
         shadowColor: colorSwatch.neutral.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
