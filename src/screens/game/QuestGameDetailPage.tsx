@@ -38,6 +38,7 @@ import { HapticFeedback } from "src/utils/hapticUtils";
 import { showToast } from "src/components/common/QuestToast";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import QuestIcon from "./shared/GameIcon";
+import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -45,11 +46,12 @@ const QuestGameDetailPage: React.FC = () => {
     const [game, setGame] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const headerHeight = useHeaderHeight();
-    const { handleStatusChange } = useGames();
+    const { handleStatusChange, handleDiscover, handleRemoveItem } = useGames();
     const { activeStatus, setActiveStatus } = useGameStatus();
 
     // FAB state
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isRemoveConfirmation, setIsRemoveConfirmation] = useState(false);
     const menuAnimation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -98,9 +100,40 @@ const QuestGameDetailPage: React.FC = () => {
             "ongoing",
             "backlog",
             "completed",
-            "undiscovered",
         ];
         return allStatuses.filter((status) => status !== currentStatus);
+    };
+
+    // Get menu options (statuses + remove option)
+    type MenuOption =
+        | { type: 'status', value: GameStatus, label: string, icon: string, color: string }
+        | { type: 'remove', value: 'remove', label: string, icon: string, color: string, isConfirmation?: boolean };
+
+    const getMenuOptions = (currentStatus: GameStatus): MenuOption[] => {
+        let statusOptions: MenuOption[] = [];
+
+        // Add remove option if not undiscovered
+        if (currentStatus !== "undiscovered") {
+            statusOptions.push({
+                type: 'remove' as const,
+                value: 'remove' as const,
+                label: isRemoveConfirmation ? 'Confirm' : 'Remove',
+                icon: 'trash',
+                color: colorSwatch.accent.pink,
+                isConfirmation: isRemoveConfirmation
+            });
+        }
+
+        getAvailableStatuses(currentStatus).forEach(status => statusOptions.push({
+            type: 'status' as const,
+            value: status,
+            label: getStatusLabel(status),
+            icon: getStatusIcon(status),
+            color: getStatusColor(status)
+        }));
+
+
+        return statusOptions;
     };
 
     // Toggle FAB menu
@@ -117,6 +150,11 @@ const QuestGameDetailPage: React.FC = () => {
         }).start();
 
         setIsMenuOpen(!isMenuOpen);
+
+        // Reset confirmation state when menu closes
+        if (isMenuOpen) {
+            setIsRemoveConfirmation(false);
+        }
     };
 
     // Handle status change
@@ -134,7 +172,19 @@ const QuestGameDetailPage: React.FC = () => {
                 easing: Easing.out(Easing.quad),
             }).start();
 
-            await handleStatusChange(game.id, newStatus, game.gameStatus);
+            // Check if current status is undiscovered and use appropriate handler
+            if (game.gameStatus === "undiscovered") {
+                // Transform QuestGame to MinimalQuestGame format for handleDiscover
+                const minimalGame: MinimalQuestGame = {
+                    ...game,
+                    platforms: game.platforms || [],
+                    genres: game.genres || [],
+                    release_dates: game.release_dates || [],
+                };
+                await handleDiscover(minimalGame, newStatus);
+            } else {
+                await handleStatusChange(game.id, newStatus, game.gameStatus);
+            }
 
             // Update local state
             setGame(prev => prev ? { ...prev, gameStatus: newStatus } : null);
@@ -164,6 +214,64 @@ const QuestGameDetailPage: React.FC = () => {
                 type: "error",
                 text1: "Update Failed",
                 text2: "Failed to update game status. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
+        }
+    };
+
+    // Handle remove game
+    const handleRemovePress = async () => {
+        if (!game) return;
+
+        // If not in confirmation mode, enter confirmation mode
+        if (!isRemoveConfirmation) {
+            HapticFeedback.selection();
+            setIsRemoveConfirmation(true);
+            return;
+        }
+
+        // If in confirmation mode, actually remove the game
+        try {
+            HapticFeedback.selection();
+            setIsRemoveConfirmation(false);
+            toggleMenu(); // Close menu first
+
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start();
+
+            await handleRemoveItem(game.id, game.gameStatus);
+
+            // Update local state to undiscovered
+            setGame(prev => prev ? { ...prev, gameStatus: "undiscovered" } : null);
+            setActiveStatus("undiscovered");
+
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start(() => {
+                showToast({
+                    type: "success",
+                    text1: "Game Removed",
+                    text2: `${game.name} removed from ${getStatusLabel(game.gameStatus)}`,
+                    position: "bottom",
+                    color: colorSwatch.accent.pink,
+                    visibilityTime: 2000,
+                });
+            });
+
+        } catch (error) {
+            console.error("Failed to remove game:", error);
+            showToast({
+                type: "error",
+                text1: "Remove Failed",
+                text2: "Failed to remove game. Please try again.",
                 position: "bottom",
                 visibilityTime: 3000,
             });
@@ -318,8 +426,8 @@ const QuestGameDetailPage: React.FC = () => {
                         </Animated.View>
                     )}
 
-                    {/* Status Menu Items */}
-                    {getAvailableStatuses(game.gameStatus).map((status, index) => {
+                    {/* Menu Items */}
+                    {getMenuOptions(game.gameStatus).map((option, index) => {
                         const translateY = menuAnimation.interpolate({
                             inputRange: [0, 1],
                             outputRange: [0, -(72 + index * 64)],
@@ -330,33 +438,47 @@ const QuestGameDetailPage: React.FC = () => {
                             outputRange: [0, 1],
                         });
 
+                        const handlePress = () => {
+                            if (option.type === 'status') {
+                                handleStatusPress(option.value);
+                            } else {
+                                handleRemovePress();
+                            }
+                        };
+
+                        const isConfirmationMode = option.type === 'remove' && option.isConfirmation;
+                        const backgroundColor = isConfirmationMode ? option.color : colorSwatch.background.darkest;
+                        const borderColor = isConfirmationMode ? "transparent" : option.color;
+                        const textColor = isConfirmationMode ? colorSwatch.background.darkest : option.color;
+                        const iconColor = isConfirmationMode ? colorSwatch.background.darkest : option.color;
+
                         return (
                             <Animated.View
-                                key={status}
+                                key={option.type === 'status' ? option.value : 'remove'}
                                 style={[
                                     styles.menuItem,
                                     {
                                         transform: [{ translateY }, { scale }],
-                                        borderColor: getStatusColor(status),
+                                        borderColor: borderColor,
                                         borderWidth: 2,
-                                        backgroundColor: colorSwatch.background.darkest,
+                                        backgroundColor: backgroundColor,
                                     },
                                 ]}
                             >
                                 <TouchableOpacity
-                                    onPress={() => handleStatusPress(status)}
+                                    onPress={handlePress}
                                     style={styles.menuItemTouchable}
                                     activeOpacity={0.8}
                                 >
                                     <View style={styles.menuItemTextContainer}>
                                         <Text
                                             variant="body"
-                                            style={[styles.menuItemText, { color: getStatusColor(status) }]}
+                                            style={[styles.menuItemText, { color: textColor }]}
                                             numberOfLines={1}
                                         >
-                                            {getStatusLabel(status)}
+                                            {option.label}
                                         </Text>
-                                        <QuestIcon color={getStatusColor(status)} name={getStatusIcon(status)} size={24} />
+                                        <QuestIcon color={iconColor} name={option.icon} size={24} />
                                     </View>
                                 </TouchableOpacity>
                             </Animated.View>
@@ -369,7 +491,7 @@ const QuestGameDetailPage: React.FC = () => {
                             styles.fab,
                             {
                                 backgroundColor: isMenuOpen ? colorSwatch.text.inverse : statusColor,
-                                borderColor: isMenuOpen ? statusColor : colorSwatch.text.inverse,
+                                borderColor: isMenuOpen ? statusColor : "transparent",
                             },
                         ]}
                     >

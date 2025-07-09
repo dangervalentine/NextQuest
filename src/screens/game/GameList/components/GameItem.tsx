@@ -426,11 +426,6 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleRemoveClick = () => {
             HapticFeedback.selection();
             setIsRemoveClicked(true);
-            // Keep menu open by maintaining the same left position
-            Animated.spring(pan, {
-                toValue: LEFT_MENU_POSITION, // Match full left menu width
-                useNativeDriver: false,
-            }).start();
         };
 
         const handleCancel = () => {
