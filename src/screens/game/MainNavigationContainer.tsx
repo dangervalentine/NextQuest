@@ -17,6 +17,7 @@ import {
     TabParamList,
 } from "src/navigation/navigationTypes";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { getStatusTabName } from "src/utils/gameStatusUtils";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { useGameStatus } from "src/contexts/GameStatusContext";
@@ -65,29 +66,11 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
         }
     }, [activeStatus, setActiveTabColor]);
 
-    const getStatusTab = useCallback(
-        (status: GameStatus): keyof TabParamList => {
-            switch (status) {
-                case "ongoing":
-                    return "Ongoing";
-                case "backlog":
-                    return "Backlog";
-                case "completed":
-                    return "Completed";
-                case "undiscovered":
-                    return "Search";
-                default:
-                    return "Ongoing";
-            }
-        },
-        []
-    );
-
     const handleNavigateToStatus = useCallback(
         (status: GameStatus) => {
             // First navigate to the tab
             navigation.navigate("GameTabs", {
-                screen: getStatusTab(status),
+                screen: getStatusTabName(status) as keyof TabParamList,
             });
 
             // Then scroll to the bottom after a short delay to ensure navigation is complete
@@ -95,7 +78,7 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
                 gameTabsRef.current?.scrollToBottom(status);
             }, 500);
         },
-        [navigation, getStatusTab]
+        [navigation]
     );
 
     // Register the navigation callback so the outer component can use it

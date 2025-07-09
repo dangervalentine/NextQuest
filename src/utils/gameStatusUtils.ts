@@ -33,3 +33,18 @@ export const getStatusIcon = (status: GameStatus): string => {
             return "question";
     }
 }
+
+export const getStatusTabName = (status: GameStatus): string => {
+    switch (status) {
+        case "ongoing":
+            return "Ongoing";
+        case "backlog":
+            return "Backlog";
+        case "completed":
+            return "Completed";
+        case "undiscovered":
+            return "Discover";
+        default:
+            return "Ongoing";
+    }
+};

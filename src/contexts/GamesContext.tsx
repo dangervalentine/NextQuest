@@ -82,7 +82,6 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         backlog: [],
         completed: [],
         undiscovered: [],
-        on_hold: [],
         dropped: [],
     });
 
@@ -91,7 +90,6 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         backlog: true,
         completed: true,
         undiscovered: false,
-        on_hold: false,
         dropped: false,
     });
 

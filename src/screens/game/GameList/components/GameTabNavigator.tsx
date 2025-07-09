@@ -19,7 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { TabParamList } from "src/navigation/navigationTypes";
 import { MainNavigationProp } from "../../MainNavigationContainer";
 import { Text } from "react-native";
-import { getStatusIcon } from "src/utils/gameStatusUtils";
+import { getStatusIcon, getStatusTabName } from "src/utils/gameStatusUtils";
 import { useGames } from "src/contexts/GamesContext";
 
 const Tab = createBottomTabNavigator();
@@ -83,7 +83,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             backlog: React.createRef(),
             completed: React.createRef(),
             undiscovered: React.createRef(),
-            on_hold: React.createRef(),
             dropped: React.createRef(),
         });
 
@@ -127,16 +126,11 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
         const navigation = useNavigation<MainNavigationProp>();
 
         const handleNavigateToStatus = () => {
-            const tabOrder: { label: string; status: GameStatus }[] = [
-                { label: "Ongoing", status: "ongoing" },
-                { label: "Backlog", status: "backlog" },
-                { label: "Completed", status: "completed" },
-                { label: "Search", status: "undiscovered" },
-            ];
-            const firstNonEmptyTab = tabOrder.find(
-                (tab) => gameData[tab.status] && gameData[tab.status].length > 0
+            const statuses: GameStatus[] = ["ongoing", "backlog", "completed", "undiscovered"];
+            const firstNonEmptyStatus = statuses.find(
+                (status) => gameData[status] && gameData[status].length > 0
             );
-            const targetTab = firstNonEmptyTab ? firstNonEmptyTab.label : "Search";
+            const targetTab = firstNonEmptyStatus ? getStatusTabName(firstNonEmptyStatus) : "Discover";
 
             navigation.navigate("GameTabs", {
                 screen: targetTab as keyof TabParamList,

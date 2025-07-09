@@ -6,7 +6,7 @@ export type TabParamList = {
     Ongoing: undefined;
     Backlog: undefined;
     Completed: undefined;
-    Search: {
+    Discover: {
         franchiseId?: number;
         platformId?: number;
         genreId?: number;
@@ -41,4 +41,4 @@ export type GameTabsScreenNavigationProp = StackNavigationProp<
     "GameTabs"
 >;
 
-export type SearchTabRouteProp = RouteProp<TabParamList, "Search">;
+export type SearchTabRouteProp = RouteProp<TabParamList, "Discover">;
