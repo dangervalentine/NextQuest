@@ -27,7 +27,6 @@ interface GameSectionProps {
         newStatus: GameStatus,
         currentStatus: GameStatus
     ) => void;
-    onRemoveItem: (id: number, status: GameStatus) => void;
     onReorder: (fromIndex: number, toIndex: number, status: GameStatus) => void;
     sort: { field: SortField; direction: "asc" | "desc" };
     onSortChange: (sort: {
@@ -50,7 +49,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             games,
             isLoading,
             onStatusChange,
-            onRemoveItem,
             onReorder,
             sort,
             onSortChange,
@@ -220,7 +218,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     <GameItem
                         questGame={item}
                         reorder={onDragStart}
-                        removeItem={(id) => onRemoveItem(id, gameStatus)}
                         isFirstItem={index === 0}
                         onStatusChange={(newStatus, currentStatus) =>
                             onStatusChange(item.id, newStatus, currentStatus)
@@ -239,7 +236,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             },
             [
                 gameStatus,
-                onRemoveItem,
                 onStatusChange,
                 handleMoveToTop,
                 handleMoveToBottom,

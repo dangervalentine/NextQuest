@@ -24,6 +24,7 @@ import { HapticFeedback } from "src/utils/hapticUtils";
 import { theme } from "src/constants/theme/styles";
 import { showToast } from "src/components/common/QuestToast";
 import Toast from "react-native-toast-message";
+import { useGames } from "src/contexts/GamesContext";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -31,7 +32,6 @@ let hasShownHintInSession = false;
 interface GameItemProps {
     questGame: MinimalQuestGame;
     reorder?: () => void;
-    removeItem?: (id: number, status: GameStatus) => void;
     onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
     isFirstItem?: boolean;
     moveToTop?: (id: number, status: GameStatus) => void;
@@ -48,7 +48,6 @@ const GameItem: React.FC<GameItemProps> = memo(
     ({
         questGame,
         reorder,
-        removeItem,
         onStatusChange,
         isFirstItem,
         moveToTop,
@@ -57,6 +56,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         canReorder = false,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
+        const { handleRemoveItem } = useGames();
 
         // Animation values
         const pan = useRef(new Animated.Value(0)).current;
@@ -131,7 +131,6 @@ const GameItem: React.FC<GameItemProps> = memo(
 
                 // Cleanup function - dismisses toast when component loses focus
                 return () => {
-                    // Call Toast.hide() to simulate the onPress event
                     Toast.hide();
                 };
             }, [isFirstItem, hasShownHint, questGame.name])
@@ -465,9 +464,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     easing: Easing.out(Easing.cubic),
                 }),
             ]).start(() => {
-                if (removeItem) {
-                    removeItem(questGame.id, "undiscovered");
-                }
+                handleRemoveItem(questGame.id, "undiscovered");
             });
         };
 

@@ -14,7 +14,6 @@ interface GameTabsProps {
         currentStatus: GameStatus
     ) => void;
     handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
-    handleRemoveItem: (itemId: number, status: GameStatus) => void;
     handleReorder: (
         fromIndex: number,
         toIndex: number,
@@ -30,7 +29,6 @@ const GameTabs = forwardRef<GameTabNavigatorRef, GameTabsProps>(
             isLoading,
             handleStatusChange,
             handleDiscover,
-            handleRemoveItem,
             handleReorder,
             onTabChange,
         },
@@ -43,7 +41,6 @@ const GameTabs = forwardRef<GameTabNavigatorRef, GameTabsProps>(
                 isLoading={isLoading}
                 handleStatusChange={handleStatusChange}
                 handleDiscover={handleDiscover}
-                handleRemoveItem={handleRemoveItem}
                 handleReorder={handleReorder}
                 onTabChange={onTabChange}
             />

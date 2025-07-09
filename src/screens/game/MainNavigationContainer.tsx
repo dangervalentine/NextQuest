@@ -42,7 +42,6 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
         gameData,
         isLoading,
         handleStatusChange,
-        handleRemoveItem,
         handleReorder,
         handleDiscover,
     } = useGames();
@@ -118,7 +117,6 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
                 gameData={gameData}
                 isLoading={isLoading}
                 handleStatusChange={handleStatusChange}
-                handleRemoveItem={handleRemoveItem}
                 handleReorder={handleReorder}
                 handleDiscover={handleDiscover}
                 onTabChange={handleTabChange}
@@ -128,7 +126,6 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
             gameData,
             isLoading,
             handleStatusChange,
-            handleRemoveItem,
             handleReorder,
             handleDiscover,
             handleTabChange,
