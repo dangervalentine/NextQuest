@@ -20,7 +20,7 @@ import { getStatusColor } from "src/utils/colorsUtils";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { useGameStatus } from "src/contexts/GameStatusContext";
-import { useGames, GamesProvider } from "src/contexts/GamesContext";
+import { GamesProvider } from "src/contexts/GamesContext";
 import { GameTabNavigatorRef } from "./GameList/components/GameTabNavigator";
 import AnimatedBackButton from "./shared/AnimatedBackButton";
 
@@ -38,10 +38,7 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
     const navigation = useNavigation<MainNavigationProp>();
     const gameTabsRef = useRef<GameTabNavigatorRef>(null);
     const { activeStatus, setActiveStatus } = useGameStatus();
-    const {
-        gameData,
-        isLoading,
-    } = useGames();
+
 
     const [activeTabColor, setActiveTabColor] = useState<string>(
         colorSwatch.neutral.white
@@ -111,14 +108,10 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
         () => (
             <GameTabs
                 ref={gameTabsRef}
-                gameData={gameData}
-                isLoading={isLoading}
                 onTabChange={handleTabChange}
             />
         ),
         [
-            gameData,
-            isLoading,
             handleTabChange,
         ]
     );

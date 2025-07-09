@@ -11,7 +11,6 @@ import GameSearchSection from "./GameSearchSection";
 import HeaderWithIcon from "../../shared/HeaderWithIcon";
 import QuestIcon from "../../shared/GameIcon";
 import { GameStatus } from "src/constants/config/gameStatus";
-import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { getStatusColor } from "src/utils/colorsUtils";
 import { SortField } from "src/types/sortTypes";
@@ -21,12 +20,11 @@ import { TabParamList } from "src/navigation/navigationTypes";
 import { MainNavigationProp } from "../../MainNavigationContainer";
 import { Text } from "react-native";
 import { getStatusIcon } from "src/utils/gameStatusUtils";
+import { useGames } from "src/contexts/GamesContext";
 
 const Tab = createBottomTabNavigator();
 
 interface TabNavigatorProps {
-    gameData: Record<GameStatus, MinimalQuestGame[]>;
-    isLoading: Record<GameStatus, boolean>;
     onTabChange: (tabName: string) => void;
 }
 
@@ -70,12 +68,11 @@ export const screenOptions: BottomTabNavigationOptions = {
 const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
     (
         {
-            gameData,
-            isLoading,
             onTabChange,
         },
         ref
     ) => {
+        const { gameData } = useGames();
         const insets = useSafeAreaInsets();
 
         // Create refs for each game section tab
@@ -232,7 +229,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                 ref={gameSectionRefs.current[screen.gameStatus]}
                                 gameStatus={screen.gameStatus}
                                 games={gameData[screen.gameStatus]}
-                                isLoading={isLoading[screen.gameStatus]}
                                 sort={sort}
                                 onSortChange={setSort}
                                 isMenuVisible={isMenuVisible}

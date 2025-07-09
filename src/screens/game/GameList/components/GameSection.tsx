@@ -22,7 +22,6 @@ import { useGames } from "src/contexts/GamesContext";
 interface GameSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
-    isLoading: boolean;
     sort: { field: SortField; direction: "asc" | "desc" };
     onSortChange: (sort: {
         field: SortField;
@@ -42,7 +41,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         {
             gameStatus,
             games,
-            isLoading,
             sort,
             onSortChange,
             isMenuVisible,
@@ -50,7 +48,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         },
         ref
     ) => {
-        const { handleReorder } = useGames();
+        const { handleReorder, isLoading } = useGames();
         const [searchQuery, setSearchQuery] = useState("");
         const dragListRef = useRef<any>(null);
 
@@ -233,7 +231,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             ]
         );
 
-        if (isLoading) {
+        if (isLoading[gameStatus]) {
             return (
                 <View style={styles.loadingContainer}>
                     <LoadingText text="Loading games..." />
