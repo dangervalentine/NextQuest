@@ -10,8 +10,6 @@ export const getStatusLabel = (status: GameStatus): string => {
             return "Backlog";
         case "undiscovered":
             return "Undiscovered";
-        case "on_hold":
-            return "On Hold";
         case "dropped":
             return "Dropped";
         default:

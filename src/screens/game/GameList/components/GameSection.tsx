@@ -6,7 +6,7 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
@@ -147,6 +147,9 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             return sorted;
         }, [filteredGames, sort]);
 
+        // Check if drag functionality is needed
+        const canReorder = sort.field === "priority" && sort.direction === "asc";
+
         const handleMoveToTop = useCallback(
             (id: number, status: GameStatus) => {
                 if (filteredGames.length <= 1) return;
@@ -197,7 +200,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             [filteredGames, handleReorder, dragListRef]
         );
 
-        const renderItem = useCallback(
+        const renderDragItem = useCallback(
             ({
                 item,
                 onDragStart,
@@ -216,10 +219,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             handleMoveToBottom(id, status)
                         }
                         isActive={isActive}
-                        canReorder={
-                            sort.field === "priority" &&
-                            sort.direction === "asc"
-                        }
+                        canReorder={canReorder}
                     />
                 );
             },
@@ -227,7 +227,32 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                 gameStatus,
                 handleMoveToTop,
                 handleMoveToBottom,
-                sort,
+                canReorder,
+            ]
+        );
+
+        const renderFlatListItem = useCallback(
+            ({ item, index }: { item: MinimalQuestGame; index: number }) => {
+                if (!item) return null;
+
+                return (
+                    <GameItem
+                        questGame={item}
+                        reorder={() => { }} // No-op for FlatList
+                        isFirstItem={index === 0}
+                        moveToTop={(id, status) => handleMoveToTop(id, status)}
+                        moveToBottom={(id, status) =>
+                            handleMoveToBottom(id, status)
+                        }
+                        isActive={false}
+                        canReorder={false}
+                    />
+                );
+            },
+            [
+                gameStatus,
+                handleMoveToTop,
+                handleMoveToBottom,
             ]
         );
 
@@ -249,34 +274,62 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             <>
                 <View style={styles.contentContainer}>
                     <View style={styles.listWrapper}>
-                        <DragList
-                            ref={dragListRef}
-                            data={sortedGames}
-                            onReordered={(fromIndex, toIndex) =>
-                                handleReorder(fromIndex, toIndex, gameStatus)
-                            }
-                            keyExtractor={(item) => item?.id?.toString() || ""}
-                            renderItem={renderItem}
-                            contentContainerStyle={styles.listContainer}
-                            removeClippedSubviews={true}
-                            getItemLayout={(data, index) => ({
-                                length: 128,
-                                offset: 128 * index,
-                                index,
-                            })}
-                            onScrollToIndexFailed={(info) => {
-                                console.warn('ScrollToIndex failed:', info);
-                                const wait = new Promise(resolve => setTimeout(resolve, 500));
-                                wait.then(() => {
-                                    if (dragListRef.current) {
-                                        dragListRef.current.scrollToIndex({
-                                            index: Math.min(info.index, info.highestMeasuredFrameIndex),
-                                            animated: true,
-                                        });
-                                    }
-                                });
-                            }}
-                        />
+                        {canReorder ? (
+                            <DragList
+                                ref={dragListRef}
+                                data={sortedGames}
+                                onReordered={(fromIndex, toIndex) =>
+                                    handleReorder(fromIndex, toIndex, gameStatus)
+                                }
+                                keyExtractor={(item) => item?.id?.toString() || ""}
+                                renderItem={renderDragItem}
+                                contentContainerStyle={styles.listContainer}
+                                removeClippedSubviews={true}
+                                getItemLayout={(data, index) => ({
+                                    length: 128,
+                                    offset: 128 * index,
+                                    index,
+                                })}
+                                onScrollToIndexFailed={(info) => {
+                                    console.warn('ScrollToIndex failed:', info);
+                                    const wait = new Promise(resolve => setTimeout(resolve, 500));
+                                    wait.then(() => {
+                                        if (dragListRef.current) {
+                                            dragListRef.current.scrollToIndex({
+                                                index: Math.min(info.index, info.highestMeasuredFrameIndex),
+                                                animated: true,
+                                            });
+                                        }
+                                    });
+                                }}
+                            />
+                        ) : (
+                            <FlatList
+                                ref={dragListRef}
+                                data={sortedGames}
+                                keyExtractor={(item) => item?.id?.toString() || ""}
+                                renderItem={renderFlatListItem}
+                                contentContainerStyle={styles.listContainer}
+                                removeClippedSubviews={true}
+                                getItemLayout={(data, index) => ({
+                                    length: 128,
+                                    offset: 128 * index,
+                                    index,
+                                })}
+                                onScrollToIndexFailed={(info) => {
+                                    console.warn('ScrollToIndex failed:', info);
+                                    const wait = new Promise(resolve => setTimeout(resolve, 500));
+                                    wait.then(() => {
+                                        if (dragListRef.current) {
+                                            dragListRef.current.scrollToIndex({
+                                                index: Math.min(info.index, info.highestMeasuredFrameIndex),
+                                                animated: true,
+                                            });
+                                        }
+                                    });
+                                }}
+                            />
+                        )}
                     </View>
                 </View>
                 <GameSearchInput
