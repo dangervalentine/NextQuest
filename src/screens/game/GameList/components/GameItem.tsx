@@ -23,6 +23,7 @@ import { getRatingColor, getStatusColor } from "src/utils/colorsUtils";
 import { HapticFeedback } from "src/utils/hapticUtils";
 import { theme } from "src/constants/theme/styles";
 import { showToast } from "src/components/common/QuestToast";
+import Toast from "react-native-toast-message";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -127,6 +128,12 @@ const GameItem: React.FC<GameItemProps> = memo(
                     setHasShownHint(true);
                     hasShownHintInSession = true;
                 }
+
+                // Cleanup function - dismisses toast when component loses focus
+                return () => {
+                    // Call Toast.hide() to simulate the onPress event
+                    Toast.hide();
+                };
             }, [isFirstItem, hasShownHint, questGame.name])
         );
 
