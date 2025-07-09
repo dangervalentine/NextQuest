@@ -27,11 +27,6 @@ const Tab = createBottomTabNavigator();
 interface TabNavigatorProps {
     gameData: Record<GameStatus, MinimalQuestGame[]>;
     isLoading: Record<GameStatus, boolean>;
-    handleStatusChange: (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => void;
     handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
     handleReorder: (
         fromIndex: number,
@@ -81,12 +76,11 @@ export const screenOptions: BottomTabNavigationOptions = {
 const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
     (
         {
-                    gameData,
-        isLoading,
-        handleStatusChange,
-        handleDiscover,
-        handleReorder,
-        onTabChange,
+            gameData,
+            isLoading,
+            handleDiscover,
+            handleReorder,
+            onTabChange,
         },
         ref
     ) => {
@@ -247,7 +241,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                 gameStatus={screen.gameStatus}
                                 games={gameData[screen.gameStatus]}
                                 isLoading={isLoading[screen.gameStatus]}
-                                onStatusChange={handleStatusChange}
                                 onReorder={handleReorder}
                                 sort={sort}
                                 onSortChange={setSort}

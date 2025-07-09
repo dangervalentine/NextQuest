@@ -32,7 +32,6 @@ let hasShownHintInSession = false;
 interface GameItemProps {
     questGame: MinimalQuestGame;
     reorder?: () => void;
-    onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
     isFirstItem?: boolean;
     moveToTop?: (id: number, status: GameStatus) => void;
     moveToBottom?: (id: number, status: GameStatus) => void;
@@ -48,7 +47,6 @@ const GameItem: React.FC<GameItemProps> = memo(
     ({
         questGame,
         reorder,
-        onStatusChange,
         isFirstItem,
         moveToTop,
         moveToBottom,
@@ -56,7 +54,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         canReorder = false,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
-        const { handleRemoveItem } = useGames();
+        const { handleRemoveItem, handleStatusChange } = useGames();
 
         // Animation values
         const pan = useRef(new Animated.Value(0)).current;
@@ -494,9 +492,7 @@ const GameItem: React.FC<GameItemProps> = memo(
             }
 
             Animated.parallel(animations).start(() => {
-                if (onStatusChange) {
-                    onStatusChange(status, questGame.gameStatus);
-                }
+                handleStatusChange(questGame.id, status, questGame.gameStatus);
             });
         };
 

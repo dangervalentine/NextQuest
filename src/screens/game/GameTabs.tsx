@@ -8,11 +8,6 @@ import GameTabNavigator, {
 interface GameTabsProps {
     gameData: Record<GameStatus, MinimalQuestGame[]>;
     isLoading: Record<GameStatus, boolean>;
-    handleStatusChange: (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => void;
     handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
     handleReorder: (
         fromIndex: number,
@@ -27,7 +22,6 @@ const GameTabs = forwardRef<GameTabNavigatorRef, GameTabsProps>(
         {
             gameData,
             isLoading,
-            handleStatusChange,
             handleDiscover,
             handleReorder,
             onTabChange,
@@ -39,7 +33,6 @@ const GameTabs = forwardRef<GameTabNavigatorRef, GameTabsProps>(
                 ref={ref}
                 gameData={gameData}
                 isLoading={isLoading}
-                handleStatusChange={handleStatusChange}
                 handleDiscover={handleDiscover}
                 handleReorder={handleReorder}
                 onTabChange={onTabChange}

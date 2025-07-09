@@ -22,11 +22,6 @@ interface GameSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
     isLoading: boolean;
-    onStatusChange: (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => void;
     onReorder: (fromIndex: number, toIndex: number, status: GameStatus) => void;
     sort: { field: SortField; direction: "asc" | "desc" };
     onSortChange: (sort: {
@@ -48,7 +43,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             gameStatus,
             games,
             isLoading,
-            onStatusChange,
             onReorder,
             sort,
             onSortChange,
@@ -219,9 +213,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                         questGame={item}
                         reorder={onDragStart}
                         isFirstItem={index === 0}
-                        onStatusChange={(newStatus, currentStatus) =>
-                            onStatusChange(item.id, newStatus, currentStatus)
-                        }
                         moveToTop={(id, status) => handleMoveToTop(id, status)}
                         moveToBottom={(id, status) =>
                             handleMoveToBottom(id, status)
@@ -236,7 +227,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             },
             [
                 gameStatus,
-                onStatusChange,
                 handleMoveToTop,
                 handleMoveToBottom,
                 sort,
