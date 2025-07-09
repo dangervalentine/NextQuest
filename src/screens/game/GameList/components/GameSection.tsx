@@ -17,12 +17,12 @@ import GameSearchInput from "./GameSearchInput";
 import { LoadingText } from "src/components/common/LoadingText";
 import GameSortFilterMenu from "./GameSortFilterMenu";
 import { SortField } from "src/types/sortTypes";
+import { useGames } from "src/contexts/GamesContext";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
     isLoading: boolean;
-    onReorder: (fromIndex: number, toIndex: number, status: GameStatus) => void;
     sort: { field: SortField; direction: "asc" | "desc" };
     onSortChange: (sort: {
         field: SortField;
@@ -43,7 +43,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             gameStatus,
             games,
             isLoading,
-            onReorder,
             sort,
             onSortChange,
             isMenuVisible,
@@ -51,6 +50,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         },
         ref
     ) => {
+        const { handleReorder } = useGames();
         const [searchQuery, setSearchQuery] = useState("");
         const dragListRef = useRef<any>(null);
 
@@ -156,7 +156,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     (game) => game.id === id
                 );
                 if (currentIndex > 0) {
-                    onReorder(currentIndex, 0, status);
+                    handleReorder(currentIndex, 0, status);
                     // Scroll to top after reordering
                     setTimeout(() => {
                         if (
@@ -171,7 +171,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     }, 300);
                 }
             },
-            [filteredGames, onReorder, dragListRef]
+            [filteredGames, handleReorder, dragListRef]
         );
 
         const handleMoveToBottom = useCallback(
@@ -181,7 +181,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     (game) => game.id === id
                 );
                 if (currentIndex < filteredGames.length - 1) {
-                    onReorder(currentIndex, filteredGames.length - 1, status);
+                    handleReorder(currentIndex, filteredGames.length - 1, status);
                     // Scroll to bottom after reordering
                     setTimeout(() => {
                         if (
@@ -196,7 +196,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     }, 300);
                 }
             },
-            [filteredGames, onReorder, dragListRef]
+            [filteredGames, handleReorder, dragListRef]
         );
 
         const renderItem = useCallback(
@@ -255,7 +255,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             ref={dragListRef}
                             data={sortedGames}
                             onReordered={(fromIndex, toIndex) =>
-                                onReorder(fromIndex, toIndex, gameStatus)
+                                handleReorder(fromIndex, toIndex, gameStatus)
                             }
                             keyExtractor={(item) => item?.id?.toString() || ""}
                             renderItem={renderItem}

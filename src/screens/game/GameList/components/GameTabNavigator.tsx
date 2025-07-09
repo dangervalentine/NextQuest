@@ -27,12 +27,6 @@ const Tab = createBottomTabNavigator();
 interface TabNavigatorProps {
     gameData: Record<GameStatus, MinimalQuestGame[]>;
     isLoading: Record<GameStatus, boolean>;
-    handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
-    handleReorder: (
-        fromIndex: number,
-        toIndex: number,
-        status: GameStatus
-    ) => void;
     onTabChange: (tabName: string) => void;
 }
 
@@ -78,8 +72,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
         {
             gameData,
             isLoading,
-            handleDiscover,
-            handleReorder,
             onTabChange,
         },
         ref
@@ -241,7 +233,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                 gameStatus={screen.gameStatus}
                                 games={gameData[screen.gameStatus]}
                                 isLoading={isLoading[screen.gameStatus]}
-                                onReorder={handleReorder}
                                 sort={sort}
                                 onSortChange={setSort}
                                 isMenuVisible={isMenuVisible}
@@ -287,7 +278,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                         <GameSearchSection
                             gameStatus={"undiscovered"}
                             games={gameData["undiscovered"]}
-                            handleDiscover={handleDiscover}
                         />
                     )}
                 </Tab.Screen>

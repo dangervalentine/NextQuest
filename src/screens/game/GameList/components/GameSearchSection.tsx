@@ -14,6 +14,7 @@ import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
 import { LoadingText } from "src/components/common/LoadingText";
+import { useGames } from "src/contexts/GamesContext";
 
 interface SearchParams {
     searchQuery?: string;
@@ -27,7 +28,6 @@ interface SearchParams {
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
-    handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
 }
 
 // Memoize the individual game item wrapper
@@ -63,8 +63,8 @@ const GameItemWrapper = React.memo(
 
 const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     gameStatus,
-    handleDiscover,
 }) => {
+    const { handleDiscover } = useGames();
     const route = useRoute<SearchTabRouteProp>();
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);

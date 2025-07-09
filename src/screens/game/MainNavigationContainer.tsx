@@ -41,8 +41,6 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
     const {
         gameData,
         isLoading,
-        handleReorder,
-        handleDiscover,
     } = useGames();
 
     const [activeTabColor, setActiveTabColor] = useState<string>(
@@ -115,16 +113,12 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
                 ref={gameTabsRef}
                 gameData={gameData}
                 isLoading={isLoading}
-                handleReorder={handleReorder}
-                handleDiscover={handleDiscover}
                 onTabChange={handleTabChange}
             />
         ),
         [
             gameData,
             isLoading,
-            handleReorder,
-            handleDiscover,
             handleTabChange,
         ]
     );

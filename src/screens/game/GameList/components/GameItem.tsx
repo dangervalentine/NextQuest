@@ -37,6 +37,7 @@ interface GameItemProps {
     moveToBottom?: (id: number, status: GameStatus) => void;
     isActive?: boolean;
     canReorder?: boolean;
+    onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
 }
 
 const SWIPE_THRESHOLD = 20; // Reduced from 75 to make menus easier to open
@@ -52,6 +53,7 @@ const GameItem: React.FC<GameItemProps> = memo(
         moveToBottom,
         isActive = false,
         canReorder = false,
+        onStatusChange,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
         const { handleRemoveItem, handleStatusChange } = useGames();
@@ -492,7 +494,11 @@ const GameItem: React.FC<GameItemProps> = memo(
             }
 
             Animated.parallel(animations).start(() => {
-                handleStatusChange(questGame.id, status, questGame.gameStatus);
+                if (onStatusChange) {
+                    onStatusChange(status, questGame.gameStatus);
+                } else {
+                    handleStatusChange(questGame.id, status, questGame.gameStatus);
+                }
             });
         };
 
