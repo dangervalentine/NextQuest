@@ -13,6 +13,8 @@ interface ScrollableContainerProps {
         onContentSizeChange: (width: number, height: number) => void;
         scrollEventThrottle: number;
         showsVerticalScrollIndicator: boolean;
+        onDragStart?: () => void;
+        onDragEnd?: () => void;
     }) => React.ReactNode;
     style?: any;
 }
@@ -28,6 +30,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     const [contentHeight, setContentHeight] = useState(0);
     const [isScrollTrackVisible, setIsScrollTrackVisible] = useState(false);
     const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(true);
+    const [isDragInProgress, setIsDragInProgress] = useState(false);
     const autoHideTimer = useRef<NodeJS.Timeout | null>(null);
 
     // Auto-hide timer functions
@@ -38,10 +41,13 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         if (isTrackAutoHidden) {
             setIsTrackAutoHidden(false);
         }
-        autoHideTimer.current = setTimeout(() => {
-            setIsTrackAutoHidden(true);
-        }, 1000);
-    }, [isTrackAutoHidden]);
+        // Don't start auto-hide timer during drag
+        if (!isDragInProgress) {
+            autoHideTimer.current = setTimeout(() => {
+                setIsTrackAutoHidden(true);
+            }, 1000);
+        }
+    }, [isTrackAutoHidden, isDragInProgress]);
 
     const clearAutoHideTimer = useCallback(() => {
         if (autoHideTimer.current) {
@@ -96,7 +102,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         handleScrollForVisibility(event);
     }, [animatedScrollHandler, handleScrollForVisibility]);
 
-    // Handle scroll track taps
+    // Handle scroll track taps - optimized for immediate response
     const handleScrollToPosition = useCallback((position: number) => {
         if (!scrollRef.current) return;
 
@@ -108,18 +114,20 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         // Sync the animated value immediately to prevent double-tap issue
         setScrollValue(targetOffset);
 
-        // Handle different scroll component types
+        // Handle different scroll component types with non-animated scrolling for drag responsiveness
+        const isAnimated = !isDragInProgress; // Don't animate during drag for smoother experience
+
         if (scrollRef.current.scrollToOffset) {
             // FlatList/DragList
             scrollRef.current.scrollToOffset({
                 offset: targetOffset,
-                animated: true,
+                animated: isAnimated,
             });
         } else if (scrollRef.current.scrollTo) {
             // ScrollView
             scrollRef.current.scrollTo({
                 y: targetOffset,
-                animated: true,
+                animated: isAnimated,
             });
         } else if (scrollRef.current.getScrollResponder) {
             // DragList fallback
@@ -127,17 +135,17 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             if (scrollResponder?.scrollTo) {
                 scrollResponder.scrollTo({
                     y: targetOffset,
-                    animated: true,
+                    animated: isAnimated,
                 });
             }
         } else if (scrollRef.current._listRef?.scrollToOffset) {
             // DragList underlying FlatList fallback
             scrollRef.current._listRef.scrollToOffset({
                 offset: targetOffset,
-                animated: true,
+                animated: isAnimated,
             });
         }
-    }, [contentHeight, containerHeight, startAutoHideTimer, setScrollValue]);
+    }, [contentHeight, containerHeight, startAutoHideTimer, setScrollValue, isDragInProgress]);
 
     // Handle container layout
     const handleContainerLayout = useCallback((event: any) => {
@@ -160,6 +168,18 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         }
     }, [containerHeight]);
 
+    // Drag callbacks
+    const handleDragStart = useCallback(() => {
+        setIsDragInProgress(true);
+        clearAutoHideTimer();
+        setIsTrackAutoHidden(false);
+    }, [clearAutoHideTimer]);
+
+    const handleDragEnd = useCallback(() => {
+        setIsDragInProgress(false);
+        startAutoHideTimer();
+    }, [startAutoHideTimer]);
+
     // Computed visibility
     const isTrackCurrentlyVisible = isScrollTrackVisible && !isTrackAutoHidden;
 
@@ -171,7 +191,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
                     onScroll: handleScroll,
                     onLayout: handleContainerLayout,
                     onContentSizeChange: handleContentSizeChange,
-                    scrollEventThrottle: 8,
+                    scrollEventThrottle: 1, // Maximum responsiveness
                     showsVerticalScrollIndicator: false,
                 })}
 
@@ -183,6 +203,8 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
                     containerHeight={containerHeight}
                     visible={isTrackCurrentlyVisible}
                     animatedScrollPosition={rawScrollValue}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
                 />
             </View>
         </View>

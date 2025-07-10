@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
     View,
     StyleSheet,
-    Pressable,
     Animated,
 } from "react-native";
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
@@ -83,6 +84,10 @@ interface ScrollProgressTrackProps {
     thumbHeight?: number;
     /** Optional animated scroll position for smoother tracking */
     animatedScrollPosition?: Animated.Value;
+    /** Callback when drag starts */
+    onDragStart?: () => void;
+    /** Callback when drag ends */
+    onDragEnd?: () => void;
 }
 
 const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
@@ -94,16 +99,17 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     trackWidth = 4,
     thumbHeight = 24,
     animatedScrollPosition,
+    onDragStart,
+    onDragEnd,
 }) => {
     const { activeStatus } = useGameStatus();
     const statusColor = getStatusColor(activeStatus);
-    const [isPressed, setIsPressed] = useState(false);
-    const [pressPosition, setPressPosition] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
 
     // Animation values
     const trackOpacity = useRef(new Animated.Value(0)).current;
     const thumbOpacity = useRef(new Animated.Value(0)).current;
-    const pressRipple = useRef(new Animated.Value(0)).current;
+    const dragScale = useRef(new Animated.Value(1)).current;
 
     // Internal animated scroll position - falls back to prop-based updates if no animated value provided
     const internalScrollPosition = useRef(new Animated.Value(scrollPosition)).current;
@@ -175,62 +181,78 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
             extrapolate: 'clamp',
         });
 
-    // Handle press animations
-    const animatePress = useCallback((pressed: boolean) => {
-        if (pressed) {
-            HapticFeedback.light();
-            Animated.parallel([
-                Animated.timing(pressRipple, {
-                    toValue: 1,
-                    duration: 150,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(thumbOpacity, {
-                    toValue: 1,
-                    duration: 150,
-                    useNativeDriver: true,
-                }),
-            ]).start();
+
+
+    // Drag state management
+    const dragStartPosition = useRef(0);
+    const dragStartScrollValue = useRef(0);
+    const currentScrollValue = useRef(0);
+
+    // Track current scroll value for drag calculations
+    useEffect(() => {
+        if (animatedScrollPosition) {
+            const listener = animatedScrollPosition.addListener(({ value }) => {
+                currentScrollValue.current = value;
+            });
+            return () => animatedScrollPosition.removeListener(listener);
         } else {
-            Animated.parallel([
-                Animated.timing(pressRipple, {
-                    toValue: 0,
-                    duration: 300,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(thumbOpacity, {
-                    toValue: visible ? 0.8 : 0,
-                    duration: 300,
-                    useNativeDriver: true,
-                }),
-            ]).start();
+            currentScrollValue.current = scrollPosition * Math.max(0, contentHeight - containerHeight);
         }
-    }, [visible]);
+    }, [animatedScrollPosition, scrollPosition, contentHeight, containerHeight]);
 
-    // Handle press with better touch detection
-    const handlePress = useCallback((event: any) => {
-        const { locationY } = event.nativeEvent;
-
-        // Position relative to the track (no padding offset needed since container is now full height)
-        const position = Math.max(0, Math.min(1, locationY / availableHeight));
-
-        setPressPosition(locationY);
+    // Direct scroll callback for maximum responsiveness
+    const directScrollToPosition = useCallback((position: number) => {
         onScrollToPosition(position);
-        HapticFeedback.medium();
+    }, [onScrollToPosition]);
 
-    }, [availableHeight, onScrollToPosition]);
+    // Optimized native-thread gesture handling
+    const handleTrackGesture = useCallback((event: any) => {
+        'worklet';
+        const { translationY, y, state } = event.nativeEvent;
 
-    // Handle press start
-    const handlePressIn = useCallback(() => {
-        setIsPressed(true);
-        animatePress(true);
-    }, [animatePress]);
+        if (state === State.BEGAN) {
+            // Calculate position on native thread
+            const touchY = y;
+            const position = Math.max(0, Math.min(1, touchY / availableHeight));
 
-    // Handle press end
-    const handlePressOut = useCallback(() => {
-        setIsPressed(false);
-        animatePress(false);
-    }, [animatePress]);
+            // Store initial values
+            dragStartPosition.current = touchY;
+
+            // Start drag animations on native thread
+            dragScale.setValue(1.1);
+            thumbOpacity.setValue(1);
+
+            // JavaScript operations
+            runOnJS(setIsDragging)(true);
+            runOnJS(onDragStart || (() => { }))();
+            runOnJS(HapticFeedback.light)();
+            runOnJS(directScrollToPosition)(position);
+
+        } else if (state === State.ACTIVE) {
+            // Calculate position on native thread for maximum smoothness
+            const currentTouchY = dragStartPosition.current + translationY;
+            const position = Math.max(0, Math.min(1, currentTouchY / availableHeight));
+
+            // Direct scroll update on native thread
+            runOnJS(directScrollToPosition)(position);
+
+        } else if (state === State.END || state === State.CANCELLED) {
+            // Animate values back on native thread
+            dragScale.setValue(1);
+            thumbOpacity.setValue(visible ? 0.8 : 0);
+
+            // JavaScript cleanup
+            runOnJS(setIsDragging)(false);
+            runOnJS(onDragEnd || (() => { }))();
+            runOnJS(HapticFeedback.light)();
+        }
+    }, [availableHeight, directScrollToPosition, visible, onDragStart, onDragEnd,
+        dragScale, thumbOpacity]);
+
+    // Enhanced gesture handler for smooth track interaction
+    const handleTrackStateChange = useCallback((event: any) => {
+        handleTrackGesture(event);
+    }, [handleTrackGesture]);
 
     if (containerHeight < 100 || contentHeight < containerHeight) return null;
 
@@ -248,56 +270,49 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
                 ]}
             />
 
-            {/* Pressable area */}
-            <Pressable
-                style={[
-                    styles.pressableArea,
-                    {
-                        width: 64,
-                        height: availableHeight,
-                    },
-                ]}
-                hitSlop={{ top: 10, bottom: 10, left: 24, right: 0 }}
-                onPress={handlePress}
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
+            {/* Draggable Track Area - Expanded for easy access */}
+            <PanGestureHandler
+                onGestureEvent={handleTrackGesture}
+                onHandlerStateChange={handleTrackStateChange}
+                shouldCancelWhenOutside={false}
+                minPointers={1}
+                maxPointers={1}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 0 }}
             >
-                {/* Thumb */}
                 <Animated.View
                     style={[
-                        styles.thumb,
+                        styles.pressableArea,
                         {
-                            opacity: thumbOpacity,
-                            width: trackWidth,
-                            height: currentThumbHeight,
-                            transform: [
-                                { translateY: animatedThumbPosition },
-                            ],
-                            backgroundColor: statusColor,
+                            width: 100, // Much wider touch area
+                            height: availableHeight,
+                            right: -60, // Extend 60px to the left of center
                         },
                     ]}
-                />
+                >
+                    {/* Visual Thumb Indicator */}
+                    <Animated.View
+                        style={[
+                            styles.thumb,
+                            {
+                                opacity: thumbOpacity,
+                                width: trackWidth,
+                                height: currentThumbHeight,
+                                position: "absolute",
+                                right: 60 - (trackWidth / 2), // Align with track center
+                                transform: [
+                                    { translateY: animatedThumbPosition },
+                                    { scale: dragScale },
+                                ],
+                                backgroundColor: statusColor,
+                                shadowOpacity: isDragging ? 0.4 : 0.3,
+                                shadowRadius: isDragging ? 6 : 4,
+                            },
+                        ]}
+                    />
 
-                {/* Press ripple effect */}
-                <Animated.View
-                    style={[
-                        styles.pressRipple,
-                        {
-                            opacity: pressRipple,
-                            transform: [
-                                { translateY: pressPosition - 15 },
-                                {
-                                    scale: pressRipple.interpolate({
-                                        inputRange: [0, 1],
-                                        outputRange: [0.5, 1.5],
-                                    })
-                                },
-                            ],
-                            backgroundColor: statusColor,
-                        },
-                    ]}
-                />
-            </Pressable>
+
+                </Animated.View>
+            </PanGestureHandler>
         </View>
     );
 };
@@ -319,6 +334,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         justifyContent: "flex-start",
         alignItems: "center",
+        right: 0, // Anchor to right edge
     },
     thumb: {
         position: "absolute",
@@ -329,13 +345,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 4,
     },
-    pressRipple: {
-        position: "absolute",
-        width: 20,
-        height: 20,
-        borderRadius: 15,
-        backgroundColor: colorSwatch.accent.cyan,
-    },
+
 
 });
 
