@@ -1,0 +1,202 @@
+import React, { useCallback, useRef, useState, useEffect, useMemo } from "react";
+import {
+    View,
+    StyleSheet,
+} from "react-native";
+import ScrollProgressTrack, { useAnimatedScrollPosition } from "./ScrollProgressTrack";
+
+interface ScrollableContainerProps {
+    children: (props: {
+        scrollRef: React.RefObject<any>;
+        onScroll: (event: any) => void;
+        onLayout: (event: any) => void;
+        onContentSizeChange: (width: number, height: number) => void;
+        scrollEventThrottle: number;
+        showsVerticalScrollIndicator: boolean;
+    }) => React.ReactNode;
+    style?: any;
+}
+
+const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
+    children,
+    style,
+}) => {
+    // Scroll tracking state
+    const scrollRef = useRef<any>(null);
+    const { createScrollHandler, rawScrollValue, setScrollValue } = useAnimatedScrollPosition();
+    const [containerHeight, setContainerHeight] = useState(0);
+    const [contentHeight, setContentHeight] = useState(0);
+    const [isScrollTrackVisible, setIsScrollTrackVisible] = useState(false);
+    const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(true);
+    const autoHideTimer = useRef<NodeJS.Timeout | null>(null);
+
+    // Auto-hide timer functions
+    const startAutoHideTimer = useCallback(() => {
+        if (autoHideTimer.current) {
+            clearTimeout(autoHideTimer.current);
+        }
+        if (isTrackAutoHidden) {
+            setIsTrackAutoHidden(false);
+        }
+        autoHideTimer.current = setTimeout(() => {
+            setIsTrackAutoHidden(true);
+        }, 1000);
+    }, [isTrackAutoHidden]);
+
+    const clearAutoHideTimer = useCallback(() => {
+        if (autoHideTimer.current) {
+            clearTimeout(autoHideTimer.current);
+            autoHideTimer.current = null;
+        }
+    }, []);
+
+    // Cleanup timer on unmount
+    useEffect(() => {
+        return () => {
+            if (autoHideTimer.current) {
+                clearTimeout(autoHideTimer.current);
+            }
+        };
+    }, []);
+
+    // Create smooth animated scroll handler
+    const animatedScrollHandler = useMemo(() => {
+        return createScrollHandler(contentHeight, containerHeight);
+    }, [createScrollHandler, contentHeight, containerHeight]);
+
+    // Scroll tracking handlers for visibility and layout
+    const handleScrollForVisibility = useCallback((event: any) => {
+        if (!event?.nativeEvent) return;
+
+        const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+        const currentOffset = Math.max(0, contentOffset?.y || 0);
+        const containerHeight = layoutMeasurement?.height || 0;
+        const totalContentHeight = contentSize?.height || 0;
+        const maxOffset = Math.max(0, totalContentHeight - containerHeight);
+
+        setContentHeight(totalContentHeight);
+        setContainerHeight(containerHeight);
+
+        // Show track when content is scrollable
+        const shouldShowTrack = maxOffset > 20;
+        setIsScrollTrackVisible(shouldShowTrack);
+
+        // Start auto-hide timer when scrolling
+        if (shouldShowTrack) {
+            startAutoHideTimer();
+        } else {
+            clearAutoHideTimer();
+            setIsTrackAutoHidden(false);
+        }
+    }, [startAutoHideTimer, clearAutoHideTimer]);
+
+    // Combined scroll handler
+    const handleScroll = useCallback((event: any) => {
+        animatedScrollHandler(event);
+        handleScrollForVisibility(event);
+    }, [animatedScrollHandler, handleScrollForVisibility]);
+
+    // Handle scroll track taps
+    const handleScrollToPosition = useCallback((position: number) => {
+        if (!scrollRef.current) return;
+
+        startAutoHideTimer();
+
+        const maxOffset = Math.max(0, contentHeight - containerHeight);
+        const targetOffset = position * maxOffset;
+
+        // Sync the animated value immediately to prevent double-tap issue
+        setScrollValue(targetOffset);
+
+        // Handle different scroll component types
+        if (scrollRef.current.scrollToOffset) {
+            // FlatList/DragList
+            scrollRef.current.scrollToOffset({
+                offset: targetOffset,
+                animated: true,
+            });
+        } else if (scrollRef.current.scrollTo) {
+            // ScrollView
+            scrollRef.current.scrollTo({
+                y: targetOffset,
+                animated: true,
+            });
+        } else if (scrollRef.current.getScrollResponder) {
+            // DragList fallback
+            const scrollResponder = scrollRef.current.getScrollResponder();
+            if (scrollResponder?.scrollTo) {
+                scrollResponder.scrollTo({
+                    y: targetOffset,
+                    animated: true,
+                });
+            }
+        } else if (scrollRef.current._listRef?.scrollToOffset) {
+            // DragList underlying FlatList fallback
+            scrollRef.current._listRef.scrollToOffset({
+                offset: targetOffset,
+                animated: true,
+            });
+        }
+    }, [contentHeight, containerHeight, startAutoHideTimer, setScrollValue]);
+
+    // Handle container layout
+    const handleContainerLayout = useCallback((event: any) => {
+        const { height } = event.nativeEvent.layout;
+        setContainerHeight(height);
+
+        if (contentHeight > 0 && height > 0) {
+            const maxOffset = Math.max(0, contentHeight - height);
+            setIsScrollTrackVisible(maxOffset > 20);
+        }
+    }, [contentHeight]);
+
+    // Handle content size changes
+    const handleContentSizeChange = useCallback((width: number, height: number) => {
+        setContentHeight(height);
+
+        if (containerHeight > 0 && height > 0) {
+            const maxOffset = Math.max(0, height - containerHeight);
+            setIsScrollTrackVisible(maxOffset > 20);
+        }
+    }, [containerHeight]);
+
+    // Computed visibility
+    const isTrackCurrentlyVisible = isScrollTrackVisible && !isTrackAutoHidden;
+
+    return (
+        <View style={[styles.container, style]}>
+            <View style={styles.scrollWrapper} onLayout={handleContainerLayout}>
+                {children({
+                    scrollRef,
+                    onScroll: handleScroll,
+                    onLayout: handleContainerLayout,
+                    onContentSizeChange: handleContentSizeChange,
+                    scrollEventThrottle: 8,
+                    showsVerticalScrollIndicator: false,
+                })}
+
+                {/* Scroll Progress Track */}
+                <ScrollProgressTrack
+                    scrollPosition={0} // Fallback for non-animated usage
+                    onScrollToPosition={handleScrollToPosition}
+                    contentHeight={contentHeight}
+                    containerHeight={containerHeight}
+                    visible={isTrackCurrentlyVisible}
+                    animatedScrollPosition={rawScrollValue}
+                />
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    scrollWrapper: {
+        flex: 1,
+        position: "relative",
+    },
+});
+
+export default ScrollableContainer;
