@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import {
     ScrollView,
     StyleSheet,
@@ -39,6 +39,7 @@ import { showToast } from "src/components/common/QuestToast";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import QuestIcon from "./shared/GameIcon";
 import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
+import ScrollProgressTrack, { useAnimatedScrollPosition } from "src/components/common/ScrollProgressTrack";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -53,6 +54,15 @@ const QuestGameDetailPage: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isRemoveConfirmation, setIsRemoveConfirmation] = useState(false);
     const menuAnimation = useRef(new Animated.Value(0)).current;
+
+    // Scroll tracking for ScrollProgressTrack
+    const scrollViewRef = useRef<ScrollView>(null);
+    const { createScrollHandler, rawScrollValue, setScrollValue } = useAnimatedScrollPosition();
+    const [containerHeight, setContainerHeight] = useState(0);
+    const [contentHeight, setContentHeight] = useState(0);
+    const [isScrollTrackVisible, setIsScrollTrackVisible] = useState(false);
+    const [isTrackAutoHidden, setIsTrackAutoHidden] = useState(true);
+    const autoHideTimer = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const loadGameDetails = async () => {
@@ -73,6 +83,114 @@ const QuestGameDetailPage: React.FC = () => {
         };
         loadGameDetails();
     }, [id, activeStatus]);
+
+    // Auto-hide timer functions for scroll track
+    const startAutoHideTimer = useCallback(() => {
+        if (autoHideTimer.current) {
+            clearTimeout(autoHideTimer.current);
+        }
+        if (isTrackAutoHidden) {
+            setIsTrackAutoHidden(false);
+        }
+        autoHideTimer.current = setTimeout(() => {
+            setIsTrackAutoHidden(true);
+        }, 1500);
+    }, [isTrackAutoHidden]);
+
+    const clearAutoHideTimer = useCallback(() => {
+        if (autoHideTimer.current) {
+            clearTimeout(autoHideTimer.current);
+            autoHideTimer.current = null;
+        }
+    }, []);
+
+    // Cleanup timer on unmount
+    useEffect(() => {
+        return () => {
+            if (autoHideTimer.current) {
+                clearTimeout(autoHideTimer.current);
+            }
+        };
+    }, []);
+
+    // Create smooth animated scroll handler
+    const animatedScrollHandler = useMemo(() => {
+        return createScrollHandler(contentHeight, containerHeight);
+    }, [createScrollHandler, contentHeight, containerHeight]);
+
+    // Scroll tracking handlers for visibility and layout
+    const handleScrollForVisibility = useCallback((event: any) => {
+        if (!event?.nativeEvent) return;
+
+        const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+        const currentOffset = Math.max(0, contentOffset?.y || 0);
+        const containerHeight = layoutMeasurement?.height || 0;
+        const totalContentHeight = contentSize?.height || 0;
+        const maxOffset = Math.max(0, totalContentHeight - containerHeight);
+
+        setContentHeight(totalContentHeight);
+        setContainerHeight(containerHeight);
+
+        // Show track when content is scrollable
+        const shouldShowTrack = maxOffset > 20;
+        setIsScrollTrackVisible(shouldShowTrack);
+
+        // Start auto-hide timer when scrolling
+        if (shouldShowTrack) {
+            startAutoHideTimer();
+        } else {
+            clearAutoHideTimer();
+            setIsTrackAutoHidden(false);
+        }
+    }, [startAutoHideTimer, clearAutoHideTimer]);
+
+    // Combined scroll handler
+    const handleScroll = useCallback((event: any) => {
+        animatedScrollHandler(event);
+        handleScrollForVisibility(event);
+    }, [animatedScrollHandler, handleScrollForVisibility]);
+
+    // Handle scroll track taps
+    const handleScrollToPosition = useCallback((position: number) => {
+        if (!scrollViewRef.current) return;
+
+        startAutoHideTimer();
+
+        const maxOffset = Math.max(0, contentHeight - containerHeight);
+        const targetOffset = position * maxOffset;
+
+        // Sync the animated value immediately to prevent double-tap issue
+        setScrollValue(targetOffset);
+
+        scrollViewRef.current.scrollTo({
+            y: targetOffset,
+            animated: true,
+        });
+    }, [contentHeight, containerHeight, startAutoHideTimer, setScrollValue]);
+
+    // Handle container layout
+    const handleContainerLayout = useCallback((event: any) => {
+        const { height } = event.nativeEvent.layout;
+        setContainerHeight(height);
+
+        if (contentHeight > 0 && height > 0) {
+            const maxOffset = Math.max(0, contentHeight - height);
+            setIsScrollTrackVisible(maxOffset > 20);
+        }
+    }, [contentHeight]);
+
+    // Handle content size changes
+    const handleContentSizeChange = useCallback((width: number, height: number) => {
+        setContentHeight(height);
+
+        if (containerHeight > 0 && height > 0) {
+            const maxOffset = Math.max(0, height - containerHeight);
+            setIsScrollTrackVisible(maxOffset > 20);
+        }
+    }, [containerHeight]);
+
+    // Computed visibility
+    const isTrackCurrentlyVisible = isScrollTrackVisible && !isTrackAutoHidden;
 
     if (!game) {
         return (
@@ -286,120 +404,139 @@ const QuestGameDetailPage: React.FC = () => {
         >
             <View style={styles.overlay} />
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                <ScrollView style={{ flex: 1 }}>
-                    {/* Hero Section */}
-                    <HeaderSection game={game} />
+                <View style={styles.scrollContainer} onLayout={handleContainerLayout}>
+                    <ScrollView
+                        ref={scrollViewRef}
+                        style={{ flex: 1 }}
+                        onScroll={handleScroll}
+                        scrollEventThrottle={8}
+                        showsVerticalScrollIndicator={false}
+                        onContentSizeChange={handleContentSizeChange}
+                    >
+                        {/* Hero Section */}
+                        <HeaderSection game={game} />
 
-                    {/* Personal Review Section */}
-                    {game.gameStatus === "completed" && (
-                        <PersonalRatingSection
-                            gameId={game.id}
-                            initialRating={game.personalRating ?? null}
-                            notes={game.notes}
-                        />
-                    )}
-
-                    {/* Visual Showcase */}
-                    {game.screenshots && game.screenshots.length > 0 && (
-                        <View style={styles.sectionContainer}>
-                            <Text
-                                variant="title"
-                                style={[
-                                    styles.mainSectionTitle,
-                                    { color: statusColor },
-                                ]}
-                            >
-                                Screenshots
-                            </Text>
-                            <ImageCarousel
-                                images={
-                                    game.screenshots?.map((s) =>
-                                        s.url.replace("t_thumb", "t_720p")
-                                    ) ?? []
-                                }
+                        {/* Personal Review Section */}
+                        {game.gameStatus === "completed" && (
+                            <PersonalRatingSection
+                                gameId={game.id}
+                                initialRating={game.personalRating ?? null}
+                                notes={game.notes}
                             />
-                        </View>
-                    )}
+                        )}
 
-                    {/* Core Game Information */}
-                    {(game.storyline || game.summary) && (
-                        <View style={styles.sectionContainer}>
-                            <Text
-                                variant="title"
-                                style={[
-                                    styles.mainSectionTitle,
-                                    { color: statusColor },
-                                ]}
-                            >
-                                About the Game
-                            </Text>
-                            <StorylineSection
-                                storyline={game.storyline}
-                                summary={game.summary}
-                            />
-                        </View>
-                    )}
-
-                    {/* Essential Game Categories */}
-                    <View style={styles.sectionContainer}>
-                        <Text
-                            variant="title"
-                            style={[
-                                styles.mainSectionTitle,
-                                { color: statusColor },
-                            ]}
-                        >
-                            Information
-                        </Text>
-                        {/* Core Categories */}
-                        <View style={styles.characteristicsContainer}>
-                            {game.franchises && game.franchises.length > 0 && (
-                                <FranchiseSection game={game} />
-                            )}
-                            <GenresSection game={game} />
-                            <ThemesSection game={game} />
-                            <GameModesSection game={game} />
-                            <PerspectivesSection game={game} />
-                        </View>
-                    </View>
-
-                    {/* Additional Game Details */}
-                    <View style={styles.sectionContainer}>
-                        <Text
-                            variant="title"
-                            style={[
-                                styles.mainSectionTitle,
-                                { color: statusColor },
-                            ]}
-                        >
-                            Additional Details
-                        </Text>
-
-                        {/* Platforms */}
-                        {game.platforms && game.platforms.length > 0 && (
-                            <View>
+                        {/* Visual Showcase */}
+                        {game.screenshots && game.screenshots.length > 0 && (
+                            <View style={styles.sectionContainer}>
                                 <Text
                                     variant="title"
                                     style={[
-                                        styles.platformTitle,
+                                        styles.mainSectionTitle,
                                         { color: statusColor },
                                     ]}
                                 >
-                                    Platforms
+                                    Screenshots
                                 </Text>
-                                <PlatformsSection game={game} />
+                                <ImageCarousel
+                                    images={
+                                        game.screenshots?.map((s) =>
+                                            s.url.replace("t_thumb", "t_720p")
+                                        ) ?? []
+                                    }
+                                />
                             </View>
                         )}
 
-                        {/* External Links */}
-                        <WebsitesSection
-                            websites={game.websites || []}
-                            tintColor={statusColor}
-                        />
-                    </View>
+                        {/* Core Game Information */}
+                        {(game.storyline || game.summary) && (
+                            <View style={styles.sectionContainer}>
+                                <Text
+                                    variant="title"
+                                    style={[
+                                        styles.mainSectionTitle,
+                                        { color: statusColor },
+                                    ]}
+                                >
+                                    About the Game
+                                </Text>
+                                <StorylineSection
+                                    storyline={game.storyline}
+                                    summary={game.summary}
+                                />
+                            </View>
+                        )}
 
-                    <View style={styles.bottomClearance} />
-                </ScrollView>
+                        {/* Essential Game Categories */}
+                        <View style={styles.sectionContainer}>
+                            <Text
+                                variant="title"
+                                style={[
+                                    styles.mainSectionTitle,
+                                    { color: statusColor },
+                                ]}
+                            >
+                                Information
+                            </Text>
+                            {/* Core Categories */}
+                            <View style={styles.characteristicsContainer}>
+                                {game.franchises && game.franchises.length > 0 && (
+                                    <FranchiseSection game={game} />
+                                )}
+                                <GenresSection game={game} />
+                                <ThemesSection game={game} />
+                                <GameModesSection game={game} />
+                                <PerspectivesSection game={game} />
+                            </View>
+                        </View>
+
+                        {/* Additional Game Details */}
+                        <View style={styles.sectionContainer}>
+                            <Text
+                                variant="title"
+                                style={[
+                                    styles.mainSectionTitle,
+                                    { color: statusColor },
+                                ]}
+                            >
+                                Additional Details
+                            </Text>
+
+                            {/* Platforms */}
+                            {game.platforms && game.platforms.length > 0 && (
+                                <View>
+                                    <Text
+                                        variant="title"
+                                        style={[
+                                            styles.platformTitle,
+                                            { color: statusColor },
+                                        ]}
+                                    >
+                                        Platforms
+                                    </Text>
+                                    <PlatformsSection game={game} />
+                                </View>
+                            )}
+
+                            {/* External Links */}
+                            <WebsitesSection
+                                websites={game.websites || []}
+                                tintColor={statusColor}
+                            />
+                        </View>
+
+                        <View style={styles.bottomClearance} />
+                    </ScrollView>
+
+                    {/* Scroll Progress Track */}
+                    <ScrollProgressTrack
+                        scrollPosition={0} // Fallback for non-animated usage
+                        onScrollToPosition={handleScrollToPosition}
+                        contentHeight={contentHeight}
+                        containerHeight={containerHeight}
+                        visible={isTrackCurrentlyVisible}
+                        animatedScrollPosition={rawScrollValue}
+                    />
+                </View>
             </Animated.View>
 
             {/* FAB and Menu */}
@@ -514,6 +651,10 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         backgroundColor: colorSwatch.background.darkest,
+        position: "relative",
+    },
+    scrollContainer: {
+        flex: 1,
         position: "relative",
     },
     overlay: {

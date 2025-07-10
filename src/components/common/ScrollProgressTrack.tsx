@@ -77,8 +77,6 @@ interface ScrollProgressTrackProps {
     containerHeight: number;
     /** Whether the track should be visible */
     visible?: boolean;
-    /** Optional tooltip text to show on press */
-    tooltipText?: string;
     /** Track width */
     trackWidth?: number;
     /** Thumb height */
@@ -93,7 +91,6 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     contentHeight,
     containerHeight,
     visible = true,
-    tooltipText,
     trackWidth = 4,
     thumbHeight = 24,
     animatedScrollPosition,
@@ -102,14 +99,11 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     const statusColor = getStatusColor(activeStatus);
     const [isPressed, setIsPressed] = useState(false);
     const [pressPosition, setPressPosition] = useState(0);
-    const [showTooltip, setShowTooltip] = useState(false);
 
     // Animation values
     const trackOpacity = useRef(new Animated.Value(0)).current;
     const thumbOpacity = useRef(new Animated.Value(0)).current;
     const pressRipple = useRef(new Animated.Value(0)).current;
-    const tooltipOpacity = useRef(new Animated.Value(0)).current;
-    const tooltipScale = useRef(new Animated.Value(0.8)).current;
 
     // Internal animated scroll position - falls back to prop-based updates if no animated value provided
     const internalScrollPosition = useRef(new Animated.Value(scrollPosition)).current;
@@ -213,37 +207,6 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
         }
     }, [visible]);
 
-    // Handle tooltip animations
-    const animateTooltip = useCallback((show: boolean) => {
-        if (show) {
-            setShowTooltip(true);
-            Animated.parallel([
-                Animated.timing(tooltipOpacity, {
-                    toValue: 1,
-                    duration: 200,
-                    useNativeDriver: true,
-                }),
-                Animated.spring(tooltipScale, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                }),
-            ]).start();
-        } else {
-            Animated.parallel([
-                Animated.timing(tooltipOpacity, {
-                    toValue: 0,
-                    duration: 150,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(tooltipScale, {
-                    toValue: 0.8,
-                    duration: 150,
-                    useNativeDriver: true,
-                }),
-            ]).start(() => setShowTooltip(false));
-        }
-    }, []);
-
     // Handle press with better touch detection
     const handlePress = useCallback((event: any) => {
         const { locationY } = event.nativeEvent;
@@ -255,12 +218,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
         onScrollToPosition(position);
         HapticFeedback.medium();
 
-        // Show tooltip if available
-        if (tooltipText) {
-            animateTooltip(true);
-            setTimeout(() => animateTooltip(false), 1000);
-        }
-    }, [availableHeight, onScrollToPosition, tooltipText, animateTooltip]);
+    }, [availableHeight, onScrollToPosition]);
 
     // Handle press start
     const handlePressIn = useCallback(() => {
@@ -272,10 +230,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     const handlePressOut = useCallback(() => {
         setIsPressed(false);
         animatePress(false);
-        if (tooltipText) {
-            setTimeout(() => animateTooltip(false), 500);
-        }
-    }, [animatePress, tooltipText, animateTooltip]);
+    }, [animatePress]);
 
     if (containerHeight < 100 || contentHeight < containerHeight) return null;
 
