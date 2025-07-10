@@ -437,7 +437,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             <DragList
                                 ref={dragListRef}
                                 data={sortedGames}
-                                style={isTrackCurrentlyVisible ? { marginRight: 16 } : {}}
                                 onReordered={(fromIndex, toIndex) =>
                                     handleReorder(fromIndex, toIndex, gameStatus)
                                 }
@@ -471,7 +470,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                             <FlatList
                                 ref={dragListRef}
                                 data={sortedGames}
-                                style={isTrackCurrentlyVisible ? { marginRight: 16 } : {}}
                                 keyExtractor={(item) => item?.id?.toString() || ""}
                                 renderItem={renderFlatListItem}
                                 contentContainerStyle={styles.listContainer}

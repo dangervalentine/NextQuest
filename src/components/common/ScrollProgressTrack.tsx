@@ -37,7 +37,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     containerHeight,
     visible = true,
     tooltipText,
-    trackWidth = 12,
+    trackWidth = 2,
     thumbHeight = 24,
 }) => {
     const { activeStatus } = useGameStatus();
@@ -216,6 +216,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
                         height: availableHeight,
                     },
                 ]}
+                hitSlop={{ top: 10, bottom: 10, left: 48, right: 0 }}
                 onPress={handlePress}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
@@ -263,7 +264,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
 const styles = StyleSheet.create({
     container: {
         position: "absolute",
-        right: 8,
+        right: 0,
         top: 0,
         bottom: 0,
         alignItems: "center",

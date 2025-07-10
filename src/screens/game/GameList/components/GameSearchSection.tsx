@@ -376,10 +376,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                     <FlatList
                         ref={flatListRef}
                         data={searchResults}
-                        style={[
-                            styles.scrollContainer,
-                            isTrackCurrentlyVisible ? { marginRight: 16 } : {}
-                        ]}
+                        style={styles.scrollContainer}
                         contentContainerStyle={styles.listContainer}
                         keyExtractor={(item) => item?.id?.toString() || ""}
                         renderItem={({ item, index }) => renderItem(item, index)}
