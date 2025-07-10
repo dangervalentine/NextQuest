@@ -18,7 +18,7 @@ import { LoadingText } from "src/components/common/LoadingText";
 import GameSortFilterMenu from "./GameSortFilterMenu";
 import { SortField } from "src/types/sortTypes";
 import { useGames } from "src/contexts/GamesContext";
-import ScrollProgressTrack from "../../../../components/common/ScrollProgressTrack";
+import ScrollProgressTrack, { useAnimatedScrollPosition } from "../../../../components/common/ScrollProgressTrack";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -53,8 +53,10 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         const [searchQuery, setSearchQuery] = useState("");
         const dragListRef = useRef<any>(null);
 
+        // Smooth animated scroll tracking
+        const { createScrollHandler, getNormalizedScrollPosition, rawScrollValue } = useAnimatedScrollPosition();
+
         // Scroll tracking state
-        const [scrollPosition, setScrollPosition] = useState(0);
         const [containerHeight, setContainerHeight] = useState(0);
         const [contentHeight, setContentHeight] = useState(0);
         const [isScrollTrackVisible, setIsScrollTrackVisible] = useState(false);
@@ -177,7 +179,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             // Start new timer (2 seconds)
             autoHideTimer.current = setTimeout(() => {
                 setIsTrackAutoHidden(true);
-            }, 1500);
+            }, 2000);
         }, [isTrackAutoHidden]);
 
         const clearAutoHideTimer = useCallback(() => {
@@ -189,7 +191,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
 
         // Initialize scroll position when games change
         React.useEffect(() => {
-            setScrollPosition(0);
             scrollOffsetRef.current = 0;
             setIsScrollTrackVisible(false);
             setIsTrackAutoHidden(true); // Keep track hidden when new games load
@@ -208,8 +209,13 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         // Computed visibility: both conditions must be true
         const isTrackCurrentlyVisible = isScrollTrackVisible && !isTrackAutoHidden;
 
-        // Scroll tracking handlers
-        const handleScroll = useCallback((event: any) => {
+        // Create smooth animated scroll handler
+        const animatedScrollHandler = useMemo(() => {
+            return createScrollHandler(contentHeight, containerHeight);
+        }, [createScrollHandler, contentHeight, containerHeight]);
+
+        // Scroll tracking handlers for visibility and layout
+        const handleScrollForVisibility = useCallback((event: any) => {
             if (!event?.nativeEvent) return;
 
             const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
@@ -221,15 +227,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             scrollOffsetRef.current = currentOffset;
             setContentHeight(totalContentHeight);
             setContainerHeight(containerHeight);
-
-            // Calculate scroll position (0 to 1)
-            let position = 0;
-            if (maxOffset > 0) {
-                position = currentOffset / maxOffset;
-            }
-            const clampedPosition = Math.max(0, Math.min(1, position));
-
-            setScrollPosition(clampedPosition);
 
             // Show track when content is scrollable
             const shouldShowTrack = maxOffset > 20;
@@ -243,6 +240,12 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                 setIsTrackAutoHidden(false);
             }
         }, [startAutoHideTimer, clearAutoHideTimer]);
+
+        // Combined scroll handler
+        const handleScroll = useCallback((event: any) => {
+            animatedScrollHandler(event);
+            handleScrollForVisibility(event);
+        }, [animatedScrollHandler, handleScrollForVisibility]);
 
         const handleScrollToPosition = useCallback((position: number) => {
             if (!dragListRef.current) return;
@@ -450,7 +453,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                                     index,
                                 })}
                                 onScroll={handleScroll}
-                                // scrollEventThrottle={16}
+                                scrollEventThrottle={8} // 120fps for ultra-smooth tracking
                                 showsVerticalScrollIndicator={false}
                                 onContentSizeChange={handleContentSizeChange}
                                 onScrollToIndexFailed={(info) => {
@@ -480,7 +483,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                                     index,
                                 })}
                                 onScroll={handleScroll}
-                                // scrollEventThrottle={16}
+                                scrollEventThrottle={8} // 120fps for ultra-smooth tracking
                                 showsVerticalScrollIndicator={false}
                                 onContentSizeChange={handleContentSizeChange}
                                 onScrollToIndexFailed={(info) => {
@@ -501,11 +504,12 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
 
                     {/* Scroll Progress Track */}
                     <ScrollProgressTrack
-                        scrollPosition={scrollPosition}
+                        scrollPosition={0} // Fallback for non-animated usage
                         onScrollToPosition={handleScrollToPosition}
                         contentHeight={contentHeight}
                         containerHeight={containerHeight}
                         visible={isTrackCurrentlyVisible}
+                        animatedScrollPosition={rawScrollValue}
                     />
                 </View>
                 <GameSearchInput

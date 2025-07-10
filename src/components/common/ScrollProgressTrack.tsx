@@ -6,10 +6,56 @@ import {
     Animated,
 } from "react-native";
 import { colorSwatch } from "src/constants/theme/colorConstants";
-import { theme } from "src/constants/theme/styles";
 import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
 import { HapticFeedback } from "src/utils/hapticUtils";
+
+/**
+ * Hook for creating smooth animated scroll position values
+ * Use this in parent components for optimal scroll tracking performance
+ */
+export const useAnimatedScrollPosition = () => {
+    const animatedValue = useRef(new Animated.Value(0)).current;
+
+    /**
+     * Returns an onScroll handler that updates the animated value
+     * @param contentHeight - Total scrollable content height
+     * @param containerHeight - Visible container height
+     */
+    const createScrollHandler = useCallback((contentHeight: number, containerHeight: number) => {
+        const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
+
+        return Animated.event(
+            [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
+            {
+                useNativeDriver: false, // Required for layout calculations
+                listener: (event: any) => {
+                    // Optional: Add any additional scroll handling here
+                    // The animated value is automatically updated by Animated.event
+                }
+            }
+        );
+    }, [animatedValue]);
+
+    /**
+     * Returns normalized scroll position (0-1) as an animated value
+     */
+    const getNormalizedScrollPosition = useCallback((contentHeight: number, containerHeight: number) => {
+        const maxScrollDistance = Math.max(1, contentHeight - containerHeight);
+
+        return animatedValue.interpolate({
+            inputRange: [0, maxScrollDistance],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+        });
+    }, [animatedValue]);
+
+    return {
+        createScrollHandler,
+        getNormalizedScrollPosition,
+        rawScrollValue: animatedValue,
+    };
+};
 
 interface ScrollProgressTrackProps {
     /** Current scroll position (0 to 1) */
@@ -28,6 +74,8 @@ interface ScrollProgressTrackProps {
     trackWidth?: number;
     /** Thumb height */
     thumbHeight?: number;
+    /** Optional animated scroll position for smoother tracking */
+    animatedScrollPosition?: Animated.Value;
 }
 
 const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
@@ -37,8 +85,9 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     containerHeight,
     visible = true,
     tooltipText,
-    trackWidth = 2,
+    trackWidth = 4,
     thumbHeight = 24,
+    animatedScrollPosition,
 }) => {
     const { activeStatus } = useGameStatus();
     const statusColor = getStatusColor(activeStatus);
@@ -53,17 +102,33 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     const tooltipOpacity = useRef(new Animated.Value(0)).current;
     const tooltipScale = useRef(new Animated.Value(0.8)).current;
 
+    // Internal animated scroll position - falls back to prop-based updates if no animated value provided
+    const internalScrollPosition = useRef(new Animated.Value(scrollPosition)).current;
+
+    // Update internal scroll position when prop changes (fallback for non-animated usage)
+    useEffect(() => {
+        if (!animatedScrollPosition) {
+            Animated.timing(internalScrollPosition, {
+                toValue: scrollPosition,
+                duration: 0, // Immediate update, but still benefits from native driver
+                useNativeDriver: false, // translateY needs to run on JS thread for layout calculations
+            }).start();
+        }
+    }, [scrollPosition, animatedScrollPosition]);
+
     // Show/hide track based on visibility
     useEffect(() => {
+        const duration = visible ? 0 : 400; // Fast fade-in, slower fade-out
+
         Animated.parallel([
             Animated.timing(trackOpacity, {
                 toValue: visible ? 0.3 : 0,
-                duration: 300,
+                duration: duration,
                 useNativeDriver: true,
             }),
             Animated.timing(thumbOpacity, {
                 toValue: visible ? 0.8 : 0,
-                duration: 300,
+                duration: duration,
                 useNativeDriver: true,
             }),
         ]).start();
@@ -88,10 +153,24 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
 
     const currentThumbHeight = calculateThumbHeight();
     const maxThumbPosition = Math.max(0, availableHeight - currentThumbHeight);
-    const thumbPosition = Math.max(0, Math.min(
-        maxThumbPosition,
-        scrollPosition * maxThumbPosition
-    ));
+
+    // Use the provided animated value or fall back to internal one
+    const activeScrollPosition = animatedScrollPosition || internalScrollPosition;
+
+    // Create animated thumb position with proper normalization
+    const animatedThumbPosition = animatedScrollPosition ?
+        // For raw scroll values, normalize based on content dimensions
+        animatedScrollPosition.interpolate({
+            inputRange: [0, Math.max(1, contentHeight - containerHeight)],
+            outputRange: [0, maxThumbPosition],
+            extrapolate: 'clamp',
+        }) :
+        // For normalized values (0-1), use directly
+        activeScrollPosition.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, maxThumbPosition],
+            extrapolate: 'clamp',
+        });
 
     // Handle press animations
     const animatePress = useCallback((pressed: boolean) => {
@@ -156,8 +235,6 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
         }
     }, []);
 
-
-
     // Handle press with better touch detection
     const handlePress = useCallback((event: any) => {
         const { locationY } = event.nativeEvent;
@@ -174,7 +251,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
             animateTooltip(true);
             setTimeout(() => animateTooltip(false), 1000);
         }
-    }, [availableHeight, onScrollToPosition, tooltipText, animateTooltip, scrollPosition]);
+    }, [availableHeight, onScrollToPosition, tooltipText, animateTooltip]);
 
     // Handle press start
     const handlePressIn = useCallback(() => {
@@ -191,7 +268,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
         }
     }, [animatePress, tooltipText, animateTooltip]);
 
-    if (!visible || containerHeight < 100 || contentHeight < containerHeight) return null;
+    if (containerHeight < 100 || contentHeight < containerHeight) return null;
 
     return (
         <View style={styles.container} >
@@ -227,10 +304,10 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
                         styles.thumb,
                         {
                             opacity: thumbOpacity,
-                            width: trackWidth + 4,
+                            width: trackWidth,
                             height: currentThumbHeight,
                             transform: [
-                                { translateY: thumbPosition },
+                                { translateY: animatedThumbPosition },
                             ],
                             backgroundColor: statusColor,
                         },

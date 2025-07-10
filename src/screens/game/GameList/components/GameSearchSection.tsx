@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
+import React, { useCallback, useState, useEffect, useRef, useMemo } from "react";
 import {
     FlatList,
     View,
@@ -15,7 +15,7 @@ import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
 import { LoadingText } from "src/components/common/LoadingText";
 import { useGames } from "src/contexts/GamesContext";
-import ScrollProgressTrack from "../../../../components/common/ScrollProgressTrack";
+import ScrollProgressTrack, { useAnimatedScrollPosition } from "../../../../components/common/ScrollProgressTrack";
 
 interface SearchParams {
     searchQuery?: string;
@@ -75,8 +75,10 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const initialLoadRef = useRef(true);
     const flatListRef = useRef<FlatList>(null);
 
+    // Smooth animated scroll tracking
+    const { createScrollHandler, getNormalizedScrollPosition, rawScrollValue } = useAnimatedScrollPosition();
+
     // Scroll tracking state
-    const [scrollPosition, setScrollPosition] = useState(0);
     const [containerHeight, setContainerHeight] = useState(0);
     const [contentHeight, setContentHeight] = useState(0);
     const [isScrollTrackVisible, setIsScrollTrackVisible] = useState(false);
@@ -191,7 +193,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         // Start new timer (2 seconds)
         autoHideTimer.current = setTimeout(() => {
             setIsTrackAutoHidden(true);
-        }, 1500);
+        }, 2000);
     }, [isTrackAutoHidden]);
 
     const clearAutoHideTimer = useCallback(() => {
@@ -213,8 +215,13 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     // Computed visibility: both conditions must be true
     const isTrackCurrentlyVisible = isScrollTrackVisible && !isTrackAutoHidden;
 
-    // Scroll tracking handlers
-    const handleScroll = useCallback((event: any) => {
+    // Create smooth animated scroll handler
+    const animatedScrollHandler = useMemo(() => {
+        return createScrollHandler(contentHeight, containerHeight);
+    }, [createScrollHandler, contentHeight, containerHeight]);
+
+    // Scroll tracking handlers for visibility and layout
+    const handleScrollForVisibility = useCallback((event: any) => {
         if (!event?.nativeEvent) return;
 
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
@@ -226,15 +233,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         scrollOffsetRef.current = currentOffset;
         setContentHeight(totalContentHeight);
         setContainerHeight(containerHeight);
-
-        // Calculate scroll position (0 to 1)
-        let position = 0;
-        if (maxOffset > 0) {
-            position = currentOffset / maxOffset;
-        }
-        const clampedPosition = Math.max(0, Math.min(1, position));
-
-        setScrollPosition(clampedPosition);
 
         // Show track when content is scrollable
         const shouldShowTrack = maxOffset > 20;
@@ -248,6 +246,12 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
             setIsTrackAutoHidden(false);
         }
     }, [startAutoHideTimer, clearAutoHideTimer]);
+
+    // Combined scroll handler
+    const handleScroll = useCallback((event: any) => {
+        animatedScrollHandler(event);
+        handleScrollForVisibility(event);
+    }, [animatedScrollHandler, handleScrollForVisibility]);
 
     const handleScrollToPosition = useCallback((position: number) => {
         if (!flatListRef.current) return;
@@ -289,7 +293,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
     // Initialize scroll position when search results change
     useEffect(() => {
-        setScrollPosition(0);
         scrollOffsetRef.current = 0;
         setIsScrollTrackVisible(false);
         setIsTrackAutoHidden(true); // Keep track hidden when new results load
@@ -381,7 +384,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                         keyExtractor={(item) => item?.id?.toString() || ""}
                         renderItem={({ item, index }) => renderItem(item, index)}
                         onScroll={handleScroll}
-                        // scrollEventThrottle={16}
+                        scrollEventThrottle={8} // 120fps for ultra-smooth tracking
                         showsVerticalScrollIndicator={false}
                         onContentSizeChange={handleContentSizeChange}
                         removeClippedSubviews={true}
@@ -407,11 +410,12 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
                 {/* Scroll Progress Track */}
                 <ScrollProgressTrack
-                    scrollPosition={scrollPosition}
+                    scrollPosition={0} // Fallback for non-animated usage
                     onScrollToPosition={handleScrollToPosition}
                     contentHeight={contentHeight}
                     containerHeight={containerHeight}
                     visible={isTrackCurrentlyVisible}
+                    animatedScrollPosition={rawScrollValue}
                 />
             </View>
             <GameSearchInput
