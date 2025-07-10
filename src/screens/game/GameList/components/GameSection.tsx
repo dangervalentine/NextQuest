@@ -54,7 +54,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         const dragListRef = useRef<any>(null);
 
         // Smooth animated scroll tracking
-        const { createScrollHandler, getNormalizedScrollPosition, rawScrollValue } = useAnimatedScrollPosition();
+        const { createScrollHandler, getNormalizedScrollPosition, rawScrollValue, setScrollValue } = useAnimatedScrollPosition();
 
         // Scroll tracking state
         const [containerHeight, setContainerHeight] = useState(0);
@@ -257,6 +257,9 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             const maxOffset = Math.max(0, contentHeight - containerHeight);
             const targetOffset = position * maxOffset;
 
+            // Sync the animated value immediately to prevent double-tap issue
+            setScrollValue(targetOffset);
+
             // Try different scroll methods based on component type
             if (canReorder) {
                 // DragList - try multiple methods
@@ -289,7 +292,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     });
                 }
             }
-        }, [contentHeight, containerHeight, canReorder, startAutoHideTimer]);
+        }, [contentHeight, containerHeight, canReorder, startAutoHideTimer, setScrollValue]);
 
         const handleContainerLayout = useCallback((event: any) => {
             const { height } = event.nativeEvent.layout;

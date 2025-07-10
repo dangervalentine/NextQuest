@@ -50,10 +50,19 @@ export const useAnimatedScrollPosition = () => {
         });
     }, [animatedValue]);
 
+    /**
+     * Manually set the animated scroll value (useful for programmatic scrolling)
+     * @param value - The new scroll offset value
+     */
+    const setScrollValue = useCallback((value: number) => {
+        animatedValue.setValue(value);
+    }, [animatedValue]);
+
     return {
         createScrollHandler,
         getNormalizedScrollPosition,
         rawScrollValue: animatedValue,
+        setScrollValue,
     };
 };
 
@@ -293,7 +302,7 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
                         height: availableHeight,
                     },
                 ]}
-                hitSlop={{ top: 10, bottom: 10, left: 48, right: 0 }}
+                hitSlop={{ top: 10, bottom: 10, left: 24, right: 0 }}
                 onPress={handlePress}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}

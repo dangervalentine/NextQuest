@@ -76,7 +76,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const flatListRef = useRef<FlatList>(null);
 
     // Smooth animated scroll tracking
-    const { createScrollHandler, getNormalizedScrollPosition, rawScrollValue } = useAnimatedScrollPosition();
+    const { createScrollHandler, getNormalizedScrollPosition, rawScrollValue, setScrollValue } = useAnimatedScrollPosition();
 
     // Scroll tracking state
     const [containerHeight, setContainerHeight] = useState(0);
@@ -263,12 +263,15 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
         const maxOffset = Math.max(0, contentHeight - containerHeight);
         const targetOffset = position * maxOffset;
 
+        // Sync the animated value immediately to prevent double-tap issue
+        setScrollValue(targetOffset);
+
         // FlatList scroll method
         flatListRef.current.scrollToOffset({
             offset: targetOffset,
             animated: true,
         });
-    }, [contentHeight, containerHeight, startAutoHideTimer]);
+    }, [contentHeight, containerHeight, startAutoHideTimer, setScrollValue]);
 
     const handleContainerLayout = useCallback((event: any) => {
         const { height } = event.nativeEvent.layout;
