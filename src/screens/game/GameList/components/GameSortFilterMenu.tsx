@@ -5,6 +5,9 @@ import {
     View,
     TouchableOpacity,
     Dimensions,
+    Modal,
+    Platform,
+    Easing,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colorSwatch } from "src/constants/theme/colorConstants";
@@ -13,10 +16,10 @@ import { useGameStatus } from "src/contexts/GameStatusContext";
 import { getStatusColor } from "src/utils/colorsUtils";
 import QuestIcon from "../../shared/GameIcon";
 import { SortField } from "src/types/sortTypes";
-import { theme } from "src/constants/theme/styles";
+import { showToast } from "src/components/common/QuestToast";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const MENU_WIDTH = Math.min(320, SCREEN_WIDTH * 0.85);
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SHEET_MAX_HEIGHT = Math.min(420, SCREEN_HEIGHT * 0.6);
 
 interface GameSortFilterMenuProps {
     visible: boolean;
@@ -27,12 +30,16 @@ interface GameSortFilterMenuProps {
         direction: "asc" | "desc";
     }) => void;
     children?: React.ReactNode;
-    // ...
 }
 
-const SORT_OPTIONS = [
-    { label: "Priority", value: "priority" },
+export interface SortOption {
+    label: string;
+    value: SortField;
+}
+
+const SORT_OPTIONS: SortOption[] = [
     { label: "Name", value: "name" },
+    { label: "Priority", value: "priority" },
     { label: "Date Added", value: "dateAdded" },
     { label: "Personal Rating", value: "rating" },
     { label: "Release Year", value: "releaseYear" },
@@ -43,231 +50,209 @@ const GameSortFilterMenu: React.FC<GameSortFilterMenuProps> = ({
     onClose,
     sort,
     onSortChange,
-    children,
 }) => {
-    const [slideAnim] = React.useState(new Animated.Value(SCREEN_WIDTH));
+    const [slideAnim] = React.useState(new Animated.Value(SHEET_MAX_HEIGHT));
     const { activeStatus } = useGameStatus();
     const statusColor = getStatusColor(activeStatus);
 
     React.useEffect(() => {
-        Animated.timing(slideAnim, {
-            toValue: visible ? SCREEN_WIDTH - MENU_WIDTH : SCREEN_WIDTH,
-            duration: 300,
-            useNativeDriver: false,
-        }).start();
+        if (visible) {
+            Animated.timing(slideAnim, {
+                toValue: 0,
+                duration: 300,
+                easing: Easing.out(Easing.cubic),
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(slideAnim, {
+                toValue: SHEET_MAX_HEIGHT,
+                duration: 250,
+                easing: Easing.in(Easing.cubic),
+                useNativeDriver: true,
+            }).start();
+        }
     }, [visible]);
 
+    const getSortOptions: () => SortOption[] = () => {
+        return SORT_OPTIONS.filter(option => {
+            if (activeStatus === "undiscovered") {
+                return option.value !== "priority";
+            } else if (activeStatus !== "completed" && option.value === "rating") {
+                return false;
+            }
+            return true;
+        });
+    }
+
     return (
-        <>
+        <Modal
+            visible={visible}
+            transparent
+            animationType="fade"
+            onRequestClose={onClose}
+        >
             {/* Overlay */}
-            {visible && (
-                <TouchableOpacity
-                    style={styles.overlay}
-                    activeOpacity={1}
-                    onPress={onClose}
-                />
-            )}
-            {/* Side Menu */}
-            <Animated.View style={[styles.menu, { left: slideAnim }]}>
+            <TouchableOpacity
+                style={styles.overlay}
+                activeOpacity={.5}
+                onPress={onClose}
+            />
+            {/* Bottom Sheet */}
+            <Animated.View
+                style={[
+                    styles.sheet,
+                    {
+                        transform: [
+                            { translateY: slideAnim },
+                        ],
+                    },
+                ]}
+            >
                 <SafeAreaView style={{ flex: 1 }}>
                     <View style={styles.header}>
                         <Text
                             variant="title"
                             style={[styles.headerText, { color: statusColor }]}
                         >
-                            Sort & Filter
+                            Sort
                         </Text>
-                        <TouchableOpacity onPress={onClose}>
-                            <Text style={styles.closeText}>Close</Text>
+                        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                            <QuestIcon name="close" size={24} color={statusColor || colorSwatch.text.primary} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.content}>
                         {/* Sort By Section */}
                         <View style={styles.section}>
-                            <Text style={styles.sectionHeader}>Sort By</Text>
-                            {SORT_OPTIONS.filter(
-                                (option) =>
-                                    option.value !== "priority" ||
-                                    activeStatus !== "undiscovered"
-                            ).map((option) => (
-                                <TouchableOpacity
-                                    key={option.value}
-                                    style={styles.optionRow}
-                                    onPress={() =>
-                                        onSortChange({
-                                            field: option.value as SortField,
-                                            direction: sort.direction,
-                                        })
-                                    }
-                                >
-                                    <QuestIcon
-                                        name={
-                                            sort.field === option.value
-                                                ? "radiobox-marked"
-                                                : "radiobox-blank"
-                                        }
-                                        size={22}
-                                        color={
-                                            sort.field === option.value
-                                                ? statusColor
-                                                : colorSwatch.neutral.darkGray
-                                        }
-                                    />
-                                    <Text style={styles.optionLabel}>
-                                        {option.label}
-                                    </Text>
-                                </TouchableOpacity>
+                            {getSortOptions().map((option) => (
+                                <View key={option.value}>
+                                    <TouchableOpacity
+                                        style={styles.optionRow}
+                                        onPress={() => {
+                                            if (option.value === "priority") {
+                                                if (sort.field !== "priority") {
+                                                    onSortChange({
+                                                        field: "priority",
+                                                        direction: "asc",
+                                                    });
+                                                } else {
+                                                    showToast({
+                                                        type: "error",
+                                                        text1: "Priority is already selected",
+                                                        text2: "Swipe to the right to change priority quickly",
+                                                        position: "bottom",
+                                                        color: statusColor || colorSwatch.accent.cyan,
+                                                        visibilityTime: 4000,
+                                                    });
+                                                }
+                                            } else {
+                                                onSortChange({
+                                                    field: option.value as SortField,
+                                                    direction:
+                                                        sort.field === option.value && sort.direction === "asc"
+                                                            ? "desc"
+                                                            : "asc",
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        <QuestIcon
+                                            name={
+                                                option.value === "priority"
+                                                    ? "arrow-up"
+                                                    : sort.field === option.value
+                                                        ? sort.direction === "asc"
+                                                            ? "arrow-up"
+                                                            : "arrow-down"
+                                                        : "arrow-up-down"
+                                            }
+                                            size={22}
+                                            color={
+                                                sort.field === option.value
+                                                    ? statusColor
+                                                    : colorSwatch.neutral.darkGray
+                                            }
+                                        />
+                                        <Text style={[
+                                            styles.optionLabel,
+                                            sort.field === option.value && { color: statusColor }
+                                        ]}>
+                                            {option.label}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.divider} />
+                                </View>
                             ))}
-                            <View style={styles.sortDirectionRow}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        onSortChange({
-                                            field: sort.field,
-                                            direction: "asc",
-                                        })
-                                    }
-                                    style={[
-                                        styles.directionButton,
-                                        sort.direction === "asc" && {
-                                            backgroundColor:
-                                                colorSwatch.neutral.darkGray,
-                                        },
-                                    ]}
-                                >
-                                    <QuestIcon
-                                        name="arrow-up"
-                                        size={20}
-                                        color={
-                                            sort.direction === "asc"
-                                                ? statusColor
-                                                : colorSwatch.text.secondary
-                                        }
-                                    />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        onSortChange({
-                                            field: sort.field,
-                                            direction: "desc",
-                                        })
-                                    }
-                                    style={[
-                                        styles.directionButton,
-                                        sort.direction === "desc" && {
-                                            backgroundColor:
-                                                colorSwatch.neutral.darkGray,
-                                        },
-                                    ]}
-                                >
-                                    <QuestIcon
-                                        name="arrow-down"
-                                        size={20}
-                                        color={
-                                            sort.direction === "desc"
-                                                ? statusColor
-                                                : colorSwatch.text.secondary
-                                        }
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        {/* Divider */}
-                        <View style={styles.divider} />
-                        {/* Placeholder for filter options */}
-                        <View style={styles.section}>
-                            <Text style={styles.sectionHeader}>Filter</Text>
-                            <Text style={styles.placeholder}>
-                                Filter options go here.
-                            </Text>
                         </View>
                     </View>
                 </SafeAreaView>
             </Animated.View>
-        </>
+        </Modal>
     );
 };
 
 const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#000A",
-        zIndex: 10,
+        backgroundColor: colorSwatch.neutral.black,
+        opacity: 0.5,
+        zIndex: 1,
     },
-    menu: {
+    sheet: {
         position: "absolute",
-        top: 0,
+        left: 0,
+        right: 0,
         bottom: 0,
-        width: MENU_WIDTH,
+        height: SHEET_MAX_HEIGHT,
         backgroundColor: colorSwatch.background.darkest,
-        zIndex: 20,
-        borderTopLeftRadius: 16,
-        borderBottomLeftRadius: 16,
-        shadowColor: "#000",
+        zIndex: 2,
+        shadowColor: colorSwatch.neutral.black,
         shadowOpacity: 0.2,
-        shadowOffset: { width: -2, height: 0 },
+        shadowOffset: { width: 0, height: -2 },
         shadowRadius: 8,
         elevation: 8,
+        paddingBottom: Platform.OS === "ios" ? 24 : 8,
     },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 20,
+        padding: 16,
         borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderTopColor: colorSwatch.neutral.darkGray,
         borderBottomColor: colorSwatch.neutral.darkGray,
     },
     headerText: {
         color: colorSwatch.accent.cyan,
         fontSize: 20,
     },
-    closeText: {
-        color: colorSwatch.primary.dark,
-        fontWeight: "bold",
-        fontSize: 16,
+    closeButton: {
+        padding: 4,
     },
     content: {
         flex: 1,
-        padding: 20,
-    },
-    placeholder: {
-        color: colorSwatch.text.secondary,
-        fontSize: 16,
-        textAlign: "center",
-        marginTop: 40,
+        padding: 16,
     },
     section: {
         marginBottom: 24,
     },
-    sectionHeader: {
-        fontWeight: "bold",
-        fontSize: 16,
-        marginBottom: 12,
-        color: colorSwatch.text.primary,
-    },
     optionRow: {
         flexDirection: "row",
         alignItems: "center",
-        paddingVertical: 8,
+        paddingVertical: 16,
         paddingHorizontal: 4,
+        marginVertical: 2,
     },
     optionLabel: {
         marginLeft: 12,
-        fontSize: 15,
+        fontSize: 16,
+        fontWeight: "bold",
         color: colorSwatch.text.primary,
-    },
-    sortDirectionRow: {
-        flexDirection: "row",
-        marginTop: 12,
-        gap: 12,
-    },
-    directionButton: {
-        padding: 8,
-        borderRadius: theme.borderRadius,
+        flex: 1,
     },
     divider: {
-        height: 1,
-        backgroundColor: colorSwatch.neutral.darkGray,
-        marginVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: colorSwatch.neutral.darkGray,
     },
 });
 

@@ -17,16 +17,17 @@ import {
     TabParamList,
 } from "src/navigation/navigationTypes";
 import { getStatusColor } from "src/utils/colorsUtils";
+import { getStatusTabName } from "src/utils/gameStatusUtils";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { useGameStatus } from "src/contexts/GameStatusContext";
-import { useGames, GamesProvider } from "src/contexts/GamesContext";
+import { GamesProvider } from "src/contexts/GamesContext";
 import { GameTabNavigatorRef } from "./GameList/components/GameTabNavigator";
 import AnimatedBackButton from "./shared/AnimatedBackButton";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-type MainNavigationProp = NavigationProp<RootStackParamList>;
+export type MainNavigationProp = NavigationProp<RootStackParamList>;
 
 interface MainNavigationContentProps {
     setNavigationCallback: (callback: (status: GameStatus) => void) => void;
@@ -38,14 +39,7 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
     const navigation = useNavigation<MainNavigationProp>();
     const gameTabsRef = useRef<GameTabNavigatorRef>(null);
     const { activeStatus, setActiveStatus } = useGameStatus();
-    const {
-        gameData,
-        isLoading,
-        handleStatusChange,
-        handleRemoveItem,
-        handleReorder,
-        handleDiscover,
-    } = useGames();
+
 
     const [activeTabColor, setActiveTabColor] = useState<string>(
         colorSwatch.neutral.white
@@ -65,29 +59,18 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
         setActiveTabColor(getStatusColor("ongoing"));
     }, [setActiveTabColor]);
 
-    const getStatusTab = useCallback(
-        (status: GameStatus): keyof TabParamList => {
-            switch (status) {
-                case "ongoing":
-                    return "Ongoing";
-                case "backlog":
-                    return "Backlog";
-                case "completed":
-                    return "Completed";
-                case "undiscovered":
-                    return "Search";
-                default:
-                    return "Ongoing";
-            }
-        },
-        []
-    );
+    // Update tab color when activeStatus changes (e.g., from QuestGameDetailPage)
+    useEffect(() => {
+        if (activeStatus) {
+            setActiveTabColor(getStatusColor(activeStatus));
+        }
+    }, [activeStatus, setActiveTabColor]);
 
     const handleNavigateToStatus = useCallback(
         (status: GameStatus) => {
             // First navigate to the tab
             navigation.navigate("GameTabs", {
-                screen: getStatusTab(status),
+                screen: getStatusTabName(status) as keyof TabParamList,
             });
 
             // Then scroll to the bottom after a short delay to ensure navigation is complete
@@ -95,7 +78,7 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
                 gameTabsRef.current?.scrollToBottom(status);
             }, 500);
         },
-        [navigation, getStatusTab]
+        [navigation]
     );
 
     // Register the navigation callback so the outer component can use it
@@ -108,22 +91,10 @@ const MainNavigationContent: React.FC<MainNavigationContentProps> = ({
         () => (
             <GameTabs
                 ref={gameTabsRef}
-                gameData={gameData}
-                isLoading={isLoading}
-                handleStatusChange={handleStatusChange}
-                handleRemoveItem={handleRemoveItem}
-                handleReorder={handleReorder}
-                handleDiscover={handleDiscover}
                 onTabChange={handleTabChange}
             />
         ),
         [
-            gameData,
-            isLoading,
-            handleStatusChange,
-            handleRemoveItem,
-            handleReorder,
-            handleDiscover,
             handleTabChange,
         ]
     );

@@ -28,15 +28,12 @@
         },
         "android": {
             "edgeToEdgeEnabled": true,
+            "windowSoftInputMode": "adjustResize",
             "adaptiveIcon": {
                 "foregroundImage": "./src/assets/next-quest-icons/next_quest_white.png",
                 "backgroundColor": "#01111d"
             },
             "package": "com.dangervalentine.nextquest",
-            "permissions": [
-                "WRITE_EXTERNAL_STORAGE",
-                "READ_EXTERNAL_STORAGE"
-            ]
         },
         "web": {
             "favicon": "./src/assets/next-quest-icons/next_quest_cyan.png"

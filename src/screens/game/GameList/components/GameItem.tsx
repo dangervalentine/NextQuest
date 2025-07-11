@@ -22,6 +22,9 @@ import { getStatusLabel } from "src/utils/gameStatusUtils";
 import { getRatingColor, getStatusColor } from "src/utils/colorsUtils";
 import { HapticFeedback } from "src/utils/hapticUtils";
 import { theme } from "src/constants/theme/styles";
+import { showToast } from "src/components/common/QuestToast";
+import Toast from "react-native-toast-message";
+import { useGames } from "src/contexts/GamesContext";
 
 // Shared state to track if hint has been shown in this session
 let hasShownHintInSession = false;
@@ -29,13 +32,12 @@ let hasShownHintInSession = false;
 interface GameItemProps {
     questGame: MinimalQuestGame;
     reorder?: () => void;
-    removeItem?: (id: number, status: GameStatus) => void;
-    onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
     isFirstItem?: boolean;
     moveToTop?: (id: number, status: GameStatus) => void;
     moveToBottom?: (id: number, status: GameStatus) => void;
     isActive?: boolean;
     canReorder?: boolean;
+    onStatusChange?: (newStatus: GameStatus, currentStatus: GameStatus) => void;
 }
 
 const SWIPE_THRESHOLD = 20; // Reduced from 75 to make menus easier to open
@@ -46,15 +48,15 @@ const GameItem: React.FC<GameItemProps> = memo(
     ({
         questGame,
         reorder,
-        removeItem,
-        onStatusChange,
         isFirstItem,
         moveToTop,
         moveToBottom,
         isActive = false,
         canReorder = false,
+        onStatusChange,
     }) => {
         const navigation = useNavigation<ScreenNavigationProp>();
+        const { handleRemoveItem, handleStatusChange } = useGames();
 
         // Animation values
         const pan = useRef(new Animated.Value(0)).current;
@@ -78,6 +80,10 @@ const GameItem: React.FC<GameItemProps> = memo(
         const [isInitialHeight, setIsInitialHeight] = useState(true);
         const [isAnimating, setIsAnimating] = useState(false);
 
+        const containerRef = useRef<View>(null);
+        const [itemYPosition, setItemYPosition] = useState<number | null>(null);
+        const [itemHeight, setItemHeight] = useState<number | null>(null);
+
         // Get status color once and reuse it throughout the component
         const statusColor = getStatusColor(questGame.gameStatus);
 
@@ -95,10 +101,38 @@ const GameItem: React.FC<GameItemProps> = memo(
         useFocusEffect(
             React.useCallback(() => {
                 if (isFirstItem && !hasShownHint && !hasShownHintInSession) {
-                    showHint();
+                    // Wait a tick to ensure layout pass
+                    requestAnimationFrame(() => {
+                        if (containerRef.current) {
+                            containerRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                setItemYPosition(pageY);
+                                setItemHeight(height);
+
+                                setTimeout(() => {
+                                    showToast({
+                                        type: "success",
+                                        text2: "Swipe to change the status or priority of a game",
+                                        visibilityTime: 3000,
+                                        topOffset: height + 12,
+                                        position: "top",
+                                        color: statusColor || colorSwatch.accent.cyan,
+                                    });
+
+                                    // Show hint animation after
+                                    showHint();
+                                }, 2000);
+                            });
+                        }
+                    });
+
                     setHasShownHint(true);
                     hasShownHintInSession = true;
                 }
+
+                // Cleanup function - dismisses toast when component loses focus
+                return () => {
+                    Toast.hide();
+                };
             }, [isFirstItem, hasShownHint, questGame.name])
         );
 
@@ -243,7 +277,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                         // Constrain within left and right menu bounds
                         const maxRight =
                             questGame.gameStatus === "undiscovered" ||
-                            !canReorder
+                                !canReorder
                                 ? 0
                                 : RIGHT_MENU_POSITION;
 
@@ -256,7 +290,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                             // Closing left menu - trigger when moving away from full open position
                             if (
                                 prevSwipeX.current <=
-                                    LEFT_MENU_POSITION + SWIPE_THRESHOLD &&
+                                LEFT_MENU_POSITION + SWIPE_THRESHOLD &&
                                 newX > LEFT_MENU_POSITION + SWIPE_THRESHOLD
                             ) {
                                 HapticFeedback.selection();
@@ -265,7 +299,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                             // Closing right menu - trigger when moving away from full open position
                             if (
                                 prevSwipeX.current >=
-                                    RIGHT_MENU_POSITION - SWIPE_THRESHOLD &&
+                                RIGHT_MENU_POSITION - SWIPE_THRESHOLD &&
                                 newX < RIGHT_MENU_POSITION - SWIPE_THRESHOLD
                             ) {
                                 HapticFeedback.selection();
@@ -398,11 +432,6 @@ const GameItem: React.FC<GameItemProps> = memo(
         const handleRemoveClick = () => {
             HapticFeedback.selection();
             setIsRemoveClicked(true);
-            // Keep menu open by maintaining the same left position
-            Animated.spring(pan, {
-                toValue: LEFT_MENU_POSITION, // Match full left menu width
-                useNativeDriver: false,
-            }).start();
         };
 
         const handleCancel = () => {
@@ -435,9 +464,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                     easing: Easing.out(Easing.cubic),
                 }),
             ]).start(() => {
-                if (removeItem) {
-                    removeItem(questGame.id, "undiscovered");
-                }
+                handleRemoveItem(questGame.id, "undiscovered");
             });
         };
 
@@ -469,6 +496,8 @@ const GameItem: React.FC<GameItemProps> = memo(
             Animated.parallel(animations).start(() => {
                 if (onStatusChange) {
                     onStatusChange(status, questGame.gameStatus);
+                } else {
+                    handleStatusChange(questGame.id, status, questGame.gameStatus);
                 }
             });
         };
@@ -537,6 +566,7 @@ const GameItem: React.FC<GameItemProps> = memo(
 
         return (
             <Animated.View
+                ref={containerRef}
                 style={[
                     styles.container,
                     isActive && {
@@ -591,15 +621,15 @@ const GameItem: React.FC<GameItemProps> = memo(
                                                     ),
                                                 },
                                                 index ===
-                                                    getAvailableStatuses(
-                                                        questGame.gameStatus
-                                                    ).length -
-                                                        1 &&
-                                                    questGame.gameStatus ===
-                                                        "undiscovered" && {
-                                                        borderTopRightRadius: 8,
-                                                        borderBottomRightRadius: 8,
-                                                    },
+                                                getAvailableStatuses(
+                                                    questGame.gameStatus
+                                                ).length -
+                                                1 &&
+                                                questGame.gameStatus ===
+                                                "undiscovered" && {
+                                                    borderTopRightRadius: 8,
+                                                    borderBottomRightRadius: 8,
+                                                },
                                             ]}
                                             onPress={() =>
                                                 handleStatusSelect(status)
@@ -616,29 +646,29 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     ))}
                                     {questGame.gameStatus !==
                                         "undiscovered" && (
-                                        <TouchableOpacity
-                                            style={[
-                                                styles.statusButton,
-                                                {
-                                                    backgroundColor:
-                                                        colorSwatch.accent.pink,
-                                                    borderTopRightRadius: 8,
-                                                    borderBottomRightRadius: 8,
-                                                },
-                                            ]}
-                                            activeOpacity={0.7}
-                                            onPress={handleRemoveClick}
-                                        >
-                                            <Text
-                                                variant="button"
+                                            <TouchableOpacity
                                                 style={[
-                                                    styles.statusButtonText,
+                                                    styles.statusButton,
+                                                    {
+                                                        backgroundColor:
+                                                            colorSwatch.accent.pink,
+                                                        borderTopRightRadius: 8,
+                                                        borderBottomRightRadius: 8,
+                                                    },
                                                 ]}
+                                                activeOpacity={0.7}
+                                                onPress={handleRemoveClick}
                                             >
-                                                Remove
-                                            </Text>
-                                        </TouchableOpacity>
-                                    )}
+                                                <Text
+                                                    variant="button"
+                                                    style={[
+                                                        styles.statusButtonText,
+                                                    ]}
+                                                >
+                                                    Remove
+                                                </Text>
+                                            </TouchableOpacity>
+                                        )}
                                 </>
                             ) : (
                                 <View
@@ -831,7 +861,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                     </Text>
                                     {questGame.personalRating &&
                                         questGame.gameStatus ===
-                                            "completed" && (
+                                        "completed" && (
                                             <Text
                                                 variant="caption"
                                                 style={[
@@ -839,7 +869,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                                     {
                                                         color: getRatingColor(
                                                             questGame.personalRating ||
-                                                                0
+                                                            0
                                                         ),
                                                     },
                                                 ]}
@@ -854,7 +884,7 @@ const GameItem: React.FC<GameItemProps> = memo(
                                         style={styles.textSecondary}
                                         numberOfLines={1}
                                     >
-                                        {/* Display the selected platform name if available. 
+                                        {/* Display the selected platform name if available.
                                                 If not, check the number of platforms:
                                                 - Show "No Platforms" if there are none.
                                                 - Show the platform name if there is exactly one.
@@ -863,8 +893,8 @@ const GameItem: React.FC<GameItemProps> = memo(
                                             (questGame.platforms.length === 0
                                                 ? "No Platforms"
                                                 : questGame.platforms.length > 1
-                                                ? `${questGame.platforms.length} Platforms`
-                                                : questGame.platforms[0].name)}
+                                                    ? `${questGame.platforms.length} Platforms`
+                                                    : questGame.platforms[0].name)}
                                     </Text>
                                     {platformReleaseDate && (
                                         <Text
@@ -932,10 +962,10 @@ const GameItem: React.FC<GameItemProps> = memo(
             prevProps.questGame.gameStatus !== nextProps.questGame.gameStatus ||
             prevProps.questGame.priority !== nextProps.questGame.priority ||
             prevProps.questGame.personalRating !==
-                nextProps.questGame.personalRating ||
+            nextProps.questGame.personalRating ||
             prevProps.questGame.cover?.url !== nextProps.questGame.cover?.url ||
             prevProps.questGame.selectedPlatform?.id !==
-                nextProps.questGame.selectedPlatform?.id ||
+            nextProps.questGame.selectedPlatform?.id ||
             prevProps.isFirstItem !== nextProps.isFirstItem ||
             prevProps.moveToTop !== nextProps.moveToTop ||
             prevProps.moveToBottom !== nextProps.moveToBottom ||

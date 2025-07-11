@@ -584,7 +584,6 @@ export const createIGDBGame = async (
                             `Error creating website for game ${gameData.id}:`,
                             error
                         );
-                        // Continue with other websites even if one fails
                     }
                 }
             }

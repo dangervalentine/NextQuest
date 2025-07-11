@@ -6,7 +6,7 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, FlatList, Dimensions } from "react-native";
 import GameItem from "./GameItem";
 import DragList, { DragListRenderItemInfo } from "react-native-draglist";
 import Text from "../../../../components/common/Text";
@@ -17,18 +17,13 @@ import GameSearchInput from "./GameSearchInput";
 import { LoadingText } from "src/components/common/LoadingText";
 import GameSortFilterMenu from "./GameSortFilterMenu";
 import { SortField } from "src/types/sortTypes";
+import { useGames } from "src/contexts/GamesContext";
+import ScrollableContainer from "../../../../components/common/ScrollableContainer";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
-    isLoading: boolean;
-    onStatusChange: (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => void;
-    onRemoveItem: (id: number, status: GameStatus) => void;
-    onReorder: (fromIndex: number, toIndex: number, status: GameStatus) => void;
     sort: { field: SortField; direction: "asc" | "desc" };
     onSortChange: (sort: {
         field: SortField;
@@ -48,10 +43,6 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         {
             gameStatus,
             games,
-            isLoading,
-            onStatusChange,
-            onRemoveItem,
-            onReorder,
             sort,
             onSortChange,
             isMenuVisible,
@@ -59,8 +50,11 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
         },
         ref
     ) => {
+        const { handleReorder, isLoading } = useGames();
         const [searchQuery, setSearchQuery] = useState("");
         const dragListRef = useRef<any>(null);
+
+
 
         // Expose methods to parent components
         useImperativeHandle(ref, () => ({
@@ -157,6 +151,11 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             return sorted;
         }, [filteredGames, sort]);
 
+        // Check if drag functionality is needed
+        const canReorder = sort.field === "priority" && sort.direction === "asc";
+
+
+
         const handleMoveToTop = useCallback(
             (id: number, status: GameStatus) => {
                 if (filteredGames.length <= 1) return;
@@ -164,7 +163,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     (game) => game.id === id
                 );
                 if (currentIndex > 0) {
-                    onReorder(currentIndex, 0, status);
+                    handleReorder(currentIndex, 0, status);
                     // Scroll to top after reordering
                     setTimeout(() => {
                         if (
@@ -179,7 +178,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     }, 300);
                 }
             },
-            [filteredGames, onReorder, dragListRef]
+            [filteredGames, handleReorder, dragListRef]
         );
 
         const handleMoveToBottom = useCallback(
@@ -189,7 +188,7 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     (game) => game.id === id
                 );
                 if (currentIndex < filteredGames.length - 1) {
-                    onReorder(currentIndex, filteredGames.length - 1, status);
+                    handleReorder(currentIndex, filteredGames.length - 1, status);
                     // Scroll to bottom after reordering
                     setTimeout(() => {
                         if (
@@ -204,10 +203,10 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     }, 300);
                 }
             },
-            [filteredGames, onReorder, dragListRef]
+            [filteredGames, handleReorder, dragListRef]
         );
 
-        const renderItem = useCallback(
+        const renderDragItem = useCallback(
             ({
                 item,
                 onDragStart,
@@ -220,34 +219,50 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
                     <GameItem
                         questGame={item}
                         reorder={onDragStart}
-                        removeItem={(id) => onRemoveItem(id, gameStatus)}
                         isFirstItem={index === 0}
-                        onStatusChange={(newStatus, currentStatus) =>
-                            onStatusChange(item.id, newStatus, currentStatus)
-                        }
                         moveToTop={(id, status) => handleMoveToTop(id, status)}
                         moveToBottom={(id, status) =>
                             handleMoveToBottom(id, status)
                         }
                         isActive={isActive}
-                        canReorder={
-                            sort.field === "priority" &&
-                            sort.direction === "asc"
-                        }
+                        canReorder={canReorder}
                     />
                 );
             },
             [
                 gameStatus,
-                onRemoveItem,
-                onStatusChange,
                 handleMoveToTop,
                 handleMoveToBottom,
-                sort,
+                canReorder,
             ]
         );
 
-        if (isLoading) {
+        const renderFlatListItem = useCallback(
+            ({ item, index }: { item: MinimalQuestGame; index: number }) => {
+                if (!item) return null;
+
+                return (
+                    <GameItem
+                        questGame={item}
+                        reorder={() => { }} // No-op for FlatList
+                        isFirstItem={index === 0}
+                        moveToTop={(id, status) => handleMoveToTop(id, status)}
+                        moveToBottom={(id, status) =>
+                            handleMoveToBottom(id, status)
+                        }
+                        isActive={false}
+                        canReorder={false}
+                    />
+                );
+            },
+            [
+                gameStatus,
+                handleMoveToTop,
+                handleMoveToBottom,
+            ]
+        );
+
+        if (isLoading[gameStatus]) {
             return (
                 <View style={styles.loadingContainer}>
                     <LoadingText text="Loading games..." />
@@ -263,28 +278,97 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             </View>
         ) : (
             <>
-                <View style={styles.contentContainer}>
-                    <GameSearchInput
-                        gameStatus={gameStatus}
-                        searchQuery={searchQuery}
-                        onSearchChange={setSearchQuery}
-                        onClear={() => setSearchQuery("")}
-                        onMenuPress={() => setMenuVisible(true)}
-                    />
-                    <View style={styles.listWrapper}>
-                        <DragList
-                            ref={dragListRef}
-                            data={sortedGames}
-                            onReordered={(fromIndex, toIndex) =>
-                                onReorder(fromIndex, toIndex, gameStatus)
-                            }
-                            keyExtractor={(item) => item?.id?.toString() || ""}
-                            renderItem={renderItem}
-                            contentContainerStyle={styles.listContainer}
-                            removeClippedSubviews={true}
-                        />
-                    </View>
-                </View>
+                <ScrollableContainer
+                    style={styles.contentContainer}
+                    scrollTrackStyling={{
+                        thumbColor: getStatusColor(gameStatus),
+                        trackColor: colorSwatch.neutral.gray,
+                        trackVisible: true,
+                        thumbShadow: {
+                            color: colorSwatch.neutral.black,
+                            opacity: 0.3,
+                            radius: 4,
+                            offset: { width: 0, height: 2 },
+                        },
+                    }}
+                >
+                    {({ scrollRef, onScroll, onContentSizeChange, scrollEventThrottle, showsVerticalScrollIndicator }) => {
+                        // Assign the scrollRef to dragListRef for imperative methods
+                        dragListRef.current = scrollRef.current;
+
+                        return canReorder ? (
+                            <DragList
+                                ref={scrollRef}
+                                data={sortedGames}
+                                onReordered={(fromIndex, toIndex) =>
+                                    handleReorder(fromIndex, toIndex, gameStatus)
+                                }
+                                keyExtractor={(item) => item?.id?.toString() || ""}
+                                renderItem={renderDragItem}
+                                contentContainerStyle={styles.listContainer}
+                                removeClippedSubviews={true}
+                                getItemLayout={(data, index) => ({
+                                    length: 128,
+                                    offset: 128 * index,
+                                    index,
+                                })}
+                                onScroll={onScroll}
+                                scrollEventThrottle={scrollEventThrottle}
+                                showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+                                onContentSizeChange={onContentSizeChange}
+                                onScrollToIndexFailed={(info) => {
+                                    console.warn('ScrollToIndex failed:', info);
+                                    const wait = new Promise(resolve => setTimeout(resolve, 500));
+                                    wait.then(() => {
+                                        if (scrollRef.current) {
+                                            scrollRef.current.scrollToIndex({
+                                                index: Math.min(info.index, info.highestMeasuredFrameIndex),
+                                                animated: true,
+                                            });
+                                        }
+                                    });
+                                }}
+                            />
+                        ) : (
+                            <FlatList
+                                ref={scrollRef}
+                                data={sortedGames}
+                                keyExtractor={(item) => item?.id?.toString() || ""}
+                                renderItem={renderFlatListItem}
+                                contentContainerStyle={styles.listContainer}
+                                removeClippedSubviews={true}
+                                getItemLayout={(data, index) => ({
+                                    length: 128,
+                                    offset: 128 * index,
+                                    index,
+                                })}
+                                onScroll={onScroll}
+                                scrollEventThrottle={scrollEventThrottle}
+                                showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+                                onContentSizeChange={onContentSizeChange}
+                                onScrollToIndexFailed={(info) => {
+                                    console.warn('ScrollToIndex failed:', info);
+                                    const wait = new Promise(resolve => setTimeout(resolve, 500));
+                                    wait.then(() => {
+                                        if (scrollRef.current) {
+                                            scrollRef.current.scrollToIndex({
+                                                index: Math.min(info.index, info.highestMeasuredFrameIndex),
+                                                animated: true,
+                                            });
+                                        }
+                                    });
+                                }}
+                            />
+                        );
+                    }}
+                </ScrollableContainer>
+                <GameSearchInput
+                    gameStatus={gameStatus}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    onClear={() => setSearchQuery("")}
+                    onMenuPress={() => setMenuVisible(true)}
+                />
                 <GameSortFilterMenu
                     visible={isMenuVisible}
                     onClose={() => setMenuVisible(false)}
@@ -302,7 +386,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        marginTop: 60,
+        marginTop: 4,
     },
     loadingContainer: {
         flex: 1,
@@ -316,9 +400,7 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         lineHeight: 24,
     },
-    listWrapper: {
-        flex: 1,
-    },
+
     listContainer: {},
 });
 

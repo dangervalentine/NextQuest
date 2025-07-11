@@ -1,8 +1,6 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
+import React, { useCallback, useState, useEffect, useRef, useMemo } from "react";
 import {
-    ActivityIndicator,
-    ImageBackground,
-    ScrollView,
+    FlatList,
     View,
     StyleSheet,
 } from "react-native";
@@ -15,8 +13,10 @@ import { SearchTabRouteProp } from "src/navigation/navigationTypes";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import GameSearchInput from "./GameSearchInput";
 import Text from "src/components/common/Text";
-import { getStatusColor } from "src/utils/colorsUtils";
 import { LoadingText } from "src/components/common/LoadingText";
+import { useGames } from "src/contexts/GamesContext";
+import ScrollableContainer from "../../../../components/common/ScrollableContainer";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface SearchParams {
     searchQuery?: string;
@@ -30,7 +30,6 @@ interface SearchParams {
 interface GameSearchSectionProps {
     gameStatus: GameStatus;
     games: MinimalQuestGame[];
-    handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
 }
 
 // Memoize the individual game item wrapper
@@ -66,8 +65,8 @@ const GameItemWrapper = React.memo(
 
 const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     gameStatus,
-    handleDiscover,
 }) => {
+    const { handleDiscover } = useGames();
     const route = useRoute<SearchTabRouteProp>();
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<MinimalQuestGame[]>([]);
@@ -75,6 +74,9 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const [isSearching, setIsSearching] = useState(false);
     const [searchContext, setSearchContext] = useState<string>("popular");
     const initialLoadRef = useRef(true);
+    const flatListRef = useRef<FlatList>(null);
+
+
 
     const executeSearch = useCallback(
         async (params: SearchParams | undefined, query: string = "") => {
@@ -157,7 +159,7 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
             if (!initialLoadRef.current) {
                 executeSearch(undefined, searchQuery);
             }
-        }, 300); // Add 300ms debounce
+        }, 800); // Add 300ms debounce
 
         return () => clearTimeout(timeoutId);
     }, [searchQuery, executeSearch]);
@@ -165,6 +167,8 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
     const handleSearchChange = (text: string) => {
         setSearchQuery(text);
     };
+
+
 
     const getLoadingMessage = () => {
         switch (searchContext) {
@@ -225,6 +229,74 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
     return (
         <View style={styles.contentContainer}>
+            <ScrollableContainer
+                style={styles.scrollWrapper}
+                scrollTrackStyling={{
+                    thumbColor: getStatusColor(gameStatus),
+                    trackColor: colorSwatch.neutral.gray,
+                    trackVisible: true,
+                    thumbShadow: {
+                        color: colorSwatch.neutral.black,
+                        opacity: 0.3,
+                        radius: 4,
+                        offset: { width: 0, height: 2 },
+                    },
+                }}
+            >
+                {({ scrollRef, onScroll, onContentSizeChange, scrollEventThrottle, showsVerticalScrollIndicator }) => {
+                    // Assign the scrollRef to flatListRef
+                    flatListRef.current = scrollRef.current;
+
+                    return error ? (
+                        <View style={styles.loadingContainer}>
+                            <Text variant="subtitle" style={styles.errorText}>
+                                {error}
+                            </Text>
+                        </View>
+                    ) : isSearching ? (
+                        <View style={styles.loadingContainer}>
+                            <LoadingText text={getLoadingMessage()} />
+                        </View>
+                    ) : searchResults.length === 0 ? (
+                        <View style={styles.loadingContainer}>
+                            <Text variant="subtitle" style={styles.emptyText}>
+                                {getEmptyMessage()}
+                            </Text>
+                        </View>
+                    ) : (
+                        <FlatList
+                            ref={scrollRef}
+                            data={searchResults}
+                            style={styles.scrollContainer}
+                            contentContainerStyle={styles.listContainer}
+                            keyExtractor={(item) => item?.id?.toString() || ""}
+                            renderItem={({ item, index }) => renderItem(item, index)}
+                            onScroll={onScroll}
+                            scrollEventThrottle={scrollEventThrottle}
+                            showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+                            onContentSizeChange={onContentSizeChange}
+                            removeClippedSubviews={true}
+                            getItemLayout={(data, index) => ({
+                                length: 128, // Same as GameSection
+                                offset: 128 * index,
+                                index,
+                            })}
+                            onScrollToIndexFailed={(info) => {
+                                console.warn('ScrollToIndex failed:', info);
+                                const wait = new Promise(resolve => setTimeout(resolve, 500));
+                                wait.then(() => {
+                                    if (scrollRef.current) {
+                                        scrollRef.current.scrollToIndex({
+                                            index: Math.min(info.index, info.highestMeasuredFrameIndex),
+                                            animated: true,
+                                        });
+                                    }
+                                });
+                            }}
+                        />
+                    );
+                }}
+            </ScrollableContainer>
             <GameSearchInput
                 gameStatus={gameStatus}
                 searchQuery={searchQuery}
@@ -233,33 +305,6 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
                 placeholder="Discover new games..."
                 onMenuPress={() => console.log("Menu pressed")}
             />
-
-            {error ? (
-                <View style={styles.loadingContainer}>
-                    <Text variant="subtitle" style={styles.errorText}>
-                        {error}
-                    </Text>
-                </View>
-            ) : isSearching ? (
-                <View style={styles.loadingContainer}>
-                    <LoadingText text={getLoadingMessage()} />
-                </View>
-            ) : searchResults.length === 0 ? (
-                <View style={styles.loadingContainer}>
-                    <Text variant="subtitle" style={styles.emptyText}>
-                        {getEmptyMessage()}
-                    </Text>
-                </View>
-            ) : (
-                <ScrollView
-                    style={styles.scrollContainer}
-                    contentContainerStyle={styles.listContainer}
-                >
-                    {searchResults.map((game, index) =>
-                        renderItem(game, index)
-                    )}
-                </ScrollView>
-            )}
         </View>
     );
 };
@@ -271,12 +316,14 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: "100%",
-        marginTop: 60,
+        marginTop: 4,
         justifyContent: "flex-start",
+    },
+    scrollWrapper: {
+        flex: 1,
     },
     scrollContainer: {
         flex: 1,
-        width: "100%",
     },
     listContainer: {
         paddingBottom: 0,

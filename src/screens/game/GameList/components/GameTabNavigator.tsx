@@ -5,35 +5,26 @@ import React, {
     useState,
 } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View } from "react-native";
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import GameSection, { GameSectionRef } from "./GameSection";
 import GameSearchSection from "./GameSearchSection";
 import HeaderWithIcon from "../../shared/HeaderWithIcon";
 import QuestIcon from "../../shared/GameIcon";
 import { GameStatus } from "src/constants/config/gameStatus";
-import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
 import { colorSwatch } from "src/constants/theme/colorConstants";
 import { getStatusColor } from "src/utils/colorsUtils";
 import { SortField } from "src/types/sortTypes";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { TabParamList } from "src/navigation/navigationTypes";
+import { MainNavigationProp } from "../../MainNavigationContainer";
+import { Text } from "react-native";
+import { getStatusIcon, getStatusTabName } from "src/utils/gameStatusUtils";
+import { useGames } from "src/contexts/GamesContext";
 
 const Tab = createBottomTabNavigator();
 
 interface TabNavigatorProps {
-    gameData: Record<GameStatus, MinimalQuestGame[]>;
-    isLoading: Record<GameStatus, boolean>;
-    handleStatusChange: (
-        id: number,
-        newStatus: GameStatus,
-        currentStatus: GameStatus
-    ) => void;
-    handleDiscover: (game: MinimalQuestGame, newStatus: GameStatus) => void;
-    handleRemoveItem: (itemId: number, status: GameStatus) => void;
-    handleReorder: (
-        fromIndex: number,
-        toIndex: number,
-        status: GameStatus
-    ) => void;
     onTabChange: (tabName: string) => void;
 }
 
@@ -46,19 +37,16 @@ export interface GameTabNavigatorRef {
 const tabScreens = [
     {
         name: "Ongoing",
-        iconName: "gamepad-variant" as const,
         title: "Ongoing",
         gameStatus: "ongoing" as GameStatus,
     },
     {
         name: "Backlog",
-        iconName: "list" as const,
         title: "Backlog",
         gameStatus: "backlog" as GameStatus,
     },
     {
         name: "Completed",
-        iconName: "check-circle" as const,
         title: "Completed",
         gameStatus: "completed" as GameStatus,
     },
@@ -67,60 +55,34 @@ const tabScreens = [
 // Navigation styles
 export const tabBarStyle = {
     backgroundColor: colorSwatch.background.darkest,
+    borderWidth: 0,
     borderColor: colorSwatch.neutral.darkGray,
-    borderTopWidth: 1,
-    height: 60,
-    paddingHorizontal: 0,
-    marginTop: 4,
-};
-
-export const headerStyle = {
-    backgroundColor: colorSwatch.background.darkest,
-    borderColor: colorSwatch.neutral.darkGray,
+    height: 56,
 };
 
 export const screenOptions: BottomTabNavigationOptions = {
     tabBarStyle,
-    tabBarActiveTintColor: colorSwatch.accent.cyan,
     tabBarInactiveTintColor: colorSwatch.neutral.darkGray,
-    tabBarLabelStyle: {
-        fontSize: 12,
-        fontFamily: "FiraCode-Regular",
-        flex: 1,
-    },
-    tabBarItemStyle: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    headerStyle,
-    headerTitleStyle: {
-        fontFamily: "FiraCode-Regular",
-    },
 };
 
 const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
     (
         {
-            gameData,
-            isLoading,
-            handleStatusChange,
-            handleDiscover,
-            handleRemoveItem,
-            handleReorder,
             onTabChange,
         },
         ref
     ) => {
+        const { gameData } = useGames();
+        const insets = useSafeAreaInsets();
+
         // Create refs for each game section tab
         const gameSectionRefs = useRef<
-            Record<GameStatus, React.RefObject<GameSectionRef>>
+            Record<GameStatus, React.RefObject<GameSectionRef | null>>
         >({
             ongoing: React.createRef(),
             backlog: React.createRef(),
             completed: React.createRef(),
             undiscovered: React.createRef(),
-            on_hold: React.createRef(),
             dropped: React.createRef(),
         });
 
@@ -138,17 +100,72 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
             field: SortField;
             direction: "asc" | "desc";
         }>({
-            field: "priority",
+            field: "name",
             direction: "asc",
         });
         const [isMenuVisible, setMenuVisible] = useState(false);
 
+        const hasNavigatedRef = React.useRef(false);
+
+        React.useEffect(() => {
+            if (hasNavigatedRef.current) return;
+
+            // Check if any main gameData array has data
+            const hasAnyData =
+                gameData.ongoing.length > 0 ||
+                gameData.backlog.length > 0 ||
+                gameData.completed.length > 0 ||
+                gameData.undiscovered.length > 0;
+
+            if (hasAnyData) {
+                handleNavigateToStatus();
+                hasNavigatedRef.current = true;
+            }
+        }, [gameData]);
+
+        const navigation = useNavigation<MainNavigationProp>();
+
+        const handleNavigateToStatus = () => {
+            const statuses: GameStatus[] = ["ongoing", "backlog", "completed", "undiscovered"];
+            const firstNonEmptyStatus = statuses.find(
+                (status) => gameData[status] && gameData[status].length > 0
+            );
+            const targetTab = firstNonEmptyStatus ? getStatusTabName(firstNonEmptyStatus) : "Discover";
+
+            navigation.navigate("GameTabs", {
+                screen: targetTab as keyof TabParamList,
+            });
+        };
+
         return (
             <Tab.Navigator
+                initialRouteName="Search"
                 screenOptions={({ route }) => ({
+                    headerStyle: {
+                        backgroundColor: colorSwatch.background.darkest,
+                        borderWidth: 0,
+                        borderColor: colorSwatch.neutral.darkGray,
+                        borderBottomWidth: 1,
+                        borderBottomColor: colorSwatch.neutral.darkGray,
+                    },
                     ...screenOptions,
                     tabBarStyle: {
                         ...tabBarStyle,
+                        paddingBottom: insets.bottom,
+                        height: 56 + insets.bottom,
+                    },
+                    tabBarItemStyle: {
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        padding: 0,
+                        borderTopWidth: 1,
+                        borderTopColor: colorSwatch.neutral.darkGray,
+                        borderRightWidth: 1,
+                        borderRightColor: colorSwatch.background.darkest,
+                        borderLeftWidth: 1,
+                        borderLeftColor: colorSwatch.background.darkest,
                     },
                     tabBarActiveTintColor:
                         route.name === "Search"
@@ -173,18 +190,28 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                         key={screen.name}
                         name={screen.name}
                         options={{
-                            headerShown: false,
-                            tabBarLabel: screen.name,
+                            headerShown: true,
+                            tabBarLabel: ({ color }) => (
+                                <Text
+                                    style={{
+                                        color,
+                                        fontSize: 12,
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    {screen.name}
+                                </Text>
+                            ),
                             tabBarIcon: ({ color, size }) => (
                                 <QuestIcon
-                                    name={screen.iconName}
+                                    name={getStatusIcon(screen.gameStatus)}
                                     size={size}
                                     color={color}
                                 />
                             ),
                             headerTitle: () => (
                                 <HeaderWithIcon
-                                    iconName={screen.iconName}
+                                    iconName={getStatusIcon(screen.gameStatus)}
                                     title={screen.title}
                                     color={getStatusColor(screen.gameStatus)}
                                 />
@@ -196,10 +223,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                                 ref={gameSectionRefs.current[screen.gameStatus]}
                                 gameStatus={screen.gameStatus}
                                 games={gameData[screen.gameStatus]}
-                                isLoading={isLoading[screen.gameStatus]}
-                                onStatusChange={handleStatusChange}
-                                onRemoveItem={handleRemoveItem}
-                                onReorder={handleReorder}
                                 sort={sort}
                                 onSortChange={setSort}
                                 isMenuVisible={isMenuVisible}
@@ -212,19 +235,30 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                     key={"Search"}
                     name={"Search"}
                     options={{
-                        headerShown: false,
-                        tabBarLabel: "Search",
+                        headerShown: true,
+                        tabBarLabel: ({ color }) => (
+                            <Text
+                                style={{
+                                    color,
+                                    fontSize: 12,
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Discover
+                            </Text>
+                        ),
+
                         tabBarIcon: ({ color, size }) => (
                             <QuestIcon
-                                name={"magnify"}
+                                name={getStatusIcon("undiscovered")}
                                 size={size}
                                 color={color}
                             />
                         ),
                         headerTitle: () => (
                             <HeaderWithIcon
-                                iconName={"magnify"}
-                                title={"Search"}
+                                iconName={getStatusIcon("undiscovered")}
+                                title={"Discover"}
                                 color={getStatusColor("undiscovered")}
                             />
                         ),
@@ -234,7 +268,6 @@ const GameTabNavigator = forwardRef<GameTabNavigatorRef, TabNavigatorProps>(
                         <GameSearchSection
                             gameStatus={"undiscovered"}
                             games={gameData["undiscovered"]}
-                            handleDiscover={handleDiscover}
                         />
                     )}
                 </Tab.Screen>

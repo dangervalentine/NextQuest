@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { StyleSheet, View, Animated, Easing, Dimensions } from "react-native";
+import { StyleSheet, View, Animated, Easing, Dimensions, PixelRatio } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -11,9 +11,10 @@ import {
     useGameStatus,
 } from "./contexts/GameStatusContext";
 import { useFonts } from "expo-font";
-import { initializeDatabase } from "./data/config/databaseSeeder";
+import { initializeDatabase } from "./data/config/databaseSeederScripts";
 import { getStatusColor } from "./utils/colorsUtils";
 import CircleMask from "./components/splash/CircleMask";
+
 // Create a dark theme for navigation
 const NavigationTheme = {
     ...DefaultTheme,
@@ -27,7 +28,7 @@ const NavigationTheme = {
 SplashScreen.preventAutoHideAsync();
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
-const IMAGE_SIZE = screenWidth * 0.475; // Original size of the image
+const IMAGE_SIZE = 72 * PixelRatio.get() * 1.196
 const ADDITIONAL_LOAD_TIME_MS = 0;
 
 function AppContent() {
@@ -43,9 +44,9 @@ function AppContent() {
     const textOpacity = useMemo(() => new Animated.Value(0), []);
     const imageOpacity = useMemo(() => new Animated.Value(1), []);
     const circleSizeAnim = useMemo(
-        () => new Animated.Value(IMAGE_SIZE * 0.95),
+        () => new Animated.Value(IMAGE_SIZE),
         []
-    ); // Larger initial size for better visibility
+    );
     const targetScale = useMemo(() => screenWidth / IMAGE_SIZE, []);
     const { activeStatus } = useGameStatus();
 
@@ -110,7 +111,6 @@ function AppContent() {
                 isSplashReady && dbInitialized && additionalLoadComplete;
 
             if (appIsReady) {
-                // Start the animation sequence
                 Animated.timing(tintColorAnim, {
                     toValue: 1,
                     duration: 300,
@@ -181,7 +181,18 @@ function AppContent() {
                 </View>
             </Animated.View>
             {!isAppReady && (
-                <View style={styles.splashContainer}>
+                <View style={[
+                    styles.splashContainer,
+                    {
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }
+                ]}>
                     <Animated.View
                         pointerEvents="none"
                         style={[
@@ -243,7 +254,6 @@ const styles = StyleSheet.create({
     },
     splashContainer: {
         flex: 1,
-        marginTop: screenHeight * 0.027,
         alignItems: "center",
         justifyContent: "center",
     },

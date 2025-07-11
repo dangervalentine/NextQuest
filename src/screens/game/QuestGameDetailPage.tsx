@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import {
     ScrollView,
     StyleSheet,
@@ -7,6 +7,7 @@ import {
     ImageBackground,
     SafeAreaView,
     Easing,
+    TouchableOpacity,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { QuestGameDetailRouteProp } from "src/navigation/navigationTypes";
@@ -30,6 +31,15 @@ import { LoadingText } from "src/components/common/LoadingText";
 import { getStatusColor } from "src/utils/colorsUtils";
 import WebsitesSection from "./GameDetail/components/WebsitesSection";
 import { theme } from "src/constants/theme/styles";
+import { GameStatus } from "src/constants/config/gameStatus";
+import { getStatusIcon, getStatusLabel } from "src/utils/gameStatusUtils";
+import { useGames } from "src/contexts/GamesContext";
+import { HapticFeedback } from "src/utils/hapticUtils";
+import { showToast } from "src/components/common/QuestToast";
+import { useGameStatus } from "src/contexts/GameStatusContext";
+import QuestIcon from "./shared/GameIcon";
+import { MinimalQuestGame } from "src/data/models/MinimalQuestGame";
+import ScrollableContainer from "src/components/common/ScrollableContainer";
 
 const QuestGameDetailPage: React.FC = () => {
     const route = useRoute<QuestGameDetailRouteProp>();
@@ -37,6 +47,16 @@ const QuestGameDetailPage: React.FC = () => {
     const [game, setGame] = useState<QuestGame | null>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const headerHeight = useHeaderHeight();
+    const { handleStatusChange, handleDiscover, handleRemoveItem } = useGames();
+    const { activeStatus, setActiveStatus } = useGameStatus();
+
+    // FAB state
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isRemoveConfirmation, setIsRemoveConfirmation] = useState(false);
+    const menuAnimation = useRef(new Animated.Value(0)).current;
+
+
+
     useEffect(() => {
         const loadGameDetails = async () => {
             const igdbGame: QuestGame | null = await IGDBService.fetchGameDetails(
@@ -55,7 +75,9 @@ const QuestGameDetailPage: React.FC = () => {
             }).start();
         };
         loadGameDetails();
-    }, [id]);
+    }, [id, activeStatus]);
+
+
 
     if (!game) {
         return (
@@ -77,6 +99,190 @@ const QuestGameDetailPage: React.FC = () => {
     // Get status color for all section titles
     const statusColor = getStatusColor(game.gameStatus);
 
+    // Get available statuses (excluding current)
+    const getAvailableStatuses = (currentStatus: GameStatus): GameStatus[] => {
+        const allStatuses: GameStatus[] = [
+            "ongoing",
+            "backlog",
+            "completed",
+        ];
+        return allStatuses.filter((status) => status !== currentStatus);
+    };
+
+    // Get menu options (statuses + remove option)
+    type MenuOption =
+        | { type: 'status', value: GameStatus, label: string, icon: string, color: string }
+        | { type: 'remove', value: 'remove', label: string, icon: string, color: string, isConfirmation?: boolean };
+
+    const getMenuOptions = (currentStatus: GameStatus): MenuOption[] => {
+        let statusOptions: MenuOption[] = [];
+
+        // Add remove option if not undiscovered
+        if (currentStatus !== "undiscovered") {
+            statusOptions.push({
+                type: 'remove' as const,
+                value: 'remove' as const,
+                label: isRemoveConfirmation ? 'Confirm' : 'Remove',
+                icon: 'trash',
+                color: colorSwatch.accent.pink,
+                isConfirmation: isRemoveConfirmation
+            });
+        }
+
+        getAvailableStatuses(currentStatus).forEach(status => statusOptions.push({
+            type: 'status' as const,
+            value: status,
+            label: getStatusLabel(status),
+            icon: getStatusIcon(status),
+            color: getStatusColor(status)
+        }));
+
+
+        return statusOptions;
+    };
+
+    // Toggle FAB menu
+    const toggleMenu = () => {
+        HapticFeedback.selection();
+        const toValue = isMenuOpen ? 0 : 1;
+        HapticFeedback.selection();
+
+        Animated.spring(menuAnimation, {
+            toValue,
+            useNativeDriver: true,
+            bounciness: 0,
+            speed: 100,
+        }).start();
+
+        setIsMenuOpen(!isMenuOpen);
+
+        // Reset confirmation state when menu closes
+        if (isMenuOpen) {
+            setIsRemoveConfirmation(false);
+        }
+    };
+
+    // Handle status change
+    const handleStatusPress = async (newStatus: GameStatus) => {
+        if (!game) return;
+
+        try {
+            HapticFeedback.selection();
+            toggleMenu(); // Close menu first
+
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start();
+
+            // Check if current status is undiscovered and use appropriate handler
+            if (game.gameStatus === "undiscovered") {
+                // Transform QuestGame to MinimalQuestGame format for handleDiscover
+                const minimalGame: MinimalQuestGame = {
+                    ...game,
+                    platforms: game.platforms || [],
+                    genres: game.genres || [],
+                    release_dates: game.release_dates || [],
+                };
+                await handleDiscover(minimalGame, newStatus);
+            } else {
+                await handleStatusChange(game.id, newStatus, game.gameStatus);
+            }
+
+            // Update local state
+            setGame(prev => prev ? { ...prev, gameStatus: newStatus } : null);
+
+            setActiveStatus(newStatus);
+
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start(() => {
+                showToast({
+                    type: "success",
+                    text1: "Status Updated",
+                    text2: `${game.name} moved to ${getStatusLabel(newStatus)}`,
+                    position: "bottom",
+                    color: getStatusColor(newStatus),
+                    visibilityTime: 2000,
+                });
+            });
+
+
+        } catch (error) {
+            console.error("Failed to update status:", error);
+            showToast({
+                type: "error",
+                text1: "Update Failed",
+                text2: "Failed to update game status. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
+        }
+    };
+
+    // Handle remove game
+    const handleRemovePress = async () => {
+        if (!game) return;
+
+        // If not in confirmation mode, enter confirmation mode
+        if (!isRemoveConfirmation) {
+            HapticFeedback.selection();
+            setIsRemoveConfirmation(true);
+            return;
+        }
+
+        // If in confirmation mode, actually remove the game
+        try {
+            HapticFeedback.selection();
+            setIsRemoveConfirmation(false);
+            toggleMenu(); // Close menu first
+
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start();
+
+            await handleRemoveItem(game.id, game.gameStatus);
+
+            // Update local state to undiscovered
+            setGame(prev => prev ? { ...prev, gameStatus: "undiscovered" } : null);
+            setActiveStatus("undiscovered");
+
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: true,
+                easing: Easing.out(Easing.quad),
+            }).start(() => {
+                showToast({
+                    type: "success",
+                    text1: "Game Removed",
+                    text2: `${game.name} removed from ${getStatusLabel(game.gameStatus)}`,
+                    position: "bottom",
+                    color: colorSwatch.accent.pink,
+                    visibilityTime: 2000,
+                });
+            });
+
+        } catch (error) {
+            console.error("Failed to remove game:", error);
+            showToast({
+                type: "error",
+                text1: "Remove Failed",
+                text2: "Failed to remove game. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
+        }
+    };
+
     return (
         <ImageBackground
             source={getBackgroundImage(game.gameStatus)}
@@ -85,121 +291,248 @@ const QuestGameDetailPage: React.FC = () => {
         >
             <View style={styles.overlay} />
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                <ScrollView style={{ flex: 1 }}>
-                    {/* Hero Section */}
-                    <HeaderSection game={game} />
-
-                    {/* Personal Review Section */}
-                    {game.gameStatus === "completed" && (
-                        <PersonalRatingSection
-                            gameId={game.id}
-                            initialRating={game.personalRating ?? null}
-                            notes={game.notes}
-                        />
-                    )}
-
-                    {/* Core Game Information */}
-                    {(game.storyline || game.summary) && (
-                        <View style={styles.sectionContainer}>
-                            <Text
-                                variant="title"
-                                style={[
-                                    styles.mainSectionTitle,
-                                    { color: statusColor },
-                                ]}
-                            >
-                                About the Game
-                            </Text>
-                            <StorylineSection
-                                storyline={game.storyline}
-                                summary={game.summary}
-                            />
-                        </View>
-                    )}
-
-                    {/* Visual Showcase */}
-                    {game.screenshots && game.screenshots.length > 0 && (
-                        <View style={styles.sectionContainer}>
-                            <Text
-                                variant="title"
-                                style={[
-                                    styles.mainSectionTitle,
-                                    { color: statusColor },
-                                ]}
-                            >
-                                Screenshots
-                            </Text>
-                            <ImageCarousel
-                                images={
-                                    game.screenshots?.map((s) =>
-                                        s.url.replace("t_thumb", "t_720p")
-                                    ) ?? []
-                                }
-                            />
-                        </View>
-                    )}
-
-                    {/* Essential Game Categories */}
-                    <View style={styles.sectionContainer}>
-                        <Text
-                            variant="title"
-                            style={[
-                                styles.mainSectionTitle,
-                                { color: statusColor },
-                            ]}
+                <ScrollableContainer
+                    scrollTrackStyling={{
+                        thumbColor: statusColor,
+                        trackColor: colorSwatch.neutral.gray,
+                        trackVisible: true,
+                        thumbShadow: {
+                            color: colorSwatch.neutral.black,
+                            opacity: 0.3,
+                            radius: 4,
+                            offset: { width: 0, height: 2 },
+                        },
+                    }}
+                >
+                    {({ scrollRef, onScroll, onContentSizeChange, scrollEventThrottle, showsVerticalScrollIndicator }) => (
+                        <ScrollView
+                            ref={scrollRef}
+                            style={{ flex: 1 }}
+                            onScroll={onScroll}
+                            scrollEventThrottle={scrollEventThrottle}
+                            showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+                            onContentSizeChange={onContentSizeChange}
                         >
-                            Information
-                        </Text>
-                        {/* Core Categories */}
-                        <View style={styles.characteristicsContainer}>
-                            {game.franchises && game.franchises.length > 0 && (
-                                <FranchiseSection game={game} />
+                            {/* Hero Section */}
+                            <HeaderSection game={game} />
+
+                            {/* Personal Review Section */}
+                            {game.gameStatus === "completed" && (
+                                <PersonalRatingSection
+                                    gameId={game.id}
+                                    initialRating={game.personalRating ?? null}
+                                    notes={game.notes}
+                                />
                             )}
-                            <GenresSection game={game} />
-                            <ThemesSection game={game} />
-                            <GameModesSection game={game} />
-                            <PerspectivesSection game={game} />
-                        </View>
-                    </View>
 
-                    {/* Additional Game Details */}
-                    <View style={styles.sectionContainer}>
-                        <Text
-                            variant="title"
-                            style={[
-                                styles.mainSectionTitle,
-                                { color: statusColor },
-                            ]}
-                        >
-                            Additional Details
-                        </Text>
+                            {/* Visual Showcase */}
+                            {game.screenshots && game.screenshots.length > 0 && (
+                                <View style={styles.sectionContainer}>
+                                    <Text
+                                        variant="title"
+                                        style={[
+                                            styles.mainSectionTitle,
+                                            { color: statusColor },
+                                        ]}
+                                    >
+                                        Screenshots
+                                    </Text>
+                                    <ImageCarousel
+                                        images={
+                                            game.screenshots?.map((s) =>
+                                                s.url.replace("t_thumb", "t_720p")
+                                            ) ?? []
+                                        }
+                                    />
+                                </View>
+                            )}
 
-                        {/* Platforms */}
-                        {game.platforms && game.platforms.length > 0 && (
-                            <View>
+                            {/* Core Game Information */}
+                            {(game.storyline || game.summary) && (
+                                <View style={styles.sectionContainer}>
+                                    <Text
+                                        variant="title"
+                                        style={[
+                                            styles.mainSectionTitle,
+                                            { color: statusColor },
+                                        ]}
+                                    >
+                                        About the Game
+                                    </Text>
+                                    <StorylineSection
+                                        storyline={game.storyline}
+                                        summary={game.summary}
+                                    />
+                                </View>
+                            )}
+
+                            {/* Essential Game Categories */}
+                            <View style={styles.sectionContainer}>
                                 <Text
                                     variant="title"
                                     style={[
-                                        styles.platformTitle,
+                                        styles.mainSectionTitle,
                                         { color: statusColor },
                                     ]}
                                 >
-                                    Platforms
+                                    Information
                                 </Text>
-                                <PlatformsSection game={game} />
+                                {/* Core Categories */}
+                                <View style={styles.characteristicsContainer}>
+                                    {game.franchises && game.franchises.length > 0 && (
+                                        <FranchiseSection game={game} />
+                                    )}
+                                    <GenresSection game={game} />
+                                    <ThemesSection game={game} />
+                                    <GameModesSection game={game} />
+                                    <PerspectivesSection game={game} />
+                                </View>
                             </View>
-                        )}
 
-                        {/* External Links */}
-                        <WebsitesSection
-                            websites={game.websites || []}
-                            tintColor={statusColor}
-                        />
-                    </View>
+                            {/* Additional Game Details */}
+                            <View style={styles.sectionContainer}>
+                                <Text
+                                    variant="title"
+                                    style={[
+                                        styles.mainSectionTitle,
+                                        { color: statusColor },
+                                    ]}
+                                >
+                                    Additional Details
+                                </Text>
 
-                    <View style={styles.bottomClearance} />
-                </ScrollView>
+                                {/* Platforms */}
+                                {game.platforms && game.platforms.length > 0 && (
+                                    <View>
+                                        <Text
+                                            variant="title"
+                                            style={[
+                                                styles.platformTitle,
+                                                { color: statusColor },
+                                            ]}
+                                        >
+                                            Platforms
+                                        </Text>
+                                        <PlatformsSection game={game} />
+                                    </View>
+                                )}
+
+                                {/* External Links */}
+                                <WebsitesSection
+                                    websites={game.websites || []}
+                                    tintColor={statusColor}
+                                />
+                            </View>
+
+                            <View style={styles.bottomClearance} />
+                        </ScrollView>
+                    )}
+                </ScrollableContainer>
             </Animated.View>
+
+            {/* FAB and Menu */}
+            {game && (
+                <>
+                    {/* Background Overlay */}
+                    {isMenuOpen && (
+                        <Animated.View
+                            style={[
+                                styles.menuOverlay,
+                                {
+                                    opacity: menuAnimation.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [0, 0.3],
+                                    }),
+                                },
+                            ]}
+                        >
+                            <TouchableOpacity
+                                style={styles.overlayTouchable}
+                                onPress={toggleMenu}
+                                activeOpacity={1}
+                            />
+                        </Animated.View>
+                    )}
+
+                    {/* Menu Items */}
+                    {getMenuOptions(game.gameStatus).map((option, index) => {
+                        const translateY = menuAnimation.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -(72 + index * 64)],
+                        });
+
+                        const scale = menuAnimation.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, 1],
+                        });
+
+                        const handlePress = () => {
+                            if (option.type === 'status') {
+                                handleStatusPress(option.value);
+                            } else {
+                                handleRemovePress();
+                            }
+                        };
+
+                        const isConfirmationMode = option.type === 'remove' && option.isConfirmation;
+                        const backgroundColor = isConfirmationMode ? option.color : colorSwatch.background.darkest;
+                        const borderColor = isConfirmationMode ? "transparent" : option.color;
+                        const textColor = isConfirmationMode ? colorSwatch.background.darkest : option.color;
+                        const iconColor = isConfirmationMode ? colorSwatch.background.darkest : option.color;
+
+                        return (
+                            <Animated.View
+                                key={option.type === 'status' ? option.value : 'remove'}
+                                style={[
+                                    styles.menuItem,
+                                    {
+                                        transform: [{ translateY }, { scale }],
+                                        borderColor: borderColor,
+                                        borderWidth: 2,
+                                        backgroundColor: backgroundColor,
+                                    },
+                                ]}
+                            >
+                                <TouchableOpacity
+                                    onPress={handlePress}
+                                    style={styles.menuItemTouchable}
+                                    activeOpacity={0.8}
+                                >
+                                    <View style={styles.menuItemTextContainer}>
+                                        <Text
+                                            variant="body"
+                                            style={[styles.menuItemText, { color: textColor }]}
+                                            numberOfLines={1}
+                                        >
+                                            {option.label}
+                                        </Text>
+                                        <QuestIcon color={iconColor} name={option.icon} size={24} />
+                                    </View>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        );
+                    })}
+
+                    {/* Main FAB */}
+                    <Animated.View
+                        style={[
+                            styles.fab,
+                            {
+                                backgroundColor: isMenuOpen ? colorSwatch.text.inverse : statusColor,
+                                borderColor: isMenuOpen ? statusColor : "transparent",
+                            },
+                        ]}
+                    >
+                        <TouchableOpacity
+                            onPress={toggleMenu}
+                            style={styles.fabTouchable}
+                            activeOpacity={0.8}
+                        >
+                            <QuestIcon color={isMenuOpen ? statusColor : colorSwatch.text.inverse} name={getStatusIcon(game.gameStatus)} size={24} />
+                        </TouchableOpacity>
+                    </Animated.View>
+                </>
+            )}
         </ImageBackground>
     );
 };
@@ -265,7 +598,7 @@ const styles = StyleSheet.create({
         borderRadius: theme.borderRadius,
     },
     bottomClearance: {
-        height: 60,
+        height: 120,
         width: "80%",
         borderBottomColor: colorSwatch.primary.dark,
         borderBottomWidth: 1,
@@ -280,6 +613,68 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: "center",
         alignItems: "center",
+    },
+    fab: {
+        position: "absolute",
+        bottom: 40,
+        right: 20,
+        width: 56,
+        height: 56,
+        borderRadius: theme.borderRadius,
+        elevation: 8,
+        borderWidth: 2,
+        zIndex: 1000,
+    },
+    fabTouchable: {
+        width: "100%",
+        height: "100%",
+        borderRadius: theme.borderRadius,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    fabIcon: {
+        fontSize: 24,
+        color: colorSwatch.text.inverse,
+        fontWeight: "bold",
+    },
+    menuItem: {
+        position: "absolute",
+        bottom: 30,
+        right: 20,
+        width: 160,
+        height: 60,
+        borderRadius: theme.borderRadius,
+        elevation: 6,
+        zIndex: 999,
+    },
+    menuItemTouchable: {
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    menuItemTextContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 16,
+        width: "100%",
+    },
+    menuItemText: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: colorSwatch.text.inverse,
+        textAlign: "left",
+        flex: 1,
+    },
+    menuOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 998,
+    },
+    overlayTouchable: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
     },
 });
 

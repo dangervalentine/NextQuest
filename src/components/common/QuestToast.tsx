@@ -11,6 +11,7 @@ type ToastConfigParams = {
     visibilityTime?: number;
     color?: string;
     bottomOffset?: number;
+    topOffset?: number;
 };
 
 type ToastBaseProps = ToastProps & {
@@ -18,6 +19,7 @@ type ToastBaseProps = ToastProps & {
         onPress?: () => void;
         color?: string;
         bottomOffset?: number;
+        topOffset?: number;
     };
 };
 
@@ -48,23 +50,36 @@ const toastConfig = {
                 height: "auto",
                 paddingVertical: 12,
                 marginBottom: 12,
+                marginTop:
+                    props.position === "top" && props.props?.topOffset != null
+                        ? props.props.topOffset
+                        : undefined,
                 width: "90%",
                 marginHorizontal: "5%",
             }}
             contentContainerStyle={{
                 paddingHorizontal: 15,
+                flexDirection: "column",
+                flexShrink: 1,
+                flexGrow: 1,
             }}
             text1Style={{
                 fontSize: 16,
                 fontWeight: "600",
                 color: colorSwatch.text.primary,
                 fontFamily: "Inter-Bold",
+                flexWrap: "wrap",
+                lineHeight: 20,
             }}
             text2Style={{
                 fontSize: 14,
                 color: colorSwatch.text.secondary,
                 fontFamily: "FiraCode-Regular",
+                flexWrap: "wrap",
+                lineHeight: 18,
             }}
+            text1NumberOfLines={0}
+            text2NumberOfLines={0}
         />
     ),
     error: (props: ToastBaseProps) => (
@@ -83,23 +98,36 @@ const toastConfig = {
                 height: "auto",
                 paddingVertical: 12,
                 marginBottom: 12,
+                marginTop:
+                    props.position === "top" && props.props?.topOffset != null
+                        ? props.props.topOffset
+                        : undefined,
                 width: "90%",
                 marginHorizontal: "5%",
             }}
             contentContainerStyle={{
                 paddingHorizontal: 15,
+                flexDirection: "column",
+                flexShrink: 1,
+                flexGrow: 1,
             }}
             text1Style={{
                 fontSize: 16,
                 fontWeight: "600",
                 color: colorSwatch.text.primary,
                 fontFamily: "Inter-Bold",
+                flexWrap: "wrap",
+                lineHeight: 20,
             }}
             text2Style={{
                 fontSize: 14,
                 color: colorSwatch.text.secondary,
                 fontFamily: "FiraCode-Regular",
+                flexWrap: "wrap",
+                lineHeight: 18,
             }}
+            text1NumberOfLines={0}
+            text2NumberOfLines={0}
         />
     ),
 };
@@ -124,6 +152,7 @@ export const showToast = (params: ToastConfigParams) => {
             onPress: params.onPress,
             color: params.color,
             bottomOffset: params.bottomOffset,
+            topOffset: params.topOffset,
         },
     });
 };

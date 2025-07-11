@@ -4,6 +4,7 @@ import React, {
     useState,
     useCallback,
     useEffect,
+    useRef,
 } from "react";
 import { GameStatus } from "../constants/config/gameStatus";
 import { MinimalQuestGame } from "../data/models/MinimalQuestGame";
@@ -14,6 +15,7 @@ import {
     getQuestGamesByStatus,
     updateGamePriorities,
     updateQuestGame,
+    updateGameRating,
 } from "../data/repositories/questGames";
 import { createIGDBGame } from "../data/repositories/igdbGames";
 import IGDBService from "../services/api/IGDBService";
@@ -22,6 +24,7 @@ import { getStatusColor } from "../utils/colorsUtils";
 import { getStatusLabel } from "../utils/gameStatusUtils";
 import { HapticFeedback } from "../utils/hapticUtils";
 import Toast from "react-native-toast-message";
+import { RatingModal } from "../components/common/RatingModal";
 
 interface GamesContextType {
     gameData: Record<GameStatus, MinimalQuestGame[]>;
@@ -46,6 +49,12 @@ interface GamesContextType {
     showPlatformSelectionModal: (
         platforms: Array<{ id: number; name: string }>
     ) => Promise<{ id: number; name: string } | null>;
+    // Rating modal state
+    isRatingModalVisible: boolean;
+    ratingModalGameName: string;
+    ratingModalGameId: number | null;
+    showRatingModal: (gameId: number, gameName: string) => void;
+    hideRatingModal: () => void;
 }
 
 interface GamesProviderProps {
@@ -73,7 +82,6 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         backlog: [],
         completed: [],
         undiscovered: [],
-        on_hold: [],
         dropped: [],
     });
 
@@ -82,7 +90,6 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         backlog: true,
         completed: true,
         undiscovered: false,
-        on_hold: false,
         dropped: false,
     });
 
@@ -94,6 +101,18 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
     const platformModalResolveRef = React.useRef<
         ((platform: { id: number; name: string } | null) => void) | null
     >(null);
+
+    // Rating modal state
+    const [isRatingModalVisible, setIsRatingModalVisible] = useState(false);
+    const [ratingModalGameName, setRatingModalGameName] = useState("");
+    const [ratingModalGameId, setRatingModalGameId] = useState<number | null>(null);
+    const pendingStatusChangeRef = useRef<{
+        id: number;
+        newStatus: GameStatus;
+        currentStatus: GameStatus;
+        resolve: (value: void) => void;
+        reject: (reason?: any) => void;
+    } | null>(null);
 
     // Memoize sortGames to prevent recreation on every render
     const sortGames = useCallback((games: MinimalQuestGame[]) => {
@@ -239,12 +258,165 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         setIsPlatformModalVisible(false);
     }, []);
 
-    // Game operations
-    const handleStatusChange = useCallback(
+
+
+    const handleRemoveItem = useCallback(
+        async (itemId: number, status: GameStatus) => {
+            try {
+                // First perform all database operations
+                const updateData = await getUpdateData(
+                    itemId,
+                    "undiscovered",
+                    status
+                );
+                await updateQuestGame(updateData);
+
+                // Update UI state after successful database operations
+                setGameData((prev) => {
+                    const gameToRemove = prev[status].find(
+                        (game) => game.id === itemId
+                    );
+                    if (!gameToRemove) return prev;
+
+                    const updatedGames = prev[status].filter(
+                        (game) => game.id !== itemId
+                    );
+
+                    // Calculate which items need priority updates
+                    const gamesWithUpdatedPriorities = updatedGames.map(
+                        (game, index) => {
+                            const newPriority = index + 1;
+                            return game.priority !== newPriority
+                                ? { ...game, priority: newPriority }
+                                : game;
+                        }
+                    );
+
+                    // Show success toast
+                    showToast({
+                        type: "success",
+                        text1: "Game Removed",
+                        text2: `${gameToRemove.name} removed`,
+                        position: "bottom",
+                        color: getStatusColor(status),
+                        visibilityTime: 2000,
+                    });
+
+                    return {
+                        ...prev,
+                        [status]: gamesWithUpdatedPriorities,
+                    };
+                });
+
+                // Update priorities in the database for non-undiscovered statuses
+                if (status !== "undiscovered") {
+                    const priorityUpdates = gameData[status]
+                        .filter((game) => game.id !== itemId)
+                        .map((game, index) => ({
+                            id: game.id,
+                            oldPriority: game.priority || index + 1,
+                            newPriority: index + 1,
+                        }))
+                        .filter(
+                            (item) => item.oldPriority !== item.newPriority
+                        );
+
+                    if (priorityUpdates.length > 0) {
+                        await updateGamePriorities(
+                            priorityUpdates.map(({ id, newPriority }) => ({
+                                id,
+                                priority: newPriority,
+                            }))
+                        );
+                    }
+                }
+            } catch (error) {
+                console.error("[GamesContext] Failed to remove item:", error);
+                showToast({
+                    type: "error",
+                    text1: "Remove Failed",
+                    text2: "Failed to remove game. Please try again.",
+                    position: "bottom",
+                    visibilityTime: 3000,
+                });
+                await loadGamesForStatus(status);
+            }
+        },
+        [gameData, getUpdateData, getStatusColor, loadGamesForStatus]
+    );
+
+
+
+    const handleReorder = useCallback(
+        async (fromIndex: number, toIndex: number, status: GameStatus) => {
+            if (!gameData[status].length) return;
+
+            const updatedData = [...gameData[status]];
+            const [removed] = updatedData.splice(fromIndex, 1);
+            updatedData.splice(toIndex, 0, removed);
+
+            // Calculate which items need priority updates
+            const priorityUpdates = updatedData
+                .map((item, index) => ({
+                    id: item.id,
+                    oldPriority: item.priority || index + 1,
+                    newPriority: index + 1,
+                }))
+                .filter((item) => item.oldPriority !== item.newPriority);
+
+            if (priorityUpdates.length === 0) return;
+
+            try {
+                await updateGamePriorities(
+                    priorityUpdates.map(({ id, newPriority }) => ({
+                        id,
+                        priority: newPriority,
+                    }))
+                );
+
+                setGameData((prev) => ({
+                    ...prev,
+                    [status]: sortGames(
+                        updatedData.map((item, index) => ({
+                            ...item,
+                            priority: index + 1,
+                        }))
+                    ),
+                }));
+            } catch (error) {
+                console.error("Failed to update priorities:", error);
+                await loadGamesForStatus(status);
+            }
+        },
+        [gameData, sortGames, loadGamesForStatus]
+    );
+
+    // Rating modal functions
+    const showRatingModal = useCallback((gameId: number, gameName: string) => {
+        setRatingModalGameId(gameId);
+        setRatingModalGameName(gameName);
+        setIsRatingModalVisible(true);
+    }, []);
+
+    const hideRatingModal = useCallback(() => {
+        setIsRatingModalVisible(false);
+        setRatingModalGameId(null);
+        setRatingModalGameName("");
+
+        // Reject any pending status change if modal is closed without confirmation
+        if (pendingStatusChangeRef.current) {
+            pendingStatusChangeRef.current.reject(new Error("Rating modal cancelled"));
+            pendingStatusChangeRef.current = null;
+        }
+    }, []);
+
+    // Extract the actual status change logic to a separate function
+    const performStatusChange = useCallback(
         async (
             id: number,
             newStatus: GameStatus,
-            currentStatus: GameStatus
+            currentStatus: GameStatus,
+            newRating?: number
         ) => {
             try {
                 // Update UI immediately
@@ -277,6 +449,8 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                                 ? prev[newStatus].length + 1
                                 : undefined,
                         updatedAt: new Date().toISOString(),
+                        // Update the rating if provided
+                        ...(newRating !== undefined && { personalRating: newRating }),
                     };
 
                     const updatedTargetGames = sortGames([
@@ -372,90 +546,37 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         ]
     );
 
-    const handleRemoveItem = useCallback(
-        async (itemId: number, status: GameStatus) => {
-            try {
-                // First perform all database operations
-                const updateData = await getUpdateData(
-                    itemId,
-                    "undiscovered",
-                    status
-                );
-                await updateQuestGame(updateData);
+    const handleRatingConfirm = useCallback(async (rating: number) => {
+        if (!pendingStatusChangeRef.current || !ratingModalGameId) {
+            hideRatingModal();
+            return;
+        }
 
-                // Update UI state after successful database operations
-                setGameData((prev) => {
-                    const gameToRemove = prev[status].find(
-                        (game) => game.id === itemId
-                    );
-                    if (!gameToRemove) return prev;
+        const { id, newStatus, currentStatus, resolve, reject } = pendingStatusChangeRef.current;
 
-                    const updatedGames = prev[status].filter(
-                        (game) => game.id !== itemId
-                    );
+        try {
+            await updateGameRating(ratingModalGameId, rating || 0);
 
-                    // Calculate which items need priority updates
-                    const gamesWithUpdatedPriorities = updatedGames.map(
-                        (game, index) => {
-                            const newPriority = index + 1;
-                            return game.priority !== newPriority
-                                ? { ...game, priority: newPriority }
-                                : game;
-                        }
-                    );
+            // Now proceed with the status change, passing the rating
+            await performStatusChange(id, newStatus, currentStatus, rating || undefined);
 
-                    // Show success toast
-                    showToast({
-                        type: "success",
-                        text1: "Game Removed",
-                        text2: `${gameToRemove.name} removed`,
-                        position: "bottom",
-                        color: getStatusColor(status),
-                        visibilityTime: 2000,
-                    });
-
-                    return {
-                        ...prev,
-                        [status]: gamesWithUpdatedPriorities,
-                    };
-                });
-
-                // Update priorities in the database for non-undiscovered statuses
-                if (status !== "undiscovered") {
-                    const priorityUpdates = gameData[status]
-                        .filter((game) => game.id !== itemId)
-                        .map((game, index) => ({
-                            id: game.id,
-                            oldPriority: game.priority || index + 1,
-                            newPriority: index + 1,
-                        }))
-                        .filter(
-                            (item) => item.oldPriority !== item.newPriority
-                        );
-
-                    if (priorityUpdates.length > 0) {
-                        await updateGamePriorities(
-                            priorityUpdates.map(({ id, newPriority }) => ({
-                                id,
-                                priority: newPriority,
-                            }))
-                        );
-                    }
-                }
-            } catch (error) {
-                console.error("[GamesContext] Failed to remove item:", error);
-                showToast({
-                    type: "error",
-                    text1: "Remove Failed",
-                    text2: "Failed to remove game. Please try again.",
-                    position: "bottom",
-                    visibilityTime: 3000,
-                });
-                await loadGamesForStatus(status);
-            }
-        },
-        [gameData, getUpdateData, getStatusColor, loadGamesForStatus]
-    );
+            // Resolve the Promise to indicate completion
+            resolve();
+        } catch (error) {
+            console.error("[GamesContext] Error in rating confirmation:", error);
+            showToast({
+                type: "error",
+                text1: "Update Failed",
+                text2: "Failed to update game status. Please try again.",
+                position: "bottom",
+                visibilityTime: 3000,
+            });
+            // Reject the Promise to indicate failure
+            reject(error);
+        } finally {
+            hideRatingModal();
+        }
+    }, [ratingModalGameId, hideRatingModal, performStatusChange]);
 
     const handleDiscover = useCallback(
         async (game: MinimalQuestGame, newStatus: GameStatus) => {
@@ -491,7 +612,7 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                         // Same platform selected, only update status if needed
 
                         if (dbQuestGame.gameStatus !== newStatus) {
-                            await handleStatusChange(
+                            await performStatusChange(
                                 dbQuestGame.id,
                                 newStatus,
                                 dbQuestGame.gameStatus
@@ -618,55 +739,49 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
         },
         [
             gameData,
-            handleStatusChange,
+            performStatusChange,
             showPlatformSelectionModal,
             loadGamesForStatus,
             handleNavigateAndScroll,
         ]
     );
 
-    const handleReorder = useCallback(
-        async (fromIndex: number, toIndex: number, status: GameStatus) => {
-            if (!gameData[status].length) return;
-
-            const updatedData = [...gameData[status]];
-            const [removed] = updatedData.splice(fromIndex, 1);
-            updatedData.splice(toIndex, 0, removed);
-
-            // Calculate which items need priority updates
-            const priorityUpdates = updatedData
-                .map((item, index) => ({
-                    id: item.id,
-                    oldPriority: item.priority || index + 1,
-                    newPriority: index + 1,
-                }))
-                .filter((item) => item.oldPriority !== item.newPriority);
-
-            if (priorityUpdates.length === 0) return;
-
-            try {
-                await updateGamePriorities(
-                    priorityUpdates.map(({ id, newPriority }) => ({
-                        id,
-                        priority: newPriority,
-                    }))
+    // Game operations
+    const handleStatusChange = useCallback(
+        async (
+            id: number,
+            newStatus: GameStatus,
+            currentStatus: GameStatus
+        ): Promise<void> => {
+            // If moving to completed status, show rating modal first
+            if (newStatus === "completed") {
+                const gameToMove = gameData[currentStatus].find(
+                    (game) => game.id === id
                 );
-
-                setGameData((prev) => ({
-                    ...prev,
-                    [status]: sortGames(
-                        updatedData.map((item, index) => ({
-                            ...item,
-                            priority: index + 1,
-                        }))
-                    ),
-                }));
-            } catch (error) {
-                console.error("Failed to update priorities:", error);
-                await loadGamesForStatus(status);
+                if (gameToMove) {
+                    // Return a Promise that resolves when the rating modal is completed
+                    return new Promise((resolve, reject) => {
+                        // Store the pending status change with Promise resolvers
+                        pendingStatusChangeRef.current = {
+                            id,
+                            newStatus,
+                            currentStatus,
+                            resolve,
+                            reject,
+                        };
+                        showRatingModal(id, gameToMove.name);
+                    });
+                }
+            } else {
+                // For all other status changes, proceed normally
+                await performStatusChange(id, newStatus, currentStatus);
             }
         },
-        [gameData, sortGames, loadGamesForStatus]
+        [
+            gameData,
+            performStatusChange,
+            showRatingModal,
+        ]
     );
 
     // Load initial data for main game statuses
@@ -693,6 +808,12 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                     handleReorder,
                     handleNavigateAndScroll,
                     showPlatformSelectionModal,
+                    // Rating modal state
+                    isRatingModalVisible,
+                    ratingModalGameName,
+                    ratingModalGameId,
+                    showRatingModal,
+                    hideRatingModal,
                 }}
             >
                 {children}
@@ -703,6 +824,12 @@ export const GamesProvider: React.FC<GamesProviderProps> = ({
                 handlePlatformSelect,
                 handlePlatformModalClose
             )}
+            <RatingModal
+                visible={isRatingModalVisible}
+                onClose={hideRatingModal}
+                onConfirm={handleRatingConfirm}
+                gameName={ratingModalGameName}
+            />
         </>
     );
 };

@@ -18,6 +18,42 @@ class IGDBService {
     private static SUPPORTED_PLATFORMS =
         "(3,4,5,6,7,8,9,11,12,14,18,19,20,21,22,24,33,34,37,38,39,41,46,48,49,130,167,169,170,211,282,283)";
 
+    // Dictionary for transforming search queries to improve IGDB API results
+    private static SEARCH_QUERY_TRANSFORMATIONS: Record<string, string> = {
+        // Pokemon series - needs accent
+        "pokemon": "pokémon",
+
+        // Common abbreviations and alternate spellings
+        "cod": "call of duty",
+        "gta": "grand theft auto",
+        "bf": "battlefield",
+        "wow": "world of warcraft",
+        "loz": "legend of zelda",
+        "mario bros": "super mario",
+        "ff": "final fantasy",
+
+        // Common misspellings
+        "assassins creed": "assassin's creed",
+    };
+
+    private static transformSearchQuery(query: string): string {
+        const lowerQuery = query.toLowerCase().trim();
+
+        // Check for exact matches first
+        if (this.SEARCH_QUERY_TRANSFORMATIONS[lowerQuery]) {
+            return this.SEARCH_QUERY_TRANSFORMATIONS[lowerQuery];
+        }
+
+        // Check for partial matches (useful for series names)
+        for (const [key, value] of Object.entries(this.SEARCH_QUERY_TRANSFORMATIONS)) {
+            if (lowerQuery.includes(key)) {
+                return query.toLowerCase().replace(key, value);
+            }
+        }
+
+        return query; // Return original if no transformation needed
+    }
+
     private static async executeQuery(
         endpoint: string,
         query: string
@@ -141,8 +177,11 @@ limit 100;`;
     public static async searchGames(
         query: string
     ): Promise<MinimalQuestGame[]> {
-        const games = await this.searchGamesBy(`name ~ *"${query}"*`);
-        const lowerQuery = query.toLowerCase().trim();
+        // Transform the query to handle special cases
+        const transformedQuery = this.transformSearchQuery(query);
+
+        const games = await this.searchGamesBy(`name ~ *"${transformedQuery}"*`);
+        const lowerQuery = transformedQuery.toLowerCase().trim();
 
         // Sort games so exact matches appear first
         return games

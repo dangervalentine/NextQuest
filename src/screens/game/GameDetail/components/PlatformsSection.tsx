@@ -66,11 +66,12 @@ export const PlatformsSection: React.FC<PlatformsSectionProps> = ({ game }) => {
     );
 
     return (
-        <ExpandableContent
-            content={platformsList}
-            maxCollapsedHeight={65}
-            containerStyle={styles.container}
-        />
+        // <ExpandableContent
+        //     content={platformsList}
+        //     maxCollapsedHeight={65}
+        //     containerStyle={styles.container}
+        // />
+        platformsList
     );
 };
 
