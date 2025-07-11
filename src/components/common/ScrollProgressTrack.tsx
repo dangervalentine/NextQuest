@@ -6,9 +6,6 @@ import {
 } from "react-native";
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
-import { colorSwatch } from "src/constants/theme/colorConstants";
-import { useGameStatus } from "src/contexts/GameStatusContext";
-import { getStatusColor } from "src/utils/colorsUtils";
 import { HapticFeedback } from "src/utils/hapticUtils";
 
 /**
@@ -88,6 +85,24 @@ interface ScrollProgressTrackProps {
     onDragStart?: () => void;
     /** Callback when drag ends */
     onDragEnd?: () => void;
+    /** Styling configuration */
+    styling?: {
+        /** Color of the scroll thumb */
+        thumbColor?: string;
+        /** Color of the track background */
+        trackColor?: string;
+        /** Whether the track background is visible */
+        trackVisible?: boolean;
+        /** Shadow configuration for the thumb */
+        thumbShadow?: {
+            color?: string;
+            opacity?: number;
+            radius?: number;
+            offset?: { width: number; height: number };
+        };
+        /** Whether the track should always be visible (no auto-hide) */
+        alwaysVisible?: boolean;
+    };
 }
 
 const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
@@ -101,9 +116,22 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     animatedScrollPosition,
     onDragStart,
     onDragEnd,
+    styling = {},
 }) => {
-    const { activeStatus } = useGameStatus();
-    const statusColor = getStatusColor(activeStatus);
+    // Default styling values
+    const {
+        thumbColor = '#00CED1', // Default cyan
+        trackColor = '#637777', // Default gray
+        trackVisible = true,
+        thumbShadow = {
+            color: '#000000',
+            opacity: 0.3,
+            radius: 4,
+            offset: { width: 0, height: 2 },
+        },
+        alwaysVisible = false, // Default to false
+    } = styling;
+
     const [isDragging, setIsDragging] = useState(false);
 
     // Animation values
@@ -259,16 +287,19 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
     return (
         <View style={styles.container} >
             {/* Track */}
-            <Animated.View
-                style={[
-                    styles.track,
-                    {
-                        opacity: trackOpacity,
-                        width: trackWidth,
-                        height: availableHeight,
-                    },
-                ]}
-            />
+            {trackVisible && (
+                <Animated.View
+                    style={[
+                        styles.track,
+                        {
+                            opacity: trackOpacity,
+                            width: trackWidth,
+                            height: availableHeight,
+                            backgroundColor: trackColor,
+                        },
+                    ]}
+                />
+            )}
 
             {/* Draggable Track Area - Expanded for easy access */}
             <PanGestureHandler
@@ -303,14 +334,14 @@ const ScrollProgressTrack: React.FC<ScrollProgressTrackProps> = ({
                                     { translateY: animatedThumbPosition },
                                     { scale: dragScale },
                                 ],
-                                backgroundColor: statusColor,
-                                shadowOpacity: isDragging ? 0.4 : 0.3,
-                                shadowRadius: isDragging ? 6 : 4,
+                                backgroundColor: thumbColor,
+                                shadowColor: thumbShadow.color,
+                                shadowOffset: thumbShadow.offset,
+                                shadowOpacity: isDragging ? Math.min((thumbShadow.opacity || 0.3) * 1.3, 1) : (thumbShadow.opacity || 0.3),
+                                shadowRadius: isDragging ? (thumbShadow.radius || 4) * 1.5 : (thumbShadow.radius || 4),
                             },
                         ]}
                     />
-
-
                 </Animated.View>
             </PanGestureHandler>
         </View>
@@ -328,7 +359,6 @@ const styles = StyleSheet.create({
     },
     track: {
         position: "absolute",
-        backgroundColor: colorSwatch.neutral.gray,
     },
     pressableArea: {
         position: "absolute",
@@ -338,15 +368,8 @@ const styles = StyleSheet.create({
     },
     thumb: {
         position: "absolute",
-        backgroundColor: colorSwatch.accent.cyan,
-        shadowColor: colorSwatch.neutral.black,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
         elevation: 4,
     },
-
-
 });
 
 export default ScrollProgressTrack;

@@ -19,6 +19,7 @@ import GameSortFilterMenu from "./GameSortFilterMenu";
 import { SortField } from "src/types/sortTypes";
 import { useGames } from "src/contexts/GamesContext";
 import ScrollableContainer from "../../../../components/common/ScrollableContainer";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface GameSectionProps {
     gameStatus: GameStatus;
@@ -277,7 +278,20 @@ const GameSection = forwardRef<GameSectionRef, GameSectionProps>(
             </View>
         ) : (
             <>
-                <ScrollableContainer style={styles.contentContainer}>
+                <ScrollableContainer
+                    style={styles.contentContainer}
+                    scrollTrackStyling={{
+                        thumbColor: getStatusColor(gameStatus),
+                        trackColor: colorSwatch.neutral.gray,
+                        trackVisible: true,
+                        thumbShadow: {
+                            color: colorSwatch.neutral.black,
+                            opacity: 0.3,
+                            radius: 4,
+                            offset: { width: 0, height: 2 },
+                        },
+                    }}
+                >
                     {({ scrollRef, onScroll, onContentSizeChange, scrollEventThrottle, showsVerticalScrollIndicator }) => {
                         // Assign the scrollRef to dragListRef for imperative methods
                         dragListRef.current = scrollRef.current;

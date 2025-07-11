@@ -17,12 +17,38 @@ interface ScrollableContainerProps {
         onDragEnd?: () => void;
     }) => React.ReactNode;
     style?: any;
+    /** Scroll track styling configuration */
+    scrollTrackStyling?: {
+        /** Color of the scroll thumb */
+        thumbColor?: string;
+        /** Color of the track background */
+        trackColor?: string;
+        /** Whether the track background is visible */
+        trackVisible?: boolean;
+        /** Track width */
+        trackWidth?: number;
+        /** Thumb height */
+        thumbHeight?: number;
+        /** Shadow configuration for the thumb */
+        thumbShadow?: {
+            color?: string;
+            opacity?: number;
+            radius?: number;
+            offset?: { width: number; height: number };
+        };
+        /** Whether the track should always be visible (no auto-hide) */
+        alwaysVisible?: boolean;
+    };
 }
 
 const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     children,
     style,
+    scrollTrackStyling = {},
 }) => {
+    // Extract alwaysVisible from scrollTrackStyling
+    const { alwaysVisible = false } = scrollTrackStyling;
+
     // Scroll tracking state
     const scrollRef = useRef<any>(null);
     const { createScrollHandler, rawScrollValue, setScrollValue } = useAnimatedScrollPosition();
@@ -41,13 +67,13 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         if (isTrackAutoHidden) {
             setIsTrackAutoHidden(false);
         }
-        // Don't start auto-hide timer during drag
-        if (!isDragInProgress) {
+        // Don't start auto-hide timer during drag or if alwaysVisible is true
+        if (!isDragInProgress && !alwaysVisible) {
             autoHideTimer.current = setTimeout(() => {
                 setIsTrackAutoHidden(true);
             }, 1000);
         }
-    }, [isTrackAutoHidden, isDragInProgress]);
+    }, [isTrackAutoHidden, isDragInProgress, alwaysVisible]);
 
     const clearAutoHideTimer = useCallback(() => {
         if (autoHideTimer.current) {
@@ -87,14 +113,18 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         const shouldShowTrack = maxOffset > 20;
         setIsScrollTrackVisible(shouldShowTrack);
 
-        // Start auto-hide timer when scrolling
-        if (shouldShowTrack) {
+        // Start auto-hide timer when scrolling (unless alwaysVisible is true)
+        if (shouldShowTrack && !alwaysVisible) {
             startAutoHideTimer();
+        } else if (shouldShowTrack && alwaysVisible) {
+            // If alwaysVisible is true, keep track visible
+            clearAutoHideTimer();
+            setIsTrackAutoHidden(false);
         } else {
             clearAutoHideTimer();
             setIsTrackAutoHidden(false);
         }
-    }, [startAutoHideTimer, clearAutoHideTimer]);
+    }, [startAutoHideTimer, clearAutoHideTimer, alwaysVisible]);
 
     // Combined scroll handler
     const handleScroll = useCallback((event: any) => {
@@ -181,7 +211,7 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     }, [startAutoHideTimer]);
 
     // Computed visibility
-    const isTrackCurrentlyVisible = isScrollTrackVisible && !isTrackAutoHidden;
+    const isTrackCurrentlyVisible = isScrollTrackVisible && (alwaysVisible || !isTrackAutoHidden);
 
     return (
         <View style={[styles.container, style]}>
@@ -205,6 +235,15 @@ const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
                     animatedScrollPosition={rawScrollValue}
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
+                    trackWidth={scrollTrackStyling.trackWidth}
+                    thumbHeight={scrollTrackStyling.thumbHeight}
+                    styling={{
+                        thumbColor: scrollTrackStyling.thumbColor,
+                        trackColor: scrollTrackStyling.trackColor,
+                        trackVisible: scrollTrackStyling.trackVisible,
+                        thumbShadow: scrollTrackStyling.thumbShadow,
+                        alwaysVisible: scrollTrackStyling.alwaysVisible,
+                    }}
                 />
             </View>
         </View>

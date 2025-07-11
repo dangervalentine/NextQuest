@@ -16,6 +16,7 @@ import Text from "src/components/common/Text";
 import { LoadingText } from "src/components/common/LoadingText";
 import { useGames } from "src/contexts/GamesContext";
 import ScrollableContainer from "../../../../components/common/ScrollableContainer";
+import { getStatusColor } from "src/utils/colorsUtils";
 
 interface SearchParams {
     searchQuery?: string;
@@ -228,7 +229,20 @@ const GameSearchSection: React.FC<GameSearchSectionProps> = ({
 
     return (
         <View style={styles.contentContainer}>
-            <ScrollableContainer style={styles.scrollWrapper}>
+            <ScrollableContainer
+                style={styles.scrollWrapper}
+                scrollTrackStyling={{
+                    thumbColor: getStatusColor(gameStatus),
+                    trackColor: colorSwatch.neutral.gray,
+                    trackVisible: true,
+                    thumbShadow: {
+                        color: colorSwatch.neutral.black,
+                        opacity: 0.3,
+                        radius: 4,
+                        offset: { width: 0, height: 2 },
+                    },
+                }}
+            >
                 {({ scrollRef, onScroll, onContentSizeChange, scrollEventThrottle, showsVerticalScrollIndicator }) => {
                     // Assign the scrollRef to flatListRef
                     flatListRef.current = scrollRef.current;

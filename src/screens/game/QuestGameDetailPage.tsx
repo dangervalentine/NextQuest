@@ -291,7 +291,19 @@ const QuestGameDetailPage: React.FC = () => {
         >
             <View style={styles.overlay} />
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                <ScrollableContainer>
+                <ScrollableContainer
+                    scrollTrackStyling={{
+                        thumbColor: statusColor,
+                        trackColor: colorSwatch.neutral.gray,
+                        trackVisible: true,
+                        thumbShadow: {
+                            color: colorSwatch.neutral.black,
+                            opacity: 0.3,
+                            radius: 4,
+                            offset: { width: 0, height: 2 },
+                        },
+                    }}
+                >
                     {({ scrollRef, onScroll, onContentSizeChange, scrollEventThrottle, showsVerticalScrollIndicator }) => (
                         <ScrollView
                             ref={scrollRef}
